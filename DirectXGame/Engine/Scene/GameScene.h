@@ -55,6 +55,8 @@ public:
 
 	void CameraUpdate();
 
+	void ApplyGlobalVariables();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;

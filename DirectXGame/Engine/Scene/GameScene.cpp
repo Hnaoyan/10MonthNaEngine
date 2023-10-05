@@ -40,10 +40,22 @@ void GameScene::Initialize() {
 
 	model_.reset(Model::CreateFromObj("player", true));
 	
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+
+	const char* groupName = "Player";
+
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "Test", 90);
+
+	globalVariables->AddItem(groupName, "trans", this->baseWorld_.translation_);
+
 }
 
 void GameScene::Update()
 {
+	
+	ApplyGlobalVariables();
+
 	ImGui::Begin("color");
 	ImGui::ColorEdit4("float", &setColor_.x);
 	ImGui::End();
@@ -162,4 +174,11 @@ void GameScene::CameraUpdate()
 	}
 
 
+}
+
+void GameScene::ApplyGlobalVariables()
+{
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Player";
+	baseWorld_.translation_ = globalVariables->GetVector3Value(groupName, "trans");
 }
