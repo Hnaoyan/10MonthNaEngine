@@ -34,10 +34,10 @@ public: // メンバ定数
 	const float kDropLine_ = 8.0f;
 
 	//最大位置
-	const Vector2 kPositionMax_ = {10.0f, 20.0f};
+	const Vector2 kPositionMax_ = {20.0f, 40.0f};
 
 	//最小位置
-	const Vector2 kPositionMin_ = {-10.0f, -20.0f};
+	const Vector2 kPositionMin_ = {0.0f, 0.0f};
 
 
 private: // メンバ変数

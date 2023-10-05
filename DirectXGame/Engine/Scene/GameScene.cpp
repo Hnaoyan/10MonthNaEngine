@@ -22,13 +22,13 @@ void GameScene::Initialize() {
 	baseCamera_ = make_unique<BaseCamera>();
 	baseCamera_->Initialize();
 
-	baseCamera_->SetPosition({ 0, 10.0f, -100.0f });
+	baseCamera_->SetPosition({ 10.0f, 20.0f, -70.0f });
 	baseCamera_->SetRotation({ 0.0f, 0.0f, 0.0f });
 
 	// ゲームシーン用
 
 	//エリア
-	areaModel_.reset(Model::CreateFromObj("player", true));
+	areaModel_.reset(Model::CreateFromObj("area", true));
 	area_ = make_unique<Area>();
 	area_->Initialize(areaModel_.get());
 
@@ -79,6 +79,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	
+	area_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理

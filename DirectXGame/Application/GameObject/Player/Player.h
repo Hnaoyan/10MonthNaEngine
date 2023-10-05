@@ -43,6 +43,16 @@ private: //メンバ関数
 	/// </summary>
 	void Jump();
 
+	/// <summary>
+	/// 落下
+	/// </summary>
+	void Falling();
+
+	/// <summary>
+	/// 底に落ちる
+	/// </summary>
+	void FallToTheBottom();
+
 public: // アクセッサ
 
 	/// <summary>
@@ -82,7 +92,7 @@ private: // メンバ定数
 	const float kMoveVelocityMax_ = 0.5f;
 
 	// 落下加速度
-	const float kFallingAcceleration = 0.2f;
+	const float kFallingAcceleration = -0.2f;
 
 };
 

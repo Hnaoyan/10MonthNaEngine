@@ -9,7 +9,7 @@ void Player::Initialize(Model* model)
 
 	// ワールドトランスフォーム
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0.0f,0.0f,0.0f };
+	worldTransform_.translation_ = { 0.0f,10.0f,0.0f };
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();
@@ -24,7 +24,7 @@ void Player::Initialize(Model* model)
 	acceleration_ = { 0.0f ,0.0f };
 
 	// コライダーサイズ
-	colliderSize_ = { worldTransform_.scale_.x, worldTransform_.scale_.y };
+	colliderSize_ = { 2.0f, 2.0f };
 
 	//着地判定
 	islanding_ = false;
@@ -35,6 +35,11 @@ void Player::Update()
 {
 
 	Move();
+	
+	// 着地していない
+	if (!islanding_) {
+		Falling();
+	}
 
 	worldTransform_.UpdateMatrix();
 
@@ -86,11 +91,35 @@ void Player::Move()
 	worldTransform_.translation_.x += velocity_.x;
 
 	// 移動制限
-	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, area_->kPositionMin_.x, area_->kPositionMax_.x);
-	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, area_->kPositionMin_.y, area_->kPositionMax_.y);
+	worldTransform_.translation_.x = 
+		std::clamp(worldTransform_.translation_.x,
+		area_->kPositionMin_.x + colliderSize_.x / 2.0f,
+		area_->kPositionMax_.x - colliderSize_.x / 2.0f);
 
 }
 
 void Player::Jump()
 {
+}
+
+void Player::Falling()
+{
+
+	velocity_.y += kFallingAcceleration;
+		
+	//ワールドトランスフォーム変更
+	worldTransform_.translation_.y += velocity_.y;
+
+	if (worldTransform_.translation_.y <= area_->kPositionMin_.y + colliderSize_.y / 2.0f) {
+		FallToTheBottom();
+	}
+}
+
+void Player::FallToTheBottom()
+{
+
+	islanding_ = true;
+	worldTransform_.translation_.y = area_->kPositionMin_.y + colliderSize_.y / 2.0f;
+	velocity_.y = 0.0f;
+
 }
