@@ -3,6 +3,8 @@
 #include "ImGuiManager.h"
 #include <cassert>
 
+using namespace std;
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene()
@@ -17,11 +19,18 @@ void GameScene::Initialize() {
 
 	viewProjection_.Initialize();
 
-	baseCamera_ = std::make_unique<BaseCamera>();
+	baseCamera_ = make_unique<BaseCamera>();
 	baseCamera_->Initialize();
 
 	baseCamera_->SetPosition({ 0, 10.0f, -25.0f });
 	baseCamera_->SetRotation({ 0.3f, 0, 0 });
+
+	// ゲームシーン用
+
+	// プレイヤー
+	playerModel_.reset(Model::CreateFromObj("player"));
+	player_ = make_unique<Player>();
+	player_->Initialize(playerModel_.get());
 	
 }
 
@@ -30,6 +39,9 @@ void GameScene::Update()
 
 	/// カメラ関係の更新処理
 	CameraUpdate();
+
+	// プレイヤー
+	player_->Update();
 
 }
 
@@ -60,6 +72,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	
+	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

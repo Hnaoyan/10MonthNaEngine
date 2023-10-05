@@ -17,7 +17,7 @@ void Area::Initialize(Model* model)
 
 void Area::Update()
 {
-	// ワールドトランスフォーム
+
 	worldTransform_.UpdateMatrix();
 
 }

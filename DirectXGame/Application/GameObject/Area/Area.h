@@ -29,13 +29,13 @@ public: // メンバ関数
 public: // メンバ定数
 
 	// ドロップライン
-	const float dropLine_ = 8.0f;
+	const float kDropLine_ = 8.0f;
 
 	//最大位置
-	const Vector2 translationMax_ = {10.0f, 20.0f};
+	const Vector2 kPositionMax_ = {10.0f, 20.0f};
 
 	//最小位置
-	const Vector2 translationMin_ = { -10.0f, -20.0f };
+	const Vector2 kPositionMin_ = { -10.0f, -20.0f };
 
 
 private: // メンバ変数

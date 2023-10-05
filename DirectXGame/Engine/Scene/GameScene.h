@@ -15,6 +15,9 @@
 
 #include <memory>
 
+// ゲームシーン用
+#include "Application/GameObject/Player/Player.h"
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -75,5 +78,11 @@ private:	// メンバポインタ
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+
+	// プレイヤー
+	std::unique_ptr<Player> player_;
+	// プレイヤーモデル
+	std::unique_ptr<Model> playerModel_;
+
 };
 
