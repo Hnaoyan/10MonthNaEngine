@@ -1,9 +1,13 @@
 #include "MyGame.h"
+#include "GlobalVariables.h"
 
 void MyGame::Initialize()
 {
 	// 基底クラスの初期化
 	Framework::Initialize();
+	// グローバル変数の外部管理
+	GlobalVariables::GetInstance()->LoadFiles();
+
 	// シーンの初期化
 	sceneManager = new SceneManager();
 }
@@ -27,6 +31,10 @@ void MyGame::Update()
 	input->Update();
 	// ImGui受付開始
 	imguiManager->Begin();
+
+	// グローバル変数の外部管理
+	GlobalVariables::GetInstance()->Update();
+
 	// ゲームシーン更新処理
 	sceneManager->Update();
 }
