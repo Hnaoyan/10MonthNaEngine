@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	// ゲームシーン用
 
 	// プレイヤー
-	playerModel_.reset(Model::CreateFromObj("player"));
+	playerModel_.reset(Model::CreateFromObj("player", true));
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get());
 	
