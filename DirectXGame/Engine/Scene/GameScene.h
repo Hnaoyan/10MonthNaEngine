@@ -63,24 +63,12 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 
 private:
-	std::unique_ptr<CollisionManager> colliderManager_;
 
 private:	// メンバポインタ
 	// カメラ
 	//std::unique_ptr<DebugCamera> debugCamera_;
-	// フォローカメラ
-	std::unique_ptr<FollowCamera> followCamera_;
 	// ベースカメラ
 	std::unique_ptr<BaseCamera> baseCamera_;
-
-	// 仮のオブジェクト
-	std::unique_ptr<Model> model_;
-
-	WorldTransform baseWorld_;
-
-	Sprite* sprite_;
-
-	Vector4 setColor_;
 
 	bool isDebug_ = false;
 

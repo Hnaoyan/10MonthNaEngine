@@ -17,58 +17,16 @@ void GameScene::Initialize() {
 
 	viewProjection_.Initialize();
 
-	// 衝突マネージャー
-	colliderManager_ = std::make_unique<CollisionManager>();
-
-	// 追従カメラ
-	followCamera_ = std::make_unique<FollowCamera>();
-	followCamera_->Initialize();
-
 	baseCamera_ = std::make_unique<BaseCamera>();
 	baseCamera_->Initialize();
 
 	baseCamera_->SetPosition({ 0, 10.0f, -25.0f });
 	baseCamera_->SetRotation({ 0.3f, 0, 0 });
-
-	baseWorld_.Initialize();
-	baseWorld_.translation_ = { 0,0,0 };
-	baseWorld_.scale_ = { 1.0f,1.0f,1.0f };
-
-	uint32_t texture = TextureManager::Load("uvChecker.png");
-	setColor_ = { 1.0f,1.0f,1.0f,1.0f };
-	sprite_ = Sprite::Create(texture, { 200,200 }, { 1.0f,1.0f,1.0f,1.0f }, { 0,0 }, false, false);
-
-	model_.reset(Model::CreateFromObj("player", true));
 	
 }
 
 void GameScene::Update()
 {
-	ImGui::Begin("color");
-	ImGui::ColorEdit4("float", &setColor_.x);
-	ImGui::End();
-	sprite_->SetColor(setColor_);
-
-
-	if (Input::GetInstance()->PressKey(DIK_W)) {
-		baseWorld_.translation_.z += 0.3f;
-	}
-	else if(Input::GetInstance()->PressKey(DIK_S)){
-		baseWorld_.translation_.z -= 0.3f;
-	}
-
-	if (Input::GetInstance()->PressKey(DIK_A)) {
-		baseWorld_.translation_.x -= 0.3f;
-	}
-
-	else if (Input::GetInstance()->PressKey(DIK_D)) {
-		baseWorld_.translation_.x += 0.3f;
-	}
-
-	baseWorld_.UpdateMatrix();
-
-	/// 当たり判定（仮
-	CheckAllCollision();
 
 	/// カメラ関係の更新処理
 	CameraUpdate();
@@ -102,8 +60,6 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
-	model_->Draw(baseWorld_, viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
