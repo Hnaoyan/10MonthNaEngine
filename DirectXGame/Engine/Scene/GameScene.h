@@ -84,6 +84,8 @@ private:	// メンバポインタ
 
 	Vector4 setColor_;
 
+	Vector2 rate_;
+
 	bool isDebug_ = false;
 
 	/// <summary>

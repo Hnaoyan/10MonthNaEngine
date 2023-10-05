@@ -34,6 +34,8 @@ void GameScene::Initialize() {
 	baseWorld_.translation_ = { 0,0,0 };
 	baseWorld_.scale_ = { 1.0f,1.0f,1.0f };
 
+	rate_ = { 1.0f,1.0f };
+
 	uint32_t texture = TextureManager::Load("uvChecker.png");
 	setColor_ = { 1.0f,1.0f,1.0f,1.0f };
 	sprite_ = Sprite::Create(texture, { 200,200 }, { 1.0f,1.0f,1.0f,1.0f }, { 0,0 }, false, false);
@@ -46,7 +48,8 @@ void GameScene::Initialize() {
 
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
 	globalVariables->AddItem(groupName, "Test", 90);
-
+	
+	globalVariables->AddItem(groupName, "rate", rate_);
 	globalVariables->AddItem(groupName, "trans", this->baseWorld_.translation_);
 
 }
@@ -180,5 +183,6 @@ void GameScene::ApplyGlobalVariables()
 {
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	const char* groupName = "Player";
+	rate_ = globalVariables->GetVector2Value(groupName, "rate");
 	baseWorld_.translation_ = globalVariables->GetVector3Value(groupName, "trans");
 }
