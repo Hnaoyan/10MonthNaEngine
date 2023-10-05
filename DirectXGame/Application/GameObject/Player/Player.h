@@ -3,6 +3,9 @@
 #include "ViewProjection.h"
 #include "Model.h"
 
+// 前方宣言
+class Area;
+
 /// <summary>
 /// プレイヤー
 /// </summary>
@@ -11,15 +14,41 @@ class Player
 
 public: // メンバ関数
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="model">モデル</param>
 	void Initialize(Model* model);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection);
 
+private: //メンバ関数
+
+	/// <summary>
+	/// 移動
+	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// ジャンプ
+	/// </summary>
 	void Jump();
+
+public: // アクセッサ
+
+	/// <summary>
+	/// エリアセッター
+	/// </summary>
+	void SetArea(Area* area) { area_ = area; }
 
 private: // メンバ変数
 
@@ -27,7 +56,7 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 
 	// モデル
-	Model* model_;
+	Model* model_ = nullptr;
 
 	// 速度
 	Vector2 velocity_;
@@ -41,10 +70,16 @@ private: // メンバ変数
 	//着地判定
 	bool islanding_;
 
+	//エリア
+	Area* area_ = nullptr;
+
 private: // メンバ定数
 
 	// ジャンプの初速度
 	const float kJumpVelocity_ = 3.0f;
+
+	// 最大移動速度
+	const float kMoveVelocityMax_ = 0.5f;
 
 	// 落下加速度
 	const float kFallingAcceleration = 0.2f;

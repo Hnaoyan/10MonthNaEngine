@@ -22,15 +22,21 @@ void GameScene::Initialize() {
 	baseCamera_ = make_unique<BaseCamera>();
 	baseCamera_->Initialize();
 
-	baseCamera_->SetPosition({ 0, 10.0f, -25.0f });
-	baseCamera_->SetRotation({ 0.3f, 0, 0 });
+	baseCamera_->SetPosition({ 0, 10.0f, -100.0f });
+	baseCamera_->SetRotation({ 0.0f, 0.0f, 0.0f });
 
 	// ゲームシーン用
+
+	//エリア
+	areaModel_.reset(Model::CreateFromObj("player", true));
+	area_ = make_unique<Area>();
+	area_->Initialize(areaModel_.get());
 
 	// プレイヤー
 	playerModel_.reset(Model::CreateFromObj("player", true));
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get());
+	player_->SetArea(area_.get());
 	
 }
 

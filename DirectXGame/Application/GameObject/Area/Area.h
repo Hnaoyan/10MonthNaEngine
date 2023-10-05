@@ -14,6 +14,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="model">モデル</param>
 	void Initialize(Model* model);
 
 	/// <summary>
@@ -24,6 +25,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
+	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection);
 
 public: // メンバ定数
@@ -35,7 +37,7 @@ public: // メンバ定数
 	const Vector2 kPositionMax_ = {10.0f, 20.0f};
 
 	//最小位置
-	const Vector2 kPositionMin_ = { -10.0f, -20.0f };
+	const Vector2 kPositionMin_ = {-10.0f, -20.0f};
 
 
 private: // メンバ変数

@@ -17,6 +17,7 @@
 
 // ゲームシーン用
 #include "Application/GameObject/Player/Player.h"
+#include "Application/GameObject/Area/Area.h"
 
 /// <summary>
 /// ゲームシーン
@@ -79,9 +80,12 @@ private:	// メンバポインタ
 	/// ゲームシーン用
 	/// </summary>
 
+	//エリア
+	std::unique_ptr<Area> area_;
+	std::unique_ptr<Model> areaModel_;
+
 	// プレイヤー
 	std::unique_ptr<Player> player_;
-	// プレイヤーモデル
 	std::unique_ptr<Model> playerModel_;
 
 };

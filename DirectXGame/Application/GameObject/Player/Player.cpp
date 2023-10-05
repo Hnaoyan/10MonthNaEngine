@@ -1,5 +1,8 @@
 #include "Player.h"
+#include <algorithm>
 #include "Input.h"
+
+#include "Application/GameObject/Area/Area.h"
 
 void Player::Initialize(Model* model)
 {
@@ -31,6 +34,8 @@ void Player::Initialize(Model* model)
 void Player::Update()
 {
 
+	Move();
+
 	worldTransform_.UpdateMatrix();
 
 }
@@ -46,7 +51,43 @@ void Player::Move()
 {
 	
 	// 入力デバイスインスタンス取得
-	//Input* input = Input::GetInstance();
+	Input* input = Input::GetInstance();
+
+	//キーボード
+
+	//左移動
+	if ((input->PressKey(DIK_LEFT) || input->PressKey(DIK_A)) &&
+		!(input->PressKey(DIK_RIGHT) || input->PressKey(DIK_D))) {
+		velocity_.x = -kMoveVelocityMax_;
+	}
+	//右移動
+	else if ((input->PressKey(DIK_RIGHT) || input->PressKey(DIK_D)) &&
+		!(input->PressKey(DIK_LEFT) || input->PressKey(DIK_A))) {
+		velocity_.x = kMoveVelocityMax_;
+	}
+	//移動しない
+	else {
+
+		//ゲームパッド
+
+		XINPUT_STATE joyState;
+
+		if (input->GetJoystickState(0, joyState)) {
+			//移動
+			velocity_.x = (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveVelocityMax_;
+		}
+		else {
+			velocity_.x = 0.0f;
+		}
+
+	}
+
+	//ワールドトランスフォーム変更
+	worldTransform_.translation_.x += velocity_.x;
+
+	// 移動制限
+	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, area_->kPositionMin_.x, area_->kPositionMax_.x);
+	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, area_->kPositionMin_.y, area_->kPositionMax_.y);
 
 }
 
