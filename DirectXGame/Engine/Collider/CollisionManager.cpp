@@ -55,10 +55,10 @@ void CollisionManager::CheckCollision(RectangleCollider* colliderA, RectangleCol
 	float colliderBRight = colliderB->GetPosition().x + colliderB->GetSize().x / 2.0f;
 	float colliderBLeft = colliderB->GetPosition().x - colliderB->GetSize().x / 2.0f;
 
-	if (colliderATop >= colliderBBottom &&
-		colliderABottom <= colliderBTop &&
-		colliderARight >= colliderBLeft &&
-		colliderALeft <= colliderBRight) {
+	if (colliderATop > colliderBBottom &&
+		colliderABottom < colliderBTop &&
+		colliderARight > colliderBLeft &&
+		colliderALeft < colliderBRight) {
 
 		// 衝突
 		colliderA->OnCollision(colliderB->GetCollisionAttribute(), colliderB->GetWorldTransformAddress());

@@ -26,7 +26,7 @@ void Block::Initialize(Model* model, BlockState blockstate, const Vector3& trans
 	velocity_ = {0.0f,0.0f};
 
 	// コライダーサイズ
-	Vector2 position = {worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	Vector2 position = {worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	collider_.Initialize(&worldTransform_, colliderSize);
 
 	// 状態
@@ -60,7 +60,7 @@ void Block::Update()
 
 	worldTransform_.UpdateMatrix();
 	
-	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	collider_.Update(position);
 
 }

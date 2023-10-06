@@ -267,6 +267,9 @@
     <ClCompile Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Others\Math2d\Math2d.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -430,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Others\Math2d\Math2d.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

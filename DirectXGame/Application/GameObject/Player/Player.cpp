@@ -3,6 +3,7 @@
 #include "Input.h"
 
 #include "Application/GameObject/Area/Area.h"
+#include "Application/Others/Math2d/Math2d.h"
 
 void Player::Initialize(Model* model)
 {
@@ -35,7 +36,7 @@ void Player::Update()
 
 	worldTransform_.UpdateMatrix();
 
-	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	collider_.Update(position);
 
 }
@@ -63,7 +64,7 @@ void Player::Setting()
 	acceleration_ = { 0.0f ,0.0f };
 
 	// コライダー
-	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	collider_.Initialize(&worldTransform_, Vector2{ 2.0f, 2.0f });
 	collider_.SetCollisionAttribute(CollisionAttribute::player);
 	collider_.SetCollisionMask(0xffffffff - CollisionAttribute::player);
@@ -251,25 +252,27 @@ void Player::FallToTheBottom()
 
 void Player::OnCollisionScaffold(WorldTransform* worldTransform)
 {
-	/*
-	worldTransform_.translation_ = { worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1],  worldTransform_.matWorld_.m[3][2] };
-	if (worldTransform_.parent_) {
-		worldTransform_.parent_ = nullptr;
-	}
 
-	worldTransform_.translation_.x -= worldTransform->matWorld_.m[3][0];
-	worldTransform_.translation_.y -= worldTransform->matWorld_.m[3][1];
-	if (worldTransform_.translation_.y >= 0) {
-		worldTransform_.translation_.y = 1.0f;
-	}
-	else {
-		worldTransform_.translation_.y = -1.0f;
-	}
-	worldTransform_.translation_.z -= worldTransform->matWorld_.m[3][2];
-	*/
+	//どこの面と当たったか
 
-	worldTransform_.parent_ = worldTransform;
-	worldTransform_.translation_ = { 0.0f,3.0f,0.0f };
+	Vector2 playerPos = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+	Vector2 blockPos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1] };
+
+	Vector2 playerLT = { worldTransform_.matWorld_.m[3][0] - collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] + collider_.GetSize().y };
+	Vector2 playerLB = { worldTransform_.matWorld_.m[3][0] - collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] - collider_.GetSize().y };
+	Vector2 playerRT = { worldTransform_.matWorld_.m[3][0] + collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] + collider_.GetSize().y };
+	Vector2 playerRB = { worldTransform_.matWorld_.m[3][0] + collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] - collider_.GetSize().y };
+
+	float move = 2.0f;
+
+
+
+	worldTransform_.translation_.y = worldTransform->translation_.y + move;
 	worldTransform_.UpdateMatrix();
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+	collider_.Update(position);
+	islanding_ = true;
+	isMidairJump_ = false;
+	velocity_.y = 0.0f;
 
 }
