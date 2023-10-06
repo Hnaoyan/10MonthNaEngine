@@ -37,6 +37,12 @@ void GameScene::Initialize() {
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get());
 	player_->SetArea(area_.get());
+
+	//ブロック
+	blockModel_.reset(Model::CreateFromObj("block", true));
+	blockManager_ = make_unique<BlockManager>();
+	blockManager_->Initialize(blockModel_.get());
+	blockManager_->SetArea(area_.get());
 	
 }
 
@@ -48,6 +54,9 @@ void GameScene::Update()
 
 	// プレイヤー
 	player_->Update();
+
+	//ブロックマネージャー
+	blockManager_->Update();
 
 }
 
@@ -81,6 +90,7 @@ void GameScene::Draw() {
 	
 	area_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
+	blockManager_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

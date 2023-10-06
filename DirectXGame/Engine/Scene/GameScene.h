@@ -18,6 +18,7 @@
 // ゲームシーン用
 #include "Application/GameObject/Player/Player.h"
 #include "Application/GameObject/Area/Area.h"
+#include "Application/GameObject/BlockManager/BlockManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -87,6 +88,10 @@ private:	// メンバポインタ
 	// プレイヤー
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Model> playerModel_;
+
+	//ブロック
+	std::unique_ptr<BlockManager> blockManager_;
+	std::unique_ptr<Model> blockModel_;
 
 };
 

@@ -44,6 +44,9 @@ public: // メンバ定数
 	//最小位置
 	const Vector2 kPositionMin_ = {0.0f, 0.0f};
 
+	// マップ(マス)
+	const Vector2 kMap_ = {10.0f, 20.0f};
+
 
 private: // メンバ変数
 
