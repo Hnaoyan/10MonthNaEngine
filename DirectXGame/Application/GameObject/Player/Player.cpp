@@ -134,9 +134,10 @@ void Player::Jump()
 		//ゲームパッド
 
 		XINPUT_STATE joyState;
+		XINPUT_STATE preJoyState;
 
-		if (input->GetJoystickState(0, joyState)) {
-			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		if (input->GetJoystickState(0, joyState) && input->GetJoystickStatePrevious(0, preJoyState)) {
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 				isJump = true;
 			}
 		}
@@ -179,9 +180,10 @@ void Player::MidairJump()
 		//ゲームパッド
 
 		XINPUT_STATE joyState;
+		XINPUT_STATE preJoyState;
 
-		if (input->GetJoystickState(0, joyState)) {
-			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		if (input->GetJoystickState(0, joyState) && input->GetJoystickStatePrevious(0, preJoyState)) {
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !(preJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 				isJump = true;
 			}
 		}
