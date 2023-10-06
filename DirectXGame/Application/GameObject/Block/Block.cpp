@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "Application/GameObject/BlockManager/BlockManager.h"
 
 Block::~Block()
 {
@@ -9,7 +10,7 @@ Block::~Block()
 
 }
 
-void Block::Initialize(Model* model, BlockState blockstate, const Vector3& transfrom, const Vector2& colliderSize)
+void Block::Initialize(Model* model, BlockState blockState, const Vector3& transfrom, const Vector2& colliderSize, BlockManager* blockManager)
 {
 
 	// ワールドトランスフォーム
@@ -29,27 +30,37 @@ void Block::Initialize(Model* model, BlockState blockstate, const Vector3& trans
 	Vector2 position = {worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	collider_.Initialize(&worldTransform_, colliderSize);
 
+	// 状態名
+	stateName_ = blockState;
+
+	// ブロックマネージャー
+	blockManager_ = blockManager;
+
 	// 状態
-	switch (blockstate)
+	switch (stateName_)
 	{
 	case kScaffold:
 		state_ = new BlockStateScaffold();
 		collider_.SetCollisionAttribute(CollisionAttribute::blockScaffold);
 		collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffold);
+		// テクスチャハンドル
+		textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kScaffold);
 		break;
+
 	case kEnemyAttack:
 		state_ = new BlockStateEnemyAttack();
 		collider_.SetCollisionAttribute(CollisionAttribute::blockScaffold);
 		collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffold);
+		// テクスチャハンドル
+		textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kEnemyAttack);
 		break;
+
 	default:
 		break;
 	}
+
 	state_->Initialize(this);
 	collider_.SetFunction(collisionFunction_);
-
-	// 状態名
-	stateName_ = blockstate;
 
 	// 死亡フラグ
 	isDead_ = false;
@@ -72,43 +83,59 @@ void Block::Update()
 void Block::Draw(const ViewProjection& viewProjection)
 {
 
-	model_->Draw(worldTransform_, viewProjection);
+	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 }
 
 void Block::ChangeState(BlockState blockstate)
 {
 
+	uint32_t mask = 0xffffffff;
+
 	if (state_) {
 		delete state_;
-		switch (blockstate)
+		stateName_ = blockstate;
+		switch (stateName_)
 		{
 		case kScaffold:
 			state_ = new BlockStateScaffold();
 			collider_.SetCollisionAttribute(CollisionAttribute::blockScaffold);
-			collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffold);
+			mask -= CollisionAttribute::blockScaffold + CollisionAttribute::blockScaffoldColor + CollisionAttribute::blockPlayerAttack;
+			collider_.SetCollisionMask(mask);
+			// テクスチャハンドル
+			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kScaffold);
 			break;
+
 		case kScaffoldColor:
 			state_ = new BlockStateScaffoldColor();
 			collider_.SetCollisionAttribute(CollisionAttribute::blockScaffoldColor);
-			collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffoldColor);
+			collider_.SetCollisionMask(mask - CollisionAttribute::blockScaffoldColor);
+			// テクスチャハンドル
+			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kScaffoldColor);
 			break;
+
 		case kPlayerAttack:
 			state_ = new BlockStatePlayerAttack();
 			collider_.SetCollisionAttribute(CollisionAttribute::blockPlayerAttack);
-			collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockPlayerAttack);
+			collider_.SetCollisionMask(mask - CollisionAttribute::blockPlayerAttack);
+			// テクスチャハンドル
+			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kPlayerAttack);
 			break;
+
 		case kEnemyAttack:
 			state_ = new BlockStateEnemyAttack();
 			collider_.SetCollisionAttribute(CollisionAttribute::blockEnemyAttack);
-			collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockEnemyAttack);
+			collider_.SetCollisionMask(mask - CollisionAttribute::blockEnemyAttack);
+			// テクスチャハンドル
+			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kEnemyAttack);
 			break;
+
 		default:
 			break;
 		}
+
 		state_->Initialize(this);
 		collider_.SetFunction(collisionFunction_);
-		stateName_ = blockstate;
 	}
 
 }
@@ -140,7 +167,7 @@ void BlockStateScaffold::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateScaffold::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateScaffold::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
 	pBlock_->SetCollisionFunction(f);
 
 }
@@ -149,9 +176,16 @@ void BlockStateScaffold::Update()
 {
 }
 
-void BlockStateScaffold::OnCollision(uint32_t collisonObj)
+void BlockStateScaffold::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
-	collisonObj;
+
+	//ステートを色足場に変更
+	if (collisonObj & CollisionAttribute::player) {
+		pBlock_->ChangeState(BlockState::kScaffoldColor);
+	}
+
+	worldTransform;
+
 }
 
 void BlockStateScaffoldColor::Initialize(Block* pBlock)
@@ -161,7 +195,7 @@ void BlockStateScaffoldColor::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateScaffoldColor::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateScaffoldColor::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
 	pBlock_->SetCollisionFunction(f);
 
 }
@@ -170,9 +204,10 @@ void BlockStateScaffoldColor::Update()
 {
 }
 
-void BlockStateScaffoldColor::OnCollision(uint32_t collisonObj)
+void BlockStateScaffoldColor::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 	collisonObj;
+	worldTransform;
 }
 
 void BlockStatePlayerAttack::Initialize(Block* pBlock)
@@ -182,7 +217,7 @@ void BlockStatePlayerAttack::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStatePlayerAttack::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStatePlayerAttack::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
 	pBlock_->SetCollisionFunction(f);
 
 }
@@ -191,9 +226,10 @@ void BlockStatePlayerAttack::Update()
 {
 }
 
-void BlockStatePlayerAttack::OnCollision(uint32_t collisonObj)
+void BlockStatePlayerAttack::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 	collisonObj;
+	worldTransform;
 }
 
 void BlockStateEnemyAttack::Initialize(Block* pBlock)
@@ -202,7 +238,7 @@ void BlockStateEnemyAttack::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateEnemyAttack::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateEnemyAttack::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
 	pBlock_->SetCollisionFunction(f);
 
 }
@@ -211,7 +247,8 @@ void BlockStateEnemyAttack::Update()
 {
 }
 
-void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj)
+void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 	collisonObj;
+	worldTransform;
 }

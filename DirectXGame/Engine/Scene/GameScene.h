@@ -96,6 +96,7 @@ private:	// メンバポインタ
 	//ブロック
 	std::unique_ptr<BlockManager> blockManager_;
 	std::unique_ptr<Model> blockModel_;
+	std::vector<uint32_t> blockTextureHandles_;
 
 };
 

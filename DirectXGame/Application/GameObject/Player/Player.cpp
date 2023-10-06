@@ -84,7 +84,7 @@ void Player::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 
 	//エネミーの攻撃状態でない
-	if ((collisonObj & CollisionAttribute::blockEnemyAttack)) {
+	if (!(collisonObj & CollisionAttribute::blockEnemyAttack)) {
 		OnCollisionBlock(worldTransform);
 	}
 	// 他はダメージ受ける

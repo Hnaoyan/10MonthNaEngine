@@ -8,6 +8,7 @@
 
 //前方宣言
 class Block;
+class BlockManager;
 
 /// <summary>
 /// ブロックの状態
@@ -48,7 +49,7 @@ public: // メンバ関数
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
 	/// <param name="collisonObj">衝突したOBJ</param>
-	virtual void OnCollision(uint32_t collisonObj) = 0;
+	virtual void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform) = 0;
 
 protected: // 継承メンバ変数
 
@@ -66,7 +67,7 @@ class BlockStateScaffold : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj) override;
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform) override;
 
 };
 
@@ -79,7 +80,7 @@ class BlockStateScaffoldColor : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj) override;
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform) override;
 
 };
 
@@ -92,7 +93,7 @@ class BlockStatePlayerAttack : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj) override;
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform) override;
 
 };
 
@@ -105,7 +106,7 @@ class BlockStateEnemyAttack : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj) override;
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform) override;
 
 };
 
@@ -123,7 +124,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, BlockState blockstate, const Vector3& transfrom, const Vector2& colliderSize);
+	void Initialize(Model* model, BlockState blockState, const Vector3& transfrom, const Vector2& colliderSize, BlockManager* blockManager);
 
 	/// <summary>
 	/// 更新
@@ -193,6 +194,9 @@ private: // メンバ変数
 	// モデル
 	Model* model_ = nullptr;
 
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0u;
+
 	// 速度
 	Vector2 velocity_;
 
@@ -210,6 +214,9 @@ private: // メンバ変数
 
 	// 衝突コールバック
 	std::function<void(uint32_t, WorldTransform*)> collisionFunction_;
+
+	// ブロックマネージャー
+	BlockManager* blockManager_ = nullptr;
 
 };
 

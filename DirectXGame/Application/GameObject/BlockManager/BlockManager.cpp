@@ -16,11 +16,14 @@ BlockManager::~BlockManager()
 
 }
 
-void BlockManager::Initialize(Model* model)
+void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles)
 {
 
 	// モデル
 	model_ = model;
+
+	// テクスチャハンドル
+	textureHandles_ = textureHandles;
 
 	Setting();
 
@@ -98,7 +101,7 @@ void BlockManager::ScaffoldBlockGenerate()
 		Vector3 transform =
 		{ colliderSize_.x / 2.0f + colliderSize_.x * static_cast<float>(i),
 			colliderSize_.y / 2.0f, 0.0f };
-		block->Initialize(model_, BlockState::kScaffold, transform, colliderSize_);
+		block->Initialize(model_, BlockState::kScaffold, transform, colliderSize_, this);
 		blocks_.push_back(block);
 	}
 

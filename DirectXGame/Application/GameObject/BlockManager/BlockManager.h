@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <vector>
 #include "Application/GameObject/Block/Block.h"
 #include "Application/Others/TimedCall/TimedCall.h"
 
@@ -22,7 +23,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model);
+	void Initialize(Model* model, std::vector<uint32_t> textureHandles);
 
 	/// <summary>
 	/// 更新
@@ -74,6 +75,12 @@ public: // アクセッサ
 	/// </summary>
 	std::list<Block*> GetBlocks() { return blocks_; }
 
+	/// <summary>
+	/// テクスチャハンドルゲッター
+	/// </summary>
+	/// <returns></returns>
+	std::vector<uint32_t> GetTextureHandles() { return textureHandles_; }
+
 private: // メンバ変数
 
 	// ブロック
@@ -91,8 +98,11 @@ private: // メンバ変数
 	// コライダーサイズ
 	Vector2 colliderSize_;
 
-	//足場ブロック生成インターバル
+	// 足場ブロック生成インターバル
 	int scaffoldBlockGenerateInterval_;
+
+	// テクスチャハンドル
+	std::vector<uint32_t> textureHandles_;
 
 };
 
