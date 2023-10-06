@@ -42,7 +42,7 @@ public: // メンバ関数
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
 	/// <param name="collisonObj">衝突したOBJ</param>
-	void OnCollision(uint32_t collisonObj);
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform);
 
 private: //メンバ関数
 
@@ -74,7 +74,7 @@ private: //メンバ関数
 	/// <summary>
 	/// 足場ブロックと衝突
 	/// </summary>
-	void OnCollisionScaffold();
+	void OnCollisionScaffold(WorldTransform* worldTransform);
 
 public: // アクセッサ
 

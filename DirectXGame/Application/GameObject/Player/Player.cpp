@@ -68,7 +68,7 @@ void Player::Setting()
 	collider_.SetCollisionAttribute(CollisionAttribute::player);
 	collider_.SetCollisionMask(0xffffffff - CollisionAttribute::player);
 	//コールバック設定
-	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&Player::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&Player::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
 	collider_.SetFunction(f);
 
 	//着地判定
@@ -79,9 +79,13 @@ void Player::Setting()
 
 }
 
-void Player::OnCollision(uint32_t collisonObj)
+void Player::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 	collisonObj;
+	if (true) {
+		OnCollisionScaffold(worldTransform);
+	}
+
 }
 
 void Player::Move()
@@ -245,8 +249,27 @@ void Player::FallToTheBottom()
 
 }
 
-void Player::OnCollisionScaffold()
+void Player::OnCollisionScaffold(WorldTransform* worldTransform)
 {
+	/*
+	worldTransform_.translation_ = { worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1],  worldTransform_.matWorld_.m[3][2] };
+	if (worldTransform_.parent_) {
+		worldTransform_.parent_ = nullptr;
+	}
 
+	worldTransform_.translation_.x -= worldTransform->matWorld_.m[3][0];
+	worldTransform_.translation_.y -= worldTransform->matWorld_.m[3][1];
+	if (worldTransform_.translation_.y >= 0) {
+		worldTransform_.translation_.y = 1.0f;
+	}
+	else {
+		worldTransform_.translation_.y = -1.0f;
+	}
+	worldTransform_.translation_.z -= worldTransform->matWorld_.m[3][2];
+	*/
+
+	worldTransform_.parent_ = worldTransform;
+	worldTransform_.translation_ = { 0.0f,3.0f,0.0f };
+	worldTransform_.UpdateMatrix();
 
 }
