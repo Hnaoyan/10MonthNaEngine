@@ -153,6 +153,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Application\GameObject\Block\Block.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\BossEnemy\BossEnemy.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Player\Player.cpp" />
+    <ClCompile Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.cpp" />
     <ClCompile Include="DirectXGame\Application\others\TimedCall\TimedCall.cpp" />
     <ClCompile Include="DirectXGame\Engine\2D\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engine\2D\SpriteCommon.cpp" />
@@ -205,6 +206,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Application\GameObject\Block\Block.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\BossEnemy\BossEnemy.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Player\Player.h" />
+    <ClInclude Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.h" />
     <ClInclude Include="DirectXGame\Application\others\TimedCall\TimedCall.h" />
     <ClInclude Include="DirectXGame\Engine\2D\Sprite.h" />
     <ClInclude Include="DirectXGame\Engine\2D\SpriteCommon.h" />

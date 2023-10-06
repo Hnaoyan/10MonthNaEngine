@@ -3,8 +3,8 @@
 Block::~Block()
 {
 
-	if (state) {
-		delete state;
+	if (state_) {
+		delete state_;
 	}
 
 }
@@ -26,24 +26,25 @@ void Block::Initialize(Model* model, BlockState blockstate, const Vector3& trans
 	velocity_ = {0.0f,0.0f};
 
 	// コライダーサイズ
-	colliderSize_ = colliderSize;
+	Vector2 position = {worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	collider_.Initialize(position, colliderSize);
 
 	// 状態
 	switch (blockstate)
 	{
 	case kScaffold:
-		state = new BlockStateScaffold();
+		state_ = new BlockStateScaffold();
 		break;
 	case kEnemyAttack:
-		state = new BlockStateEnemyAttack();
+		state_ = new BlockStateEnemyAttack();
 		break;
 	default:
 		break;
 	}
-	state->Initialize(this);
+	state_->Initialize(this);
 
 	// 状態名
-	stateName = blockstate;
+	stateName_ = blockstate;
 
 	// 死亡フラグ
 	isDead_ = false;
@@ -54,7 +55,7 @@ void Block::Update()
 {
 
 	//行動
-	state->Update(this);
+	state_->Update();
 
 	worldTransform_.UpdateMatrix();
 
@@ -70,10 +71,10 @@ void Block::Draw(const ViewProjection& viewProjection)
 void Block::ChangeState(BaseBlockState* newState)
 {
 
-	if (state) {
-		delete state;
-		state = newState;
-		state->Initialize(this);
+	if (state_) {
+		delete state_;
+		state_ = newState;
+		state_->Initialize(this);
 	}
 
 }
@@ -82,51 +83,115 @@ void Block::ScaffoldRise()
 {
 
 	// 足場以外はreturn
-	if (stateName == kPlayerAttack || stateName == kEnemyAttack) {
+	if (stateName_ == kPlayerAttack || stateName_ == kEnemyAttack) {
 		return;
 	}
 
-	worldTransform_.translation_.y += colliderSize_.y;
+	worldTransform_.translation_.y += collider_.GetSize().y;
 	worldTransform_.UpdateMatrix();
 
 }
 
 void BlockStateScaffold::Initialize(Block* pBlock)
 {
-	pBlock;
+
+	// ポインタ
+	pBlock_ = pBlock;
+
+	//コールバック設定
+	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffold::OnCollision,this,std::placeholders::_1));
+	pBlock_->GetCollider().SetFunction(f);
+
+	//衝突属性
+	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockScaffold);
+	//衝突マスク
+	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockScaffold);
+
+
 }
 
-void BlockStateScaffold::Update(Block* pBlock)
+void BlockStateScaffold::Update()
 {
-	pBlock;
+}
+
+void BlockStateScaffold::OnCollision(uint32_t collisonObj)
+{
+	collisonObj;
 }
 
 void BlockStateScaffoldColor::Initialize(Block* pBlock)
 {
-	pBlock;
+
+	// ポインタ
+	pBlock_ = pBlock;
+
+	//コールバック設定
+	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffoldColor::OnCollision, this, std::placeholders::_1));
+	pBlock_->GetCollider().SetFunction(f);
+
+	//衝突属性
+	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockScaffoldColor);
+	//衝突マスク
+	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockScaffoldColor);
+
 }
 
-void BlockStateScaffoldColor::Update(Block* pBlock)
+void BlockStateScaffoldColor::Update()
 {
-	pBlock;
+}
+
+void BlockStateScaffoldColor::OnCollision(uint32_t collisonObj)
+{
+	collisonObj;
 }
 
 void BlockStatePlayerAttack::Initialize(Block* pBlock)
 {
-	pBlock;
+
+	// ポインタ
+	pBlock_ = pBlock;
+
+	//コールバック設定
+	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStatePlayerAttack::OnCollision, this, std::placeholders::_1));
+	pBlock_->GetCollider().SetFunction(f);
+
+	//衝突属性
+	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockPlayerAttack);
+	//衝突マスク
+	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockPlayerAttack);
+
 }
 
-void BlockStatePlayerAttack::Update(Block* pBlock)
+void BlockStatePlayerAttack::Update()
 {
-	pBlock;
+}
+
+void BlockStatePlayerAttack::OnCollision(uint32_t collisonObj)
+{
+	collisonObj;
 }
 
 void BlockStateEnemyAttack::Initialize(Block* pBlock)
 {
-	pBlock;
+	// ポインタ
+	pBlock_ = pBlock;
+
+	//コールバック設定
+	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateEnemyAttack::OnCollision, this, std::placeholders::_1));
+	pBlock_->GetCollider().SetFunction(f);
+
+	//衝突属性
+	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockEnemyAttack);
+	//衝突マスク
+	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockEnemyAttack);
+
 }
 
-void BlockStateEnemyAttack::Update(Block* pBlock)
+void BlockStateEnemyAttack::Update()
 {
-	pBlock;
+}
+
+void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj)
+{
+	collisonObj;
 }

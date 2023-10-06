@@ -4,6 +4,8 @@
 #include "ViewProjection.h"
 #include "Model.h"
 
+#include "Application/Others/RectangleCollider/RectangleCollider.h"
+
 //前方宣言
 class Block;
 
@@ -27,7 +29,12 @@ class BaseBlockState
 public: // メンバ関数
 	virtual ~BaseBlockState() {}
 	virtual void Initialize(Block* pBlock) = 0;
-	virtual void Update(Block* pBlock) = 0;
+	virtual void Update() = 0;
+
+protected: // 継承メンバ変数
+
+	//ポインタ
+	Block* pBlock_ = nullptr;
 
 };
 
@@ -39,7 +46,8 @@ class BlockStateScaffold : public BaseBlockState
 
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
-	void Update(Block* pBlock)  override;
+	void Update()  override;
+	void OnCollision(uint32_t collisonObj);
 
 };
 
@@ -51,7 +59,8 @@ class BlockStateScaffoldColor : public BaseBlockState
 
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
-	void Update(Block* pBlock)  override;
+	void Update()  override;
+	void OnCollision(uint32_t collisonObj);
 
 };
 
@@ -63,7 +72,8 @@ class BlockStatePlayerAttack : public BaseBlockState
 
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
-	void Update(Block* pBlock)  override;
+	void Update()  override;
+	void OnCollision(uint32_t collisonObj);
 
 };
 
@@ -75,7 +85,8 @@ class BlockStateEnemyAttack : public BaseBlockState
 
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
-	void Update(Block* pBlock)  override;
+	void Update()  override;
+	void OnCollision(uint32_t collisonObj);
 
 };
 
@@ -121,6 +132,8 @@ public: // アクセッサ
 
 	bool IsDead() { return isDead_; }
 
+	RectangleCollider GetCollider() { return collider_; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -132,14 +145,14 @@ private: // メンバ変数
 	// 速度
 	Vector2 velocity_;
 
-	// コライダーサイズ
-	Vector2 colliderSize_;
+	//コライダー
+	RectangleCollider collider_;
 
 	// 状態
-	BaseBlockState* state;
+	BaseBlockState* state_;
 
 	// 状態名
-	BlockState stateName;
+	BlockState stateName_;
 
 	// 死亡フラグ
 	bool isDead_;
