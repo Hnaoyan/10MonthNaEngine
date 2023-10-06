@@ -3,6 +3,8 @@
 #include "ViewProjection.h"
 #include "Model.h"
 
+#include "Application/Others/RectangleCollider/RectangleCollider.h"
+
 // 前方宣言
 class Area;
 
@@ -84,8 +86,8 @@ private: // メンバ変数
 	// 加速度
 	Vector2 acceleration_;
 
-	// コライダーサイズ
-	Vector2 colliderSize_;
+	// コライダー
+	RectangleCollider collider_;
 
 	//着地判定
 	bool islanding_;

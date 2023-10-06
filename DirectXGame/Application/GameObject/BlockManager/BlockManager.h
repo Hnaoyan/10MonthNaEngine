@@ -87,7 +87,7 @@ private: // メンバ変数
 	Vector2 colliderSize_;
 
 	//足場ブロック生成インターバル
-	int scaffoldBlockGenerateInterval;
+	int scaffoldBlockGenerateInterval_;
 
 };
 

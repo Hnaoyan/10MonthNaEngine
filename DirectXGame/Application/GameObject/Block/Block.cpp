@@ -58,6 +58,9 @@ void Block::Update()
 	state_->Update();
 
 	worldTransform_.UpdateMatrix();
+	
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	collider_.Update(position);
 
 }
 

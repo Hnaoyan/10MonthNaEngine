@@ -35,6 +35,9 @@ void Player::Update()
 
 	worldTransform_.UpdateMatrix();
 
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	collider_.Update(position);
+
 }
 
 void Player::Draw(const ViewProjection& viewProjection)
@@ -59,8 +62,9 @@ void Player::Setting()
 	// 加速度
 	acceleration_ = { 0.0f ,0.0f };
 
-	// コライダーサイズ
-	colliderSize_ = { 2.0f, 2.0f };
+	// コライダー
+	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
+	collider_.Initialize(position, Vector2{ 2.0f, 2.0f });
 
 	//着地判定
 	islanding_ = false;
@@ -111,8 +115,8 @@ void Player::Move()
 	// 移動制限
 	worldTransform_.translation_.x = 
 		std::clamp(worldTransform_.translation_.x,
-		area_->kPositionMin_.x + colliderSize_.x / 2.0f,
-		area_->kPositionMax_.x - colliderSize_.x / 2.0f);
+		area_->kPositionMin_.x + collider_.GetSize().x / 2.0f,
+		area_->kPositionMax_.x - collider_.GetSize().x / 2.0f);
 
 }
 
@@ -153,8 +157,8 @@ void Player::Jump()
 
 		//ワールドトランスフォーム変更
 		worldTransform_.translation_.y += velocity_.y;
-		if (worldTransform_.translation_.y >= area_->kPositionMax_.y - colliderSize_.y / 2.0f) {
-			worldTransform_.translation_.y = area_->kPositionMax_.y - colliderSize_.y / 2.0f;
+		if (worldTransform_.translation_.y >= area_->kPositionMax_.y - collider_.GetSize().y / 2.0f) {
+			worldTransform_.translation_.y = area_->kPositionMax_.y - collider_.GetSize().y / 2.0f;
 		}
 
 	}
@@ -199,8 +203,8 @@ void Player::MidairJump()
 
 		//ワールドトランスフォーム変更
 		worldTransform_.translation_.y += velocity_.y;
-		if (worldTransform_.translation_.y >= area_->kPositionMax_.y - colliderSize_.y / 2.0f) {
-			worldTransform_.translation_.y = area_->kPositionMax_.y - colliderSize_.y / 2.0f;
+		if (worldTransform_.translation_.y >= area_->kPositionMax_.y - collider_.GetSize().y / 2.0f) {
+			worldTransform_.translation_.y = area_->kPositionMax_.y - collider_.GetSize().y / 2.0f;
 		}
 
 	}
@@ -215,7 +219,7 @@ void Player::Falling()
 	//ワールドトランスフォーム変更
 	worldTransform_.translation_.y += velocity_.y;
 
-	if (worldTransform_.translation_.y <= area_->kPositionMin_.y + colliderSize_.y / 2.0f) {
+	if (worldTransform_.translation_.y <= area_->kPositionMin_.y + collider_.GetSize().y / 2.0f) {
 		FallToTheBottom();
 	}
 
@@ -226,7 +230,7 @@ void Player::FallToTheBottom()
 
 	islanding_ = true;
 	isMidairJump_ = false;
-	worldTransform_.translation_.y = area_->kPositionMin_.y + colliderSize_.y / 2.0f;
+	worldTransform_.translation_.y = area_->kPositionMin_.y + collider_.GetSize().y / 2.0f;
 	velocity_.y = 0.0f;
 
 }

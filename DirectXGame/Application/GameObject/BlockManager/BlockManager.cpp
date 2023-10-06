@@ -67,7 +67,7 @@ void BlockManager::Setting()
 	colliderSize_ = { 2.0f, 2.0f };
 
 	//足場ブロック生成インターバル
-	scaffoldBlockGenerateInterval = 120;
+	scaffoldBlockGenerateInterval_ = 120;
 
 	SetScaffoldBlockGenerateTimer();
 
@@ -108,7 +108,7 @@ void BlockManager::ScaffoldBlockGenerate()
 
 void BlockManager::SetScaffoldBlockGenerateTimer()
 {
-	timedCalls_.push_back(new TimedCall(std::bind(&BlockManager::ScaffoldBlockGenerate, this), scaffoldBlockGenerateInterval));
+	timedCalls_.push_back(new TimedCall(std::bind(&BlockManager::ScaffoldBlockGenerate, this), scaffoldBlockGenerateInterval_));
 }
 
 void BlockManager::EnemyAttackBlockGenerate()
