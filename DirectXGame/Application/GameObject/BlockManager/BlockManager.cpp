@@ -6,8 +6,8 @@ BlockManager::~BlockManager()
 {
 
 	//block_の解放
-	for (Block* block_ : blocks_) {
-		delete block_;
+	for (Block* block : blocks_) {
+		delete block;
 	}
 	//timedCall_の解放
 	for (TimedCall* timedCall : timedCalls_) {

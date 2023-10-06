@@ -51,14 +51,17 @@ public: // メンバ関数
 	/// </summary>
 	void Draw() override;
 
-public:
-	void ColliderSetting();
+public: // メンバ関数
 
-	void CheckAllCollision();
-
-	void CheckCollisionPair() {};
-
+	/// <summary>
+	/// カメラ更新
+	/// </summary>
 	void CameraUpdate();
+
+	/// <summary>
+	/// 衝突確認
+	/// </summary>
+	void CollisionCheak();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -67,8 +70,6 @@ private: // メンバ変数
 
 	ViewProjection viewProjection_;
 
-private:
-
 private:	// メンバポインタ
 	// カメラ
 	//std::unique_ptr<DebugCamera> debugCamera_;
@@ -76,6 +77,9 @@ private:	// メンバポインタ
 	std::unique_ptr<BaseCamera> baseCamera_;
 
 	bool isDebug_ = false;
+
+	// 衝突マネージャー
+	std::unique_ptr<CollisionManager> collisionManager;
 
 	/// <summary>
 	/// ゲームシーン用

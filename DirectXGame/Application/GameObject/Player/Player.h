@@ -38,6 +38,12 @@ public: // メンバ関数
 	/// </summary>
 	void Setting();
 
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	/// <param name="collisonObj">衝突したOBJ</param>
+	void OnCollision(uint32_t collisonObj);
+
 private: //メンバ関数
 
 	/// <summary>
@@ -71,6 +77,12 @@ public: // アクセッサ
 	/// エリアセッター
 	/// </summary>
 	void SetArea(Area* area) { area_ = area; }
+
+	/// <summary>
+	/// コライダーアドレスゲッター
+	/// </summary>
+	/// <returns></returns>
+	RectangleCollider* GetColliderAddress() { return &collider_; }
 
 private: // メンバ変数
 

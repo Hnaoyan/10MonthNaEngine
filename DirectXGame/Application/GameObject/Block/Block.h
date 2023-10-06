@@ -14,10 +14,10 @@ class Block;
 /// </summary>
 enum BlockState
 {
-	kScaffold,
-	kScaffoldColor,
-	kPlayerAttack,
-	kEnemyAttack
+	kScaffold, //足場
+	kScaffoldColor, //色のついた足場
+	kPlayerAttack, //プレイヤーの攻撃
+	kEnemyAttack // エネミーの攻撃
 };
 
 /// <summary>
@@ -27,9 +27,28 @@ class BaseBlockState
 {
 
 public: // メンバ関数
+	
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~BaseBlockState() {}
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="pBlock">ポインタ</param>
 	virtual void Initialize(Block* pBlock) = 0;
+
+	/// <summary>
+	/// 更新
+	/// </summary>
 	virtual void Update() = 0;
+
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	/// <param name="collisonObj">衝突したOBJ</param>
+	virtual void OnCollision(uint32_t collisonObj) = 0;
 
 protected: // 継承メンバ変数
 
@@ -47,7 +66,7 @@ class BlockStateScaffold : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj);
+	void OnCollision(uint32_t collisonObj) override;
 
 };
 
@@ -60,7 +79,7 @@ class BlockStateScaffoldColor : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj);
+	void OnCollision(uint32_t collisonObj) override;
 
 };
 
@@ -73,7 +92,7 @@ class BlockStatePlayerAttack : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj);
+	void OnCollision(uint32_t collisonObj) override;
 
 };
 
@@ -86,7 +105,7 @@ class BlockStateEnemyAttack : public BaseBlockState
 public: // メンバ関数
 	void Initialize(Block* pBlock) override;
 	void Update()  override;
-	void OnCollision(uint32_t collisonObj);
+	void OnCollision(uint32_t collisonObj) override;
 
 };
 
@@ -128,11 +147,43 @@ public: // メンバ関数
 	/// </summary>
 	void ScaffoldRise();
 
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	/// <param name="collisonObj">衝突したOBJ</param>
+	void OnCollision(uint32_t collisonObj);
+
 public: // アクセッサ
 
+	/// <summary>
+	/// 死んでるか
+	/// </summary>
+	/// <returns></returns>
 	bool IsDead() { return isDead_; }
 
+	/// <summary>
+	/// コライダーゲッター
+	/// </summary>
+	/// <returns></returns>
 	RectangleCollider GetCollider() { return collider_; }
+
+	/// <summary>
+	/// コライダーアドレスゲッター
+	/// </summary>
+	/// <returns></returns>
+	RectangleCollider* GetColliderAddress() { return &collider_; }
+
+	/// <summary>
+	/// 衝突コールバックセッター
+	/// </summary>
+	/// <param name="function">関数</param>
+	void SetCollisionFunction(std::function<void(uint32_t)> collisionFunction) { collisionFunction_ = collisionFunction; }
+
+	/// <summary>
+	/// 衝突コールバックゲッター
+	/// </summary>
+	/// <param name="function">関数</param>
+	std::function<void(uint32_t)> GetCollisionFunction() { return collisionFunction_; }
 
 private: // メンバ変数
 
@@ -156,6 +207,9 @@ private: // メンバ変数
 
 	// 死亡フラグ
 	bool isDead_;
+
+	// 衝突コールバック
+	std::function<void(uint32_t)> collisionFunction_;
 
 };
 

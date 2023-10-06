@@ -25,6 +25,8 @@ void GameScene::Initialize() {
 	baseCamera_->SetPosition({ 10.0f, 20.0f, -70.0f });
 	baseCamera_->SetRotation({ 0.0f, 0.0f, 0.0f });
 
+	collisionManager = make_unique<CollisionManager>();
+
 	// ゲームシーン用
 
 	//エリア
@@ -57,6 +59,9 @@ void GameScene::Update()
 
 	//ブロックマネージャー
 	blockManager_->Update();
+
+	//衝突判定
+	CollisionCheak();
 
 }
 
@@ -110,16 +115,6 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::ColliderSetting()
-{
-	
-}
-
-void GameScene::CheckAllCollision()
-{
-
-}
-
 void GameScene::CameraUpdate()
 {
 #ifdef _DEBUG
@@ -145,5 +140,25 @@ void GameScene::CameraUpdate()
 		viewProjection_.TransferMatrix();
 	}
 
+
+}
+
+void GameScene::CollisionCheak()
+{
+
+	// リストをクリア
+	collisionManager->ListClear();
+
+	// コライダーをリストに登録
+	//プレイヤー
+	collisionManager->ListRegister(player_->GetColliderAddress());
+	//ブロック
+	for (Block* block : blockManager_->GetBlocks()) {
+		collisionManager->ListRegister(block->GetColliderAddress());
+	}
+	//ボスエネミー
+
+	// 当たり判定を取る
+	collisionManager->CheakAllCollision();
 
 }

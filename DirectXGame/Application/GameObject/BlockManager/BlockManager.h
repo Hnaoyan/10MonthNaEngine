@@ -69,6 +69,11 @@ public: // アクセッサ
 	/// <param name="area"></param>
 	void SetArea(Area* area) { area_ = area; }
 
+	/// <summary>
+	/// ブロックゲッター
+	/// </summary>
+	std::list<Block*> GetBlocks() { return blocks_; }
+
 private: // メンバ変数
 
 	// ブロック

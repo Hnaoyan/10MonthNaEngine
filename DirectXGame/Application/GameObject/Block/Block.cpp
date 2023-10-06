@@ -42,6 +42,7 @@ void Block::Initialize(Model* model, BlockState blockstate, const Vector3& trans
 		break;
 	}
 	state_->Initialize(this);
+	collider_.SetFunction(collisionFunction_);
 
 	// 状態名
 	stateName_ = blockstate;
@@ -78,6 +79,7 @@ void Block::ChangeState(BaseBlockState* newState)
 		delete state_;
 		state_ = newState;
 		state_->Initialize(this);
+		collider_.SetFunction(collisionFunction_);
 	}
 
 }
@@ -95,6 +97,13 @@ void Block::ScaffoldRise()
 
 }
 
+void Block::OnCollision(uint32_t collisonObj)
+{
+
+	collisionFunction_(collisonObj);
+
+}
+
 void BlockStateScaffold::Initialize(Block* pBlock)
 {
 
@@ -102,13 +111,13 @@ void BlockStateScaffold::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffold::OnCollision,this,std::placeholders::_1));
-	pBlock_->GetCollider().SetFunction(f);
+	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffold::OnCollision, this, std::placeholders::_1));
+	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
 	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockScaffold);
 	//衝突マスク
-	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockScaffold);
+	pBlock_->GetCollider().SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffold);
 
 
 }
@@ -130,12 +139,12 @@ void BlockStateScaffoldColor::Initialize(Block* pBlock)
 
 	//コールバック設定
 	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffoldColor::OnCollision, this, std::placeholders::_1));
-	pBlock_->GetCollider().SetFunction(f);
+	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
 	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockScaffoldColor);
 	//衝突マスク
-	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockScaffoldColor);
+	pBlock_->GetCollider().SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffoldColor);
 
 }
 
@@ -156,12 +165,12 @@ void BlockStatePlayerAttack::Initialize(Block* pBlock)
 
 	//コールバック設定
 	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStatePlayerAttack::OnCollision, this, std::placeholders::_1));
-	pBlock_->GetCollider().SetFunction(f);
+	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
 	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockPlayerAttack);
 	//衝突マスク
-	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockPlayerAttack);
+	pBlock_->GetCollider().SetCollisionMask(0xffffffff - CollisionAttribute::blockPlayerAttack);
 
 }
 
@@ -181,12 +190,12 @@ void BlockStateEnemyAttack::Initialize(Block* pBlock)
 
 	//コールバック設定
 	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateEnemyAttack::OnCollision, this, std::placeholders::_1));
-	pBlock_->GetCollider().SetFunction(f);
+	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
 	pBlock_->GetCollider().SetCollisionAttribute(CollisionAttribute::blockEnemyAttack);
 	//衝突マスク
-	pBlock_->GetCollider().SetCollisionMask(CollisionAttribute::blockEnemyAttack);
+	pBlock_->GetCollider().SetCollisionMask(0xffffffff - CollisionAttribute::blockEnemyAttack);
 
 }
 

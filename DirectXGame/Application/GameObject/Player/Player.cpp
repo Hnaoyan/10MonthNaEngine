@@ -65,6 +65,11 @@ void Player::Setting()
 	// コライダー
 	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
 	collider_.Initialize(position, Vector2{ 2.0f, 2.0f });
+	collider_.SetCollisionAttribute(CollisionAttribute::player);
+	collider_.SetCollisionMask(0xffffffff - CollisionAttribute::player);
+	//コールバック設定
+	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&Player::OnCollision, this, std::placeholders::_1));
+	collider_.SetFunction(f);
 
 	//着地判定
 	islanding_ = false;
@@ -72,6 +77,11 @@ void Player::Setting()
 	//空中ジャンプしたか
 	isMidairJump_ = false;
 
+}
+
+void Player::OnCollision(uint32_t collisonObj)
+{
+	collisonObj;
 }
 
 void Player::Move()
