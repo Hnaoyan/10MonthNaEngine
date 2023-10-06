@@ -259,6 +259,9 @@
       <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\others\TimedCall\TimedCall.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\BossEnemy\BossEnemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -404,9 +407,6 @@
     <ClInclude Include="DirectXGame\Application\GameObject\Area\Area.h">
       <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Application\GameObject\Block\Block.h">
       <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
@@ -417,6 +417,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\others\TimedCall\TimedCall.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\BossEnemy\BossEnemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
