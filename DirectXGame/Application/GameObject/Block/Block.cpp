@@ -27,7 +27,7 @@ void Block::Initialize(Model* model, BlockState blockstate, const Vector3& trans
 
 	// コライダーサイズ
 	Vector2 position = {worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
-	collider_.Initialize(position, colliderSize);
+	collider_.Initialize(&worldTransform_, colliderSize);
 
 	// 状態
 	switch (blockstate)
@@ -97,10 +97,10 @@ void Block::ScaffoldRise()
 
 }
 
-void Block::OnCollision(uint32_t collisonObj)
+void Block::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 
-	collisionFunction_(collisonObj);
+	collisionFunction_(collisonObj, worldTransform);
 
 }
 
@@ -111,7 +111,7 @@ void BlockStateScaffold::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffold::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateScaffold::OnCollision, this, std::placeholders::_1));
 	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
@@ -138,7 +138,7 @@ void BlockStateScaffoldColor::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateScaffoldColor::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateScaffoldColor::OnCollision, this, std::placeholders::_1));
 	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
@@ -164,7 +164,7 @@ void BlockStatePlayerAttack::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStatePlayerAttack::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStatePlayerAttack::OnCollision, this, std::placeholders::_1));
 	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性
@@ -189,7 +189,7 @@ void BlockStateEnemyAttack::Initialize(Block* pBlock)
 	pBlock_ = pBlock;
 
 	//コールバック設定
-	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&BlockStateEnemyAttack::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BlockStateEnemyAttack::OnCollision, this, std::placeholders::_1));
 	pBlock_->SetCollisionFunction(f);
 
 	//衝突属性

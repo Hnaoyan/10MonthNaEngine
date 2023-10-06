@@ -71,6 +71,11 @@ private: //メンバ関数
 	/// </summary>
 	void FallToTheBottom();
 
+	/// <summary>
+	/// 足場ブロックと衝突
+	/// </summary>
+	void OnCollisionScaffold();
+
 public: // アクセッサ
 
 	/// <summary>

@@ -151,7 +151,7 @@ public: // メンバ関数
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
 	/// <param name="collisonObj">衝突したOBJ</param>
-	void OnCollision(uint32_t collisonObj);
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform);
 
 public: // アクセッサ
 
@@ -177,13 +177,13 @@ public: // アクセッサ
 	/// 衝突コールバックセッター
 	/// </summary>
 	/// <param name="function">関数</param>
-	void SetCollisionFunction(std::function<void(uint32_t)> collisionFunction) { collisionFunction_ = collisionFunction; }
+	void SetCollisionFunction(std::function<void(uint32_t, WorldTransform*)> collisionFunction) { collisionFunction_ = collisionFunction; }
 
 	/// <summary>
 	/// 衝突コールバックゲッター
 	/// </summary>
 	/// <param name="function">関数</param>
-	std::function<void(uint32_t)> GetCollisionFunction() { return collisionFunction_; }
+	std::function<void(uint32_t, WorldTransform*)> GetCollisionFunction() { return collisionFunction_; }
 
 private: // メンバ変数
 
@@ -209,7 +209,7 @@ private: // メンバ変数
 	bool isDead_;
 
 	// 衝突コールバック
-	std::function<void(uint32_t)> collisionFunction_;
+	std::function<void(uint32_t, WorldTransform*)> collisionFunction_;
 
 };
 

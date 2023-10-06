@@ -61,8 +61,8 @@ void CollisionManager::CheckCollision(RectangleCollider* colliderA, RectangleCol
 		colliderALeft <= colliderBRight) {
 
 		// 衝突
-		colliderA->OnCollision(colliderB->GetCollisionAttribute());
-		colliderB->OnCollision(colliderA->GetCollisionAttribute());
+		colliderA->OnCollision(colliderB->GetCollisionAttribute(), colliderB->GetWorldTransformAddress());
+		colliderB->OnCollision(colliderA->GetCollisionAttribute(), colliderA->GetWorldTransformAddress());
 
 	}
 

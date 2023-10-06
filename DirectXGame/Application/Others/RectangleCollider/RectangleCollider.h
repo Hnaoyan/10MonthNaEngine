@@ -2,6 +2,7 @@
 #include <StructManager.h>
 #include <cstdint>
 #include <functional>
+#include "WorldTransform.h"
 
 // 衝突属性
 enum CollisionAttribute
@@ -25,7 +26,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Vector2 position, Vector2 size);
+	void Initialize(WorldTransform* worldTransfrom, Vector2 size);
 
 	/// <summary>
 	/// 更新
@@ -36,7 +37,8 @@ public: // メンバ関数
 	/// 衝突処理
 	/// </summary>
 	/// <param name="collisonObj">相手の衝突属性</param>
-	void OnCollision(uint32_t collisonObj);
+	/// <param name="worldTransfrom">ワールドトランスフォーム</param>
+	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransfrom);
 
 public: // アクセッサ
 
@@ -64,7 +66,7 @@ public: // アクセッサ
 	/// コールバックセッター
 	/// </summary>
 	/// <param name="function">関数</param>
-	void SetFunction(std::function<void(uint32_t)> function) { function_ = function; }
+	void SetFunction(std::function<void(uint32_t, WorldTransform*)> function) { function_ = function; }
 
 	/// <summary>
 	/// 位置ゲッター
@@ -77,7 +79,18 @@ public: // アクセッサ
 	/// </summary>
 	/// <returns></returns>
 	Vector2 GetSize() { return size_; }
-	
+
+	/// <summary>
+	/// ワールドトランスフォームセッター
+	/// </summary>
+	/// <param name="worldTransform"></param>
+	void SetWorldTransform(WorldTransform* worldTransform) { worldTransform_ = worldTransform; }
+
+	/// <summary>
+	/// ワールドトランスフォームゲッター
+	/// </summary>
+	/// <param name="worldTransform"></param>
+	WorldTransform* GetWorldTransformAddress() { return worldTransform_; }
 
 private: // メンバ変数
 
@@ -94,7 +107,10 @@ private: // メンバ変数
 	uint32_t collisionMask_ = 0xffffffff;
 
 	// コールバック
-	std::function<void(uint32_t)> function_;
+	std::function<void(uint32_t, WorldTransform*)> function_;
+
+	// ワールドトランスフォーム
+	WorldTransform* worldTransform_;
 
 };
 

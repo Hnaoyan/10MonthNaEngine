@@ -64,11 +64,11 @@ void Player::Setting()
 
 	// コライダー
 	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][0] };
-	collider_.Initialize(position, Vector2{ 2.0f, 2.0f });
+	collider_.Initialize(&worldTransform_, Vector2{ 2.0f, 2.0f });
 	collider_.SetCollisionAttribute(CollisionAttribute::player);
 	collider_.SetCollisionMask(0xffffffff - CollisionAttribute::player);
 	//コールバック設定
-	std::function<void(uint32_t)> f = std::function<void(uint32_t)>(std::bind(&Player::OnCollision, this, std::placeholders::_1));
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&Player::OnCollision, this, std::placeholders::_1));
 	collider_.SetFunction(f);
 
 	//着地判定
@@ -242,5 +242,11 @@ void Player::FallToTheBottom()
 	isMidairJump_ = false;
 	worldTransform_.translation_.y = area_->kPositionMin_.y + collider_.GetSize().y / 2.0f;
 	velocity_.y = 0.0f;
+
+}
+
+void Player::OnCollisionScaffold()
+{
+
 
 }
