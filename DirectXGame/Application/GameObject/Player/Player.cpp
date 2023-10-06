@@ -40,6 +40,9 @@ void Player::Update()
 	if (!islanding_) {
 		Falling();
 	}
+	else {
+		Jump();
+	}
 
 	worldTransform_.UpdateMatrix();
 
@@ -100,6 +103,47 @@ void Player::Move()
 
 void Player::Jump()
 {
+
+	// 入力デバイスインスタンス取得
+	Input* input = Input::GetInstance();
+
+	//ジャンプしたか
+	bool isJump = false;
+
+	//キーボード
+	if (input->PressKey(DIK_LEFT)) {
+		isJump = true;
+	}
+	else {
+
+		//ゲームパッド
+
+		XINPUT_STATE joyState;
+
+		if (input->GetJoystickState(0, joyState)) {
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+				isJump = true;
+			}
+		}
+
+	}
+
+	//ジャンプしていたら
+	if (isJump) {
+
+		islanding_ = false;
+
+		velocity_.y = kJumpVelocity_;
+
+		//ワールドトランスフォーム変更
+		worldTransform_.translation_.y += velocity_.y;
+		if (worldTransform_.translation_.y >= area_->kPositionMax_.y - colliderSize_.y / 2.0f) {
+			worldTransform_.translation_.y = area_->kPositionMax_.y - colliderSize_.y / 2.0f;
+		}
+
+	}
+	//ブロックマネージャーに発射するよう伝える
+
 }
 
 void Player::Falling()
@@ -113,6 +157,7 @@ void Player::Falling()
 	if (worldTransform_.translation_.y <= area_->kPositionMin_.y + colliderSize_.y / 2.0f) {
 		FallToTheBottom();
 	}
+
 }
 
 void Player::FallToTheBottom()

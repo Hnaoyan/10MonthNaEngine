@@ -86,7 +86,7 @@ private: // メンバ変数
 private: // メンバ定数
 
 	// ジャンプの初速度
-	const float kJumpVelocity_ = 3.0f;
+	const float kJumpVelocity_ = 2.0f;
 
 	// 最大移動速度
 	const float kMoveVelocityMax_ = 0.5f;
