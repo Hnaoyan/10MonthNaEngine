@@ -28,6 +28,11 @@ public: // メンバ関数
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection);
 
+	/// <summary>
+	/// 設定
+	/// </summary>
+	void Setting();
+
 public: // メンバ定数
 
 	// ドロップライン

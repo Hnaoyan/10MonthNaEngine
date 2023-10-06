@@ -9,25 +9,11 @@ void Player::Initialize(Model* model)
 
 	// ワールドトランスフォーム
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0.0f,10.0f,0.0f };
-	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
-	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
-	worldTransform_.UpdateMatrix();
 
 	// モデル
 	model_ = model;
 
-	// 速度
-	velocity_ = { 0.0f ,0.0f };
-
-	// 加速度
-	acceleration_ = { 0.0f ,0.0f };
-
-	// コライダーサイズ
-	colliderSize_ = { 2.0f, 2.0f };
-
-	//着地判定
-	islanding_ = false;
+	Setting();
 
 }
 
@@ -39,6 +25,9 @@ void Player::Update()
 	// 着地していない
 	if (!islanding_) {
 		Falling();
+		if (!isMidairJump_) {
+			MidairJump();
+		}
 	}
 	else {
 		Jump();
@@ -52,6 +41,32 @@ void Player::Draw(const ViewProjection& viewProjection)
 {
 
 	model_->Draw(worldTransform_, viewProjection);
+
+}
+
+void Player::Setting()
+{
+
+	// ワールドトランスフォーム
+	worldTransform_.translation_ = { 0.0f,10.0f,0.0f };
+	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
+	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
+	worldTransform_.UpdateMatrix();
+
+	// 速度
+	velocity_ = { 0.0f ,0.0f };
+
+	// 加速度
+	acceleration_ = { 0.0f ,0.0f };
+
+	// コライダーサイズ
+	colliderSize_ = { 2.0f, 2.0f };
+
+	//着地判定
+	islanding_ = false;
+
+	//空中ジャンプしたか
+	isMidairJump_ = false;
 
 }
 
@@ -111,7 +126,7 @@ void Player::Jump()
 	bool isJump = false;
 
 	//キーボード
-	if (input->PressKey(DIK_LEFT)) {
+	if (input->TriggerKey(DIK_SPACE)) {
 		isJump = true;
 	}
 	else {
@@ -146,6 +161,50 @@ void Player::Jump()
 
 }
 
+void Player::MidairJump()
+{
+
+	// 入力デバイスインスタンス取得
+	Input* input = Input::GetInstance();
+
+	//ジャンプしたか
+	bool isJump = false;
+
+	//キーボード
+	if (input->TriggerKey(DIK_SPACE)) {
+		isJump = true;
+	}
+	else {
+
+		//ゲームパッド
+
+		XINPUT_STATE joyState;
+
+		if (input->GetJoystickState(0, joyState)) {
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+				isJump = true;
+			}
+		}
+
+	}
+
+	//ジャンプしていたら
+	if (isJump) {
+
+		isMidairJump_ = true;
+
+		velocity_.y = kMidairJumpVelocity_;
+
+		//ワールドトランスフォーム変更
+		worldTransform_.translation_.y += velocity_.y;
+		if (worldTransform_.translation_.y >= area_->kPositionMax_.y - colliderSize_.y / 2.0f) {
+			worldTransform_.translation_.y = area_->kPositionMax_.y - colliderSize_.y / 2.0f;
+		}
+
+	}
+
+}
+
 void Player::Falling()
 {
 
@@ -164,6 +223,7 @@ void Player::FallToTheBottom()
 {
 
 	islanding_ = true;
+	isMidairJump_ = false;
 	worldTransform_.translation_.y = area_->kPositionMin_.y + colliderSize_.y / 2.0f;
 	velocity_.y = 0.0f;
 

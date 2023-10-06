@@ -31,6 +31,11 @@ public: // メンバ関数
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection);
 
+	/// <summary>
+	/// 設定
+	/// </summary>
+	void Setting();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -42,6 +47,11 @@ private: //メンバ関数
 	/// ジャンプ
 	/// </summary>
 	void Jump();
+
+	/// <summary>
+	/// 空中ジャンプ
+	/// </summary>
+	void MidairJump();
 
 	/// <summary>
 	/// 落下
@@ -83,16 +93,22 @@ private: // メンバ変数
 	//エリア
 	Area* area_ = nullptr;
 
+	// 空中ジャンプしたか
+	bool isMidairJump_;
+
 private: // メンバ定数
 
 	// ジャンプの初速度
-	const float kJumpVelocity_ = 2.0f;
+	const float kJumpVelocity_ = 1.5f;
+
+	// 空中ジャンプの初速度
+	const float kMidairJumpVelocity_ = 1.5f;
 
 	// 最大移動速度
 	const float kMoveVelocityMax_ = 0.5f;
 
 	// 落下加速度
-	const float kFallingAcceleration = -0.2f;
+	const float kFallingAcceleration = -0.1f;
 
 };
 
