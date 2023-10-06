@@ -139,8 +139,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 状態変更
 	/// </summary>
-	/// <param name="newState">新しい状態</param>
-	void ChangeState(BaseBlockState* newState);
+	/// <param name="blockstate">新しい状態名</param>
+	void ChangeState(BlockState blockstate);
 
 	/// <summary>
 	/// 足場上昇

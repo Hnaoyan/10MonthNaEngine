@@ -74,7 +74,7 @@ private: //メンバ関数
 	/// <summary>
 	/// 足場ブロックと衝突
 	/// </summary>
-	void OnCollisionScaffold(WorldTransform* worldTransform);
+	void OnCollisionBlock(WorldTransform* worldTransform);
 
 public: // アクセッサ
 

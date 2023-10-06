@@ -82,9 +82,14 @@ void Player::Setting()
 
 void Player::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
-	collisonObj;
-	if (true) {
-		OnCollisionScaffold(worldTransform);
+
+	//エネミーの攻撃状態でない
+	if ((collisonObj & CollisionAttribute::blockEnemyAttack)) {
+		OnCollisionBlock(worldTransform);
+	}
+	// 他はダメージ受ける
+	else {
+		//ダメージ
 	}
 
 }
@@ -250,7 +255,7 @@ void Player::FallToTheBottom()
 
 }
 
-void Player::OnCollisionScaffold(WorldTransform* worldTransform)
+void Player::OnCollisionBlock(WorldTransform* worldTransform)
 {
 
 	//どこの面と当たったか
@@ -265,14 +270,49 @@ void Player::OnCollisionScaffold(WorldTransform* worldTransform)
 
 	float move = 2.0f;
 
-
-
-	worldTransform_.translation_.y = worldTransform->translation_.y + move;
-	worldTransform_.UpdateMatrix();
-	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
-	collider_.Update(position);
-	islanding_ = true;
-	isMidairJump_ = false;
-	velocity_.y = 0.0f;
+	//下
+	if (Math2d::segmentsCrossing(playerPos, blockPos, playerLB, playerRB)) {
+		worldTransform_.translation_.y = worldTransform->translation_.y + move;
+		worldTransform_.UpdateMatrix();
+		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+		collider_.Update(position);
+		islanding_ = true;
+		isMidairJump_ = false;
+		velocity_.y = 0.0f;
+	}
+	//上
+	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerRT)) {
+		worldTransform_.translation_.y = worldTransform->translation_.y - move;
+		worldTransform_.UpdateMatrix();
+		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+		collider_.Update(position);
+		velocity_.y = 0.0f;
+	}
+	//左
+	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerLB)) {
+		worldTransform_.translation_.x = worldTransform->translation_.x + move;
+		worldTransform_.UpdateMatrix();
+		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+		collider_.Update(position);
+		velocity_.x = 0.0f;
+	}
+	//右
+	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerRT, playerRB)) {
+		worldTransform_.translation_.x = worldTransform->translation_.x - move;
+		worldTransform_.UpdateMatrix();
+		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+		collider_.Update(position);
+		velocity_.x = 0.0f;
+	}
+	//内包してたら
+	else {
+		worldTransform_.translation_.y = worldTransform->translation_.y + move;
+		worldTransform_.UpdateMatrix();
+		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+		collider_.Update(position);
+		islanding_ = true;
+		isMidairJump_ = false;
+		velocity_.y = 0.0f;
+	}
 
 }
