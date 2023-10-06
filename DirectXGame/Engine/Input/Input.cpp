@@ -380,7 +380,7 @@ bool Input::GetJoystickState(int32_t stickNo, DIJOYSTATE2& out)
 	return false;
 }
 
-bool Input::GetJoystickStatePrev(int32_t stickNo, DIJOYSTATE2& out)
+bool Input::GetJoystickStatePrevious(int32_t stickNo, DIJOYSTATE2& out)
 {
 	if (0 <= stickNo && stickNo < devJoysticks_.size()) {
 		if (devJoysticks_[stickNo].type_ == PadType::DirectInput) {
@@ -402,7 +402,7 @@ bool Input::GetJoystickState(int32_t stickNo, XINPUT_STATE& out)
     return false;
 }
 
-bool Input::GetJoystickStatePrev(int32_t stickNo, XINPUT_STATE& out)
+bool Input::GetJoystickStatePrevious(int32_t stickNo, XINPUT_STATE& out)
 {
 	if (0 <= stickNo && stickNo < devJoysticks_.size()) {
 		if (devJoysticks_[stickNo].type_ == PadType::XInput) {
