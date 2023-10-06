@@ -6,11 +6,22 @@
 class Particle
 {
 public:
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="model"></param>
+	/// <param name="texture"></param>
 	void Initialize(Model* model,uint32_t texture);
 
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	/// <param name="viewProjection"></param>
 	void Draw(ViewProjection& viewProjection);
 
 public: // 設定・取得
