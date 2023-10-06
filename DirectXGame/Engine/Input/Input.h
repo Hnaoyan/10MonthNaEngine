@@ -88,18 +88,36 @@ public:	// メンバ関数
 public:	// コントローラー系
 	
 	/// <summary>
-	/// 
+	/// 今フレームのコントローラーの状態
 	/// </summary>
 	/// <param name="stickNo"></param>
 	/// <param name="out"></param>
 	/// <returns></returns>
 	bool GetJoystickState(int32_t stickNo, DIJOYSTATE2& out);
 
-	bool GetJoystickStatePrevious(int32_t stickNo, DIJOYSTATE2& out);
+	/// <summary>
+	/// 前フレームのコントローラーの状態
+	/// </summary>
+	/// <param name="stickNo"></param>
+	/// <param name="out"></param>
+	/// <returns></returns>
+	bool GetJoystickStatePrev(int32_t stickNo, DIJOYSTATE2& out);
 
+	/// <summary>
+	/// 今フレームのコントローラーの状態
+	/// </summary>
+	/// <param name="stickNo"></param>
+	/// <param name="out"></param>
+	/// <returns></returns>
 	bool GetJoystickState(int32_t stickNo, XINPUT_STATE& out);
 
-	bool GetJoystickStatePrevious(int32_t stickNo, XINPUT_STATE& out);
+	/// <summary>
+	/// 前フレームのコントローラーの状態
+	/// </summary>
+	/// <param name="stickNo"></param>
+	/// <param name="out"></param>
+	/// <returns></returns>
+	bool GetJoystickStatePrev(int32_t stickNo, XINPUT_STATE& out);
 
 	void SetJoystickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t deadZoneR);
 
