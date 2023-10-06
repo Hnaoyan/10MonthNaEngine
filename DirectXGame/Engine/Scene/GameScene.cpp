@@ -30,6 +30,7 @@ void GameScene::Initialize() {
 	baseCamera_->SetPosition({ 0, 10.0f, -25.0f });
 	baseCamera_->SetRotation({ 0.3f, 0, 0 });
 
+	baseWorld_.SetViewProjection(baseCamera_.get()->GetViewPlayer());
 	baseWorld_.Initialize();
 	baseWorld_.translation_ = { 0,0,0 };
 	baseWorld_.scale_ = { 1.0f,1.0f,1.0f };
@@ -40,7 +41,7 @@ void GameScene::Initialize() {
 	setColor_ = { 1.0f,1.0f,1.0f,1.0f };
 	sprite_ = Sprite::Create(texture, { 200,200 }, { 1.0f,1.0f,1.0f,1.0f }, { 0,0 }, false, false);
 
-	model_.reset(Model::CreateFromObj("player", true));
+	model_.reset(Model::Create());
 	
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 

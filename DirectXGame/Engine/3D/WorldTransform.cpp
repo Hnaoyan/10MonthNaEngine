@@ -3,6 +3,7 @@
 #include "DirectXCommon.h"
 #include <cassert>
 #include "MathCalc.h"
+#include <numbers>
 
 void WorldTransform::Initialize()
 {
@@ -38,10 +39,30 @@ void WorldTransform::TransferMatrix()
 	constMap->matWorld = matWorld_;
 }
 
-void WorldTransform::UpdateMatrix() {
-	this->matWorld_ =
-		MatLib::MakeAffineMatrix(this->scale_, this->rotation_, this->translation_);
+void WorldTransform::SetViewProjection(ViewProjection* view)
+{
+	view_ = view;
+}
 
+void WorldTransform::UpdateMatrix() {
+	//this->matWorld_ =
+	//	MatLib::MakeAffineMatrix(this->scale_, this->rotation_, this->translation_);
+	//Matrix4x4 backToFrontMat = MatLib::MakeRotateYMatrix(std::numbers::pi_v<float>);
+	//Matrix4x4 billBoardMat = MatLib::Multiply(backToFrontMat, view_->matView);
+	//billBoardMat.m[3][0] = 0.0f;
+	//billBoardMat.m[3][1] = 0.0f;
+	//billBoardMat.m[3][2] = 0.0f;
+	/*Matrix4x4 billBoardMat = MatLib::MakeInverse(view_->matView);
+	billBoardMat.m[3][0] = 0.0f;
+	billBoardMat.m[3][1] = 0.0f;
+	billBoardMat.m[3][2] = 0.0f;*/
+
+	Matrix4x4 billBoardMat = MatLib::MakeBillBoard(
+		translation_, view_->translate_, Vector3(0.0f, 1.0f, 0.0f));
+
+	Matrix4x4 worldMat = MatLib::MakeAffineMatrix(
+		scale_, rotation_, translation_);
+	matWorld_ = MatLib::Multiply(billBoardMat, worldMat);
 	// 定数バッファに転送
 	TransferMatrix();
 }
