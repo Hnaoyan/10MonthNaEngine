@@ -32,6 +32,8 @@ void Player::Initialize(Model* model)
 	globalVariables->AddItem(groupName, "kFallingAcceleration_", kFallingAcceleration_);
 	globalVariables->AddItem(groupName, "kColliderSize_", kColliderSize_);
 	globalVariables->AddItem(groupName, "kInitialPosition_", kInitialPosition_);
+	globalVariables->AddItem(groupName, "kInitialHp_", static_cast<int>(kInitialHp_));
+	globalVariables->AddItem(groupName, "kKnockBackBossEnemy_", kKnockBackBossEnemy_);
 
 	ApplyGlobalVariables();
 
@@ -116,18 +118,35 @@ void Player::Setting()
 	// 大技を放てるか？
 	amazingCondition_ = false;
 
+	// HP
+	hp_ = kInitialHp_;
+
+	// ゲームオーバーフラグ
+	gameOver_ = false;
+
 }
 
 void Player::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 
 	//エネミー関連でない
-	if (!(collisonObj & CollisionAttribute::blockEnemyAttack) || !(collisonObj & CollisionAttribute::bossEnemy)) {
+	if (!(collisonObj & CollisionAttribute::blockEnemyAttack) && !(collisonObj & CollisionAttribute::bossEnemy)) {
 		OnCollisionBlock(worldTransform);
+	}
+	// ボスエネミー
+	else if (collisonObj & CollisionAttribute::bossEnemy) {
+		//ダメージ
+		Damage();
+		worldTransform_.translation_.y -= kKnockBackBossEnemy_;
+		worldTransform_.UpdateMatrix();
+		// コライダー
+		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
+		collider_.Update(position);
 	}
 	// 他はダメージ受ける
 	else {
 		//ダメージ
+		Damage();
 	}
 
 }
@@ -378,6 +397,20 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 
 }
 
+void Player::Damage()
+{
+
+	// hp減らす
+	hp_--;
+
+	// ゲームオーバーか
+	if (hp_ <= 0) {
+		hp_ = 0;
+		gameOver_ = true;
+	}
+
+}
+
 void Player::ApplyGlobalVariables()
 {
 
@@ -392,5 +425,7 @@ void Player::ApplyGlobalVariables()
 	kFallingAcceleration_ = globalVariables->GetFloatValue(groupName, "kFallingAcceleration_");
 	kColliderSize_ = globalVariables->GetVector2Value(groupName, "kColliderSize_");
 	kInitialPosition_ = globalVariables->GetVector3Value(groupName, "kInitialPosition_");
+	kInitialHp_ = static_cast<int>(globalVariables->GetIntValue(groupName, "kInitialHp_"));
+	kKnockBackBossEnemy_ = globalVariables->GetFloatValue(groupName, "kKnockBackBossEnemy_");
 
 }

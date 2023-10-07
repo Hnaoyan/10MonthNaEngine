@@ -78,6 +78,11 @@ private: //メンバ関数
 	void OnCollisionBlock(WorldTransform* worldTransform);
 
 	/// <summary>
+	/// ダメージ
+	/// </summary>
+	void Damage();
+
+	/// <summary>
 	/// 調整項目適用関数
 	/// </summary>
 	void ApplyGlobalVariables();
@@ -99,6 +104,12 @@ public: // アクセッサ
 	/// </summary>
 	/// <returns></returns>
 	RectangleCollider* GetColliderAddress() { return &collider_; }
+
+	/// <summary>
+	/// ゲームオーバーフラグゲッター
+	/// </summary>
+	/// <returns></returns>
+	bool GetGameOver() { return gameOver_; }
 
 private: // メンバ変数
 
@@ -125,6 +136,12 @@ private: // メンバ変数
 
 	// 大技を放てるか？
 	bool amazingCondition_;
+
+	// HP
+	int32_t hp_;
+
+	// ゲームオーバーフラグ
+	bool gameOver_;
 
 private: // ポインタ
 
@@ -153,6 +170,12 @@ private: // メンバ定数
 
 	// 初期位置
 	Vector3 kInitialPosition_ = { 0.0f, 10.0f,0.0f };
+
+	// 初期Hp
+	uint32_t kInitialHp_ = 3;
+
+	// ボスエネミーのノックバック
+	float kKnockBackBossEnemy_ = 4.0f;
 
 };
 

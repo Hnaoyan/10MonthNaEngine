@@ -84,9 +84,16 @@ void GameScene::Update()
 	// ボスエネミー
 	bossEnemy_->Update();
 
-	if (blockManager_->GetGameOver()) {
+	// ゲームオーバーか
+	if (blockManager_->GetGameOver() || player_->GetGameOver()) {
 		ImGui::Begin("GameOver");
 		ImGui::Text("GameOver");
+		if (blockManager_->GetGameOver()) {
+			ImGui::Text("blockLimit");
+		}
+		if (player_->GetGameOver()) {
+			ImGui::Text("playerDead");
+		}
 		ImGui::End();
 	}
 
