@@ -301,7 +301,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 
 	//下
 	if (Math2d::segmentsCrossing(playerPos, blockPos, playerLB, playerRB)) {
-		worldTransform_.translation_.y = worldTransform->translation_.y + move.y;
+		worldTransform_.translation_.y = blockPos.y + move.y;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -311,7 +311,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//上
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerRT)) {
-		worldTransform_.translation_.y = worldTransform->translation_.y - move.y;
+		worldTransform_.translation_.y = blockPos.y - move.y;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -319,7 +319,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//左
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerLB)) {
-		worldTransform_.translation_.x = worldTransform->translation_.x + move.x;
+		worldTransform_.translation_.x = blockPos.x + move.x;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -327,7 +327,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//右
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerRT, playerRB)) {
-		worldTransform_.translation_.x = worldTransform->translation_.x - move.x;
+		worldTransform_.translation_.x = blockPos.x - move.x;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -335,7 +335,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//内包してたら
 	else {
-		worldTransform_.translation_.y = worldTransform->translation_.y + move.y;
+		worldTransform_.translation_.y = blockPos.y + move.y;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);

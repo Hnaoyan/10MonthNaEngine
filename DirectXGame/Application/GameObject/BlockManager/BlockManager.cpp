@@ -14,6 +14,10 @@ BlockManager::~BlockManager()
 	for (TimedCall* timedCall : timedCalls_) {
 		delete timedCall;
 	}
+	//playerAttacks_の解放
+	for (PlayerAttack* playerAttack : playerAttacks_) {
+		delete playerAttack;
+	}
 
 }
 
@@ -63,6 +67,9 @@ void BlockManager::Update()
 	for (PlayerAttack* playerAttack : playerAttacks_) {
 		playerAttack->Update();
 	}
+
+	// 保存データをNULLに 
+	playerAttackUnionData_ = nullptr;
 
 }
 
@@ -120,7 +127,7 @@ void BlockManager::DeleteBlock()
 		return false;
 	});
 
-	//block_の解放
+	//playerAttacks_の解放
 	playerAttacks_.remove_if([](PlayerAttack* playerAttack){
 		if (playerAttack->IsDead()) {
 			delete playerAttack;
