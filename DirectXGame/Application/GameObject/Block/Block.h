@@ -163,6 +163,12 @@ public: // アクセッサ
 	bool IsDead() { return isDead_; }
 
 	/// <summary>
+	/// 死んでるかセッター
+	/// </summary>
+	/// <param name="isDead"></param>
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
+	/// <summary>
 	/// コライダーゲッター
 	/// </summary>
 	/// <returns></returns>
@@ -215,6 +221,12 @@ public: // アクセッサ
 	/// </summary>
 	/// <param name="velocity"></param>
 	void SetVelocity(Vector2 velocity) { velocity_ = velocity; }
+
+	/// <summary>
+	/// ブロックマネージャーゲッター
+	/// </summary>
+	/// <returns></returns>
+	BlockManager* GetBlockManager() { return blockManager_; }
 
 
 private: // メンバ変数

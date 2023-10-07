@@ -1,5 +1,6 @@
 #include "Block.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
+#include "Application/GameObject/Area/Area.h"
 
 Block::~Block()
 {
@@ -230,8 +231,11 @@ void BlockStatePlayerAttack::Update()
 
 	WorldTransform worldTransform = pBlock_->GetWorldTransform();
 	worldTransform.translation_.y += pBlock_->GetVelocity().y;
-
 	pBlock_->SetWorldTransform(worldTransform);
+
+	if (worldTransform.matWorld_.m[3][1] >= pBlock_->GetBlockManager()->GetArea()->kBlockDeadLine_) {
+		pBlock_->SetIsDead(true);
+	}
 
 }
 

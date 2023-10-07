@@ -47,6 +47,9 @@ public: // メンバ定数
 	// マップ(マス)
 	const Vector2 kMap_ = {10.0f, 20.0f};
 
+	// 発射ブロック死亡ライン
+	const float kBlockDeadLine_ = 50.0f;
+
 
 private: // メンバ変数
 

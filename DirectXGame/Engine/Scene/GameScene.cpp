@@ -65,13 +65,16 @@ void GameScene::Update()
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
+	// ブロックの死亡確認
+	blockManager_->DeleteBlock();
+
 	// プレイヤー
 	player_->Update();
 
-	//ブロックマネージャー
+	// ブロックマネージャー
 	blockManager_->Update();
 
-	//衝突判定
+	// 衝突判定
 	CollisionCheak();
 
 }

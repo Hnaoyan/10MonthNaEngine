@@ -70,6 +70,12 @@ private: // メンバ関数
 public: // アクセッサ
 
 	/// <summary>
+	/// エリアゲッター
+	/// </summary>
+	/// <param name="area"></param>
+	Area* GetArea() { return area_; }
+
+	/// <summary>
 	/// エリアセッター
 	/// </summary>
 	/// <param name="area"></param>
