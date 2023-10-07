@@ -77,6 +77,11 @@ private: //メンバ関数
 	/// </summary>
 	void OnCollisionBlock(WorldTransform* worldTransform);
 
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 public: // アクセッサ
 
 	/// <summary>
@@ -129,16 +134,16 @@ private: // ポインタ
 private: // メンバ定数
 
 	// ジャンプの初速度
-	const float kJumpVelocity_ = 1.5f;
+	float kJumpVelocity_ = 1.5f;
 
 	// 空中ジャンプの初速度
-	const float kMidairJumpVelocity_ = 1.5f;
+	float kMidairJumpVelocity_ = 1.5f;
 
 	// 最大移動速度
-	const float kMoveVelocityMax_ = 0.5f;
+	float kMoveVelocityMax_ = 0.5f;
 
 	// 落下加速度
-	const float kFallingAcceleration = -0.1f;
+	float kFallingAcceleration_ = -0.1f;
 
 };
 

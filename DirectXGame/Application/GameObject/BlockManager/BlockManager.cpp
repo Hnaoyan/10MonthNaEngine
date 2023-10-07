@@ -1,6 +1,7 @@
 #include "BlockManager.h"
 
 #include "Application/GameObject/Area/Area.h"
+#include <GlobalVariables.h>
 
 BlockManager::~BlockManager()
 {
@@ -27,10 +28,29 @@ void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles
 
 	Setting();
 
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "Block";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	globalVariables->AddItem(groupName, "kBaseFireBlockSpeed_", kBaseFireBlockSpeed_);
+	globalVariables->AddItem(groupName, "kBaseScaffoldBlockGenerateInterval_", kBaseScaffoldBlockGenerateInterval_);
+
+#pragma endregion
+
 }
 
 void BlockManager::Update()
 {
+
+#ifdef _DEBUG
+	ApplyGlobalVariables();
+#endif // _DEBUG
 
 	for (Block* block : blocks_) {
 		block->Update();
@@ -70,7 +90,7 @@ void BlockManager::Setting()
 	colliderSize_ = { 2.0f, 2.0f };
 
 	//足場ブロック生成インターバル
-	scaffoldBlockGenerateInterval_ = 300;
+	scaffoldBlockGenerateInterval_ = kBaseScaffoldBlockGenerateInterval_;
 
 	// 発射されているブロック数
 	fireBlockCount_ = 0;
@@ -96,7 +116,7 @@ void BlockManager::DeleteBlock()
 void BlockManager::BlockFiring()
 {
 
-	Vector2 speed = { 0.0f , kFireBlockSpeed };
+	Vector2 speed = { 0.0f , kBaseFireBlockSpeed_ };
 
 	std::vector<Block*> fireBlocks;
 
@@ -117,6 +137,19 @@ void BlockManager::BlockFiring()
 		block->SetVelocity(speed);
 	}
 
+
+}
+
+void BlockManager::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "Block";
+
+	kBaseFireBlockSpeed_ = globalVariables->GetFloatValue(groupName, "kBaseFireBlockSpeed_");
+	kBaseScaffoldBlockGenerateInterval_ = globalVariables->GetIntValue(groupName, "kBaseScaffoldBlockGenerateInterval_");
 
 }
 

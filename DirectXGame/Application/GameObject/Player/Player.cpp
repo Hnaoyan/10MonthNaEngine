@@ -5,6 +5,7 @@
 #include "Application/GameObject/Area/Area.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
 #include "Application/Others/Math2d/Math2d.h"
+#include <GlobalVariables.h>
 
 void Player::Initialize(Model* model)
 {
@@ -17,10 +18,31 @@ void Player::Initialize(Model* model)
 
 	Setting();
 
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "Player";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	globalVariables->AddItem(groupName, "kJumpVelocity_", kJumpVelocity_);
+	globalVariables->AddItem(groupName, "kMidairJumpVelocity_", kMidairJumpVelocity_);
+	globalVariables->AddItem(groupName, "kMoveVelocityMax_", kMoveVelocityMax_);
+	globalVariables->AddItem(groupName, "kFallingAcceleration_", kFallingAcceleration_);
+
+#pragma endregion
+
 }
 
 void Player::Update()
 {
+
+#ifdef _DEBUG
+	ApplyGlobalVariables();
+#endif // _DEBUG
 
 	Move();
 	
@@ -236,7 +258,7 @@ void Player::MidairJump()
 void Player::Falling()
 {
 
-	velocity_.y += kFallingAcceleration;
+	velocity_.y += kFallingAcceleration_;
 		
 	//ワールドトランスフォーム変更
 	worldTransform_.translation_.y += velocity_.y;
@@ -321,5 +343,20 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 		isMidairJump_ = false;
 		velocity_.y = 0.0f;
 	}
+
+}
+
+void Player::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "Player";
+
+	kJumpVelocity_ = globalVariables->GetFloatValue(groupName, "kJumpVelocity_");
+	kMidairJumpVelocity_ = globalVariables->GetFloatValue(groupName, "kMidairJumpVelocity_");
+	kMoveVelocityMax_ = globalVariables->GetFloatValue(groupName, "kMoveVelocityMax_");
+	kFallingAcceleration_ = globalVariables->GetFloatValue(groupName, "kFallingAcceleration_");
 
 }

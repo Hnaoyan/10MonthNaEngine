@@ -50,6 +50,11 @@ public: // メンバ関数
 	/// </summary>
 	void BlockFiring();
 
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 private: // メンバ関数
 
 	/// <summary>
@@ -138,7 +143,11 @@ private: // メンバ変数
 
 private: // メンバ定数
 
-	const float kFireBlockSpeed = 0.05f;
+	// 発射されているブロックベース速度
+	float kBaseFireBlockSpeed_ = 0.05f;
+
+	// 足場ブロック生成インターバルベース
+	int kBaseScaffoldBlockGenerateInterval_ = 300;
 
 };
 

@@ -1,14 +1,8 @@
 {
     "Player": {
-        "Test": 50,
-        "rate": [
-            1.0,
-            3.4000000953674316
-        ],
-        "trans": [
-            0.0,
-            0.0,
-            0.0
-        ]
+        "kFallingAcceleration_": -0.10000000149011612,
+        "kJumpVelocity_": 1.5,
+        "kMidairJumpVelocity_": 1.5,
+        "kMoveVelocityMax_": 0.5
     }
 }
