@@ -186,6 +186,37 @@ public: // アクセッサ
 	/// <param name="function">関数</param>
 	std::function<void(uint32_t, WorldTransform*)> GetCollisionFunction() { return collisionFunction_; }
 
+	/// <summary>
+	/// 状態名ゲッター
+	/// </summary>
+	/// <returns></returns>
+	BlockState GetStateName() { return stateName_; }
+
+	/// <summary>
+	/// ワールドトランスフォームゲッター
+	/// </summary>
+	/// <returns></returns>
+	WorldTransform GetWorldTransform() { return worldTransform_; }
+
+	/// <summary>
+	/// ワールドトランスフォームセッター
+	/// </summary>
+	/// <param name="worldTransform"></param>
+	void SetWorldTransform(WorldTransform worldTransform) { worldTransform_ = worldTransform; }
+
+	/// <summary>
+	/// 速度ゲッター
+	/// </summary>
+	/// <returns></returns>
+	Vector2 GetVelocity() { return velocity_; }
+
+	/// <summary>
+	/// 速度セッター
+	/// </summary>
+	/// <param name="velocity"></param>
+	void SetVelocity(Vector2 velocity) { velocity_ = velocity; }
+
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -217,6 +248,9 @@ private: // メンバ変数
 
 	// ブロックマネージャー
 	BlockManager* blockManager_ = nullptr;
+
+	// 親か
+	bool isParent_;
 
 };
 

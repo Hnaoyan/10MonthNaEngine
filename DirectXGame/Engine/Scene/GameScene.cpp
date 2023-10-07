@@ -42,18 +42,20 @@ void GameScene::Initialize() {
 
 	//ブロック
 	blockModel_.reset(Model::CreateFromObj("block", true));
-	uint32_t blockTextureHandle1 = TextureManager::Load("./Resources/block/scaffold.png");
-	uint32_t blockTextureHandle2 = TextureManager::Load("./Resources/block/scaffoldColor.png");
-	uint32_t blockTextureHandle3 = TextureManager::Load("./Resources/block/playerAttack.png");
-	uint32_t blockTextureHandle4 = TextureManager::Load("./Resources/block/enemyAttack.png");
-	blockTextureHandles_.push_back(blockTextureHandle1);
-	blockTextureHandles_.push_back(blockTextureHandle2);
-	blockTextureHandles_.push_back(blockTextureHandle3);
-	blockTextureHandles_.push_back(blockTextureHandle4);
+	uint32_t blockTextureHandleScaffold = TextureManager::Load("./Resources/block/scaffold.png");
+	uint32_t blockTextureHandleScaffoldColor = TextureManager::Load("./Resources/block/scaffoldColor.png");
+	uint32_t blockTextureHandlePlayerAttack = TextureManager::Load("./Resources/block/playerAttack.png");
+	uint32_t blockTextureHandleEnemyAttack = TextureManager::Load("./Resources/block/enemyAttack.png");
+	blockTextureHandles_.push_back(blockTextureHandleScaffold);
+	blockTextureHandles_.push_back(blockTextureHandleScaffoldColor);
+	blockTextureHandles_.push_back(blockTextureHandlePlayerAttack);
+	blockTextureHandles_.push_back(blockTextureHandleEnemyAttack);
 
 	blockManager_ = make_unique<BlockManager>();
 	blockManager_->Initialize(blockModel_.get(), blockTextureHandles_);
 	blockManager_->SetArea(area_.get());
+
+	player_->SetBlockManager(blockManager_.get());
 	
 }
 

@@ -25,7 +25,9 @@ bool Math2d::segmentsCrossing(const Vector2& v1, const Vector2& v2, const Vector
 		return false;
 	}
 
-	return (Math2d::Cross(v1v2, v1v3) * Math2d::Cross(v1v2, v1v4) < 0.0f) &&
+	bool result = (Math2d::Cross(v1v2, v1v3) * Math2d::Cross(v1v2, v1v4) < 0.0f) &&
 		(Math2d::Cross(v3v4, v3v1) * Math2d::Cross(v3v4, v3v2) < 0.0f);
+
+	return result;
 
 }

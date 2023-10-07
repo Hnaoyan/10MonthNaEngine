@@ -45,6 +45,11 @@ public: // メンバ関数
 	/// </summary>
 	void DeleteBlock();
 
+	/// <summary>
+	/// ブロック発射
+	/// </summary>
+	void BlockFiring();
+
 private: // メンバ関数
 
 	/// <summary>
@@ -80,6 +85,12 @@ public: // アクセッサ
 	/// </summary>
 	/// <returns></returns>
 	std::vector<uint32_t> GetTextureHandles() { return textureHandles_; }
+
+	/// <summary>
+	/// コライダーサイズゲッター
+	/// </summary>
+	/// <returns></returns>
+	Vector2 GetColliderSize() { return colliderSize_; }
 
 private: // メンバ変数
 

@@ -70,7 +70,7 @@ void BlockManager::Setting()
 	colliderSize_ = { 2.0f, 2.0f };
 
 	//足場ブロック生成インターバル
-	scaffoldBlockGenerateInterval_ = 120;
+	scaffoldBlockGenerateInterval_ = 300;
 
 	SetScaffoldBlockGenerateTimer();
 
@@ -87,6 +87,20 @@ void BlockManager::DeleteBlock()
 		}
 		return false;
 	});
+
+}
+
+void BlockManager::BlockFiring()
+{
+
+	Vector2 speed = { 0.0f , 0.2f };
+
+	for (Block* block : blocks_) {
+		if (block->GetStateName() == BlockState::kScaffoldColor) {
+			block->ChangeState(BlockState::kPlayerAttack);
+			block->SetVelocity(speed);
+		}
+	}
 
 }
 

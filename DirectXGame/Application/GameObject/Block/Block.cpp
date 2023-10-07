@@ -65,6 +65,9 @@ void Block::Initialize(Model* model, BlockState blockState, const Vector3& trans
 	// 死亡フラグ
 	isDead_ = false;
 
+	// 親か
+	isParent_ = true;
+
 }
 
 void Block::Update()
@@ -224,6 +227,12 @@ void BlockStatePlayerAttack::Initialize(Block* pBlock)
 
 void BlockStatePlayerAttack::Update()
 {
+
+	WorldTransform worldTransform = pBlock_->GetWorldTransform();
+	worldTransform.translation_.y += pBlock_->GetVelocity().y;
+
+	pBlock_->SetWorldTransform(worldTransform);
+
 }
 
 void BlockStatePlayerAttack::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)

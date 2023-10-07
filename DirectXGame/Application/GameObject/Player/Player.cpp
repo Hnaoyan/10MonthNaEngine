@@ -3,6 +3,7 @@
 #include "Input.h"
 
 #include "Application/GameObject/Area/Area.h"
+#include "Application/GameObject/BlockManager/BlockManager.h"
 #include "Application/Others/Math2d/Math2d.h"
 
 void Player::Initialize(Model* model)
@@ -23,14 +24,13 @@ void Player::Update()
 
 	Move();
 	
+	Falling();
 	// 着地していない
-	if (!islanding_) {
-		Falling();
-		if (!isMidairJump_) {
-			MidairJump();
-		}
+	if (!islanding_ && !isMidairJump_) {
+		MidairJump();
 	}
-	else {
+
+	if(islanding_) {
 		Jump();
 	}
 
@@ -181,8 +181,10 @@ void Player::Jump()
 			worldTransform_.translation_.y = area_->kPositionMax_.y - collider_.GetSize().y / 2.0f;
 		}
 
+		//ブロックマネージャーに発射するよう伝える
+		blockManager_->BlockFiring();
+
 	}
-	//ブロックマネージャーに発射するよう伝える
 
 }
 
@@ -263,16 +265,21 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	Vector2 playerPos = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	Vector2 blockPos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1] };
 
-	Vector2 playerLT = { worldTransform_.matWorld_.m[3][0] - collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] + collider_.GetSize().y };
-	Vector2 playerLB = { worldTransform_.matWorld_.m[3][0] - collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] - collider_.GetSize().y };
-	Vector2 playerRT = { worldTransform_.matWorld_.m[3][0] + collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] + collider_.GetSize().y };
-	Vector2 playerRB = { worldTransform_.matWorld_.m[3][0] + collider_.GetSize().x,worldTransform_.matWorld_.m[3][1] - collider_.GetSize().y };
+	Vector2 playerLT = { playerPos.x - collider_.GetSize().x / 2.0f,
+		playerPos.y + collider_.GetSize().y / 2.0f };
+	Vector2 playerLB = { playerPos.x - collider_.GetSize().x / 2.0f,
+		playerPos.y - collider_.GetSize().y / 2.0f };
+	Vector2 playerRT = { playerPos.x + collider_.GetSize().x / 2.0f,
+		playerPos.y + collider_.GetSize().y / 2.0f };
+	Vector2 playerRB = { playerPos.x + collider_.GetSize().x / 2.0f,
+		playerPos.y - collider_.GetSize().y / 2.0f };
 
-	float move = 2.0f;
+	Vector2 move = { (collider_.GetSize().x + blockManager_->GetColliderSize().x) / 2.0f,
+		(collider_.GetSize().y + blockManager_->GetColliderSize().y) / 2.0f };
 
 	//下
 	if (Math2d::segmentsCrossing(playerPos, blockPos, playerLB, playerRB)) {
-		worldTransform_.translation_.y = worldTransform->translation_.y + move;
+		worldTransform_.translation_.y = worldTransform->translation_.y + move.y;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -282,7 +289,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//上
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerRT)) {
-		worldTransform_.translation_.y = worldTransform->translation_.y - move;
+		worldTransform_.translation_.y = worldTransform->translation_.y - move.y;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -290,7 +297,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//左
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerLB)) {
-		worldTransform_.translation_.x = worldTransform->translation_.x + move;
+		worldTransform_.translation_.x = worldTransform->translation_.x + move.x;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -298,7 +305,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//右
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerRT, playerRB)) {
-		worldTransform_.translation_.x = worldTransform->translation_.x - move;
+		worldTransform_.translation_.x = worldTransform->translation_.x - move.x;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);
@@ -306,7 +313,7 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 	}
 	//内包してたら
 	else {
-		worldTransform_.translation_.y = worldTransform->translation_.y + move;
+		worldTransform_.translation_.y = worldTransform->translation_.y + move.y;
 		worldTransform_.UpdateMatrix();
 		Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 		collider_.Update(position);

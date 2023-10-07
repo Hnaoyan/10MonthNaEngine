@@ -7,6 +7,7 @@
 
 // 前方宣言
 class Area;
+class BlockManager;
 
 /// <summary>
 /// プレイヤー
@@ -84,6 +85,11 @@ public: // アクセッサ
 	void SetArea(Area* area) { area_ = area; }
 
 	/// <summary>
+	/// ブロックマネージャーセッター
+	/// </summary>
+	void SetBlockManager(BlockManager* blockManager) { blockManager_ = blockManager; }
+
+	/// <summary>
 	/// コライダーアドレスゲッター
 	/// </summary>
 	/// <returns></returns>
@@ -109,11 +115,16 @@ private: // メンバ変数
 	//着地判定
 	bool islanding_;
 
-	//エリア
-	Area* area_ = nullptr;
-
 	// 空中ジャンプしたか
 	bool isMidairJump_;
+
+private: // ポインタ
+
+	//エリア
+	Area* area_ = nullptr;
+	
+	// ブロックマネージャー
+	BlockManager* blockManager_ = nullptr;
 
 private: // メンバ定数
 
