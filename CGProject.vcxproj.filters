@@ -270,6 +270,9 @@
     <ClCompile Include="DirectXGame\Application\Others\Math2d\Math2d.cpp">
       <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\PlayerAttack\PlayerAttack.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -436,6 +439,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Others\Math2d\Math2d.h">
       <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\PlayerAttack\PlayerAttack.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
