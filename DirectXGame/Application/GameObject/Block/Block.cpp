@@ -360,7 +360,7 @@ void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj, WorldTransform* wo
 		}
 
 	}
-	else if ((collisonObj & CollisionAttribute::blockScaffold) || (collisonObj & CollisionAttribute::blockScaffoldColor)) {
+	else if (collisonObj & CollisionAttribute::blockScaffold || collisonObj & CollisionAttribute::blockScaffoldColor) {
 
 		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockLB) || Math2d::segmentsCrossing(partnerPos, blockPos, blockRT, blockRB)) {
 			return;
@@ -370,6 +370,11 @@ void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj, WorldTransform* wo
 			pBlock_->SetWorldTransform(wT);
 			pBlock_->ChangeState(BlockState::kScaffold);
 		}
+
+	}
+	else if (collisonObj & CollisionAttribute::player) {
+
+		pBlock_->SetIsDead(true);
 
 	}
 
