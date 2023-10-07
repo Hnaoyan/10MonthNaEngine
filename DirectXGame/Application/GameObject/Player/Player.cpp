@@ -65,6 +65,9 @@ void Player::Update()
 	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
 	collider_.Update(position);
 
+	//着地判定
+	islanding_ = false;
+
 }
 
 void Player::Draw(const ViewProjection& viewProjection)
