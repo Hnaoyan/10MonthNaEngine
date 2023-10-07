@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "ImGuiManager.h"
 #include <cassert>
+#include <functional>
 
 using namespace std;
 
@@ -56,6 +57,11 @@ void GameScene::Initialize() {
 	blockManager_->SetArea(area_.get());
 
 	player_->SetBlockManager(blockManager_.get());
+
+	// ボスエネミー
+	bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
+	bossEnemy_ = make_unique<BossEnemy>();
+	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get());
 	
 }
 
@@ -73,6 +79,9 @@ void GameScene::Update()
 
 	// ブロックマネージャー
 	blockManager_->Update();
+
+	// ボスエネミー
+	bossEnemy_->Update();
 
 	// 衝突判定
 	CollisionCheak();
@@ -110,6 +119,7 @@ void GameScene::Draw() {
 	area_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
+	bossEnemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -171,6 +181,7 @@ void GameScene::CollisionCheak()
 		collisionManager->ListRegister(block->GetColliderAddress());
 	}
 	//ボスエネミー
+	collisionManager->ListRegister(bossEnemy_->GetColliderAddress());
 
 	// 当たり判定を取る
 	collisionManager->CheakAllCollision();

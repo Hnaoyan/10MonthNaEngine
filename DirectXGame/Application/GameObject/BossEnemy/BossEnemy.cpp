@@ -20,13 +20,17 @@ void BossEnemy::Initialize(Model* model, BlockManager* blockManager)
 	// モデル
 	model_ = model;
 
-	Setting();
-
 	// ブロックマネージャー
 	blockManager_ = blockManager;
 
 	// エネミーの攻撃関数
 	enemyAttackFunc_ = std::function<void()>(std::bind(&BlockManager::EnemyAttackBlockGenerate, blockManager_));
+
+	Setting();
+
+	//コールバック設定
+	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BossEnemy::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
+	collider_.SetFunction(f);
 
 }
 
@@ -55,7 +59,7 @@ void BossEnemy::Setting()
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { 0.0f,0.0f,0.0f };
+	worldTransform_.translation_ = { 10.0f,39.0f, -1.0f };
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();

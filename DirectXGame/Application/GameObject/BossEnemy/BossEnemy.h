@@ -4,6 +4,7 @@
 #include "Model.h"
 #include <Application/Others/TimedCall/TimedCall.h>
 #include <Application/Others/RectangleCollider/RectangleCollider.h>
+#include <functional>
 
 // 前方宣言
 class BlockManager;
@@ -85,6 +86,18 @@ public: // アクセッサ
 	/// </summary>
 	/// <param name="isDead"></param>
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
+	/// <summary>
+	/// コライダーゲッター
+	/// </summary>
+	/// <returns></returns>
+	RectangleCollider GetCollider() { return collider_; }
+
+	/// <summary>
+	/// コライダーアドレスゲッター
+	/// </summary>
+	/// <returns></returns>
+	RectangleCollider* GetColliderAddress() { return &collider_; }
 
 private: // メンバ変数
 

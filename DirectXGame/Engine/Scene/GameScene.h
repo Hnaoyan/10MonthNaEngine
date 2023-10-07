@@ -19,6 +19,7 @@
 #include "Application/GameObject/Player/Player.h"
 #include "Application/GameObject/Area/Area.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
+#include "Application/GameObject/BossEnemy/BossEnemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -97,6 +98,10 @@ private:	// メンバポインタ
 	std::unique_ptr<BlockManager> blockManager_;
 	std::unique_ptr<Model> blockModel_;
 	std::vector<uint32_t> blockTextureHandles_;
+
+	// ボスエネミー
+	std::unique_ptr<BossEnemy> bossEnemy_;
+	std::unique_ptr<Model> bossEnemyModel_;
 
 };
 
