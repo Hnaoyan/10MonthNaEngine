@@ -74,6 +74,8 @@ void BlockManager::Update()
 	// 保存データをNULLに 
 	playerAttackUnionData_ = nullptr;
 
+	CheckHeight();
+
 }
 
 void BlockManager::Draw(const ViewProjection& viewProjection)
@@ -235,12 +237,27 @@ void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 void BlockManager::EnemyAttackBlockGenerate()
 {
 
+	// ブロック新規作成
 	Block* block = new Block();
+
+	// 低い場所探し
+	size_t min = 0;
+	for (size_t i = 1; i < sizeof(height) / sizeof(float); i++)
+	{
+		if (height[i] < height[min]) {
+			min = i;
+		}
+	}
+	// 位置
 	Vector3 transform =
-	{ kColliderSize_.x / 2.0f,
-		(static_cast<size_t>(area_->kMap_.y) - 1) * kColliderSize_.y + kColliderSize_.y / 2.0f, 0.0f };
+	{ kColliderSize_.x * min + kColliderSize_.x / 2.0f,
+		(static_cast<size_t>(area_->kMap_.y) - 1) * kColliderSize_.y + kColliderSize_.y / 2.0f,
+		0.0f };
+	// 初期化
 	block->Initialize(model_, BlockState::kEnemyAttack, transform, kColliderSize_, this);
+	// 速度設定
 	block->SetVelocity(Vector2( 0.0f, kBaseFallBlockSpeed_));
+	// プッシュバック
 	blocks_.push_back(block);
 
 }
@@ -278,6 +295,24 @@ void BlockManager::ScaffoldBlockGenerate()
 void BlockManager::SetScaffoldBlockGenerateTimer()
 {
 	timedCalls_.push_back(new TimedCall(std::bind(&BlockManager::ScaffoldBlockGenerate, this), scaffoldBlockGenerateInterval_));
+}
+
+void BlockManager::CheckHeight()
+{
+
+	for (size_t i = 0; i < sizeof(height) / sizeof(float); i++)
+	{
+		height[i] = kColliderSize_.y / 2.0f;
+	}
+
+	for (Block* block : blocks_)
+	{
+		if (block->GetStateName() == BlockState::kScaffold || block->GetStateName() == BlockState::kScaffoldColor) {
+			size_t x = static_cast<size_t>((block->GetWorldTransform().matWorld_.m[3][0] - kColliderSize_.x / 2.0f) / kColliderSize_.x);
+			height[x] += kColliderSize_.y;
+		}
+	}
+
 }
 
 void BlockManager::ApplyGlobalVariables()

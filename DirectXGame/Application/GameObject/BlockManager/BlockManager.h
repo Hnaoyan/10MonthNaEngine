@@ -81,6 +81,11 @@ private: // メンバ関数
 	void SetScaffoldBlockGenerateTimer();
 
 	/// <summary>
+	/// 高さ確認
+	/// </summary>
+	void CheckHeight();
+
+	/// <summary>
 	/// 調整項目適用関数
 	/// </summary>
 	void ApplyGlobalVariables();
@@ -183,6 +188,9 @@ private: // メンバ変数
 
 	// ボスへのダメージ用
 	uint32_t bossDamage_ = 0u;
+
+	// それぞれの高さ
+	float height[10];
 
 private: // メンバ定数
 
