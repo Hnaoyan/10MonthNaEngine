@@ -98,6 +98,18 @@ public: // アクセッサ
 	/// <returns></returns>
 	Vector2 GetColliderSize() { return colliderSize_; }
 
+	/// <summary>
+	/// 発射されているブロック数ゲッター
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetFireBlockCount() { return fireBlockCount_; }
+
+	/// <summary>
+	/// 発射されているブロック数ゲッター
+	/// </summary>
+	/// <param name="fireBlockCount"></param>
+	void SetFireBlockCount(uint32_t fireBlockCount) { fireBlockCount_ = fireBlockCount; }
+
 private: // メンバ変数
 
 	// ブロック
@@ -120,6 +132,13 @@ private: // メンバ変数
 
 	// テクスチャハンドル
 	std::vector<uint32_t> textureHandles_;
+
+	// 発射されているブロック数
+	uint32_t fireBlockCount_;
+
+private: // メンバ定数
+
+	const float kFireBlockSpeed = 0.05f;
 
 };
 

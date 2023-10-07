@@ -72,6 +72,9 @@ void BlockManager::Setting()
 	//足場ブロック生成インターバル
 	scaffoldBlockGenerateInterval_ = 300;
 
+	// 発射されているブロック数
+	fireBlockCount_ = 0;
+
 	SetScaffoldBlockGenerateTimer();
 
 }
@@ -93,14 +96,27 @@ void BlockManager::DeleteBlock()
 void BlockManager::BlockFiring()
 {
 
-	Vector2 speed = { 0.0f , 0.2f };
+	Vector2 speed = { 0.0f , kFireBlockSpeed };
 
+	std::vector<Block*> fireBlocks;
+
+	//とぶか?
 	for (Block* block : blocks_) {
 		if (block->GetStateName() == BlockState::kScaffoldColor) {
-			block->ChangeState(BlockState::kPlayerAttack);
-			block->SetVelocity(speed);
+			fireBlockCount_++;
+			fireBlocks.push_back(block);
 		}
 	}
+
+	//速度決定
+	speed.y *= static_cast<float>(fireBlockCount_);
+
+	//発射処理
+	for (Block* block : fireBlocks) {
+		block->ChangeState(BlockState::kPlayerAttack);
+		block->SetVelocity(speed);
+	}
+
 
 }
 

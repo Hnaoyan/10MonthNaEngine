@@ -1,6 +1,7 @@
 #include "Block.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
 #include "Application/GameObject/Area/Area.h"
+#include <Application/Others/Math2d/Math2d.h>
 
 Block::~Block()
 {
@@ -185,10 +186,18 @@ void BlockStateScaffold::OnCollision(uint32_t collisonObj, WorldTransform* world
 
 	//ステートを色足場に変更
 	if (collisonObj & CollisionAttribute::player) {
-		pBlock_->ChangeState(BlockState::kScaffoldColor);
-	}
+		
+		//上面と当たったか
 
-	worldTransform;
+		Vector2 playerPos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1] };
+		Vector2 blockPos = { pBlock_->GetWorldTransform().matWorld_.m[3][0], pBlock_->GetWorldTransform().matWorld_.m[3][1]};
+
+		Vector2 blockLT = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockRT = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+		if (Math2d::segmentsCrossing(playerPos, blockPos, blockLT, blockRT)) {
+			pBlock_->ChangeState(BlockState::kScaffoldColor);		
+		}
+	}
 
 }
 
@@ -235,6 +244,7 @@ void BlockStatePlayerAttack::Update()
 
 	if (worldTransform.matWorld_.m[3][1] >= pBlock_->GetBlockManager()->GetArea()->kBlockDeadLine_) {
 		pBlock_->SetIsDead(true);
+		pBlock_->GetBlockManager()->SetFireBlockCount(pBlock_->GetBlockManager()->GetFireBlockCount() - 1);
 	}
 
 }
