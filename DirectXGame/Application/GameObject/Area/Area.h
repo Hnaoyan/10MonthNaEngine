@@ -15,7 +15,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model);
+	void Initialize(Model* model, Model* yellowLineModel);
 
 	/// <summary>
 	/// 更新
@@ -61,6 +61,12 @@ private: // メンバ変数
 
 	// モデル
 	Model* model_;
+
+	// ワールドトランスフォーム
+	WorldTransform yellowLineWorldTransform_;
+
+	// モデル
+	Model* yellowLineModel_;
 
 };
 

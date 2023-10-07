@@ -89,6 +89,7 @@ private:	// メンバポインタ
 	//エリア
 	std::unique_ptr<Area> area_;
 	std::unique_ptr<Model> areaModel_;
+	std::unique_ptr<Model> yellowLineModel_;
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;

@@ -32,8 +32,9 @@ void GameScene::Initialize() {
 
 	//エリア
 	areaModel_.reset(Model::CreateFromObj("area", true));
+	yellowLineModel_.reset(Model::CreateFromObj("yellowLine", true));;
 	area_ = make_unique<Area>();
-	area_->Initialize(areaModel_.get());
+	area_->Initialize(areaModel_.get(), yellowLineModel_.get());
 
 	// プレイヤー
 	playerModel_.reset(Model::CreateFromObj("player", true));

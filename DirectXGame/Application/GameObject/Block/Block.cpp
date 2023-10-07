@@ -256,8 +256,6 @@ void BlockStateScaffoldColor::OnCollision(uint32_t collisonObj, WorldTransform* 
 			pBlock_->ChangeState(BlockState::kScaffold);
 		}
 
-
-
 	}
 
 }
