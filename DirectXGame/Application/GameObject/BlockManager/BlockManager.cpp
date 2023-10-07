@@ -228,17 +228,8 @@ void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 
 }
 
-void BlockManager::ApplyGlobalVariables()
+void BlockManager::EnemyAttackBlockGenerate()
 {
-
-	// 調整項目クラスのインスタンス取得
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	// グループ名の設定
-	const char* groupName = "Block";
-
-	kBaseFireBlockSpeed_ = globalVariables->GetFloatValue(groupName, "kBaseFireBlockSpeed_");
-	kBaseScaffoldBlockGenerateInterval_ = globalVariables->GetIntValue(groupName, "kBaseScaffoldBlockGenerateInterval_");
-
 }
 
 void BlockManager::ScaffoldBlockGenerate()
@@ -265,6 +256,15 @@ void BlockManager::SetScaffoldBlockGenerateTimer()
 	timedCalls_.push_back(new TimedCall(std::bind(&BlockManager::ScaffoldBlockGenerate, this), scaffoldBlockGenerateInterval_));
 }
 
-void BlockManager::EnemyAttackBlockGenerate()
+void BlockManager::ApplyGlobalVariables()
 {
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "Block";
+
+	kBaseFireBlockSpeed_ = globalVariables->GetFloatValue(groupName, "kBaseFireBlockSpeed_");
+	kBaseScaffoldBlockGenerateInterval_ = globalVariables->GetIntValue(groupName, "kBaseScaffoldBlockGenerateInterval_");
+
 }

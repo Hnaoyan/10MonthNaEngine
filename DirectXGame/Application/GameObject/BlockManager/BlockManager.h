@@ -59,9 +59,9 @@ public: // メンバ関数
 	void PlayerAttackUnion(PlayerAttack* playerAttackUnionData);
 
 	/// <summary>
-	/// 調整項目適用関数
+	/// エネミーの攻撃ブロック生成
 	/// </summary>
-	void ApplyGlobalVariables();
+	void EnemyAttackBlockGenerate();
 
 private: // メンバ関数
 
@@ -76,9 +76,9 @@ private: // メンバ関数
 	void SetScaffoldBlockGenerateTimer();
 
 	/// <summary>
-	/// エネミーの攻撃ブロック生成
+	/// 調整項目適用関数
 	/// </summary>
-	void EnemyAttackBlockGenerate();
+	void ApplyGlobalVariables();
 
 public: // アクセッサ
 
@@ -135,6 +135,18 @@ public: // アクセッサ
 	/// <param name="playerAttackUnionData"></param>
 	void SetPlayerAttackUnionData(PlayerAttack* playerAttackUnionData) { playerAttackUnionData_ = playerAttackUnionData; }
 
+	/// <summary>
+	/// ボスへのダメージ用ゲッター
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetBossDamage() { return bossDamage_; }
+
+	/// <summary>
+	/// ボスへのダメージ用セッター
+	/// </summary>
+	/// <param name="bossDamage"></param>
+	void SetBossDamage(uint32_t bossDamage) { bossDamage_ = bossDamage; }
+
 private: // メンバ変数
 
 	// ブロック
@@ -166,6 +178,9 @@ private: // メンバ変数
 
 	// プレイヤーのアタック合体保存用
 	PlayerAttack* playerAttackUnionData_ = nullptr;
+
+	// ボスへのダメージ用
+	uint32_t bossDamage_ = 0u;
 
 private: // メンバ定数
 
