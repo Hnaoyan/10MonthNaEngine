@@ -237,8 +237,29 @@ void BlockStateScaffoldColor::Update()
 
 void BlockStateScaffoldColor::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
-	collisonObj;
-	worldTransform;
+
+	if (collisonObj & CollisionAttribute::blockEnemyAttack) {
+
+		Vector2 partnerPos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1] };
+		Vector2 blockPos = { pBlock_->GetWorldTransform().matWorld_.m[3][0], pBlock_->GetWorldTransform().matWorld_.m[3][1] };
+
+		Vector2 blockLT = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockRT = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockLB = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y - pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockRB = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y - pBlock_->GetCollider().GetSize().y / 2.0f };
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockLB) || Math2d::segmentsCrossing(partnerPos, blockPos, blockRT, blockRB)) {
+			return;
+		}
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockRT) || Math2d::segmentsCrossing(partnerPos, blockPos, blockLB, blockRB)) {
+			pBlock_->ChangeState(BlockState::kScaffold);
+		}
+
+
+
+	}
+
 }
 
 void BlockStatePlayerAttack::Initialize(Block* pBlock)
