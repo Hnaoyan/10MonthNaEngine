@@ -292,6 +292,11 @@ void BlockStatePlayerAttack::OnCollision(uint32_t collisonObj, WorldTransform* w
 
 		}
 	}
+	else if (collisonObj & CollisionAttribute::bossEnemy) {
+		pBlock_->SetIsDead(true);
+		pBlock_->GetPlayerAttack()->ComboUp();
+		pBlock_->GetBlockManager()->SetBossDamage(pBlock_->GetPlayerAttack()->GetCombo());
+	}
 
 }
 

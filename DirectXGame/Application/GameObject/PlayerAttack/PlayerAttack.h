@@ -71,6 +71,12 @@ public: //アクセッサ
 	/// <returns></returns>
 	std::list<Block*> GetBlock() { return blocks_; }
 
+	/// <summary>
+	/// コンボゲッター
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetCombo() { return combo_; }
+
 private: //メンバ変数
 
 	// ブロック

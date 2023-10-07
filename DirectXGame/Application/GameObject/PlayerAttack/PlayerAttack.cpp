@@ -10,7 +10,7 @@ void PlayerAttack::Initialize(Block* block)
 	parentBlock_ = blocks_.front();
 
 	// コンボ
-	combo_ = 1;
+	combo_ = 0;
 
 	// このフレームでコンボが増えたか
 	isComboUp_ = false;
@@ -50,6 +50,9 @@ void PlayerAttack::DeleteBlock()
 
 void PlayerAttack::ComboUp()
 {
+	if (isComboUp_) {
+		return;
+	}
 
 	combo_++;
 

@@ -90,6 +90,10 @@ void BossEnemy::Setting()
 
 	// コライダー
 	collider_.Initialize(&worldTransform_, kColliderSize_);
+	collider_.SetCollisionAttribute(CollisionAttribute::bossEnemy);
+	uint32_t mask = 0xffffffff;
+	mask -= CollisionAttribute::bossEnemy + CollisionAttribute::blockEnemyAttack + CollisionAttribute::blockScaffold + CollisionAttribute::blockScaffoldColor;
+	collider_.SetCollisionMask(mask);
 
 	// HP
 	hp_ = kInitialHp_;
@@ -110,7 +114,7 @@ void BossEnemy::Setting()
 
 void BossEnemy::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
-	if (collisonObj == BlockState::kPlayerAttack) {
+	if (collisonObj & CollisionAttribute::blockPlayerAttack) {
 		Damage();
 	}
 	worldTransform;
