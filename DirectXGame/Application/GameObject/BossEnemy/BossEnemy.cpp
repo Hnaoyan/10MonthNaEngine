@@ -82,6 +82,11 @@ void BossEnemy::Setting()
 
 void BossEnemy::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
+	if (collisonObj == BlockState::kPlayerAttack) {
+		Damage();
+	}
+	worldTransform;
+
 }
 
 void BossEnemy::DropBlock()
