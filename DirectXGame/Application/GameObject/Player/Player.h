@@ -123,6 +123,9 @@ private: // メンバ変数
 	// 空中ジャンプしたか
 	bool isMidairJump_;
 
+	// 大技を放てるか？
+	bool amazingCondition_;
+
 private: // ポインタ
 
 	//エリア

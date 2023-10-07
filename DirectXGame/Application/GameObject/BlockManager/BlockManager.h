@@ -51,6 +51,12 @@ public: // メンバ関数
 	/// </summary>
 	void BlockFiring();
 
+
+	/// <summary>
+	/// ブロック発射(大技)
+	/// </summary>
+	void AmazingBlockFiring(float posY);
+
 	/// <summary>
 	/// プレイヤーのアタック合体
 	/// </summary>
@@ -205,6 +211,9 @@ private: // メンバ定数
 
 	// 発射されているブロックベース速度
 	float kBaseFireBlockSpeed_ = 0.05f;
+
+	// 発射されているブロックベース速度Amazing
+	float kBaseAmazingFireBlockSpeed_ = 0.8f;
 
 	// 足場ブロック生成インターバルベース
 	int kBaseScaffoldBlockGenerateInterval_ = 300;

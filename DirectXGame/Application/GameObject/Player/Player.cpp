@@ -56,7 +56,13 @@ void Player::Update()
 		MidairJump();
 	}
 
+	// 着地している
 	if(islanding_) {
+		// 黄色線より高い
+		if (area_->kYellowLine_ <= worldTransform_.matWorld_.m[3][1]) {
+			amazingCondition_ = true;
+		}
+		// ジャンプ
 		Jump();
 	}
 
@@ -107,13 +113,16 @@ void Player::Setting()
 	//空中ジャンプしたか
 	isMidairJump_ = false;
 
+	// 大技を放てるか？
+	amazingCondition_ = false;
+
 }
 
 void Player::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
 
-	//エネミーの攻撃状態でない
-	if (!(collisonObj & CollisionAttribute::blockEnemyAttack)) {
+	//エネミー関連でない
+	if (!(collisonObj & CollisionAttribute::blockEnemyAttack) || !(collisonObj & CollisionAttribute::bossEnemy)) {
 		OnCollisionBlock(worldTransform);
 	}
 	// 他はダメージ受ける
@@ -284,6 +293,12 @@ void Player::FallToTheBottom()
 	worldTransform_.translation_.y = area_->kPositionMin_.y + collider_.GetSize().y / 2.0f;
 	velocity_.y = 0.0f;
 
+	if (amazingCondition_) {
+		amazingCondition_ = false;
+		// 大技
+		blockManager_->AmazingBlockFiring(worldTransform_.matWorld_.m[3][1]);
+	}
+
 }
 
 void Player::OnCollisionBlock(WorldTransform* worldTransform)
@@ -315,6 +330,11 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 		islanding_ = true;
 		isMidairJump_ = false;
 		velocity_.y = 0.0f;
+		if (amazingCondition_) {
+			amazingCondition_ = false;
+			// 大技
+			blockManager_->AmazingBlockFiring(worldTransform_.matWorld_.m[3][1]);
+		}
 	}
 	//上
 	else if (Math2d::segmentsCrossing(playerPos, blockPos, playerLT, playerRT)) {
@@ -349,6 +369,11 @@ void Player::OnCollisionBlock(WorldTransform* worldTransform)
 		islanding_ = true;
 		isMidairJump_ = false;
 		velocity_.y = 0.0f;
+		if (amazingCondition_) {
+			amazingCondition_ = false;
+			// 大技
+			blockManager_->AmazingBlockFiring(worldTransform_.matWorld_.m[3][1]);
+		}
 	}
 
 }

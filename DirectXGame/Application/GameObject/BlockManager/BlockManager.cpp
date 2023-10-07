@@ -193,6 +193,36 @@ void BlockManager::BlockFiring()
 
 }
 
+void BlockManager::AmazingBlockFiring(float posY)
+{
+
+	std::vector<Block*> fireBlocks;
+
+	//とぶか?
+	for (Block* block : blocks_) {
+		if ( (block->GetStateName() == BlockState::kScaffold || block->GetStateName() == BlockState::kScaffoldColor) && 
+			block->GetWorldTransform().matWorld_.m[3][1] >= posY) {
+			fireBlockCount_++;
+			fireBlocks.push_back(block);
+		}
+	}
+
+	// プレイヤーのアタック関数
+	std::list<PlayerAttack*> playerAttacks;
+
+	//発射処理
+	for (Block* block : fireBlocks) {
+		block->ChangeState(BlockState::kPlayerAttack);
+		PlayerAttack* playerAttack = new PlayerAttack();
+		playerAttack->Initialize(block);
+		playerAttack->SetParentBlock(block);
+		Vector2 speed = { 0.0f , kBaseAmazingFireBlockSpeed_ };
+		block->SetVelocity(speed);
+		playerAttacks_.push_back(playerAttack);
+	}
+
+}
+
 void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 {
 
@@ -205,8 +235,15 @@ void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 		playerAttackUnionData_->GetParentBlock()->GetWorldTransform().translation_.y) {
 
 		//速度
-		playerAttackUnionData_->GetParentBlock()->SetVelocity(playerAttackUnionData->GetParentBlock()->GetVelocity());
-		playerAttackUnionData->GetParentBlock()->SetVelocity(Vector2(0.0f, 0.0f));
+		if (kBaseAmazingFireBlockSpeed_ == playerAttackUnionData_->GetParentBlock()->GetVelocity().y ||
+			kBaseAmazingFireBlockSpeed_ == playerAttackUnionData->GetParentBlock()->GetVelocity().y) {
+			playerAttackUnionData_->GetParentBlock()->SetVelocity(Vector2(0.0f, kBaseAmazingFireBlockSpeed_));
+			playerAttackUnionData->GetParentBlock()->SetVelocity(Vector2(0.0f, 0.0f));
+		}
+		else {
+			playerAttackUnionData_->GetParentBlock()->SetVelocity(playerAttackUnionData->GetParentBlock()->GetVelocity());
+			playerAttackUnionData->GetParentBlock()->SetVelocity(Vector2(0.0f, 0.0f));
+		}
 		// 合体
 		playerAttackUnionData_->AddBlockList(playerAttackUnionData->GetBlock());
 		WorldTransform* a = playerAttackUnionData_->GetParentBlock()->GetWorldTransformAddress();
@@ -220,8 +257,11 @@ void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 	else{
 
 		//速度
-		playerAttackUnionData->GetParentBlock()->SetVelocity(playerAttackUnionData_->GetParentBlock()->GetVelocity());
-		playerAttackUnionData_->GetParentBlock()->SetVelocity(Vector2(0.0f,0.0f));
+		if (kBaseAmazingFireBlockSpeed_ == playerAttackUnionData->GetParentBlock()->GetVelocity().y ||
+			kBaseAmazingFireBlockSpeed_ == playerAttackUnionData_->GetParentBlock()->GetVelocity().y) {
+			playerAttackUnionData->GetParentBlock()->SetVelocity(Vector2(0.0f, kBaseAmazingFireBlockSpeed_));
+			playerAttackUnionData_->GetParentBlock()->SetVelocity(Vector2(0.0f, 0.0f));
+		}
 		// 合体
 		playerAttackUnionData->AddBlockList(playerAttackUnionData_->GetBlock());
 		WorldTransform* a = playerAttackUnionData->GetParentBlock()->GetWorldTransformAddress();
