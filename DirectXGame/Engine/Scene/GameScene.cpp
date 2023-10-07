@@ -42,10 +42,10 @@ void GameScene::Initialize() {
 
 	//ブロック
 	blockModel_.reset(Model::CreateFromObj("block", true));
-	uint32_t blockTextureHandleScaffold = TextureManager::Load("./Resources/block/scaffold.png");
-	uint32_t blockTextureHandleScaffoldColor = TextureManager::Load("./Resources/block/scaffoldColor.png");
-	uint32_t blockTextureHandlePlayerAttack = TextureManager::Load("./Resources/block/playerAttack.png");
-	uint32_t blockTextureHandleEnemyAttack = TextureManager::Load("./Resources/block/enemyAttack.png");
+	uint32_t blockTextureHandleScaffold = TextureManager::Load("./Resources/block/block_00.png");
+	uint32_t blockTextureHandleScaffoldColor = TextureManager::Load("./Resources/block/block_01.png");
+	uint32_t blockTextureHandlePlayerAttack = TextureManager::Load("./Resources/block/block_01.png");
+	uint32_t blockTextureHandleEnemyAttack = TextureManager::Load("./Resources/block/block_01.png");
 	blockTextureHandles_.push_back(blockTextureHandleScaffold);
 	blockTextureHandles_.push_back(blockTextureHandleScaffoldColor);
 	blockTextureHandles_.push_back(blockTextureHandlePlayerAttack);
