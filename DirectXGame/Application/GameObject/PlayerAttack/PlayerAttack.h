@@ -10,7 +10,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(std::list<Block*> blocks);
+	void Initialize(Block* block);
 	
 	/// <summary>
 	/// 更新
@@ -31,9 +31,45 @@ public: // メンバ関数
 	/// ブロックリスト追加
 	/// </summary>
 	/// <param name="blocks"></param>
+	void AddBlockList(Block* block);
+
+	/// <summary>
+	/// ブロックリスト追加
+	/// </summary>
+	/// <param name="blocks"></param>
 	void AddBlockList(std::list<Block*> blocks);
 
 public: //アクセッサ
+
+	/// <summary>
+	/// 親ブロックゲッター
+	/// </summary>
+	/// <returns></returns>
+	Block* GetParentBlock() { return parentBlock_; }
+
+	/// <summary>
+	/// 親ブロックセッター
+	/// </summary>
+	/// <returns></returns>
+	void SetParentBlock(Block* parentBlock) { parentBlock_ = parentBlock; }
+
+	/// <summary>
+	/// 死んでるか
+	/// </summary>
+	/// <returns></returns>
+	bool IsDead() { return isDead_; }
+
+	/// <summary>
+	/// 死んでるかセッター
+	/// </summary>
+	/// <param name="isDead"></param>
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
+	/// <summary>
+	/// ブロックゲッター
+	/// </summary>
+	/// <returns></returns>
+	std::list<Block*> GetBlock() { return blocks_; }
 
 private: //メンバ変数
 
@@ -44,10 +80,13 @@ private: //メンバ変数
 	Block* parentBlock_;
 
 	// コンボ
-	uint32_t combo;
+	uint32_t combo_;
 
 	// このフレームでコンボが増えたか
-	bool isComboUp;
+	bool isComboUp_;
+
+	// 死んでいる(役割的に)
+	bool isDead_;
 
 };
 

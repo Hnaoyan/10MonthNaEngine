@@ -1,5 +1,6 @@
 #include "Block.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
+#include "Application/GameObject/PlayerAttack/PlayerAttack.h"
 #include "Application/GameObject/Area/Area.h"
 #include <Application/Others/Math2d/Math2d.h>
 
@@ -114,7 +115,8 @@ void Block::ChangeState(BlockState blockstate)
 		case kScaffoldColor:
 			state_ = new BlockStateScaffoldColor();
 			collider_.SetCollisionAttribute(CollisionAttribute::blockScaffoldColor);
-			collider_.SetCollisionMask(mask - CollisionAttribute::blockScaffoldColor);
+			mask -= CollisionAttribute::blockScaffold + CollisionAttribute::blockScaffoldColor + CollisionAttribute::blockPlayerAttack;
+			collider_.SetCollisionMask(mask);
 			// テクスチャハンドル
 			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kScaffoldColor);
 			break;
@@ -122,7 +124,8 @@ void Block::ChangeState(BlockState blockstate)
 		case kPlayerAttack:
 			state_ = new BlockStatePlayerAttack();
 			collider_.SetCollisionAttribute(CollisionAttribute::blockPlayerAttack);
-			collider_.SetCollisionMask(mask - CollisionAttribute::blockPlayerAttack);
+			mask -= CollisionAttribute::blockScaffold + CollisionAttribute::blockScaffoldColor;
+			collider_.SetCollisionMask(mask);
 			// テクスチャハンドル
 			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kPlayerAttack);
 			break;
@@ -154,6 +157,16 @@ void Block::ScaffoldRise()
 	}
 
 	worldTransform_.translation_.y += collider_.GetSize().y;
+	worldTransform_.UpdateMatrix();
+
+}
+
+void Block::ParentChange(WorldTransform* parent)
+{
+
+	worldTransform_.translation_.x = worldTransform_.matWorld_.m[3][0] - parent->matWorld_.m[3][0];
+	worldTransform_.translation_.y = worldTransform_.matWorld_.m[3][1] - parent->matWorld_.m[3][1];
+	worldTransform_.parent_ = parent;
 	worldTransform_.UpdateMatrix();
 
 }
@@ -251,8 +264,35 @@ void BlockStatePlayerAttack::Update()
 
 void BlockStatePlayerAttack::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
-	collisonObj;
-	worldTransform;
+	
+	//合体
+	if (collisonObj & CollisionAttribute::blockPlayerAttack){
+
+		Vector2 partnerPos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1] };
+		Vector2 blockPos = { pBlock_->GetWorldTransform().matWorld_.m[3][0], pBlock_->GetWorldTransform().matWorld_.m[3][1]};
+
+		Vector2 blockLT = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockRT = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockLB = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y - pBlock_->GetCollider().GetSize().y / 2.0f };
+		Vector2 blockRB = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y - pBlock_->GetCollider().GetSize().y / 2.0f };
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockLB) || Math2d::segmentsCrossing(partnerPos, blockPos, blockRT, blockRB)) {
+			return;
+		}
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockRT) || Math2d::segmentsCrossing(partnerPos, blockPos, blockLB, blockRB)) {
+			
+			// 合体用保存データにいれる
+			if (!pBlock_->GetBlockManager()->GetPlayerAttackUnionData()) {
+				pBlock_->GetBlockManager()->SetPlayerAttackUnionData(pBlock_->GetPlayerAttack());
+			}
+			// 合体開始　今回のデータ
+			else {
+				pBlock_->GetBlockManager()->PlayerAttackUnion(pBlock_->GetPlayerAttack());
+			}
+
+		}
+	}
+
 }
 
 void BlockStateEnemyAttack::Initialize(Block* pBlock)

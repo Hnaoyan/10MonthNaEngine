@@ -60,6 +60,10 @@ void BlockManager::Update()
 		timedCall->Update();
 	}
 
+	for (PlayerAttack* playerAttack : playerAttacks_) {
+		playerAttack->Update();
+	}
+
 }
 
 void BlockManager::Draw(const ViewProjection& viewProjection)
@@ -85,6 +89,11 @@ void BlockManager::Setting()
 		return true;
 	});
 
+	//playerAttackの解放
+	playerAttacks_.remove_if([](PlayerAttack* playerAttack) {
+		delete playerAttack;
+		return true;
+	});
 
 	// コライダーサイズ
 	colliderSize_ = { 2.0f, 2.0f };
@@ -111,6 +120,15 @@ void BlockManager::DeleteBlock()
 		return false;
 	});
 
+	//block_の解放
+	playerAttacks_.remove_if([](PlayerAttack* playerAttack){
+		if (playerAttack->IsDead()) {
+			delete playerAttack;
+			return true;
+		}
+		return false;
+	});
+
 }
 
 void BlockManager::BlockFiring()
@@ -131,12 +149,82 @@ void BlockManager::BlockFiring()
 	//速度決定
 	speed.y *= static_cast<float>(fireBlockCount_);
 
+	// プレイヤーのアタック関数
+	std::list<PlayerAttack*> playerAttacks;
+
 	//発射処理
 	for (Block* block : fireBlocks) {
 		block->ChangeState(BlockState::kPlayerAttack);
-		block->SetVelocity(speed);
+
+		// 所属したか
+		bool isJoin = false;
+		for (PlayerAttack* playerAttack : playerAttacks) {
+			if (playerAttack->GetParentBlock()->GetWorldTransform().translation_.y
+				== block->GetWorldTransform().translation_.y) {
+				playerAttack->AddBlockList(block);
+				isJoin = true;
+				break;
+			}
+		}
+
+		// してない(新しいアタックオブジェクト生成)
+		if (!isJoin) {
+			PlayerAttack* playerAttack = new PlayerAttack();
+			playerAttack->Initialize(block);
+			playerAttack->SetParentBlock(block);
+			block->SetVelocity(speed);
+			playerAttacks.push_back(playerAttack);
+		}
 	}
 
+	for (PlayerAttack* playerAttack : playerAttacks) {
+		playerAttacks_.push_back(playerAttack);
+	}
+
+}
+
+void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
+{
+
+	if (playerAttackUnionData == playerAttackUnionData_) {
+		return;
+	}
+
+	// どちらの親が下にあるか
+	if (playerAttackUnionData->GetParentBlock()->GetWorldTransform().translation_.y >
+		playerAttackUnionData_->GetParentBlock()->GetWorldTransform().translation_.y) {
+
+		//速度
+		playerAttackUnionData_->GetParentBlock()->SetVelocity(playerAttackUnionData->GetParentBlock()->GetVelocity());
+		playerAttackUnionData->GetParentBlock()->SetVelocity(Vector2(0.0f, 0.0f));
+		// 合体
+		playerAttackUnionData_->AddBlockList(playerAttackUnionData->GetBlock());
+		WorldTransform* a = playerAttackUnionData_->GetParentBlock()->GetWorldTransformAddress();
+		playerAttackUnionData->GetParentBlock()->ParentChange(a);
+
+
+		// 合体したPlayerAttackを死亡判定に
+		playerAttackUnionData->SetIsDead(true);
+
+	}
+	else{
+
+
+		//速度
+		playerAttackUnionData->GetParentBlock()->SetVelocity(playerAttackUnionData_->GetParentBlock()->GetVelocity());
+		playerAttackUnionData_->GetParentBlock()->SetVelocity(Vector2(0.0f,0.0f));
+		// 合体
+		playerAttackUnionData->AddBlockList(playerAttackUnionData_->GetBlock());
+		WorldTransform* a = playerAttackUnionData->GetParentBlock()->GetWorldTransformAddress();
+		playerAttackUnionData_->GetParentBlock()->ParentChange(a);
+
+		// 合体したPlayerAttackを死亡判定に
+		playerAttackUnionData_->SetIsDead(true);
+
+	}
+
+	// 保存データをNULLに 
+	playerAttackUnionData_ = nullptr;
 
 }
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include "Application/GameObject/Block/Block.h"
 #include "Application/Others/TimedCall/TimedCall.h"
+#include "Application/GameObject/PlayerAttack/PlayerAttack.h"
 
 //前方宣言
 class Area;
@@ -49,6 +50,13 @@ public: // メンバ関数
 	/// ブロック発射
 	/// </summary>
 	void BlockFiring();
+
+	/// <summary>
+	/// プレイヤーのアタック合体
+	/// </summary>
+	/// <param name="playerAttackUnionData"></param>
+	/// <param name="match"></param>
+	void PlayerAttackUnion(PlayerAttack* playerAttackUnionData);
 
 	/// <summary>
 	/// 調整項目適用関数
@@ -115,6 +123,18 @@ public: // アクセッサ
 	/// <param name="fireBlockCount"></param>
 	void SetFireBlockCount(uint32_t fireBlockCount) { fireBlockCount_ = fireBlockCount; }
 
+	/// <summary>
+	/// プレイヤーのアタック合体保存用ゲッター
+	/// </summary>
+	/// <returns></returns>
+	PlayerAttack* GetPlayerAttackUnionData() { return playerAttackUnionData_; }
+
+	/// <summary>
+	/// プレイヤーのアタック合体保存用セッター
+	/// </summary>
+	/// <param name="playerAttackUnionData"></param>
+	void SetPlayerAttackUnionData(PlayerAttack* playerAttackUnionData) { playerAttackUnionData_ = playerAttackUnionData; }
+
 private: // メンバ変数
 
 	// ブロック
@@ -140,6 +160,12 @@ private: // メンバ変数
 
 	// 発射されているブロック数
 	uint32_t fireBlockCount_;
+
+	// プレイヤーのアタック
+	std::list<PlayerAttack*> playerAttacks_;
+
+	// プレイヤーのアタック合体保存用
+	PlayerAttack* playerAttackUnionData_ = nullptr;
 
 private: // メンバ定数
 

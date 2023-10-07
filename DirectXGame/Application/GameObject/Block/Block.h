@@ -9,6 +9,7 @@
 //前方宣言
 class Block;
 class BlockManager;
+class PlayerAttack;
 
 /// <summary>
 /// ブロックの状態
@@ -149,6 +150,12 @@ public: // メンバ関数
 	void ScaffoldRise();
 
 	/// <summary>
+	/// 親変更
+	/// </summary>
+	/// <param name="parent"></param>
+	void ParentChange(WorldTransform* parent);
+
+	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
 	/// <param name="collisonObj">衝突したOBJ</param>
@@ -205,6 +212,12 @@ public: // アクセッサ
 	WorldTransform GetWorldTransform() { return worldTransform_; }
 
 	/// <summary>
+	/// ワールドトランスフォームゲッター
+	/// </summary>
+	/// <returns></returns>
+	WorldTransform* GetWorldTransformAddress() { return &worldTransform_; }
+
+	/// <summary>
 	/// ワールドトランスフォームセッター
 	/// </summary>
 	/// <param name="worldTransform"></param>
@@ -228,6 +241,17 @@ public: // アクセッサ
 	/// <returns></returns>
 	BlockManager* GetBlockManager() { return blockManager_; }
 
+	/// <summary>
+	/// 自分の所属しているアタックゲッター
+	/// </summary>
+	/// <returns></returns>
+	PlayerAttack* GetPlayerAttack() { return playerAttack_; }
+
+	/// <summary>
+	/// 自分の所属しているアタックセッター
+	/// </summary>
+	/// <param name="playerAttack"></param>
+	void SetPlayerAttack(PlayerAttack* playerAttack) { playerAttack_ = playerAttack; }
 
 private: // メンバ変数
 
@@ -263,6 +287,9 @@ private: // メンバ変数
 
 	// 親か
 	bool isParent_;
+
+	// 自分の所属しているアタック
+	PlayerAttack* playerAttack_ = nullptr;
 
 };
 

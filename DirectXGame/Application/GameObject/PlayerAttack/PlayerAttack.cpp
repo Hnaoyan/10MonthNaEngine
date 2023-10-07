@@ -1,19 +1,24 @@
 #include "PlayerAttack.h"
 
-void PlayerAttack::Initialize(std::list<Block*> blocks)
+void PlayerAttack::Initialize(Block* block)
 {
 
 	// ブロック
-	blocks_ = blocks;
+	blocks_.push_back(block);
 
 	// 親ブロック
 	parentBlock_ = blocks_.front();
 
 	// コンボ
-	combo = 1;
+	combo_ = 1;
 
 	// このフレームでコンボが増えたか
-	isComboUp = false;
+	isComboUp_ = false;
+
+	// 死んでいる(役割的に)
+	isDead_ = false;
+
+	block->SetPlayerAttack(this);
 
 }
 
@@ -22,7 +27,11 @@ void PlayerAttack::Update()
 
 	DeleteBlock();
 
-	isComboUp = false;
+	isComboUp_ = false;
+
+	if (parentBlock_ == nullptr) {
+		isDead_ = true;
+	}
 
 }
 
@@ -42,9 +51,23 @@ void PlayerAttack::DeleteBlock()
 void PlayerAttack::ComboUp()
 {
 
-	combo++;
+	combo_++;
 
-	isComboUp = true;
+	isComboUp_ = true;
+
+}
+
+void PlayerAttack::AddBlockList(Block* block)
+{
+
+	blocks_.push_back(block);
+	WorldTransform worldTransform;
+	worldTransform.Initialize();
+	worldTransform.parent_ = parentBlock_->GetWorldTransformAddress();
+	worldTransform.translation_.x = block->GetWorldTransform().matWorld_.m[3][0] - parentBlock_->GetWorldTransform().matWorld_.m[3][0];
+	worldTransform.UpdateMatrix();
+	block->SetWorldTransform(worldTransform);
+	block->SetPlayerAttack(this);
 
 }
 
@@ -53,6 +76,7 @@ void PlayerAttack::AddBlockList(std::list<Block*> blocks)
 
 	for (Block* block : blocks) {
 		blocks_.push_back(block);
+		block->SetPlayerAttack(this);
 	}
 
 }
