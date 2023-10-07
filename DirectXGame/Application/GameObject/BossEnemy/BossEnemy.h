@@ -67,6 +67,11 @@ private: // メンバ関数
 	/// </summary>
 	void Damage();
 
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 public: // アクセッサ
 
 	/// <summary>
@@ -132,5 +137,11 @@ private: // メンバ定数
 
 	// 初期Hp
 	uint32_t kInitialHp_ = 10;
+
+	// コライダーサイズ
+	Vector2 kColliderSize_ = { 20.0f, 2.0f };
+
+	// 初期位置
+	Vector3 kInitialPosition_ = { 10.0f,39.0f, -1.0f };
 
 };

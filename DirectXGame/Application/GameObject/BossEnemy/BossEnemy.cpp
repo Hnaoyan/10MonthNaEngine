@@ -1,5 +1,6 @@
 #include "BossEnemy.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
+#include <GlobalVariables.h>
 
 BossEnemy::~BossEnemy()
 {
@@ -26,16 +27,39 @@ void BossEnemy::Initialize(Model* model, BlockManager* blockManager)
 	// エネミーの攻撃関数
 	enemyAttackFunc_ = std::function<void()>(std::bind(&BlockManager::EnemyAttackBlockGenerate, blockManager_));
 
-	Setting();
-
 	//コールバック設定
 	std::function<void(uint32_t, WorldTransform*)> f = std::function<void(uint32_t, WorldTransform*)>(std::bind(&BossEnemy::OnCollision, this, std::placeholders::_1, std::placeholders::_2));
 	collider_.SetFunction(f);
+
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "BossEnemy";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	globalVariables->AddItem(groupName, "kDropBlockInterval_", kDropBlockInterval_);
+	globalVariables->AddItem(groupName, "kInitialHp_", static_cast<int>(kInitialHp_));
+	globalVariables->AddItem(groupName, "kColliderSize_", kColliderSize_);
+	globalVariables->AddItem(groupName, "kInitialPosition_", kInitialPosition_);
+
+	ApplyGlobalVariables();
+
+#pragma endregion
+
+	Setting();
 
 }
 
 void BossEnemy::Update()
 {
+
+#ifdef _DEBUG
+	ApplyGlobalVariables();
+#endif // _DEBUG
 
 	for (TimedCall* timedCall : timedCalls_) {
 		timedCall->Update();
@@ -59,13 +83,13 @@ void BossEnemy::Setting()
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { 10.0f,39.0f, -1.0f };
+	worldTransform_.translation_ = kInitialPosition_;
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();
 
 	// コライダー
-	collider_.Initialize(&worldTransform_, Vector2(20.0f, 2.0f));
+	collider_.Initialize(&worldTransform_, kColliderSize_);
 
 	// HP
 	hp_ = kInitialHp_;
@@ -113,5 +137,20 @@ void BossEnemy::Damage()
 	if (hp_ <= 0) {
 		isDead_ = false;
 	}
+
+}
+
+void BossEnemy::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "BossEnemy";
+
+	kDropBlockInterval_ = globalVariables->GetIntValue(groupName, "kDropBlockInterval_");
+	kInitialHp_ = static_cast<uint32_t>(globalVariables->GetIntValue(groupName, "kInitialHp_"));
+	kColliderSize_ = globalVariables->GetVector2Value(groupName, "kColliderSize_");
+	kInitialPosition_ = globalVariables->GetVector3Value(groupName, "kInitialPosition_");
 
 }
