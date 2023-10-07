@@ -141,8 +141,6 @@ void BlockManager::DeleteBlock()
 void BlockManager::BlockFiring()
 {
 
-	Vector2 speed = { 0.0f , kBaseFireBlockSpeed_ };
-
 	std::vector<Block*> fireBlocks;
 
 	//とぶか?
@@ -152,9 +150,6 @@ void BlockManager::BlockFiring()
 			fireBlocks.push_back(block);
 		}
 	}
-
-	//速度決定
-	speed.y *= static_cast<float>(fireBlockCount_);
 
 	// プレイヤーのアタック関数
 	std::list<PlayerAttack*> playerAttacks;
@@ -169,6 +164,8 @@ void BlockManager::BlockFiring()
 			if (playerAttack->GetParentBlock()->GetWorldTransform().translation_.y
 				== block->GetWorldTransform().translation_.y) {
 				playerAttack->AddBlockList(block);
+				Vector2 speed = { 0.0f, playerAttack->GetParentBlock()->GetVelocity().y + kBaseFireBlockSpeed_ };
+				playerAttack->GetParentBlock()->SetVelocity(speed);
 				isJoin = true;
 				break;
 			}
@@ -179,6 +176,7 @@ void BlockManager::BlockFiring()
 			PlayerAttack* playerAttack = new PlayerAttack();
 			playerAttack->Initialize(block);
 			playerAttack->SetParentBlock(block);
+			Vector2 speed = { 0.0f , kBaseFireBlockSpeed_ };
 			block->SetVelocity(speed);
 			playerAttacks.push_back(playerAttack);
 		}
