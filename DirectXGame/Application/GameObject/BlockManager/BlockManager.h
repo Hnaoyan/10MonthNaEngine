@@ -63,6 +63,11 @@ public: // メンバ関数
 	/// </summary>
 	void EnemyAttackBlockGenerate();
 
+	/// <summary>
+	/// エネミーの攻撃からプレイヤー攻撃へ
+	/// </summary>
+	void EnemyAttackPlayerAttackChange(Block* block);
+
 private: // メンバ関数
 
 	/// <summary>
@@ -189,6 +194,9 @@ private: // メンバ定数
 
 	// コライダーサイズ
 	Vector2 kColliderSize_ = { 2.0f, 2.0f};
+
+	// 落下してくるブロックベース速度
+	float kBaseFallBlockSpeed_ = 0.4f;
 
 };
 

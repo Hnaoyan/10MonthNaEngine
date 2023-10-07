@@ -39,21 +39,25 @@ void Block::Initialize(Model* model, BlockState blockState, const Vector3& trans
 	// ブロックマネージャー
 	blockManager_ = blockManager;
 
+	uint32_t mask = 0xffffffff;
+
 	// 状態
 	switch (stateName_)
 	{
 	case kScaffold:
 		state_ = new BlockStateScaffold();
 		collider_.SetCollisionAttribute(CollisionAttribute::blockScaffold);
-		collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffold);
+		mask -= CollisionAttribute::blockScaffold + CollisionAttribute::blockScaffoldColor + CollisionAttribute::blockPlayerAttack;
+		collider_.SetCollisionMask(mask);
 		// テクスチャハンドル
 		textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kScaffold);
 		break;
 
 	case kEnemyAttack:
 		state_ = new BlockStateEnemyAttack();
-		collider_.SetCollisionAttribute(CollisionAttribute::blockScaffold);
-		collider_.SetCollisionMask(0xffffffff - CollisionAttribute::blockScaffold);
+		collider_.SetCollisionAttribute(CollisionAttribute::blockEnemyAttack);
+		mask -= CollisionAttribute::blockEnemyAttack + CollisionAttribute::bossEnemy;
+		collider_.SetCollisionMask(mask);
 		// テクスチャハンドル
 		textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kEnemyAttack);
 		break;
@@ -132,8 +136,9 @@ void Block::ChangeState(BlockState blockstate)
 
 		case kEnemyAttack:
 			state_ = new BlockStateEnemyAttack();
+			mask -= CollisionAttribute::blockEnemyAttack + CollisionAttribute::bossEnemy;
 			collider_.SetCollisionAttribute(CollisionAttribute::blockEnemyAttack);
-			collider_.SetCollisionMask(mask - CollisionAttribute::blockEnemyAttack);
+			collider_.SetCollisionMask(mask);
 			// テクスチャハンドル
 			textureHandle_ = blockManager_->GetTextureHandles().at(BlockState::kEnemyAttack);
 			break;
@@ -313,10 +318,59 @@ void BlockStateEnemyAttack::Initialize(Block* pBlock)
 
 void BlockStateEnemyAttack::Update()
 {
+	WorldTransform worldTransform = pBlock_->GetWorldTransform();
+	worldTransform.translation_.y -= pBlock_->GetVelocity().y;
+	pBlock_->SetWorldTransform(worldTransform);
+
+	if (worldTransform.matWorld_.m[3][1] <= pBlock_->GetBlockManager()->GetArea()->kPositionMin_.y + pBlock_->GetCollider().GetSize().y / 2.0f) {
+		worldTransform.translation_.y = pBlock_->GetBlockManager()->GetArea()->kPositionMin_.y + pBlock_->GetCollider().GetSize().y / 2.0f;
+		pBlock_->SetWorldTransform(worldTransform);
+		pBlock_->ChangeState(BlockState::kScaffold);
+	}
+
 }
 
 void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 {
-	collisonObj;
-	worldTransform;
+
+	Vector2 partnerPos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1] };
+	Vector2 blockPos = { pBlock_->GetWorldTransform().matWorld_.m[3][0], pBlock_->GetWorldTransform().matWorld_.m[3][1] };
+
+	Vector2 blockLT = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+	Vector2 blockRT = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y + pBlock_->GetCollider().GetSize().y / 2.0f };
+	Vector2 blockLB = { blockPos.x - pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y - pBlock_->GetCollider().GetSize().y / 2.0f };
+	Vector2 blockRB = { blockPos.x + pBlock_->GetCollider().GetSize().x / 2.0f, blockPos.y - pBlock_->GetCollider().GetSize().y / 2.0f };
+
+	WorldTransform wT;
+	wT.Initialize();
+	wT.translation_.x = partnerPos.x;
+	wT.translation_.y = partnerPos.y + pBlock_->GetCollider().GetSize().y;
+	wT.UpdateMatrix();
+
+	if (collisonObj & CollisionAttribute::blockPlayerAttack) {
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockLB) || Math2d::segmentsCrossing(partnerPos, blockPos, blockRT, blockRB)) {
+			return;
+		}
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockRT) || Math2d::segmentsCrossing(partnerPos, blockPos, blockLB, blockRB)) {
+			pBlock_->SetWorldTransform(wT);
+			pBlock_->GetBlockManager()->EnemyAttackPlayerAttackChange(pBlock_);
+			pBlock_->ChangeState(BlockState::kPlayerAttack);
+		}
+
+	}
+	else if ((collisonObj & CollisionAttribute::blockScaffold) || (collisonObj & CollisionAttribute::blockScaffoldColor)) {
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockLB) || Math2d::segmentsCrossing(partnerPos, blockPos, blockRT, blockRB)) {
+			return;
+		}
+
+		if (Math2d::segmentsCrossing(partnerPos, blockPos, blockLT, blockRT) || Math2d::segmentsCrossing(partnerPos, blockPos, blockLB, blockRB)) {
+			pBlock_->SetWorldTransform(wT);
+			pBlock_->ChangeState(BlockState::kScaffold);
+		}
+
+	}
+
 }

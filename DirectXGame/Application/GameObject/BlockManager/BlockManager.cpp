@@ -214,7 +214,6 @@ void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 	}
 	else{
 
-
 		//速度
 		playerAttackUnionData->GetParentBlock()->SetVelocity(playerAttackUnionData_->GetParentBlock()->GetVelocity());
 		playerAttackUnionData_->GetParentBlock()->SetVelocity(Vector2(0.0f,0.0f));
@@ -235,6 +234,26 @@ void BlockManager::PlayerAttackUnion(PlayerAttack* playerAttackUnionData)
 
 void BlockManager::EnemyAttackBlockGenerate()
 {
+
+	Block* block = new Block();
+	Vector3 transform =
+	{ kColliderSize_.x / 2.0f,
+		(static_cast<size_t>(area_->kMap_.y) - 1) * kColliderSize_.y + kColliderSize_.y / 2.0f, 0.0f };
+	block->Initialize(model_, BlockState::kEnemyAttack, transform, kColliderSize_, this);
+	block->SetVelocity(Vector2( 0.0f, kBaseFallBlockSpeed_));
+	blocks_.push_back(block);
+
+}
+
+void BlockManager::EnemyAttackPlayerAttackChange(Block* block)
+{
+	PlayerAttack* playerAttack = new PlayerAttack();
+	playerAttack->Initialize(block);
+	playerAttack->SetParentBlock(block);
+	Vector2 speed = { 0.0f , kBaseFireBlockSpeed_ };
+	block->SetVelocity(speed);
+	playerAttacks_.push_back(playerAttack);
+
 }
 
 void BlockManager::ScaffoldBlockGenerate()
