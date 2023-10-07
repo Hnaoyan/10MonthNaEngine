@@ -83,6 +83,12 @@ void GameScene::Update()
 	// ボスエネミー
 	bossEnemy_->Update();
 
+	if (blockManager_->GetGameOver()) {
+		ImGui::Begin("GameOver");
+		ImGui::Text("GameOver");
+		ImGui::End();
+	}
+
 	// 衝突判定
 	CollisionCheak();
 

@@ -50,6 +50,9 @@ public: // メンバ定数
 	// 発射ブロック死亡ライン
 	const float kBlockDeadLine_ = 50.0f;
 
+	// 黄色ライン
+	const float kYellowLine_ = 34.0f;
+
 
 private: // メンバ変数
 

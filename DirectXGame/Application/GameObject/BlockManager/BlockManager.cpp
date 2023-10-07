@@ -113,6 +113,9 @@ void BlockManager::Setting()
 	// 発射されているブロック数
 	fireBlockCount_ = 0;
 
+	// ゲームオーバーフラグ
+	gameOver_ = false;
+
 	SetScaffoldBlockGenerateTimer();
 
 }
@@ -310,7 +313,13 @@ void BlockManager::CheckHeight()
 		if (block->GetStateName() == BlockState::kScaffold || block->GetStateName() == BlockState::kScaffoldColor) {
 			size_t x = static_cast<size_t>((block->GetWorldTransform().matWorld_.m[3][0] - kColliderSize_.x / 2.0f) / kColliderSize_.x);
 			height[x] += kColliderSize_.y;
+			
+			// ゲームオーバーか
+			if (height[x] >= area_->kYellowLine_) {
+				gameOver_ = true;
+			}
 		}
+
 	}
 
 }

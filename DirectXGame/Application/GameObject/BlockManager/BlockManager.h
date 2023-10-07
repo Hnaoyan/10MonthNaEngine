@@ -157,6 +157,12 @@ public: // アクセッサ
 	/// <param name="bossDamage"></param>
 	void SetBossDamage(uint32_t bossDamage) { bossDamage_ = bossDamage; }
 
+	/// <summary>
+	/// ゲームオーバーフラグゲッター
+	/// </summary>
+	/// <returns></returns>
+	bool GetGameOver() { return gameOver_; }
+
 private: // メンバ変数
 
 	// ブロック
@@ -191,6 +197,9 @@ private: // メンバ変数
 
 	// それぞれの高さ
 	float height[10];
+
+	// ゲームオーバーフラグ
+	bool gameOver_;
 
 private: // メンバ定数
 
