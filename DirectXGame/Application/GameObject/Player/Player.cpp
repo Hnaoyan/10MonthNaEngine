@@ -16,8 +16,6 @@ void Player::Initialize(Model* model)
 	// モデル
 	model_ = model;
 
-	Setting();
-
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -32,8 +30,14 @@ void Player::Initialize(Model* model)
 	globalVariables->AddItem(groupName, "kMidairJumpVelocity_", kMidairJumpVelocity_);
 	globalVariables->AddItem(groupName, "kMoveVelocityMax_", kMoveVelocityMax_);
 	globalVariables->AddItem(groupName, "kFallingAcceleration_", kFallingAcceleration_);
+	globalVariables->AddItem(groupName, "kColliderSize_", kColliderSize_);
+	globalVariables->AddItem(groupName, "kInitialPosition_", kInitialPosition_);
+
+	ApplyGlobalVariables();
 
 #pragma endregion
+
+	Setting();
 
 }
 
@@ -74,7 +78,7 @@ void Player::Setting()
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { 0.0f,10.0f,0.0f };
+	worldTransform_.translation_ = kInitialPosition_;
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();
@@ -87,7 +91,7 @@ void Player::Setting()
 
 	// コライダー
 	Vector2 position = { worldTransform_.matWorld_.m[3][0],worldTransform_.matWorld_.m[3][1] };
-	collider_.Initialize(&worldTransform_, Vector2{ 2.0f, 2.0f });
+	collider_.Initialize(&worldTransform_, kColliderSize_);
 	collider_.SetCollisionAttribute(CollisionAttribute::player);
 	collider_.SetCollisionMask(0xffffffff - CollisionAttribute::player);
 	//コールバック設定
@@ -358,5 +362,7 @@ void Player::ApplyGlobalVariables()
 	kMidairJumpVelocity_ = globalVariables->GetFloatValue(groupName, "kMidairJumpVelocity_");
 	kMoveVelocityMax_ = globalVariables->GetFloatValue(groupName, "kMoveVelocityMax_");
 	kFallingAcceleration_ = globalVariables->GetFloatValue(groupName, "kFallingAcceleration_");
+	kColliderSize_ = globalVariables->GetVector2Value(groupName, "kColliderSize_");
+	kInitialPosition_ = globalVariables->GetVector3Value(groupName, "kInitialPosition_");
 
 }

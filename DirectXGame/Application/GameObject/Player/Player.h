@@ -145,5 +145,11 @@ private: // メンバ定数
 	// 落下加速度
 	float kFallingAcceleration_ = -0.1f;
 
+	// コライダーサイズ
+	Vector2 kColliderSize_ = { 2.0f, 2.0f };
+
+	// 初期位置
+	Vector3 kInitialPosition_ = { 0.0f, 10.0f,0.0f };
+
 };
 

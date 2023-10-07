@@ -30,8 +30,6 @@ void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles
 	// テクスチャハンドル
 	textureHandles_ = textureHandles;
 
-	Setting();
-
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -44,8 +42,13 @@ void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles
 
 	globalVariables->AddItem(groupName, "kBaseFireBlockSpeed_", kBaseFireBlockSpeed_);
 	globalVariables->AddItem(groupName, "kBaseScaffoldBlockGenerateInterval_", kBaseScaffoldBlockGenerateInterval_);
+	globalVariables->AddItem(groupName, "kColliderSize_", kColliderSize_);
+
+	ApplyGlobalVariables();
 
 #pragma endregion
+
+	Setting();
 
 }
 
@@ -101,9 +104,6 @@ void BlockManager::Setting()
 		delete playerAttack;
 		return true;
 	});
-
-	// コライダーサイズ
-	colliderSize_ = { 2.0f, 2.0f };
 
 	//足場ブロック生成インターバル
 	scaffoldBlockGenerateInterval_ = kBaseScaffoldBlockGenerateInterval_;
@@ -246,9 +246,9 @@ void BlockManager::ScaffoldBlockGenerate()
 	for (size_t i = 0; i < static_cast<size_t>(area_->kMap_.x); i++) {
 		Block* block = new Block();
 		Vector3 transform =
-		{ colliderSize_.x / 2.0f + colliderSize_.x * static_cast<float>(i),
-			colliderSize_.y / 2.0f, 0.0f };
-		block->Initialize(model_, BlockState::kScaffold, transform, colliderSize_, this);
+		{ kColliderSize_.x / 2.0f + kColliderSize_.x * static_cast<float>(i),
+			kColliderSize_.y / 2.0f, 0.0f };
+		block->Initialize(model_, BlockState::kScaffold, transform, kColliderSize_, this);
 		blocks_.push_back(block);
 	}
 
@@ -271,5 +271,6 @@ void BlockManager::ApplyGlobalVariables()
 
 	kBaseFireBlockSpeed_ = globalVariables->GetFloatValue(groupName, "kBaseFireBlockSpeed_");
 	kBaseScaffoldBlockGenerateInterval_ = globalVariables->GetIntValue(groupName, "kBaseScaffoldBlockGenerateInterval_");
+	kColliderSize_ = globalVariables->GetVector2Value(groupName, "kColliderSize_");
 
 }

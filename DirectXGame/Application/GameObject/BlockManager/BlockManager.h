@@ -109,7 +109,7 @@ public: // アクセッサ
 	/// コライダーサイズゲッター
 	/// </summary>
 	/// <returns></returns>
-	Vector2 GetColliderSize() { return colliderSize_; }
+	Vector2 GetColliderSize() { return kColliderSize_; }
 
 	/// <summary>
 	/// 発射されているブロック数ゲッター
@@ -161,9 +161,6 @@ private: // メンバ変数
 	// エリア
 	Area* area_ = nullptr;
 
-	// コライダーサイズ
-	Vector2 colliderSize_;
-
 	// 足場ブロック生成インターバル
 	int scaffoldBlockGenerateInterval_;
 
@@ -189,6 +186,9 @@ private: // メンバ定数
 
 	// 足場ブロック生成インターバルベース
 	int kBaseScaffoldBlockGenerateInterval_ = 300;
+
+	// コライダーサイズ
+	Vector2 kColliderSize_ = { 2.0f, 2.0f};
 
 };
 
