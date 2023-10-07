@@ -76,6 +76,8 @@ public:
 	/// <returns></returns>
 	static Model* Create();
 
+	static Model* CreatePlane();
+
 	/// <summary>
 	/// OBJファイルからメッシュ生成
 	/// </summary>

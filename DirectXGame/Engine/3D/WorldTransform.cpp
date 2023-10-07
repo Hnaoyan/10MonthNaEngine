@@ -45,8 +45,8 @@ void WorldTransform::SetViewProjection(ViewProjection* view)
 }
 
 void WorldTransform::UpdateMatrix() {
-	//this->matWorld_ =
-	//	MatLib::MakeAffineMatrix(this->scale_, this->rotation_, this->translation_);
+	this->matWorld_ =
+		MatLib::MakeAffineMatrix(this->scale_, this->rotation_, this->translation_);
 	//Matrix4x4 backToFrontMat = MatLib::MakeRotateYMatrix(std::numbers::pi_v<float>);
 	//Matrix4x4 billBoardMat = MatLib::Multiply(backToFrontMat, view_->matView);
 	//billBoardMat.m[3][0] = 0.0f;
@@ -57,12 +57,12 @@ void WorldTransform::UpdateMatrix() {
 	billBoardMat.m[3][1] = 0.0f;
 	billBoardMat.m[3][2] = 0.0f;*/
 
-	Matrix4x4 billBoardMat = MatLib::MakeBillBoard(
-		translation_, view_->translate_, Vector3(0.0f, 1.0f, 0.0f));
+	//Matrix4x4 billBoardMat = MatLib::MakeBillBoard(
+	//	translation_, view_->translate_, Vector3(0.0f, 1.0f, 0.0f));
 
-	Matrix4x4 worldMat = MatLib::MakeAffineMatrix(
-		scale_, rotation_, translation_);
-	matWorld_ = MatLib::Multiply(billBoardMat, worldMat);
+	//Matrix4x4 worldMat = MatLib::MakeAffineMatrix(
+	//	scale_, rotation_, translation_);
+	//matWorld_ = MatLib::Multiply(billBoardMat, worldMat);
 	// 定数バッファに転送
 	TransferMatrix();
 }

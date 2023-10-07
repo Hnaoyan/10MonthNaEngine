@@ -41,8 +41,9 @@ void GameScene::Initialize() {
 	setColor_ = { 1.0f,1.0f,1.0f,1.0f };
 	sprite_ = Sprite::Create(texture, { 200,200 }, { 1.0f,1.0f,1.0f,1.0f }, { 0,0 }, false, false);
 
-	model_.reset(Model::Create());
-	
+	//model_.reset(Model::Create());
+	model_.reset(Model::CreatePlane());
+
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 
 	const char* groupName = "Player";
@@ -62,6 +63,7 @@ void GameScene::Update()
 
 	ImGui::Begin("color");
 	ImGui::ColorEdit4("float", &setColor_.x);
+	ImGui::SliderFloat3("rota", &baseWorld_.rotation_.x, 0, 10.0f);
 	ImGui::End();
 	sprite_->SetColor(setColor_);
 
