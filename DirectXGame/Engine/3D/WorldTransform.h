@@ -17,6 +17,7 @@ struct WorldTransform
 	Matrix4x4 matWorld_;
 	WorldTransform* parent_ = nullptr;
 	ViewProjection* view_ = nullptr;
+	bool isBillBoard_ = false;
 
 	void Initialize();
 
@@ -28,6 +29,6 @@ struct WorldTransform
 
 	void TransferMatrix();
 
-	void SetViewProjection(ViewProjection* view);
+	void BillBoardSetting(ViewProjection* view,bool billBoardFlag);
 };
 

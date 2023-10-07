@@ -30,7 +30,7 @@ void GameScene::Initialize() {
 	baseCamera_->SetPosition({ 0, 10.0f, -25.0f });
 	baseCamera_->SetRotation({ 0.3f, 0, 0 });
 
-	baseWorld_.SetViewProjection(baseCamera_.get()->GetViewPlayer());
+	//baseWorld_.BillBoardSetting(baseCamera_.get()->GetViewPlayer(), true);
 	baseWorld_.Initialize();
 	baseWorld_.translation_ = { 0,0,0 };
 	baseWorld_.scale_ = { 1.0f,1.0f,1.0f };
