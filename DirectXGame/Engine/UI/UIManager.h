@@ -22,12 +22,25 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// 追加
+	/// リストに追加
 	/// </summary>
 	/// <param name="texHandle"></param>
 	/// <param name="position"></param>
 	/// <param name="anchor"></param>
-	void AddUI(int texHandle, const Vector2& position, const Vector2& anchor);
+	void AddUI(int texHandle, const Vector2& position, const Vector2& anchor, const std::string& name);
+
+	/// <summary>
+	/// 指定したUIを削除
+	/// </summary>
+	/// <param name="name"></param>
+	void DeleteUI(const std::string& name);
+
+	/// <summary>
+	/// タグからポインタの検索
+	/// </summary>
+	/// <param name="name"></param>
+	/// <returns></returns>
+	UIBase* GetUI(const std::string& name);
 
 private:
 	std::list<UIBase*> uiSprites_;

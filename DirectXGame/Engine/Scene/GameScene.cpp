@@ -71,14 +71,13 @@ void GameScene::Initialize() {
 	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get(), effectManager_.get());
 	
 	uint32_t sprite = TextureManager::Load("uvChecker.png");
+	string spName_ = "UV";
 	uint32_t ui = TextureManager::Load("white1x1.png");
+	string uiName_ = "white";
 	uiManager_ = make_unique<UIManager>();
-	uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f });
-	uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f });
+	uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
+	uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
 
-	////sprite_ = std::make_unique<Sprite>();
-	//sprite_.reset(Sprite::Create(sprite, { 30.0f,100.0f }, { 1.0f,1.0f,1.0f,1.0f }, { 0.0f, 0.0f }, false, false));
-	//size_ = sprite_->GetSize();
 }
 
 void GameScene::Update()
@@ -122,7 +121,6 @@ void GameScene::Update()
 	if (input_->TriggerKey(DIK_R)) {
 		Reset();
 	}
-
 }
 
 void GameScene::Draw() {
