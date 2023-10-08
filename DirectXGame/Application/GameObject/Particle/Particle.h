@@ -56,7 +56,7 @@ protected:
 	// 削除フラグ
 	bool isDead_ = false;
 	// 消えるカウント
-	int fadeTimer_ = 0;
+	int fadeTimer_ = 60;
 	// 経過時間
 	int timeElapsed_ = 0;
 };

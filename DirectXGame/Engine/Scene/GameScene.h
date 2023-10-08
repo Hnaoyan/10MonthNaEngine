@@ -22,6 +22,7 @@
 #include "BlockManager.h"
 #include "BossEnemy.h"
 #include "UIManager.h"
+#include "ParticleManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -114,6 +115,7 @@ private:	// メンバポインタ
 
 	std::unique_ptr<EffectManager> effectManager_;
 	std::unique_ptr<UIManager> uiManager_;
+	std::unique_ptr<ParticleManager> particleManager_;
 
 	std::unique_ptr<Sprite> sprite_;
 	//Sprite* sprite_;

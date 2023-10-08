@@ -50,6 +50,8 @@ public: // メンバ関数
 	/// </summary>
 	void Demo();
 
+	Vector3 GetPosition() { return worldTransform_.translation_; }
+
 private: //メンバ関数
 
 	/// <summary>

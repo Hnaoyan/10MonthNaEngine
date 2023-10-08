@@ -1,5 +1,6 @@
 #include "ParticleManager.h"
 #include "TextureManager.h"
+#include "VectorLib.h"
 
 ParticleManager* ParticleManager::GetInstance()
 {
@@ -9,7 +10,7 @@ ParticleManager* ParticleManager::GetInstance()
 
 void ParticleManager::Initialize()
 {
-	model_.reset(Model::Create());
+	model_.reset(Model::CreateFromObj("block", true));
 	texture_ = TextureManager::Load("white1x1.png");
 }
 
@@ -42,4 +43,25 @@ void ParticleManager::Draw(ViewProjection& viewProjection)
 	for (Particle* particle : particles_) {
 		particle->Draw(viewProjection);
 	}
+}
+
+void ParticleManager::RandomRespown(const Vector3& point)
+{
+	for (int i = 0; i < 5; i++) {
+		Vector3 resPos = { (float)(rand() % 5 - 2) + point.x,(float)(rand() % 5 - 2) + point.y ,(float)(rand() % 5 - 2) + point.z };
+		Vector3 inverseVect = VectorLib::Subtract(resPos, point);
+		float speed = 3.0f;
+		float deltaTime = (1.0f / 60.0f) * speed;
+		inverseVect = VectorLib::Scaler(inverseVect, deltaTime);
+		AddParticle(resPos, inverseVect);
+	}
+}
+
+void ParticleManager::AddParticle(Vector3& position, Vector3& velocity)
+{
+	Particle* newParticle = new Particle();
+	newParticle->Initialize(model_.get(), texture_);
+	newParticle->SetPosition(position);
+	newParticle->SetVelocity(velocity);
+	particles_.push_back(newParticle);
 }

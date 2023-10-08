@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "VectorLib.h"
 
 void Particle::Initialize(Model* model, uint32_t texture) 
 {
@@ -12,9 +13,12 @@ void Particle::Initialize(Model* model, uint32_t texture)
 
 void Particle::Update() 
 {
-
+	timeElapsed_++;
+	if (timeElapsed_ > fadeTimer_) {
+		isDead_ = true;
+	}
+	worldTransform_.translation_ = VectorLib::Add(worldTransform_.translation_, velocity_);
 	worldTransform_.UpdateMatrix();
-
 }
 
 

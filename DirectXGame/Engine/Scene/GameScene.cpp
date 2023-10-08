@@ -79,6 +79,9 @@ void GameScene::Initialize() {
 	uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
 	uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
 
+	particleManager_ = make_unique<ParticleManager>();
+	particleManager_->Initialize();
+
 }
 
 void GameScene::Update()
@@ -87,6 +90,12 @@ void GameScene::Update()
 	CameraUpdate();
 
 	effectManager_->Update();
+
+	particleManager_->Update();
+
+	if (input_->TriggerKey(DIK_9)) {
+		particleManager_->RandomRespown(player_->GetPosition());
+	}
 
 	// ブロックの死亡確認
 	blockManager_->DeleteBlock();
@@ -156,6 +165,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	
+	particleManager_->Draw(viewProjection_);
+
 	area_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
