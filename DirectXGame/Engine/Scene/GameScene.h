@@ -104,6 +104,7 @@ private:	// メンバポインタ
 	std::unique_ptr<BlockManager> blockManager_;
 	std::unique_ptr<Model> blockModel_;
 	std::vector<uint32_t> blockTextureHandles_;
+	std::unique_ptr<Model> warningModel_;
 
 	// ボスエネミー
 	std::unique_ptr<BossEnemy> bossEnemy_;

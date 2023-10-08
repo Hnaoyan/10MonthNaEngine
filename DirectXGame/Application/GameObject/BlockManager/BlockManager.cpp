@@ -21,7 +21,7 @@ BlockManager::~BlockManager()
 
 }
 
-void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles)
+void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles, Model* warningModel)
 {
 
 	// モデル
@@ -29,6 +29,9 @@ void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles
 
 	// テクスチャハンドル
 	textureHandles_ = textureHandles;
+
+	// 警告モデル
+	warningModel_ = warningModel;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -59,6 +62,9 @@ void BlockManager::Update()
 	ApplyGlobalVariables();
 #endif // _DEBUG
 
+	// 警告を表示するか
+	showWarning = false;
+
 	for (Block* block : blocks_) {
 		block->Update();
 	}
@@ -82,6 +88,10 @@ void BlockManager::Draw(const ViewProjection& viewProjection)
 {
 	for (Block* block : blocks_) {
 		block->Draw(viewProjection);
+	}
+
+	if (showWarning) {
+		warningModel_->Draw(warningWorldTransform_, viewProjection);
 	}
 
 }
@@ -115,6 +125,12 @@ void BlockManager::Setting()
 
 	// ゲームオーバーフラグ
 	gameOver_ = false;
+
+	// 警告ワールドトランスフォーム
+	warningWorldTransform_.Initialize();
+
+	// 警告を表示するか
+	showWarning = false;
 
 	SetScaffoldBlockGenerateTimer();
 
@@ -313,6 +329,18 @@ void BlockManager::EnemyAttackPlayerAttackChange(Block* block)
 	Vector2 speed = { 0.0f , kBaseFireBlockSpeed_ };
 	block->SetVelocity(speed);
 	playerAttacks_.push_back(playerAttack);
+
+}
+
+void BlockManager::Warning(float posX)
+{
+
+	int x = static_cast<int>((posX - kColliderSize_.x / 2.0f) / kColliderSize_.x);
+
+	warningWorldTransform_.translation_ = { posX, height[x], -1.0f };
+	warningWorldTransform_.UpdateMatrix();
+
+	showWarning = true;
 
 }
 

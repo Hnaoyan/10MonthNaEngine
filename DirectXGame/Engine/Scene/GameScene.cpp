@@ -52,9 +52,11 @@ void GameScene::Initialize() {
 	blockTextureHandles_.push_back(blockTextureHandleScaffoldColor);
 	blockTextureHandles_.push_back(blockTextureHandlePlayerAttack);
 	blockTextureHandles_.push_back(blockTextureHandleEnemyAttack);
+	
+	warningModel_.reset(Model::CreateFromObj("warning", true));
 
 	blockManager_ = make_unique<BlockManager>();
-	blockManager_->Initialize(blockModel_.get(), blockTextureHandles_);
+	blockManager_->Initialize(blockModel_.get(), blockTextureHandles_, warningModel_.get());
 	blockManager_->SetArea(area_.get());
 
 	player_->SetBlockManager(blockManager_.get());

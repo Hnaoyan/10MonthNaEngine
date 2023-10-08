@@ -347,6 +347,9 @@ void BlockStateEnemyAttack::Update()
 		pBlock_->ChangeState(BlockState::kScaffold);
 	}
 
+	// 警告を表示する
+	pBlock_->GetBlockManager()->Warning(worldTransform.matWorld_.m[3][0]);
+
 }
 
 void BlockStateEnemyAttack::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)

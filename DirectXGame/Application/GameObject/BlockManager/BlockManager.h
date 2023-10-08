@@ -24,7 +24,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, std::vector<uint32_t> textureHandles);
+	void Initialize(Model* model, std::vector<uint32_t> textureHandles, Model* warningModel);
 
 	/// <summary>
 	/// 更新
@@ -73,6 +73,12 @@ public: // メンバ関数
 	/// エネミーの攻撃からプレイヤー攻撃へ
 	/// </summary>
 	void EnemyAttackPlayerAttackChange(Block* block);
+
+	/// <summary>
+	/// 警告を表示する準備
+	/// </summary>
+	/// <param name="posX"></param>
+	void Warning(float posX);
 
 private: // メンバ関数
 
@@ -206,6 +212,15 @@ private: // メンバ変数
 
 	// ゲームオーバーフラグ
 	bool gameOver_;
+
+	// 警告モデル
+	Model* warningModel_;
+
+	// 警告ワールドトランスフォーム
+	WorldTransform warningWorldTransform_;
+
+	// 警告を表示するか
+	bool showWarning;
 
 private: // メンバ定数
 
