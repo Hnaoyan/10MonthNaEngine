@@ -25,10 +25,12 @@ void ParticleManager::ParticleUpdate()
 	for (Particle* particle : particles_) {
 		particle->Update();
 	}
-	// リストの削除
+	// リストの削除・リリース
 	particles_.remove_if([](Particle* particle) {
 		if (particle->IsDead()) {
 			delete particle;
+			// セーフガード
+			particle = nullptr;
 			return true;
 		}
 		return false;
