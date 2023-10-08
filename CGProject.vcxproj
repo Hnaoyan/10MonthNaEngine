@@ -108,7 +108,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProjectDir)externals\nlohmann;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\imgui;$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\Engine;$(ProjectDir)DirectXGame\Engine\2D;$(ProjectDir)DirectXGame\Engine\3D;$(ProjectDir)DirectXGame\Engine\Audio;$(ProjectDir)DirectXGame\Engine\Base;$(ProjectDir)DirectXGame\Engine\Camera;$(ProjectDir)DirectXGame\Engine\Collider;$(ProjectDir)DirectXGame\Engine\D3D12Lib;$(ProjectDir)DirectXGame\Engine\Effect;$(ProjectDir)DirectXGame\Engine\Input;$(ProjectDir)DirectXGame\Engine\Math;$(ProjectDir)DirectXGame\Engine\Other;$(ProjectDir)DirectXGame\Engine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\GameObject;$(ProjectDir)DirectXGame\Application\GameObject\Area;$(ProjectDir)DirectXGame\Application\GameObject\Block;$(ProjectDir)DirectXGame\Application\GameObject\BlockManager;$(ProjectDir)DirectXGame\Application\GameObject\BossEnemy;$(ProjectDir)DirectXGame\Application\GameObject\Player;$(ProjectDir)DirectXGame\Application\GameObject\PlayerAttack;$(ProjectDir)DirectXGame\Application\GameObject\Other;$(ProjectDir)DirectXGame\Application\GameObject\Ground;$(ProjectDir)DirectXGame\Application\GameObject\Particle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)externals\nlohmann;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\imgui;$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\Engine;$(ProjectDir)DirectXGame\Engine\2D;$(ProjectDir)DirectXGame\Engine\3D;$(ProjectDir)DirectXGame\Engine\Audio;$(ProjectDir)DirectXGame\Engine\Base;$(ProjectDir)DirectXGame\Engine\Camera;$(ProjectDir)DirectXGame\Engine\Collider;$(ProjectDir)DirectXGame\Engine\D3D12Lib;$(ProjectDir)DirectXGame\Engine\Effect;$(ProjectDir)DirectXGame\Engine\Input;$(ProjectDir)DirectXGame\Engine\Math;$(ProjectDir)DirectXGame\Engine\Other;$(ProjectDir)DirectXGame\Engine\Scene;$(ProjectDir)DirectXGame\Engine\UI;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\GameObject;$(ProjectDir)DirectXGame\Application\GameObject\Area;$(ProjectDir)DirectXGame\Application\GameObject\Block;$(ProjectDir)DirectXGame\Application\GameObject\BlockManager;$(ProjectDir)DirectXGame\Application\GameObject\BossEnemy;$(ProjectDir)DirectXGame\Application\GameObject\Player;$(ProjectDir)DirectXGame\Application\GameObject\PlayerAttack;$(ProjectDir)DirectXGame\Application\GameObject\Other;$(ProjectDir)DirectXGame\Application\GameObject\Ground;$(ProjectDir)DirectXGame\Application\GameObject\Particle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,6 +202,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\GameScene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="DirectXGame\Engine\UI\UIManager.cpp" />
+    <ClCompile Include="DirectXGame\Engine\UI\UIBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\GameObject\Area\Area.h" />
@@ -261,6 +263,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Engine\Scene\GameScene.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\SceneManager.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="DirectXGame\Engine\UI\UIManager.h" />
+    <ClInclude Include="DirectXGame\Engine\UI\UIBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />

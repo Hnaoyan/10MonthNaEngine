@@ -21,6 +21,7 @@
 #include "Area.h"
 #include "BlockManager.h"
 #include "BossEnemy.h"
+#include "UIManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -112,6 +113,11 @@ private:	// メンバポインタ
 	std::unique_ptr<Model> bossEnemyModel_;
 
 	std::unique_ptr<EffectManager> effectManager_;
+	std::unique_ptr<UIManager> uiManager_;
+
+	std::unique_ptr<Sprite> sprite_;
+	//Sprite* sprite_;
+	Vector2 size_;
 
 	bool isShake_ = false;
 	int shakeTime_ = 0;

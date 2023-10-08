@@ -360,6 +360,14 @@ void Sprite::SetPosition(const Vector2& position)
 	TransferVertices();
 }
 
+void Sprite::SetSize(const Vector2& size)
+{
+	size_ = size;
+
+	// データ転送
+	TransferVertices();
+}
+
 void Sprite::SetRotation(float rotation)
 {
 	rotation_ = rotation;

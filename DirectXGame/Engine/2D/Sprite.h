@@ -130,6 +130,14 @@ public:
 	const Vector2& GetPosition() { return position_; }
 
 	/// <summary>
+	/// サイズの設定
+	/// </summary>
+	/// <param name="size"></param>
+	void SetSize(const Vector2& size);
+
+	const Vector2& GetSize() { return size_; }
+
+	/// <summary>
 	/// 角度の設定
 	/// </summary>
 	/// <param name="rotation"></param>
