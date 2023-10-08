@@ -163,6 +163,7 @@ void Player::Demo()
 	ImGui::Text("RightMove : [D]Key or [Right]key");
 	ImGui::Text("Jump and AirJump : [SPACE]key");
 	ImGui::Text("playerHP : %d", hp_);
+	ImGui::Text("Reset : [R]Key");
 	ImGui::End();
 
 }
