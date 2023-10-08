@@ -6,6 +6,7 @@
 #include "Application/GameObject/BlockManager/BlockManager.h"
 #include "Application/Others/Math2d/Math2d.h"
 #include <GlobalVariables.h>
+#include <imgui.h>
 
 void Player::Initialize(Model* model)
 {
@@ -75,6 +76,9 @@ void Player::Update()
 
 	//着地判定
 	islanding_ = false;
+
+	// デモ用
+	Demo();
 
 }
 
@@ -148,6 +152,18 @@ void Player::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform)
 		//ダメージ
 		Damage();
 	}
+
+}
+
+void Player::Demo()
+{
+
+	ImGui::Begin("player");
+	ImGui::Text("LeftMove : [A]Key or [Left]key");
+	ImGui::Text("RightMove : [D]Key or [Right]key");
+	ImGui::Text("Jump and AirJump : [SPACE]key");
+	ImGui::Text("playerHP : %d", hp_);
+	ImGui::End();
 
 }
 

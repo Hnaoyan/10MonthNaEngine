@@ -45,6 +45,11 @@ public: // メンバ関数
 	/// <param name="collisonObj">衝突したOBJ</param>
 	void OnCollision(uint32_t collisonObj, WorldTransform* worldTransform);
 
+	/// <summary>
+	/// デモ用
+	/// </summary>
+	void Demo();
+
 private: //メンバ関数
 
 	/// <summary>

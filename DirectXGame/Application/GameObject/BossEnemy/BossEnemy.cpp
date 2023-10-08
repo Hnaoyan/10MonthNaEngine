@@ -139,6 +139,7 @@ void BossEnemy::Damage()
 
 	hp_ -=  blockManager_->GetBossDamage();
 	if (hp_ <= 0) {
+		hp_ = 0;
 		isDead_ = false;
 	}
 
