@@ -1,6 +1,7 @@
 #pragma once
 #include "WorldTransform.h"
 #include "ViewProjection.h"
+#include "EffectManager.h"
 #include "Model.h"
 #include <Application/Others/TimedCall/TimedCall.h>
 #include <Application/Others/RectangleCollider/RectangleCollider.h>
@@ -26,7 +27,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, BlockManager* blockManager);
+	void Initialize(Model* model, BlockManager* blockManager, EffectManager* effectManager);
 
 	/// <summary>
 	/// 更新
@@ -129,6 +130,8 @@ private: // メンバ変数
 
 	// 死亡フラグ
 	bool isDead_;
+
+	EffectManager* effectManager_ = nullptr;
 
 private: // メンバ定数
 

@@ -12,7 +12,7 @@ BossEnemy::~BossEnemy()
 
 }
 
-void BossEnemy::Initialize(Model* model, BlockManager* blockManager)
+void BossEnemy::Initialize(Model* model, BlockManager* blockManager, EffectManager* effectManager)
 {
 
 	// ワールドトランスフォーム
@@ -20,6 +20,9 @@ void BossEnemy::Initialize(Model* model, BlockManager* blockManager)
 
 	// モデル
 	model_ = model;
+
+	// エフェクトマネージャー
+	effectManager_ = effectManager;
 
 	// ブロックマネージャー
 	blockManager_ = blockManager;
@@ -116,6 +119,7 @@ void BossEnemy::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform
 {
 	if (collisonObj & CollisionAttribute::blockPlayerAttack) {
 		Damage();
+		effectManager_->SetIsStop(true);
 	}
 	worldTransform;
 

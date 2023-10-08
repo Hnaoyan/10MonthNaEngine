@@ -62,13 +62,14 @@ void GameScene::Initialize() {
 	blockManager_->SetArea(area_.get());
 
 	player_->SetBlockManager(blockManager_.get());
+	// エフェクト
+	effectManager_ = make_unique<EffectManager>();
 
 	// ボスエネミー
 	bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
 	bossEnemy_ = make_unique<BossEnemy>();
-	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get());
+	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get(), effectManager_.get());
 	
-	effectManager_ = make_unique<EffectManager>();
 }
 
 void GameScene::Update()
