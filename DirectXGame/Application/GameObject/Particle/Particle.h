@@ -11,18 +11,18 @@ public:
 	/// </summary>
 	/// <param name="model"></param>
 	/// <param name="texture"></param>
-	void Initialize(Model* model,uint32_t texture);
+	virtual void Initialize(Model* model,uint32_t texture);
 
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
 	/// <param name="viewProjection"></param>
-	void Draw(ViewProjection& viewProjection);
+	virtual void Draw(ViewProjection& viewProjection);
 
 public: // 設定・取得
 	/// <summary>
@@ -37,7 +37,7 @@ public: // 設定・取得
 
 	void SetPosition(Vector3& pos) { worldTransform_.translation_ = pos; }
 
-private:
+protected:
 	Model* model_;
 	WorldTransform worldTransform_;
 
@@ -51,3 +51,14 @@ private:
 	int timeElapsed_ = 0;
 };
 
+//class EnemyHitParticle : public Particle {
+//
+//};
+//
+//class JumpParticle : public Particle {
+//
+//};
+//
+//class BlockHitParticle : public Particle {
+//
+//};

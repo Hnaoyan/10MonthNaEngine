@@ -3,6 +3,8 @@
 #include "ImGuiManager.h"
 #include <cassert>
 #include <functional>
+#include "VectorLib.h"
+#include "EffectManager.h"
 
 using namespace std;
 
@@ -66,6 +68,7 @@ void GameScene::Initialize() {
 	bossEnemy_ = make_unique<BossEnemy>();
 	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get());
 	
+	effectManager_ = make_unique<EffectManager>();
 }
 
 void GameScene::Update()
@@ -77,14 +80,18 @@ void GameScene::Update()
 	// ブロックの死亡確認
 	blockManager_->DeleteBlock();
 
-	// プレイヤー
-	player_->Update();
-
-	// ブロックマネージャー
-	blockManager_->Update();
-
-	// ボスエネミー
-	bossEnemy_->Update();
+	if(effectManager_->IsStop()){
+		// ヒットストップ関係の時間処理
+		effectManager_->HitStopUpdate();
+	}
+	else {
+		// プレイヤー
+		player_->Update();
+		// ブロックマネージャー
+		blockManager_->Update();
+		// ボスエネミー
+		bossEnemy_->Update();
+	}
 
 	// ゲームオーバーか
 	if (blockManager_->GetGameOver() || player_->GetGameOver()) {
@@ -164,14 +171,33 @@ void GameScene::CameraUpdate()
 {
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_L)) {
-		if (isDebug_) {
-			isDebug_ = false;
-		}
-		else {
-			isDebug_ = true;
+		//if (isDebug_) {
+		//	isDebug_ = false;
+		//}
+		//else {
+		//	isDebug_ = true;
+		//}
+		if (!isShake_) {
+			isShake_ = true;
+			cameraVect_ = baseCamera_->GetView().translate_;
 		}
 	}
+	if (input_->TriggerKey(DIK_J)) {
+		effectManager_->SetIsStop(true);
+	}
 #endif // DEBUG
+
+	if (isShake_) {
+		shakeTime_ += 1;
+		if (shakeTime_ > 60) {
+			isShake_ = false;
+			shakeTime_ = 0;
+			baseCamera_->SetPosition(cameraVect_);
+		}
+		else {
+			baseCamera_->SetPosition(EffectManager::ShakeUpdate(cameraVect_, 21, 10));
+		}
+	}
 
 	baseCamera_->Update();
 

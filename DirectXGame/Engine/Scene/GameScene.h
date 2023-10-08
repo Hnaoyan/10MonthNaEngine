@@ -12,14 +12,15 @@
 #include "FollowCamera.h"
 #include "BaseScene.h"
 #include "BaseCamera.h"
+#include "EffectManager.h"
 
 #include <memory>
 
 // ゲームシーン用
-#include "Application/GameObject/Player/Player.h"
-#include "Application/GameObject/Area/Area.h"
-#include "Application/GameObject/BlockManager/BlockManager.h"
-#include "Application/GameObject/BossEnemy/BossEnemy.h"
+#include "Player.h"
+#include "Area.h"
+#include "BlockManager.h"
+#include "BossEnemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -109,6 +110,12 @@ private:	// メンバポインタ
 	// ボスエネミー
 	std::unique_ptr<BossEnemy> bossEnemy_;
 	std::unique_ptr<Model> bossEnemyModel_;
+
+	std::unique_ptr<EffectManager> effectManager_;
+
+	bool isShake_ = false;
+	int shakeTime_ = 0;
+	Vector3 cameraVect_ = {};
 
 };
 

@@ -261,6 +261,15 @@ void Model::Initialize(const std::string& modelName, bool smoothing)
 	LoadTextures();
 }
 
+void Model::SetAlphaValue(float alpha)
+{
+	// マテリアルの数値を定数バッファに反映
+	for (auto& m : materials_) {
+		m.second->SetAlpha(alpha);
+		m.second->Update();
+	}
+}
+
 void Model::LoadModel(const std::string& modelName, bool smoothing)
 {
 	const std::string fileName = modelName + ".obj";
