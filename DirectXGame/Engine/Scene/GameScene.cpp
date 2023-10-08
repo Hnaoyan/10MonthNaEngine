@@ -64,6 +64,7 @@ void GameScene::Initialize() {
 	player_->SetBlockManager(blockManager_.get());
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
+	effectManager_->Initialize();
 
 	// ボスエネミー
 	bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
@@ -85,11 +86,14 @@ void GameScene::Update()
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
+	effectManager_->Update();
+
 	// ブロックの死亡確認
 	blockManager_->DeleteBlock();
 
 	if(effectManager_->IsStop()){
 		// ヒットストップ関係の時間処理
+		//effectManager_->HitStopUpdate();
 		effectManager_->HitStopUpdate();
 	}
 	else {
@@ -189,6 +193,7 @@ void GameScene::CameraUpdate()
 			isShake_ = true;
 			cameraVect_ = baseCamera_->GetView().translate_;
 		}
+		effectManager_->SetIsShake(true);
 	}
 	if (input_->TriggerKey(DIK_J)) {
 		effectManager_->SetIsStop(true);
@@ -196,8 +201,9 @@ void GameScene::CameraUpdate()
 #endif // DEBUG
 
 	if (isShake_) {
+		//effectManager_->ShakeUpdate();
 		shakeTime_ += 1;
-		if (shakeTime_ > 60) {
+		if (shakeTime_ > 20) {
 			isShake_ = false;
 			shakeTime_ = 0;
 			baseCamera_->SetPosition(cameraVect_);
@@ -206,6 +212,10 @@ void GameScene::CameraUpdate()
 			baseCamera_->SetPosition(EffectManager::ShakeUpdate(cameraVect_, 21, 10));
 		}
 	}
+
+	//if (effectManager_->IsShake()) {
+	//	baseCamera_->SetPosition(effectManager_->ShakeUpdate(baseCamera_->GetView().translate_));
+	//}
 
 	baseCamera_->Update();
 

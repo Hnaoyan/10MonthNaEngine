@@ -32,6 +32,8 @@ public:
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
 
+	void AddParticle(Vector3& position,Vector3& velocity);
+
 private:
 
 	std::list<Particle*> particles_;

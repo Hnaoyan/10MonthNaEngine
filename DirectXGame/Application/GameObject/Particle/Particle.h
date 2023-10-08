@@ -33,21 +33,31 @@ public: // 設定・取得
 	/// パーティクルの消える時間を設定
 	/// </summary>
 	/// <param name="count"></param>
-	void SetFadeTimer(int count) { fadeTime_ = count; }
-
+	void SetFadeTimer(int count) { fadeTimer_ = count; }
+	/// <summary>
+	/// 座標設定
+	/// </summary>
+	/// <param name="pos"></param>
 	void SetPosition(Vector3& pos) { worldTransform_.translation_ = pos; }
-
+	/// <summary>
+	/// 速さ設定
+	/// </summary>
+	/// <param name="velo"></param>
+	void SetVelocity(Vector3& velo) { velocity_ = velo; }
 protected:
+	// モデル
 	Model* model_;
+	// ワールドトランスフォーム（座標）
 	WorldTransform worldTransform_;
-
+	// 速さ
+	Vector3 velocity_;
+	// テクスチャ
 	uint32_t texture_ = 0u;
-
+	// 削除フラグ
 	bool isDead_ = false;
-
-	float radius_;
-
-	int fadeTime_ = 0;
+	// 消えるカウント
+	int fadeTimer_ = 0;
+	// 経過時間
 	int timeElapsed_ = 0;
 };
 
