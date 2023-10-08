@@ -25,3 +25,11 @@ Vector3 EffectManager::ShakeUpdate(const Vector3& pos, int rangeMax, int rangeMi
     result = VectorLib::Add(pos, result);
     return result;
 }
+
+Vector3 EffectManager::ShakeUpdate(const Vector3& pos, const Vector2& rangeMax, const Vector2& rangeMin)
+{
+    Vector3 result = {};
+    result = { float(rand() % (int)rangeMax.x - rangeMin.y),float(rand() % (int)rangeMax.y - rangeMin.y) ,0 };
+    result = VectorLib::Add(pos, result);
+    return result;
+}

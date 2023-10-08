@@ -26,6 +26,15 @@ public:
 	/// <returns></returns>
 	static Vector3 ShakeUpdate(const Vector3& pos, int rangeMax, int rangeMin);
 
+	/// <summary>
+	/// シェイクの縦横の幅の差
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="rangeMax"></param>
+	/// <param name="rangeMin"></param>
+	/// <returns></returns>
+	static Vector3 ShakeUpdate(const Vector3& pos, const Vector2& rangeMax, const Vector2& rangeMin);
+
 private:
 
 	ViewProjection* view_ = nullptr;
