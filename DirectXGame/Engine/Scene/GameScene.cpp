@@ -100,6 +100,11 @@ void GameScene::Update()
 	// 衝突判定
 	CollisionCheak();
 
+	// リセット
+	if (input_->TriggerKey(DIK_R)) {
+		Reset();
+	}
+
 }
 
 void GameScene::Draw() {
@@ -199,5 +204,19 @@ void GameScene::CollisionCheak()
 
 	// 当たり判定を取る
 	collisionManager->CheakAllCollision();
+
+}
+
+void GameScene::Reset()
+{
+
+	// プレイヤー
+	player_->Setting();
+
+	// ブロックマネージャー
+	blockManager_->Setting();
+
+	// ボスエネミー
+	bossEnemy_->Setting();
 
 }
