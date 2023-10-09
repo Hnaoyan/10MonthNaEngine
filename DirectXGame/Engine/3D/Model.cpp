@@ -80,6 +80,7 @@ void Model::InitializeGraphicsPipeline()
 	// デプスステンシルステート
 	gpipeline.DepthStencilState.DepthEnable = true;
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	//gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
 	// レンダーターゲットのブレンド設定

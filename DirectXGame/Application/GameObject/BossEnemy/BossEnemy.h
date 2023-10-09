@@ -2,6 +2,7 @@
 #include "WorldTransform.h"
 #include "ViewProjection.h"
 #include "EffectManager.h"
+#include "ParticleManager.h"
 #include "Model.h"
 #include <Application/Others/TimedCall/TimedCall.h>
 #include <Application/Others/RectangleCollider/RectangleCollider.h>
@@ -105,6 +106,8 @@ public: // アクセッサ
 	/// <returns></returns>
 	RectangleCollider* GetColliderAddress() { return &collider_; }
 
+	void SetParticleManager(ParticleManager* manager) { particleManager_ = manager; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -132,6 +135,8 @@ private: // メンバ変数
 	bool isDead_;
 
 	EffectManager* effectManager_ = nullptr;
+
+	ParticleManager* particleManager_ = nullptr;
 
 private: // メンバ定数
 

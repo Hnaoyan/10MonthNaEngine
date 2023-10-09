@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "ViewProjection.h"
 
+enum ShakeType {
+	kFloatType,
+	kVectorType,
+};
+
 class EffectManager
 {
 public:
@@ -49,16 +54,8 @@ public:
 	/// <param name="rangeMax"></param>
 	/// <param name="rangeMin"></param>
 	/// <returns></returns>
-	static Vector3 ShakeUpdate(const Vector3& pos, int rangeMax, int rangeMin);
+	static Vector3 ShakeUpdate(const Vector3& pos, int type);
 
-	/// <summary>
-	/// シェイクの縦横の幅の差
-	/// </summary>
-	/// <param name="pos"></param>
-	/// <param name="rangeMax"></param>
-	/// <param name="rangeMin"></param>
-	/// <returns></returns>
-	static Vector3 ShakeUpdate(const Vector3& pos, const Vector2& rangeMax, const Vector2& rangeMin);
 #pragma region ヒットストップ系
 
 private: // ヒットストップ系
@@ -83,6 +80,10 @@ public:
 private: // シェイク関係
 	EffectParameters shake_;
 	Vector3 initPoint_{};
+
+	static int iRangeMax, iRangeMin;
+	static Vector2 rangeMax, rangeMin;
+
 public:
 	/// <summary>
 	/// シェイク設定

@@ -60,16 +60,22 @@ void GameScene::Initialize() {
 	blockManager_ = make_unique<BlockManager>();
 	blockManager_->Initialize(blockModel_.get(), blockTextureHandles_, warningModel_.get());
 	blockManager_->SetArea(area_.get());
-
-	player_->SetBlockManager(blockManager_.get());
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
 	effectManager_->Initialize();
+	// パーティクルエフェクト
+	particleManager_ = make_unique<ParticleManager>();
+	particleManager_->Initialize(baseCamera_->GetViewPlayer());
+
+	// マネージャーの設定
+	player_->SetBlockManager(blockManager_.get());
+	player_->SetEffectManager(effectManager_.get());
 
 	// ボスエネミー
 	bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
 	bossEnemy_ = make_unique<BossEnemy>();
 	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get(), effectManager_.get());
+	bossEnemy_->SetParticleManager(particleManager_.get());
 	
 	//uint32_t sprite = TextureManager::Load("uvChecker.png");
 	//string spName_ = "UV";
@@ -79,8 +85,6 @@ void GameScene::Initialize() {
 	//uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
 	//uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
 
-	particleManager_ = make_unique<ParticleManager>();
-	particleManager_->Initialize(baseCamera_->GetViewPlayer());
 
 }
 
@@ -199,7 +203,7 @@ void GameScene::CameraUpdate()
 		//else {
 		//	isDebug_ = true;
 		//}
-		cameraVect_ = baseCamera_->GetView().translate_;
+		//cameraVect_ = baseCamera_->GetView().translate_;
 		effectManager_->SetIsShake(true);
 	}
 	if (input_->TriggerKey(DIK_J)) {
@@ -209,7 +213,7 @@ void GameScene::CameraUpdate()
 
 	if (effectManager_->IsShake()) {
 		effectManager_->ShakeUpdate();
-		baseCamera_->SetPosition(EffectManager::ShakeUpdate(cameraVect_, 21, 10));
+		baseCamera_->SetPosition(EffectManager::ShakeUpdate(baseCamera_->GetInitPosition(), kFloatType));
 	}
 	else {
 		baseCamera_->ResetPosition();

@@ -3,6 +3,7 @@
 #include "ViewProjection.h"
 #include "Model.h"
 
+#include "EffectManager.h"
 #include "Application/Others/RectangleCollider/RectangleCollider.h"
 
 // 前方宣言
@@ -107,6 +108,12 @@ public: // アクセッサ
 	void SetBlockManager(BlockManager* blockManager) { blockManager_ = blockManager; }
 
 	/// <summary>
+	/// エフェクトマネージャーの設定
+	/// </summary>
+	/// <param name="effectManager"></param>
+	void SetEffectManager(EffectManager* effectManager) { effectManager_ = effectManager; }
+
+	/// <summary>
 	/// コライダーアドレスゲッター
 	/// </summary>
 	/// <returns></returns>
@@ -157,6 +164,9 @@ private: // ポインタ
 	
 	// ブロックマネージャー
 	BlockManager* blockManager_ = nullptr;
+
+	// エフェクトマネージャー
+	EffectManager* effectManager_ = nullptr;
 
 private: // メンバ定数
 

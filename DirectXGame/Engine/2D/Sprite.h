@@ -209,6 +209,6 @@ private:	// メンバ関数
 	// 上下反転
 	bool isFlipY_ = false;
 
-	D3D12_RESOURCE_DESC resourceDesc_;
+	D3D12_RESOURCE_DESC resourceDesc_{};
 };
 

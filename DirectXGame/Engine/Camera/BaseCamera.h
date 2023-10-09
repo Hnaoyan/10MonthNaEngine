@@ -58,6 +58,12 @@ public: // 設定・取得
 	/// </summary>
 	void ResetPosition();
 
+	/// <summary>
+	/// 初期座標取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetInitPosition() { return initPosition_; }
+
 #pragma endregion
 private:
 

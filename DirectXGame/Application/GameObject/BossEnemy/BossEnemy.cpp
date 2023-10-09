@@ -120,6 +120,9 @@ void BossEnemy::OnCollision(uint32_t collisonObj, WorldTransform* worldTransform
 	if (collisonObj & CollisionAttribute::blockPlayerAttack) {
 		Damage();
 		effectManager_->SetIsStop(true);
+		effectManager_->SetIsShake(true);
+		Vector3 pos = { worldTransform->matWorld_.m[3][0],worldTransform->matWorld_.m[3][1], worldTransform->matWorld_.m[3][2] };
+		particleManager_->RandomRespown(pos);
 	}
 	worldTransform;
 
