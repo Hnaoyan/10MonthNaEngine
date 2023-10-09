@@ -11,9 +11,9 @@ ParticleManager* ParticleManager::GetInstance()
 void ParticleManager::Initialize(ViewProjection* view)
 {
 	view_ = view;
-	model_.reset(Model::CreateFromObj("block", true));
-	//model_.reset(Model::CreatePlane());
-	texture_ = TextureManager::Load("test.png");
+	//model_.reset(Model::CreateFromObj("block", true));
+	model_.reset(Model::CreatePlane());
+	texture_ = TextureManager::Load("white1x1.png");
 }
 
 void ParticleManager::Update()
