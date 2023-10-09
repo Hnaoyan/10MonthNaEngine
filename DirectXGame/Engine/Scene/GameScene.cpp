@@ -71,16 +71,16 @@ void GameScene::Initialize() {
 	bossEnemy_ = make_unique<BossEnemy>();
 	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get(), effectManager_.get());
 	
-	uint32_t sprite = TextureManager::Load("uvChecker.png");
-	string spName_ = "UV";
-	uint32_t ui = TextureManager::Load("white1x1.png");
-	string uiName_ = "white";
+	//uint32_t sprite = TextureManager::Load("uvChecker.png");
+	//string spName_ = "UV";
+	//uint32_t ui = TextureManager::Load("white1x1.png");
+	//string uiName_ = "white";
 	uiManager_ = make_unique<UIManager>();
-	uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
-	uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
+	//uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
+	//uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
 
 	particleManager_ = make_unique<ParticleManager>();
-	particleManager_->Initialize();
+	particleManager_->Initialize(baseCamera_->GetViewPlayer());
 
 }
 

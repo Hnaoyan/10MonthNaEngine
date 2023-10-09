@@ -8,10 +8,12 @@ ParticleManager* ParticleManager::GetInstance()
 	return &instance;
 }
 
-void ParticleManager::Initialize()
+void ParticleManager::Initialize(ViewProjection* view)
 {
+	view_ = view;
 	model_.reset(Model::CreateFromObj("block", true));
-	texture_ = TextureManager::Load("white1x1.png");
+	//model_.reset(Model::CreatePlane());
+	texture_ = TextureManager::Load("test.png");
 }
 
 void ParticleManager::Update()
@@ -63,5 +65,6 @@ void ParticleManager::AddParticle(Vector3& position, Vector3& velocity)
 	newParticle->Initialize(model_.get(), texture_);
 	newParticle->SetPosition(position);
 	newParticle->SetVelocity(velocity);
+	newParticle->SetBillBoard(view_);
 	particles_.push_back(newParticle);
 }

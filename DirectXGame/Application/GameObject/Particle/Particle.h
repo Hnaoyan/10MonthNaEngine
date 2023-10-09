@@ -1,5 +1,6 @@
 #pragma once
 #include "StructManager.h"
+#include "ViewProjection.h"
 #include "Model.h"
 #include <memory>
 
@@ -44,6 +45,11 @@ public: // 設定・取得
 	/// </summary>
 	/// <param name="velo"></param>
 	void SetVelocity(Vector3& velo) { velocity_ = velo; }
+	/// <summary>
+	/// ビルボードの設定
+	/// </summary>
+	/// <param name="view"></param>
+	void SetBillBoard(ViewProjection* view) { worldTransform_.BillBoardSetting(view, true); }
 protected:
 	// モデル
 	Model* model_;

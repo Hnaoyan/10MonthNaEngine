@@ -1,5 +1,6 @@
 #pragma once
 #include "StructManager.h"
+#include "ViewProjection.h"
 #include "Particle.h"
 #include <list>
 
@@ -15,7 +16,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(ViewProjection* view);
 
 	/// <summary>
 	/// 更新処理
@@ -49,6 +50,7 @@ private:
 
 	std::unique_ptr<Model> model_;
 
+	ViewProjection* view_;
 
 public:
 
