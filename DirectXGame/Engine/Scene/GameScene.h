@@ -113,12 +113,12 @@ private:	// メンバポインタ
 	std::unique_ptr<BossEnemy> bossEnemy_;
 	std::unique_ptr<Model> bossEnemyModel_;
 
+	// マネージャ系
 	std::unique_ptr<EffectManager> effectManager_;
 	std::unique_ptr<UIManager> uiManager_;
 	std::unique_ptr<ParticleManager> particleManager_;
 
 	std::unique_ptr<Sprite> sprite_;
-	//Sprite* sprite_;
 	Vector2 size_;
 
 	bool isShake_ = false;

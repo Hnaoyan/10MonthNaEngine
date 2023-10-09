@@ -13,7 +13,7 @@ void ParticleManager::Initialize(ViewProjection* view)
 	view_ = view;
 	//model_.reset(Model::CreateFromObj("block", true));
 	model_.reset(Model::CreatePlane());
-	texture_ = TextureManager::Load("white1x1.png");
+	texture_ = TextureManager::Load("uvChecker.png");
 }
 
 void ParticleManager::Update()
@@ -55,16 +55,25 @@ void ParticleManager::RandomRespown(const Vector3& point)
 		float speed = 3.0f;
 		float deltaTime = (1.0f / 60.0f) * speed;
 		inverseVect = VectorLib::Scaler(inverseVect, deltaTime);
-		AddParticle(resPos, inverseVect);
+		AddParticle2D(resPos, inverseVect);
 	}
 }
 
-void ParticleManager::AddParticle(Vector3& position, Vector3& velocity)
+void ParticleManager::AddParticle2D(Vector3& position, Vector3& velocity)
 {
 	Particle* newParticle = new Particle();
 	newParticle->Initialize(model_.get(), texture_);
 	newParticle->SetPosition(position);
 	newParticle->SetVelocity(velocity);
 	newParticle->SetBillBoard(view_);
+	particles_.push_back(newParticle);
+}
+
+void ParticleManager::AddParticle3D(Vector3& position, Vector3& velocity)
+{
+	Particle* newParticle = new Particle();
+	newParticle->Initialize(model_.get(), texture_);
+	newParticle->SetPosition(position);
+	newParticle->SetVelocity(velocity);
 	particles_.push_back(newParticle);
 }

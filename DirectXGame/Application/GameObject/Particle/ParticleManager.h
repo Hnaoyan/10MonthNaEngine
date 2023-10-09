@@ -28,6 +28,10 @@ public:
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
 
+	/// <summary>
+	/// ランダムエフェクト
+	/// </summary>
+	/// <param name="point"></param>
 	void RandomRespown(const Vector3& point);
 
 private:
@@ -35,12 +39,19 @@ private:
 	/// パーティクルの更新処理
 	/// </summary>
 	void ParticleUpdate();
+
 	/// <summary>
-	/// パーティクルの追加
+	/// パーティクルの追加（板ポリ
 	/// </summary>
 	/// <param name="position"></param>
 	/// <param name="velocity"></param>
-	void AddParticle(Vector3& position,Vector3& velocity);
+	void AddParticle2D(Vector3& position, Vector3& velocity);
+	/// <summary>
+	/// パーティクルの追加（ブロック
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="velocity"></param>
+	void AddParticle3D(Vector3& position,Vector3& velocity);
 
 private:
 

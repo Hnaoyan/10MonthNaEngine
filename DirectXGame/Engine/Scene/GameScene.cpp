@@ -102,7 +102,6 @@ void GameScene::Update()
 
 	if(effectManager_->IsStop()){
 		// ヒットストップ関係の時間処理
-		//effectManager_->HitStopUpdate();
 		effectManager_->HitStopUpdate();
 	}
 	else {
@@ -200,10 +199,7 @@ void GameScene::CameraUpdate()
 		//else {
 		//	isDebug_ = true;
 		//}
-		if (!isShake_) {
-			isShake_ = true;
-			cameraVect_ = baseCamera_->GetView().translate_;
-		}
+		cameraVect_ = baseCamera_->GetView().translate_;
 		effectManager_->SetIsShake(true);
 	}
 	if (input_->TriggerKey(DIK_J)) {
@@ -211,22 +207,13 @@ void GameScene::CameraUpdate()
 	}
 #endif // DEBUG
 
-	if (isShake_) {
-		//effectManager_->ShakeUpdate();
-		shakeTime_ += 1;
-		if (shakeTime_ > 20) {
-			isShake_ = false;
-			shakeTime_ = 0;
-			baseCamera_->SetPosition(cameraVect_);
-		}
-		else {
-			baseCamera_->SetPosition(EffectManager::ShakeUpdate(cameraVect_, 21, 10));
-		}
+	if (effectManager_->IsShake()) {
+		effectManager_->ShakeUpdate();
+		baseCamera_->SetPosition(EffectManager::ShakeUpdate(cameraVect_, 21, 10));
 	}
-
-	//if (effectManager_->IsShake()) {
-	//	baseCamera_->SetPosition(effectManager_->ShakeUpdate(baseCamera_->GetView().translate_));
-	//}
+	else {
+		baseCamera_->ResetPosition();
+	}
 
 	baseCamera_->Update();
 

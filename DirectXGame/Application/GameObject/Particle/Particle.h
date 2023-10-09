@@ -57,6 +57,9 @@ protected:
 	WorldTransform worldTransform_;
 	// 速さ
 	Vector3 velocity_;
+
+	Vector3 scale_;
+
 	// テクスチャ
 	uint32_t texture_ = 0u;
 	// 削除フラグ
