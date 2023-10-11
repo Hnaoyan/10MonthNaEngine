@@ -20,7 +20,8 @@ const std::string Model::kDefaultName = "cube";
 UINT Model::sDescriptorHandleIncrementSize_ = 0;
 ID3D12GraphicsCommandList* Model::sCommandList_ = nullptr;
 ComPtr<ID3D12RootSignature> Model::sRootSignature_;
-ComPtr<ID3D12PipelineState> Model::sPipelineState_;
+//ComPtr<ID3D12PipelineState> Model::sPipelineState_;
+std::array<ComPtr<ID3D12PipelineState>, size_t(Model::BlendMode::kCountOfBlendMode)> Model::sPipelineStates_;
 std::unique_ptr<LightGroup> Model::lightGroup_;
 
 void Model::StaticInitialize()
@@ -83,23 +84,6 @@ void Model::InitializeGraphicsPipeline()
 	//gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
-	// レンダーターゲットのブレンド設定
-	D3D12_BLEND_DESC blenddesc{};
-	blenddesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blenddesc.RenderTarget[0].BlendEnable = TRUE;
-	/// αBlend
-	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-	// ここは基本変えない
-	blenddesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blenddesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blenddesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	// ブレンドステート
-	gpipeline.BlendState = blenddesc;
-
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
@@ -133,7 +117,6 @@ void Model::InitializeGraphicsPipeline()
 	samplerDesc[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 	samplerDesc[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 
-
 	// ルートシグネチャの設定
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
@@ -160,11 +143,74 @@ void Model::InitializeGraphicsPipeline()
 
 	gpipeline.pRootSignature = sRootSignature_.Get();
 
+	// ブレンド設定
+	D3D12_BLEND_DESC blenddesc{};
+	blenddesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	blenddesc.RenderTarget[0].BlendEnable = TRUE;
+	// ここは基本変えない
+	blenddesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+	blenddesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blenddesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+	
+	// αブレンド
+	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	// ブレンドステート
+	gpipeline.BlendState = blenddesc;
 	// グラフィックスパイプラインの生成
-	result = DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
-		&gpipeline, IID_PPV_ARGS(&sPipelineState_));
+	result =
+		DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
+		&gpipeline, IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kNormal)]));
 	assert(SUCCEEDED(result));
 
+	// 加算合成
+	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;	
+	// ブレンドステート
+	gpipeline.BlendState = blenddesc;
+	// グラフィックスパイプラインの生成
+	result =
+		DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
+			&gpipeline, IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kAdd)]));
+	assert(SUCCEEDED(result));
+
+	// 減算合成
+	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+	// ブレンドステート
+	gpipeline.BlendState = blenddesc;
+	// グラフィックスパイプラインの生成
+	result =
+		DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
+			&gpipeline, IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kSubtract)]));
+	assert(SUCCEEDED(result));
+
+	// 乗算合成
+	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+	// ブレンドステート
+	gpipeline.BlendState = blenddesc;
+	// グラフィックスパイプラインの生成
+	result =
+		DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
+			&gpipeline, IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kMultiply)]));
+	assert(SUCCEEDED(result));
+	
+	// スクリーン合成
+	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+	// ブレンドステート
+	gpipeline.BlendState = blenddesc;
+	// グラフィックスパイプラインの生成
+	result =
+		DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
+			&gpipeline, IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kScreen)]));
+	assert(SUCCEEDED(result));
 }
 
 Model* Model::Create()
@@ -202,7 +248,7 @@ void Model::PreDraw(ID3D12GraphicsCommandList* commandList)
 	sCommandList_ = commandList;
 
 	// パイプラインステートの設定
-	commandList->SetPipelineState(sPipelineState_.Get());
+	commandList->SetPipelineState(sPipelineStates_[size_t(BlendMode::kNormal)].Get());
 	// ルートシグネチャの設定
 	commandList->SetGraphicsRootSignature(sRootSignature_.Get());
 	// プリミティブ形状を設定

@@ -33,12 +33,12 @@ public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	GameScene();
+	GameScene() {};
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene();
+	~GameScene() {};
 
 	/// <summary>
 	/// 初期化
@@ -71,6 +71,11 @@ public: // メンバ関数
 	/// リセット
 	/// </summary>
 	void Reset();
+
+	/// <summary>
+	/// モデル読み込み場所
+	/// </summary>
+	static void ModelSetting();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;

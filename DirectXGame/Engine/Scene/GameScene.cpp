@@ -8,12 +8,6 @@
 
 using namespace std;
 
-GameScene::GameScene() {}
-
-GameScene::~GameScene()
-{
-}
-
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -267,5 +261,10 @@ void GameScene::Reset()
 
 	// ボスエネミー
 	bossEnemy_->Setting();
+
+}
+
+void GameScene::ModelSetting()
+{
 
 }
