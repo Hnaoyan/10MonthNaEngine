@@ -1,5 +1,6 @@
 #pragma once
 #include <wrl.h>
+#include <array>
 #include "WinApp.h"
 #include "StructManager.h"
 
@@ -13,15 +14,6 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 
-enum BlendMode {
-	// ブレンドなし
-	kBlendNone,
-	// 通常αブレンド。
-	kBlendNormal,
-	// 加算。
-	kBlendAdd,
-};
-
 class Sprite
 {
 public:	// サブクラス
@@ -34,6 +26,16 @@ public:	// サブクラス
 	struct ConstBufferData {
 		Vector4 color;
 		Matrix4x4 mat;
+	};
+
+	enum class BlendMode : int {
+		kNone,
+		kNormal,
+		kAdd,
+		kSubtract,
+		kMultiply,
+		kScreen,
+		kCountOfBlendMode,
 	};
 
 public:	// 静的メンバ関数
@@ -72,7 +74,11 @@ private:	// 静的メンバ変数
 
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootSignature_;
 
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> gPipelineState_;
+	// パイプラインステートオブジェ
+	static std::array<Microsoft::WRL::ComPtr<ID3D12PipelineState>,
+		size_t(BlendMode::kCountOfBlendMode)> sPipelineStates_;
+
+	//static Microsoft::WRL::ComPtr<ID3D12PipelineState> gPipelineState_;
 	// デスクリプタサイズ
 	static UINT sDescriptorHandleIncrementSize_;
 

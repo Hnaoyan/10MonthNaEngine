@@ -144,7 +144,18 @@ void Model::InitializeGraphicsPipeline()
 	gpipeline.pRootSignature = sRootSignature_.Get();
 
 	// ブレンド設定
+	// ブレンドなし
 	D3D12_BLEND_DESC blenddesc{};
+	blenddesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	blenddesc.RenderTarget[0].BlendEnable = false;
+	gpipeline.BlendState = blenddesc;
+	// グラフィックスパイプラインの生成
+	result =
+		DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(
+			&gpipeline, IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kNone)]));
+	assert(SUCCEEDED(result));
+
+	// αブレンド
 	blenddesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	blenddesc.RenderTarget[0].BlendEnable = TRUE;
 	// ここは基本変えない
@@ -152,7 +163,6 @@ void Model::InitializeGraphicsPipeline()
 	blenddesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
 	
-	// αブレンド
 	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
 	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
