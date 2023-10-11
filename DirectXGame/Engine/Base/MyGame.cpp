@@ -32,8 +32,10 @@ void MyGame::Update()
 	// ImGui受付開始
 	imguiManager->Begin();
 
+#ifdef _DEBUG
 	// グローバル変数の外部管理
 	GlobalVariables::GetInstance()->Update();
+#endif // DEBUG
 
 	// ゲームシーン更新処理
 	sceneManager->Update();
