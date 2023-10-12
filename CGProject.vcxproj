@@ -209,6 +209,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Engine\UI\UIManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\UI\UIBase.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\TitleScene.cpp" />
+    <ClCompile Include="DirectXGame\Engine\Scene\StageSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\GameObject\Area\Area.h" />
@@ -271,6 +272,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Engine\UI\UIManager.h" />
     <ClInclude Include="DirectXGame\Engine\UI\UIBase.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\TitleScene.h" />
+    <ClInclude Include="DirectXGame\Engine\Scene\StageSelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />
