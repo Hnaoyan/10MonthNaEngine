@@ -277,6 +277,9 @@ bool Sprite::Initialize() {
 
 	resourceDesc_ = TextureManager::GetInstance()->GetResourceDesc(textureHandle_);
 
+	// デフォルトブレンド
+	blendMode_ = BlendMode::kNormal;
+
 	{
 		// ヒーププロパティ
 		D3D12_HEAP_PROPERTIES heapProps = D3D12Lib::SetHeapProperties(D3D12_HEAP_TYPE_UPLOAD);
@@ -375,6 +378,8 @@ void Sprite::TransferVertices()
 }
 
 void Sprite::Draw() {
+	// パイプラインの設定
+	sCommandList_->SetPipelineState(sPipelineStates_[size_t(blendMode_)].Get());
 	// ワールド行列の更新
 	matWorld_ = MatLib::MakeIdentity4x4();
 	matWorld_ = MatLib::Multiply(matWorld_, MatLib::MakeRotateZMatrix(rotation_));
@@ -431,8 +436,6 @@ void Sprite::PreDraw(ID3D12GraphicsCommandList* commandList) {
 	assert(Sprite::sCommandList_ == nullptr);
 
 	sCommandList_ = commandList;
-	// パイプラインの設定
-	sCommandList_->SetPipelineState(sPipelineStates_[size_t(BlendMode::kNormal)].Get());
 	// ルートシグネチャの設定
 	sCommandList_->SetGraphicsRootSignature(sRootSignature_.Get());
 

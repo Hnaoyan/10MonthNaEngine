@@ -258,11 +258,58 @@ void Model::PreDraw(ID3D12GraphicsCommandList* commandList)
 	sCommandList_ = commandList;
 
 	// パイプラインステートの設定
-	commandList->SetPipelineState(sPipelineStates_[size_t(BlendMode::kNormal)].Get());
+	//commandList->SetPipelineState(sPipelineStates_[size_t(BlendMode::kNormal)].Get());
 	// ルートシグネチャの設定
 	commandList->SetGraphicsRootSignature(sRootSignature_.Get());
 	// プリミティブ形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection)
+{
+	// パイプラインステートの設定
+	sCommandList_->SetPipelineState(sPipelineStates_[size_t(blendMode_)].Get());
+	// ライト
+	lightGroup_->Draw(sCommandList_, static_cast<UINT>(RootParameter::kLight));
+
+	// CBV（ワールド行列）
+	sCommandList_->SetGraphicsRootConstantBufferView(
+		static_cast<UINT>(RootParameter::kWorldTransform),
+		worldTransform.constBuff_->GetGPUVirtualAddress());
+
+	// CBV（ビュープロジェクション行列）
+	sCommandList_->SetGraphicsRootConstantBufferView(
+		static_cast<UINT>(RootParameter::kViewProjection),
+		viewProjection.constBuff_->GetGPUVirtualAddress());
+
+	// 全メッシュを描画
+	for (auto& mesh : meshes_) {
+		mesh->Draw(
+			sCommandList_, (UINT)RootParameter::kMaterial,
+			(UINT)RootParameter::kTexture);
+	}
+}
+
+void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, UINT textureHandle)
+{
+	// パイプラインステートの設定
+	sCommandList_->SetPipelineState(sPipelineStates_[size_t(blendMode_)].Get());
+	// ライト
+	lightGroup_->Draw(sCommandList_, static_cast<UINT>(RootParameter::kLight));
+
+	// CBV（ワールド行列）
+	sCommandList_->SetGraphicsRootConstantBufferView(static_cast<UINT>(RootParameter::kWorldTransform),
+		worldTransform.constBuff_->GetGPUVirtualAddress());
+
+	// CBV（ビュープロジェクション行列）
+	sCommandList_->SetGraphicsRootConstantBufferView(static_cast<UINT>(RootParameter::kViewProjection),
+		viewProjection.constBuff_->GetGPUVirtualAddress());
+	// 全メッシュを描画
+	for (auto& mesh : meshes_) {
+		mesh->Draw(
+			sCommandList_, (UINT)RootParameter::kMaterial,
+			(UINT)RootParameter::kTexture, textureHandle);
+	}
 }
 
 void Model::PostDraw()
@@ -641,48 +688,5 @@ void Model::LoadTextures()
 			material->LoadTexture("white1x1.png");
 			textureIndex++;
 		}
-	}
-}
-
-void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection)
-{
-	// ライト
-	lightGroup_->Draw(sCommandList_, static_cast<UINT>(RootParameter::kLight));
-
-	// CBV（ワールド行列）
-	sCommandList_->SetGraphicsRootConstantBufferView(
-		static_cast<UINT>(RootParameter::kWorldTransform),
-		worldTransform.constBuff_->GetGPUVirtualAddress());
-
-	// CBV（ビュープロジェクション行列）
-	sCommandList_->SetGraphicsRootConstantBufferView(
-		static_cast<UINT>(RootParameter::kViewProjection),
-		viewProjection.constBuff_->GetGPUVirtualAddress());
-
-	// 全メッシュを描画
-	for (auto& mesh : meshes_) {
-		mesh->Draw(
-			sCommandList_, (UINT)RootParameter::kMaterial,
-			(UINT)RootParameter::kTexture);
-	}
-}
-
-void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, UINT textureHandle)
-{
-	// ライト
-	lightGroup_->Draw(sCommandList_, static_cast<UINT>(RootParameter::kLight));
-
-	// CBV（ワールド行列）
-	sCommandList_->SetGraphicsRootConstantBufferView(static_cast<UINT>(RootParameter::kWorldTransform),
-		worldTransform.constBuff_->GetGPUVirtualAddress());
-
-	// CBV（ビュープロジェクション行列）
-	sCommandList_->SetGraphicsRootConstantBufferView(static_cast<UINT>(RootParameter::kViewProjection),
-		viewProjection.constBuff_->GetGPUVirtualAddress());
-	// 全メッシュを描画
-	for (auto& mesh : meshes_) {
-		mesh->Draw(
-			sCommandList_, (UINT)RootParameter::kMaterial,
-			(UINT)RootParameter::kTexture, textureHandle);
 	}
 }

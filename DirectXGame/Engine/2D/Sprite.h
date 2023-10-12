@@ -167,7 +167,14 @@ public:
 
 	const Vector4 GetColor() { return color_; }
 
+	/// <summary>
+	/// ブレンドの設定
+	/// </summary>
+	/// <param name="mode"></param>
+	void SetBlendMode(BlendMode mode) { blendMode_ = mode; }
+
 private:
+
 	void TransferVertices();
 
 private:	// メンバ関数
@@ -216,5 +223,7 @@ private:	// メンバ関数
 	bool isFlipY_ = false;
 
 	D3D12_RESOURCE_DESC resourceDesc_{};
+
+	BlendMode blendMode_ = BlendMode::kNormal;
 };
 

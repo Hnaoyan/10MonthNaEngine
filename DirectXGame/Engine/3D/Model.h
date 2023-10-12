@@ -71,7 +71,7 @@ private:
 	// デフォルトマテリアル
 	Material* defaultMaterial_ = nullptr;
 	// ブレンド
-	//BlendMode mode_ = BlendMode::kNormal;
+	BlendMode blendMode_ = BlendMode::kNormal;
 
 public:
 	/// <summary>
@@ -134,6 +134,8 @@ public:
 	/// </summary>
 	/// <param name="alpha"></param>
 	void SetAlphaValue(float alpha);
+
+	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 
 	/// <summary>
 	/// モデル描画
