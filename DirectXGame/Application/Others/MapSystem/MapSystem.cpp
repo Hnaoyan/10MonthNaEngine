@@ -28,9 +28,9 @@ void MapSystem::Initialize(int stageNum)
 	}
 
 	// 初期マップ
-	initialData_.map_ = new int* [static_cast<size_t>(kMapSize_.y)];
+	initialStageData_.map_ = new int* [static_cast<size_t>(kMapSize_.y)];
 	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
-		initialData_.map_[y] = new int[static_cast<size_t>(kMapSize_.x)];
+		initialStageData_.map_[y] = new int[static_cast<size_t>(kMapSize_.x)];
 	}
 
 	// マップデータ
@@ -79,16 +79,16 @@ void MapSystem::Restart()
 	// マップ
 	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
 		for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
-			map_[y][x] = initialData_.map_[y][x];
+			map_[y][x] = initialStageData_.map_[y][x];
 		}
 	}
 
 	// プレイヤーの位置
-	playerPosition_ = initialData_.playerPosition_;
+	playerPosition_ = initialStageData_.playerPosition_;
 
 	// エネミーの位置
-	for (size_t i = 0; initialData_.enemyPosition_.size(); i++) {
-		enemyPosition_.push_back(initialData_.enemyPosition_.at(i));
+	for (size_t i = 0; initialStageData_.enemyPosition_.size(); i++) {
+		enemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
 	}
 
 	// ゴールが開いたか
@@ -107,47 +107,28 @@ void MapSystem::Setting(int stageNum)
 	// ステージ番号
 	stageNum_ = stageNum;
 
-	/*
+	// グループ名の設定
+	std::string groupName = std::to_string(stageNum_);
 
 	// 初期情報
-	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
-		++itGroup) {
-		// グループの参照を取得
-		Group& group = itGroup->second;
-		// ステージ番号確認
-		for (std::map<std::string, Item>::iterator itItem = group.begin();
-			itItem != group.end(); ++itItem) {
-			// 項目名を取得
-			const std::string& itemName = itItem->first;
-			// 項目の参照を取得
-			Item& item = itItem->second;
-
-			// int32_t型の値を保持していれば
-			if (std::holds_alternative<int**>(item)) {
-				int*** ptr = std::get_if<int**>(&item);
-			}
-			else if (std::holds_alternative<Vector2>(item)) {
-				Vector2* ptr = std::get_if<Vector2>(&item);
-			}
-			else if (std::holds_alternative< std::vector<Vector2>>(item)) {
-				std::vector<Vector2>* ptr = std::get_if< std::vector<Vector2>>(&item);
-			}
-		}
-	}
-
-	*/
+	initialStageData_.map_ = GetMapValue(groupName, "map_");
+	initialStageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
+	initialStageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
+	initialStageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
+	initialStageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
+	initialStageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
 
 	// マップ
 	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
 		for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
-			map_[y][x] = initialData_.map_[y][x];
+			map_[y][x] = initialStageData_.map_[y][x];
 		}
 	}
 	// プレイヤーの位置
-	playerPosition_ = initialData_.playerPosition_;
+	playerPosition_ = initialStageData_.playerPosition_;
 	// エネミーの位置
-	for (size_t i = 0; initialData_.enemyPosition_.size(); i++) {
-		enemyPosition_.push_back(initialData_.enemyPosition_.at(i));
+	for (size_t i = 0; initialStageData_.enemyPosition_.size(); i++) {
+		enemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
 	}
 	// ゴールが開いたか
 	goalOpened_ = false;
@@ -291,4 +272,40 @@ void MapSystem::SetValue(const std::string& groupName, const std::string& key, s
 	// 設定した項目をstd::mapに追加
 	group[key] = newItem;
 
+}
+
+int** MapSystem::GetMapValue(const std::string& groupName, const std::string& key)
+{
+	// 指定グループが存在するか
+	assert(stageDatas_.find(groupName) != stageDatas_.end());
+	//  グループの参照を取得
+	Group& group = stageDatas_[groupName];
+	// 指定グループに指定キーが存在するか
+	assert(group.find(key) != group.end());
+	// 指定グループから指定のキーの値を取得
+	return std::get<0>(group[key]);
+}
+
+Vector2 MapSystem::GetPositionValue(const std::string& groupName, const std::string& key)
+{
+	// 指定グループが存在するか
+	assert(stageDatas_.find(groupName) != stageDatas_.end());
+	//  グループの参照を取得
+	Group& group = stageDatas_[groupName];
+	// 指定グループに指定キーが存在するか
+	assert(group.find(key) != group.end());
+	// 指定グループから指定のキーの値を取得
+	return std::get<1>(group[key]);
+}
+
+std::vector<Vector2> MapSystem::GetPositionsValue(const std::string& groupName, const std::string& key)
+{
+	// 指定グループが存在するか
+	assert(stageDatas_.find(groupName) != stageDatas_.end());
+	//  グループの参照を取得
+	Group& group = stageDatas_[groupName];
+	// 指定グループに指定キーが存在するか
+	assert(group.find(key) != group.end());
+	// 指定グループから指定のキーの値を取得
+	return std::get<2>(group[key]);
 }

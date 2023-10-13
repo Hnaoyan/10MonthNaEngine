@@ -131,6 +131,14 @@ private: // メンバ関数
 	void SetValue(const std::string& groupName, const std::string& key, const Vector2& value);
 	void SetValue(const std::string& groupName, const std::string& key, std::vector<Vector2>& value);
 
+	/// <summary>
+	/// 値の取得
+	/// </summary>
+	/// <returns></returns>
+	int** GetMapValue(const std::string& groupName, const std::string& key);
+	Vector2 GetPositionValue(const std::string& groupName, const std::string& key);
+	std::vector<Vector2> GetPositionsValue(const std::string& groupName, const std::string& key);
+
 public: // メンバ定数
 
 private: //メンバ変数
@@ -139,7 +147,7 @@ private: //メンバ変数
 	int stageNum_;
 
 	// ステージデータ
-	StageData initialData_;
+	StageData initialStageData_;
 
 	// マップ
 	int** map_;
