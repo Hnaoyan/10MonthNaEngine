@@ -26,6 +26,10 @@ void GameScene::Initialize() {
 
 	// ゲームシーン用
 
+	// コマンド
+	command_ = make_unique<Command>();
+	command_->Initialize();
+
 	// マップ
 
 	// プレイヤー
@@ -33,8 +37,6 @@ void GameScene::Initialize() {
 	// ブロック
 	
 	// エネミー
-
-
 
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
@@ -78,11 +80,9 @@ void GameScene::Update()
 		effectManager_->HitStopUpdate();
 	}
 	else {
-		// プレイヤー
-		
-		// ブロックマネージャー
-		
-		// ボスエネミー
+		// コマンド
+		command_->Update();
+
 	}
 
 	// ゲームオーバーか

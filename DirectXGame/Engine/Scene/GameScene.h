@@ -20,6 +20,8 @@
 #include "UIManager.h"
 #include "ParticleManager.h"
 
+#include "Application/Others/Command/Command.h"
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -90,7 +92,8 @@ private:	// メンバポインタ
 	/// ゲームシーン用
 	/// </summary>
 
-	//エリア
+	// コマンド
+	std::unique_ptr<Command> command_;
 
 	// プレイヤー
 

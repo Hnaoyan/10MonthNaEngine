@@ -288,6 +288,12 @@
     <ClCompile Include="DirectXGame\Engine\Scene\StageSelectScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\MapSystem\MapSystem.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Others\Command\Command.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -472,6 +478,12 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Scene\StageSelectScene.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\MapSystem\MapSystem.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Others\Command\Command.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
