@@ -91,22 +91,22 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	int32_t playerPosX = static_cast<int32_t>(playerPosition_.x);
 	int32_t playerPosY = static_cast<int32_t>(playerPosition_.y);
 
-	bool HaveMoved = false;
+	bool haveMoved = false;
 
 	// コマンドによる移動
 	switch (commandNumber)
 	{
 	case Command::Left:
-		HaveMoved = PlayerMove(playerPosX - 1, playerPosY);
+		haveMoved = PlayerMove(playerPosX - 1, playerPosY);
 		break;
 	case Command::Right:
-		HaveMoved = PlayerMove(playerPosX + 1, playerPosY);
+		haveMoved = PlayerMove(playerPosX + 1, playerPosY);
 		break;
 	case Command::Up:
-		HaveMoved = PlayerMove(playerPosX, playerPosY + 1);
+		haveMoved = PlayerMove(playerPosX, playerPosY + 1);
 		break;
 	case Command::Down:
-		HaveMoved = PlayerMove(playerPosX, playerPosY - 1);
+		haveMoved = PlayerMove(playerPosX, playerPosY - 1);
 		break;
 	default:
 		break;
@@ -114,7 +114,7 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 
 	// 移動できるかチェック
 	// 成功
-	if (HaveMoved) {
+	if (haveMoved) {
 		// エネミーの移動
 		EnemyMove();
 	}
@@ -184,8 +184,18 @@ void MapSystem::EnemyMove()
 
 	// エネミーが起きている時
 	for (size_t i = 0; i < enemyCount_; i++) {
-		if (enemyAwake_.at(i)) {
+		if (enemyAwake_.at(i) && !capturedEnemy_.at(i)) {
 			// 行動する
+			int x = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
+			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
+
+			if (x < y) {
+
+			}
+			else if (x < y) {
+
+			}
+
 		}
 	}
 
@@ -195,7 +205,7 @@ void MapSystem::MakeSound()
 {
 
 	for (size_t i = 0; i < enemyCount_; i++) {
-		if (!enemyAwake_.at(i)) {
+		if (!enemyAwake_.at(i) && !capturedEnemy_.at(i)) {
 			// 起きる
 			int x = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
 			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
@@ -223,6 +233,22 @@ void MapSystem::GameClear()
 void MapSystem::GameOver()
 {
 
+	for (size_t i = 0; i < enemyCount_; i++) {
+		// ぶつかった
+		if (playerPosition_.x == enemyPosition_.at(i).x && 
+			playerPosition_.y == enemyPosition_.at(i).y && 
+			capturedEnemy_.at(i)) {
+			isGameOver_ = true;
+			return;
+		}
+		// 寝ている敵に近づく
+		int x = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
+		int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
+		if (x + y < 2 && !enemyAwake_.at(i)) {
+			isGameOver_ = true;
+			return;
+		}
+	}
 
 }
 

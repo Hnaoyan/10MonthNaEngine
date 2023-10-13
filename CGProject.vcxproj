@@ -152,7 +152,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Application\GameObject\Area\Area.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Block\Block.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Player\Player.cpp" />
@@ -212,7 +211,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Engine\Scene\StageSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Application\GameObject\Area\Area.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Block\Block.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Player\Player.h" />
