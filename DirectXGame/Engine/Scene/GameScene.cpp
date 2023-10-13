@@ -35,6 +35,10 @@ void GameScene::Initialize() {
 	mapSystem_->Initialize(0);
 
 	// プレイヤー
+	playerModel_.reset(Model::CreateFromObj("player", true));
+	player_ = make_unique<Player>();
+	player_->Initialize(playerModel_.get());
+	player_->SetPosition(mapSystem_->GetPlayerPosition());
 
 	// ブロック
 	
@@ -75,8 +79,6 @@ void GameScene::Update()
 		//particleManager_->RandomRespown(player_->GetPosition());
 	}
 
-	// ブロックの死亡確認
-
 	if(effectManager_->IsStop()){
 		// ヒットストップ関係の時間処理
 		effectManager_->HitStopUpdate();
@@ -84,6 +86,9 @@ void GameScene::Update()
 	else {
 		// コマンド
 		command_->Update();
+		// マップ
+		//mapSystem_->Update();
+		player_->Update();
 
 	}
 
@@ -125,6 +130,7 @@ void GameScene::Draw() {
 	/// </summary>
 
 	//particleManager_->Draw(viewProjection_);
+	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

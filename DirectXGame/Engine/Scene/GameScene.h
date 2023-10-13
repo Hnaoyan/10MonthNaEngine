@@ -21,7 +21,8 @@
 #include "ParticleManager.h"
 
 #include "Application/Others/Command/Command.h"
-#include <Others/MapSystem/MapSystem.h>
+#include "Others/MapSystem/MapSystem.h"
+#include "Application/GameObject/Player/Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -100,6 +101,8 @@ private:	// メンバポインタ
 	std::unique_ptr<MapSystem> mapSystem_;
 
 	// プレイヤー
+	std::unique_ptr<Player> player_;
+	std::unique_ptr<Model> playerModel_;
 
 	//ブロック
 

@@ -144,6 +144,10 @@ private: // メンバ関数
 	Vector2 GetPositionValue(const std::string& groupName, const std::string& key);
 	std::vector<Vector2> GetPositionsValue(const std::string& groupName, const std::string& key);
 
+public: // アクセッサ
+
+	Vector2 GetPlayerPosition() { return playerPosition_; }
+
 public: // メンバ定数
 
 private: //メンバ変数
