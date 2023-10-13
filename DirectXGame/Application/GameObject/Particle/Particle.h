@@ -60,6 +60,10 @@ public: // 設定・取得
 	/// <param name="rota"></param>
 	void SetRotate(const Vector3& rota) { worldTransform_.rotation_ = rota; }
 
+	/// <summary>
+	/// スケール設定
+	/// </summary>
+	/// <param name="scale"></param>
 	void SetScale(const Vector3& scale) { worldTransform_.scale_ = scale; }
 
 protected:
@@ -81,15 +85,3 @@ protected:
 	// 経過時間
 	int timeElapsed_ = 0;
 };
-
-//class EnemyHitParticle : public Particle {
-//
-//};
-//
-//class JumpParticle : public Particle {
-//
-//};
-//
-//class BlockHitParticle : public Particle {
-//
-//};

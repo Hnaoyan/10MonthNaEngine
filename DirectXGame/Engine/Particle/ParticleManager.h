@@ -4,6 +4,7 @@
 #include "Particle.h"
 #include <list>
 #include <vector>
+#include <optional>
 
 class ParticleManager
 {
@@ -39,21 +40,40 @@ public: // 基本
 
 public:
 
-	enum class Pattern {
+	enum class PatternNum {
 		kNone,	// 通常
 		kMove,	// 移動時
 		kVibration,	// 振動時
 	};
 
-	Pattern pattern;
+private: // enumクラスの管理系
+	/// <summary>
+	/// 分岐変数
+	/// </summary>
+	PatternNum pattern_ = PatternNum::kNone;
+	/// <summary>
+	/// リクエスト
+	/// </summary>
+	std::optional<PatternNum> patternRequest_ = std::nullopt;
 
-	//std::vector<std::function<void()>> eventQueue_;
+private: // パターンの更新と初期化関数
+#pragma region パターンそれぞれの関数
+	void WaveInitialize();
+
+	void WaveUpdate();
+
+#pragma endregion
 
 private:
 	/// <summary>
 	/// パーティクルの更新処理
 	/// </summary>
 	void ParticleUpdate();
+
+	/// <summary>
+	/// 様々なパターンの処理
+	/// </summary>
+	void ParticleProcess();
 
 	/// <summary>
 	/// パーティクルの追加（板ポリ
@@ -69,7 +89,6 @@ private:
 	void AddParticle3D(Vector3& position,Vector3& velocity);
 
 private:
-
 	std::list<Particle*> particles_;
 
 	uint32_t texture_ = 0u;
@@ -77,12 +96,5 @@ private:
 	std::unique_ptr<Model> model_;
 
 	ViewProjection* view_;
-
-public:
-
-	enum Type {
-
-	};
-
 };
 

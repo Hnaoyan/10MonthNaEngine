@@ -18,9 +18,19 @@ void ParticleManager::Initialize(ViewProjection* view)
 
 void ParticleManager::Update()
 {
-
+	ParticleProcess();
 	// パーティクルの更新
 	ParticleUpdate();
+}
+
+void ParticleManager::WaveInitialize()
+{
+
+}
+
+void ParticleManager::WaveUpdate()
+{
+
 }
 
 void ParticleManager::ParticleUpdate()
@@ -38,6 +48,37 @@ void ParticleManager::ParticleUpdate()
 		}
 		return false;
 	});
+}
+
+void ParticleManager::ParticleProcess()
+{
+	if (patternRequest_) {
+		pattern_ = patternRequest_.value();
+
+		switch (pattern_)
+		{
+		case ParticleManager::PatternNum::kNone:
+			break;
+		case ParticleManager::PatternNum::kMove:
+			WaveInitialize();
+			break;
+		case ParticleManager::PatternNum::kVibration:
+			break;
+		}
+		patternRequest_ = std::nullopt;
+	}
+
+	switch (pattern_)
+	{
+	case ParticleManager::PatternNum::kNone:
+		break;
+	case ParticleManager::PatternNum::kMove:
+		WaveUpdate();
+		break;
+	case ParticleManager::PatternNum::kVibration:
+
+		break;
+	}
 }
 
 void ParticleManager::Draw(ViewProjection& viewProjection)
