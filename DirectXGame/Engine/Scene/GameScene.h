@@ -15,6 +15,7 @@
 #include "../Effect/EffectManager.h"
 
 #include <memory>
+#include <vector>
 
 // ゲームシーン用
 #include "UIManager.h"
@@ -23,6 +24,7 @@
 #include "Application/Others/Command/Command.h"
 #include "Others/MapSystem/MapSystem.h"
 #include "Application/GameObject/Player/Player.h"
+#include "Application/GameObject/BlockManager/BlockManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -105,6 +107,9 @@ private:	// メンバポインタ
 	std::unique_ptr<Model> playerModel_;
 
 	//ブロック
+	std::unique_ptr<BlockManager> blockManager_;
+	std::unique_ptr<Model> blockModel_;
+	std::vector<uint32_t> blocktextureHandles_;
 
 	// エネミー
 

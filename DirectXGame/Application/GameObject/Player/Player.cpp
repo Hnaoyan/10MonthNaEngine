@@ -3,7 +3,6 @@
 #include "Input.h"
 
 #include "Application/GameObject/Area/Area.h"
-#include "Application/GameObject/BlockManager/BlockManager.h"
 #include "Application/Others/Math2d/Math2d.h"
 #include <GlobalVariables.h>
 #include <imgui.h>
@@ -42,7 +41,7 @@ void Player::Update()
 	ApplyGlobalVariables();
 #endif // _DEBUG
 
-	worldTransform_.translation_ = { position_.x, position_.y, 0.0f };
+	worldTransform_.translation_ = { position_.x * 2.0f, position_.y * 2.0f, -2.0f };
 	worldTransform_.UpdateMatrix();
 
 }

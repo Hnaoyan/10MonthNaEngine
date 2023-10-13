@@ -41,7 +41,14 @@ void GameScene::Initialize() {
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
 
 	// ブロック
-	
+	blockModel_.reset(Model::CreateFromObj("block", true));
+	uint32_t blockWalltextureHandle = TextureManager::Load("uvChecker.png");
+	uint32_t blockLoadtextureHandle = TextureManager::Load("uvChecker.png");
+	blocktextureHandles_.push_back(blockWalltextureHandle);
+	blocktextureHandles_.push_back(blockLoadtextureHandle);
+	blockManager_ = make_unique<BlockManager>();
+	blockManager_->Initialize(blockModel_.get(), blocktextureHandles_, mapSystem_->GetMap());
+
 	// エネミー
 
 	// エフェクト
@@ -89,6 +96,7 @@ void GameScene::Update()
 		// マップ
 		//mapSystem_->Update();
 		player_->Update();
+		blockManager_->Update();
 
 	}
 
@@ -131,6 +139,7 @@ void GameScene::Draw() {
 
 	//particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
+	blockManager_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

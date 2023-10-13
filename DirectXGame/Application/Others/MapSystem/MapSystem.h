@@ -148,6 +148,8 @@ public: // アクセッサ
 
 	Vector2 GetPlayerPosition() { return playerPosition_; }
 
+	int** GetMap() { return map_; }
+
 public: // メンバ定数
 
 private: //メンバ変数
