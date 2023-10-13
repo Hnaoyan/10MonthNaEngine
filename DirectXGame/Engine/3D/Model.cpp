@@ -371,13 +371,27 @@ void Model::Initialize(const std::string& modelName, bool smoothing)
 
 void Model::Update()
 {
+	//// マテリアルの数値を定数バッファに反映
+	//for (auto& m : materials_) {
+	//	m.second->SetAlpha(alphaValue_);
+	//	m.second->Update();
+	//}
+}
+
+void Model::SetAlphaValue(float alpha) {
 	// マテリアルの数値を定数バッファに反映
 	for (auto& m : materials_) {
-		m.second->SetAlpha(alphaValue_);
-		m.second->Update();
+		m.second->SetAlpha(alpha);
 	}
 }
 
+float Model::GetAlphaValue() {
+	float result = 0;
+	for (auto& m : materials_) {
+		result = m.second->GetAlpha();
+	}
+	return result;
+}
 
 void Model::LoadModel(const std::string& modelName, bool smoothing)
 {

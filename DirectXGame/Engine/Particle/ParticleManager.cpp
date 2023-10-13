@@ -82,6 +82,7 @@ void ParticleManager::AddParticle3D(Vector3& position, Vector3& velocity)
 	newParticle->Initialize(model_.get(), texture_);
 	newParticle->SetPosition(position);
 	newParticle->SetVelocity(velocity);
-	newParticle->SetRotate(Vector3(1.5f, 0.0f, 0.0f));
+	newParticle->SetRotate(Vector3(1.65f, 0.0f, 0.0f));
+	newParticle->SetScale(Vector3(2.0f, 2.0f, 1.0f));
 	particles_.push_back(newParticle);
 }

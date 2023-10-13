@@ -29,16 +29,41 @@ public:
 	void Draw();
 
 public:
-
+	/// <summary>
+	/// 座標設定
+	/// </summary>
+	/// <param name="pos"></param>
 	void SetPosition(const Vector2& pos) { position_ = pos; }
 
+	/// <summary>
+	/// サイズ設定
+	/// </summary>
+	/// <param name="size"></param>
 	void SetSize(const Vector2& size) { size_ = size; }
 
+	/// <summary>
+	/// アンカーポイント設定
+	/// </summary>
+	/// <param name="anchor"></param>
 	void SetAnchor(const Vector2& anchor) { anchorPoint_ = anchor; }
-
+	
+	/// <summary>
+	/// 色設定
+	/// </summary>
+	/// <param name="color"></param>
 	void SetColor(const Vector4& color) { color_ = color; }
 
+	/// <summary>
+	/// タグ受け取り
+	/// </summary>
+	/// <returns></returns>
 	std::string GetTagName() { return tagName_; }
+
+	/// <summary>
+	/// サイズ取得
+	/// </summary>
+	/// <returns></returns>
+	Vector2 GetSize() { return sprite_->GetSize(); }
 
 private:
 	std::unique_ptr<Sprite> sprite_;

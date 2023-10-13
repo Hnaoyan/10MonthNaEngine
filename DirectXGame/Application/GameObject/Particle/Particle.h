@@ -54,7 +54,13 @@ public: // 設定・取得
 	/// <param name="view"></param>
 	void SetBillBoard(ViewProjection* view) { worldTransform_.BillBoardSetting(view, true); }
 
+	/// <summary>
+	/// 角度設定
+	/// </summary>
+	/// <param name="rota"></param>
 	void SetRotate(const Vector3& rota) { worldTransform_.rotation_ = rota; }
+
+	void SetScale(const Vector3& scale) { worldTransform_.scale_ = scale; }
 
 protected:
 	// モデル

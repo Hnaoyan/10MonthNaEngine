@@ -50,6 +50,7 @@ void GameScene::Initialize() {
 	blockTextureHandles_.push_back(blockTextureHandleEnemyAttack);
 	
 	warningModel_.reset(Model::CreateFromObj("warning", true));
+	bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
 
 	blockManager_ = make_unique<BlockManager>();
 	blockManager_->Initialize(blockModel_.get(), blockTextureHandles_, warningModel_.get());
@@ -66,7 +67,7 @@ void GameScene::Initialize() {
 	player_->SetEffectManager(effectManager_.get());
 
 	// ボスエネミー
-	bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
+	//bossEnemyModel_.reset(Model::CreateFromObj("boss", true));
 	bossEnemy_ = make_unique<BossEnemy>();
 	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get(), effectManager_.get());
 	bossEnemy_->SetParticleManager(particleManager_.get());
@@ -95,7 +96,8 @@ void GameScene::Update()
 		particleManager_->RandomRespown(player_->GetPosition());
 	}
 	if (input_->TriggerKey(DIK_0)) {
-		particleManager_->Test(player_->GetPosition());
+		Vector3 pos = { player_->GetPosition().x,player_->GetPosition().y - 1.0f,player_->GetPosition().z };
+		particleManager_->Test(pos);
 	}
 
 	// ブロックの死亡確認
@@ -109,9 +111,9 @@ void GameScene::Update()
 		// プレイヤー
 		player_->Update();
 		// ブロックマネージャー
-		blockManager_->Update();
+		//blockManager_->Update();
 		// ボスエネミー
-		bossEnemy_->Update();
+		//bossEnemy_->Update();
 	}
 
 	// ゲームオーバーか
@@ -168,8 +170,8 @@ void GameScene::Draw() {
 
 	area_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
-	blockManager_->Draw(viewProjection_);
-	bossEnemy_->Draw(viewProjection_);
+	//blockManager_->Draw(viewProjection_);
+	//bossEnemy_->Draw(viewProjection_);
 
 	particleManager_->Draw(viewProjection_);
 

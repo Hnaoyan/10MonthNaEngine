@@ -57,7 +57,6 @@ private:	// 静的メンバ変数
 	// パイプラインステートオブジェ
 	static std::array<Microsoft::WRL::ComPtr<ID3D12PipelineState>,
 		size_t(BlendMode::kCountOfBlendMode)> sPipelineStates_;
-	//static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelineState_;
 	// ライト
 	static std::unique_ptr<LightGroup> lightGroup_;
 
@@ -140,9 +139,9 @@ public:
 	/// アルファ値の設定
 	/// </summary>
 	/// <param name="alpha"></param>
-	void SetAlphaValue(float alpha) { alphaValue_ = alpha; }
+	void SetAlphaValue(float alpha);
 
-	float GetAlphaValue() { return alphaValue_; }
+	float GetAlphaValue();
 
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 

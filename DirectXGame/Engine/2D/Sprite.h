@@ -26,6 +26,13 @@ public:	// サブクラス
 	struct ConstBufferData {
 		Vector4 color;
 		Matrix4x4 mat;
+		Matrix4x4 uv;
+	};
+
+	struct Transform {
+		Vector3 scale;
+		Vector3 rotate;
+		Vector3 translate;
 	};
 
 	enum class BlendMode : int {
@@ -180,9 +187,13 @@ public:
 
 	void SetInvisible(bool isInv) { isInvisible_ = isInv; }
 
+	void SetSpriteRect(const Vector2& texBase, const Vector2& texSize);
+
 private:
 
 	void TransferVertices();
+
+	void UVUpdate();
 
 private:	// メンバ関数
 
@@ -216,6 +227,13 @@ private:	// メンバ関数
 
 	// 色
 	Vector4 color_ = { 1,1,1,1 };
+
+	// UV
+	Transform UVTransform_ = {
+		{1.0f,1.0f,1.0f},
+		{0,0,0},
+		{0,0,0}
+	};
 
 	float rotation_ = 0;
 

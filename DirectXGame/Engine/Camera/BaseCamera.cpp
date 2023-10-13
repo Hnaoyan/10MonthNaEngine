@@ -7,18 +7,17 @@ void BaseCamera::Initialize()
 	viewProjection_.Initialize();
 
 	// 位置・角度の設定
-	initPosition_ = { 10.0f, 20.0f, -70.0f };
+	initPosition_ = { 10.0f, 26.0f, -50.0f };
 	viewProjection_.translate_ = initPosition_;
-	viewProjection_.rotation_ = { 0,0,0 };
+	viewProjection_.rotation_ = { 0.36f,0,0 };
 }
 
 void BaseCamera::Update()
 {
 #ifdef _DEBUG
 	ImGui::Begin("base");
-	//ImGui::DragFloat3("translate", &viewProjection_.translate_.x, 0.01f, -20.0f, 20.0f);
 	// 位置
-	ImGui::SliderFloat3("translate", &viewProjection_.translate_.x, -50.0f, 50.0f);
+	ImGui::SliderFloat3("translate", &initPosition_.x, -50.0f, 50.0f);
 	// 回転
 	ImGui::DragFloat3("rotate", &viewProjection_.rotation_.x, 0.01f, -2.0f, 2.0f);
 	// 視野角

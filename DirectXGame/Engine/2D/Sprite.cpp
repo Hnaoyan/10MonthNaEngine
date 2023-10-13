@@ -336,6 +336,8 @@ void Sprite::Update()
 	// 定数バッファにデータ転送
 	constData_->color = color_;
 	constData_->mat = MatLib::Multiply(matWorld_, sMatProjection_);
+	constData_->uv = MatLib::MakeIdentity4x4();
+	UVUpdate();
 }
 
 void Sprite::SetAnchorPoint(const Vector2& anchorPoint)
@@ -343,6 +345,14 @@ void Sprite::SetAnchorPoint(const Vector2& anchorPoint)
 	anchorpoint_ = anchorPoint;
 
 	// 頂点バッファへ転送
+	TransferVertices();
+}
+
+void Sprite::SetSpriteRect(const Vector2& texBase, const Vector2& texSize)
+{
+	texBase_ = texBase;
+	texSize_ = texSize;
+
 	TransferVertices();
 }
 
@@ -390,6 +400,14 @@ void Sprite::TransferVertices()
 	}
 
 	memcpy(vertData_, vertices, sizeof(vertices));
+}
+
+void Sprite::UVUpdate()
+{
+	Matrix4x4 uvTransformMat = MatLib::MakeScaleMatrix(UVTransform_.scale);
+	uvTransformMat = MatLib::Multiply(uvTransformMat, MatLib::MakeRotateZMatrix(UVTransform_.rotate.z));
+	uvTransformMat = MatLib::Multiply(uvTransformMat, MatLib::MakeTranslateMatrix(UVTransform_.translate));
+	constData_->uv = uvTransformMat;
 }
 
 void Sprite::Draw() {

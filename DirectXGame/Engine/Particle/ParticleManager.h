@@ -3,10 +3,11 @@
 #include "ViewProjection.h"
 #include "Particle.h"
 #include <list>
+#include <vector>
 
 class ParticleManager
 {
-public:
+public: // 基本
 	/// <summary>
 	/// シングルトンインスタンス
 	/// </summary>
@@ -35,6 +36,18 @@ public:
 	void RandomRespown(const Vector3& point);
 
 	void Test(const Vector3& point);
+
+public:
+
+	enum class Pattern {
+		kNone,	// 通常
+		kMove,	// 移動時
+		kVibration,	// 振動時
+	};
+
+	Pattern pattern;
+
+	//std::vector<std::function<void()>> eventQueue_;
 
 private:
 	/// <summary>
