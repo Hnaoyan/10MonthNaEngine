@@ -12,10 +12,43 @@ const Vector2 MapSystem::kMapSize_ = { 15.0f, 15.0f };
 // マスのサイズ
 const Vector2 MapSystem::kSquareSize_ = { 10.0f,10.0f };
 // ステージ数
-const uint32_t kMaximumNumberOfStages_ = 1;
+const uint32_t kMaximumNumberOfStages_ = 2;
 
 MapSystem::~MapSystem()
 {
+	// マップ
+	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+		delete map_[y];
+	}
+	delete map_;
+
+	// データマップ
+
+
+	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
+		++itGroup) {
+		
+		std::string string = itGroup->first;
+
+		// 指定グループが存在するか
+		assert(stageDatas_.find(string) != stageDatas_.end());
+		//  グループの参照を取得
+		Group& group = stageDatas_[string];
+		// 指定グループに指定キーが存在するか
+		assert(group.find("map_") != group.end());
+		// 指定グループから指定のキーの値を取得
+		int** map = std::get<0>(group["map_"]);
+		for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+			if (map[y] != nullptr) {
+				delete map[y];
+			}
+		}
+		if (map) {
+			delete map;
+		}
+
+	}
+
 }
 
 void MapSystem::Initialize(int stageNum)
@@ -27,12 +60,6 @@ void MapSystem::Initialize(int stageNum)
 		map_[y] = new int[static_cast<size_t>(kMapSize_.x)];
 	}
 
-	// 初期マップ
-	initialStageData_.map_ = new int* [static_cast<size_t>(kMapSize_.y)];
-	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
-		initialStageData_.map_[y] = new int[static_cast<size_t>(kMapSize_.x)];
-	}
-
 	// マップデータ
 	StagesLoad();
 
@@ -41,20 +68,115 @@ void MapSystem::Initialize(int stageNum)
 
 }
 
-void MapSystem::Update()
+void MapSystem::Update(Command::CommandNumber commandNumber)
 {
+
+	// 移動
+	Move(commandNumber);
+
+	// 音を鳴らす
+	MakeSound();
+	
+	// ゲームクリアチェック
+	GameClear();
+	// ゲームオーバーチェック
+	GameOver();
+
 }
 
-void MapSystem::Move()
+void MapSystem::Move(Command::CommandNumber commandNumber)
 {
+
+	// 変数
+	int32_t playerPosX = static_cast<int32_t>(playerPosition_.x);
+	int32_t playerPosY = static_cast<int32_t>(playerPosition_.y);
+
+	bool HaveMoved = false;
+
+	// コマンドによる移動
+	switch (commandNumber)
+	{
+	case Command::Left:
+		HaveMoved = PlayerMove(playerPosX - 1, playerPosY);
+		break;
+	case Command::Right:
+		HaveMoved = PlayerMove(playerPosX + 1, playerPosY);
+		break;
+	case Command::Up:
+		HaveMoved = PlayerMove(playerPosX, playerPosY - 1);
+		break;
+	case Command::Down:
+		HaveMoved = PlayerMove(playerPosX, playerPosY + 1);
+		break;
+	default:
+		break;
+	}
+
+	// 移動できるかチェック
+	// 成功
+	if (HaveMoved) {
+		// エネミーの移動
+		EnemyMove();
+	}
+	// 失敗
+	else {
+
+	}
+
 }
 
-void MapSystem::BlockFall()
+void MapSystem::BlockFall(int32_t x, int32_t y)
 {
+	// 道から穴に
+	map_[y][x] = Hole;
 }
 
-void MapSystem::PlayerMove()
+bool MapSystem::PlayerMove(int32_t x, int32_t y)
 {
+
+	// 変数
+	int32_t playerPosX = static_cast<int32_t>(playerPosition_.x);
+	int32_t playerPosY = static_cast<int32_t>(playerPosition_.y);
+
+	// マップはみ出し確認
+	if (x < 0 || y < 0 ||
+		x >= static_cast<int32_t>(kMapSize_.x) ||
+		y >= static_cast<int32_t>(kMapSize_.y)) {
+		// 移動できない
+		return false;
+	}
+	
+	switch (static_cast<MapNumber>(map_[y][x]))
+	{
+	// 壁
+	case Wall:
+		// 移動できない
+		return false;
+		break;
+	
+	// 道
+	case Road:
+		//現在位置のブロックを落とす
+		BlockFall(playerPosX, playerPosY);
+		// 移動
+		playerPosition_.x = static_cast<float>(x);
+		playerPosition_.y = static_cast<float>(y);
+		// 移動できた
+		return true;
+		break;
+	
+	// 穴
+	case Hole:
+		// 移動できない
+		return false;
+		break;
+	
+	default:
+		break;
+	}
+
+	return false;
+
 }
 
 void MapSystem::EnemyMove()
@@ -99,6 +221,9 @@ void MapSystem::Restart()
 		capturedEnemy_.at(i) = false;
 	}
 
+	// コマンド番号
+	comandNumber_ = Command::CommandNumber::None;
+
 }
 
 void MapSystem::Setting(int stageNum)
@@ -108,12 +233,13 @@ void MapSystem::Setting(int stageNum)
 	stageNum_ = stageNum;
 
 	// グループ名の設定
-	std::string groupName = std::to_string(stageNum_);
+	std::string groupName = "StageData0";
 
 	// 初期情報
 	initialStageData_.map_ = GetMapValue(groupName, "map_");
 	initialStageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
 	initialStageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
+	//for(std::vector<Vector2>::iterator ; )
 	initialStageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
 	initialStageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
 	initialStageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
@@ -127,16 +253,26 @@ void MapSystem::Setting(int stageNum)
 	// プレイヤーの位置
 	playerPosition_ = initialStageData_.playerPosition_;
 	// エネミーの位置
-	for (size_t i = 0; initialStageData_.enemyPosition_.size(); i++) {
-		enemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
+	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
+		Vector2 enemyPosition = initialStageData_.enemyPosition_.at(i);
+		enemyPosition_.push_back(enemyPosition);
 	}
 	// ゴールが開いたか
 	goalOpened_ = false;
 	// 敵を捕まえた
-	for (size_t i = 0; enemyPosition_.size(); i++) {
+	for (size_t i = 0; i < enemyPosition_.size(); i++) {
 		bool capturedEnemy = false;
 		capturedEnemy_.push_back(capturedEnemy);
 	}
+
+	// コマンド番号
+	comandNumber_ = Command::CommandNumber::None;
+
+	// ゲームクリアフラグ
+	isGameClaer_ = false;
+
+	// ゲームオーバーフラグ
+	isGameOver_ = false;
 
 }
 
@@ -161,12 +297,14 @@ void MapSystem::StagesLoad()
 		}
 
 		// ファイル読み込み
-		StageLoad(filePath.stem().string());
+		for (size_t i = 0; i < static_cast<size_t>(2); i++) {
+			StageLoad(filePath.stem().string(), i);
+		}
 	}
 
 }
 
-void MapSystem::StageLoad(const std::string& groupName)
+void MapSystem::StageLoad(const std::string& groupName , size_t num)
 {
 
 	// 読み込むJSONファイルのフルパスを合成する
@@ -187,7 +325,9 @@ void MapSystem::StageLoad(const std::string& groupName)
 	ifs.close();
 
 	// グループを検索
-	json::iterator itGroup = root.find(groupName);
+	std::string name = groupName + std::to_string(num);
+
+	json::iterator itGroup = root.find(name);
 
 	// 未登録チェック
 	assert(itGroup != root.end());
@@ -198,7 +338,7 @@ void MapSystem::StageLoad(const std::string& groupName)
 		const std::string& itemName = itItem.key();
 
 		// int32_t型
-		if (itItem->is_array() && itItem->size() == static_cast<size_t>(kMapSize_.x) * static_cast<size_t>(kMapSize_.y)) {
+		if (itemName == "map_") {
 			// int型の値を登録
 			int** values;
 			values = new int* [static_cast<size_t>(kMapSize_.y)];
@@ -213,25 +353,25 @@ void MapSystem::StageLoad(const std::string& groupName)
 					i++;
 				}
 			}
-			SetValue(groupName, itemName, values);
+			SetValue(name, itemName, values);
 		}
 		// 要素数が2の配列であれば
-		else if (itItem->is_array() && itItem->size() == 2) {
+		else if (itemName == "playerPosition_" || 
+				itemName == "startPosition_" || 
+			itemName == "goalPosition_") {
 			// float型のjson配列登録
 			Vector2 value = { itItem->at(0), itItem->at(1) };
-			SetValue(groupName, itemName, value);
+			SetValue(name, itemName, value);
 		}
 		// 要素数が多い配列であれば
-		else if (itItem->is_array() && itItem->size() > 2) {
+		else {
 			// float型のjson配列登録
 			std::vector<Vector2> values;
-			size_t i = 0;
-			for (size_t k = 0; k < itItem->size(); k++) {
-				Vector2 value = { itItem->at(i), itItem->at(i + 1) };
+			for (size_t k = 0; k < itItem->size(); k += 2) {
+				Vector2 value = { itItem->at(k), itItem->at(k + 1) };
 				values.push_back(value);
-				i += 2;
 			}
-			SetValue(groupName, itemName, values);
+			SetValue(name, itemName, values);
 		}
 
 	}
@@ -308,4 +448,5 @@ std::vector<Vector2> MapSystem::GetPositionsValue(const std::string& groupName, 
 	assert(group.find(key) != group.end());
 	// 指定グループから指定のキーの値を取得
 	return std::get<2>(group[key]);
+
 }

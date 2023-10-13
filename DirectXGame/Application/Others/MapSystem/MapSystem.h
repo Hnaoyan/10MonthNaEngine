@@ -5,6 +5,8 @@
 #include <string>
 #include <variant>
 
+#include "../Application/Others/Command/Command.h"
+
 /// <summary>
 /// マップシステムクラス
 /// </summary>
@@ -62,24 +64,27 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	void Update();
+	void Update(Command::CommandNumber commandNumber);
 
 private: // メンバ関数
 
 	/// <summary>
 	/// 移動
 	/// </summary>
-	void Move();
+	void Move(Command::CommandNumber commandNumber);
 
 	/// <summary>
 	/// ブロックが落ちる
 	/// </summary>
-	void BlockFall();
+	void BlockFall(int32_t x, int32_t y);
 
 	/// <summary>
 	/// プレイヤーの移動
 	/// </summary>
-	void PlayerMove();
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	/// <returns>移動できたか</returns>
+	bool PlayerMove(int32_t x, int32_t y);
 
 	/// <summary>
 	/// エネミーの移動
@@ -119,7 +124,7 @@ private: // メンバ関数
 	/// <summary>
 	/// マップ読み込み
 	/// </summary>
-	void StageLoad(const std::string& groupName);
+	void StageLoad(const std::string& groupName, size_t num);
 
 	/// <summary>
 	/// 値のセット
@@ -164,13 +169,24 @@ private: //メンバ変数
 	// 敵を捕まえた
 	std::vector<bool> capturedEnemy_;
 
+	// コマンド番号
+	Command::CommandNumber comandNumber_;
+
+	// ゲームクリアフラグ
+	bool isGameClaer_;
+
+	// ゲームオーバーフラグ
+	bool isGameOver_;
+
+private: //メンバ変数(データ)
+
 	// ステージデータ(ステージ番号、データ)
-	using Item = std::variant<int**, Vector2, std::vector<Vector2>>;
+	using Item = std::variant<int**, Vector2, std::vector<Vector2>, float*>;
 	using Group = std::map<std::string, Item>;
 	std::map<std::string, Group> stageDatas_;
 
 	// ステージデータの保存先ファイルパス
-	const std::string kDirectoryPath = "Resources/StageData";
+	const std::string kDirectoryPath = "Resources/StageData/";
 
 };
 

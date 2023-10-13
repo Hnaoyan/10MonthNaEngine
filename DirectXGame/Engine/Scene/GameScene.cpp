@@ -31,6 +31,8 @@ void GameScene::Initialize() {
 	command_->Initialize();
 
 	// マップ
+	mapSystem_ = make_unique<MapSystem>();
+	mapSystem_->Initialize(0);
 
 	// プレイヤー
 

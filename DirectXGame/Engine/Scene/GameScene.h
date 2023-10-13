@@ -21,6 +21,7 @@
 #include "ParticleManager.h"
 
 #include "Application/Others/Command/Command.h"
+#include <Others/MapSystem/MapSystem.h>
 
 /// <summary>
 /// ゲームシーン
@@ -94,6 +95,9 @@ private:	// メンバポインタ
 
 	// コマンド
 	std::unique_ptr<Command> command_;
+
+	// マップ
+	std::unique_ptr<MapSystem> mapSystem_;
 
 	// プレイヤー
 
