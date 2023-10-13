@@ -1,6 +1,9 @@
 #pragma once
 #include "StructManager.h"
 #include <vector>
+#include <map>
+#include <string>
+#include <variant>
 
 /// <summary>
 /// マップシステムクラス
@@ -11,9 +14,26 @@ class MapSystem
 public: // サブクラス
 	// マップ番号
 	enum MapNumber {
-		Wall,
-		Road,
-		Hole,
+		Wall, // 壁
+		Road, // 道
+		Hole, // 穴
+	};
+
+	// ステージデータ
+	struct StageData
+	{
+		// マップ
+		int** map_;
+		// プレイヤーの位置
+		Vector2 playerPosition_;
+		// エネミーの位置
+		std::vector<Vector2> enemyPosition_;
+		// 檻の位置
+		std::vector<Vector2> cagePosition_;
+		// スタートの位置
+		Vector2 startPosition_;
+		// ゴールの位置
+		Vector2 goalPosition_;
 	};
 
 public: // 静的メンバ定数
@@ -24,12 +44,20 @@ public: // 静的メンバ定数
 	// マスのサイズ
 	static const Vector2 kSquareSize_;
 
+	// ステージ数
+	static const uint32_t kMaximumNumberOfStages_;
+
 public: // メンバ関数
+	
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~MapSystem();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(int stageNum);
 
 	/// <summary>
 	/// 更新処理
@@ -81,7 +109,17 @@ private: // メンバ関数
 	/// <summary>
 	/// 設定
 	/// </summary>
-	void Setting();
+	void Setting(int stageNum);
+
+	/// <summary>
+	/// マップ読み込み
+	/// </summary>
+	void StagesLoad();
+
+	/// <summary>
+	/// マップ読み込み
+	/// </summary>
+	void StageLoad(const std::string& groupName);
 
 public: // メンバ定数
 
@@ -90,11 +128,11 @@ private: //メンバ変数
 	// ステージ番号
 	int stageNum_;
 
+	// ステージデータ
+	StageData initialData_;
+
 	// マップ
 	int** map_;
-
-	// 初期マップ
-	int** InitialMap_;
 
 	// プレイヤーの位置
 	Vector2 playerPosition_;
@@ -102,20 +140,18 @@ private: //メンバ変数
 	// エネミーの位置
 	std::vector<Vector2> enemyPosition_;
 
-	// 檻の位置
-	std::vector<Vector2> cagePosition_;
-
-	// スタートの位置
-	Vector2 startPosition_;
-
-	// ゴールの位置
-	Vector2 goalPosition_;
-
 	// ゴールが開いたか
 	bool goalOpened_;
 	
 	// 敵を捕まえた
 	std::vector<bool> capturedEnemy_;
+
+	// ステージデータ(ステージ番号、データ)
+	using Group = std::map<std::string, StageData>;
+	std::map<std::string, Group> stageDatas_;
+
+	// ステージデータの保存先ファイルパス
+	const std::string kDirectoryPath = "Resources/StageData";
 
 };
 
