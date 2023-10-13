@@ -94,8 +94,11 @@ void GameScene::Update()
 		// コマンド
 		command_->Update();
 		// マップ
-		//mapSystem_->Update();
-		player_->Update();
+		if (!command_->GetAcceptingInput()) {
+			mapSystem_->Update(command_->GetCommandNumber());
+			command_->SetAcceptingInput(true);
+		}
+		player_->Update(mapSystem_->GetPlayerPosition());
 		blockManager_->Update();
 
 	}

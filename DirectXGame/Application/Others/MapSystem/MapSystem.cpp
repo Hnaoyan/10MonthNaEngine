@@ -103,10 +103,10 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 		HaveMoved = PlayerMove(playerPosX + 1, playerPosY);
 		break;
 	case Command::Up:
-		HaveMoved = PlayerMove(playerPosX, playerPosY - 1);
+		HaveMoved = PlayerMove(playerPosX, playerPosY + 1);
 		break;
 	case Command::Down:
-		HaveMoved = PlayerMove(playerPosX, playerPosY + 1);
+		HaveMoved = PlayerMove(playerPosX, playerPosY - 1);
 		break;
 	default:
 		break;
@@ -181,18 +181,49 @@ bool MapSystem::PlayerMove(int32_t x, int32_t y)
 
 void MapSystem::EnemyMove()
 {
+
+	// エネミーが起きている時
+	for (size_t i = 0; i < enemyCount_; i++) {
+		if (enemyAwake_.at(i)) {
+			// 行動する
+		}
+	}
+
 }
 
 void MapSystem::MakeSound()
 {
+
+	for (size_t i = 0; i < enemyCount_; i++) {
+		if (!enemyAwake_.at(i)) {
+			// 起きる
+			int x = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
+			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
+			
+			if (x + y < 3) {
+				enemyAwake_.at(i) = true;
+			}
+
+		}
+	}
+
 }
 
 void MapSystem::GameClear()
 {
+
+	if (playerPosition_.x == initialStageData_.goalPosition_.x &&
+		playerPosition_.y == initialStageData_.goalPosition_.y &&
+		goalOpened_) {
+		isGameClaer_ = true;
+	}
+
 }
 
 void MapSystem::GameOver()
 {
+
+
 }
 
 void MapSystem::Restart()
@@ -233,7 +264,7 @@ void MapSystem::Setting(int stageNum)
 	stageNum_ = stageNum;
 
 	// グループ名の設定
-	std::string groupName = "StageData0";
+	std::string groupName = "StageData" + std::to_string(stageNum_);
 
 	// 初期情報
 	initialStageData_.map_ = GetMapValue(groupName, "map_");
@@ -253,14 +284,23 @@ void MapSystem::Setting(int stageNum)
 	// プレイヤーの位置
 	playerPosition_ = initialStageData_.playerPosition_;
 	// エネミーの位置
+	// エネミーのカウント
+	enemyCount_ = 0;
 	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
 		Vector2 enemyPosition = initialStageData_.enemyPosition_.at(i);
 		enemyPosition_.push_back(enemyPosition);
+		enemyCount_++;
 	}
+
+	// エネミーが起きている時
+	for (size_t i = 0; i < enemyCount_; i++) {
+		enemyAwake_.push_back(false);
+	}
+
 	// ゴールが開いたか
 	goalOpened_ = false;
 	// 敵を捕まえた
-	for (size_t i = 0; i < enemyPosition_.size(); i++) {
+	for (size_t i = 0; i < enemyCount_; i++) {
 		bool capturedEnemy = false;
 		capturedEnemy_.push_back(capturedEnemy);
 	}

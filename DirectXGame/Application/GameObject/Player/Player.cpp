@@ -34,13 +34,14 @@ void Player::Initialize(Model* model)
 
 }
 
-void Player::Update()
+void Player::Update(Vector2 position)
 {
 
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 #endif // _DEBUG
 
+	position_ = position;
 	worldTransform_.translation_ = { position_.x * 2.0f, position_.y * 2.0f, -2.0f };
 	worldTransform_.UpdateMatrix();
 

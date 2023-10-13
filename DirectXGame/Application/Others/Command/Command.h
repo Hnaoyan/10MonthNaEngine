@@ -41,8 +41,10 @@ private: // メンバ関数
 public: // アクセッサ
 
 	// コマンド番号
-	int GetCommandNumber() { return static_cast<int>(comandNumber_); }
+	CommandNumber GetCommandNumber() { return comandNumber_; }
 
+	// 入力受付中か
+	bool GetAcceptingInput() { return acceptingInput_; }
 	// 入力受付中か
 	void SetAcceptingInput(bool acceptingInput) { acceptingInput_ = acceptingInput; }
 

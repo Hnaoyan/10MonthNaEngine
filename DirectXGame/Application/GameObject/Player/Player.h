@@ -27,7 +27,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(Vector2 position);
 
 	/// <summary>
 	/// 描画

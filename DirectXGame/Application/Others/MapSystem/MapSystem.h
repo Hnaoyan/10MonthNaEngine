@@ -169,6 +169,12 @@ private: //メンバ変数
 	// エネミーの位置
 	std::vector<Vector2> enemyPosition_;
 
+	// エネミーのカウント
+	size_t enemyCount_;
+
+	// エネミーが起きている時
+	std::vector<bool> enemyAwake_;
+
 	// ゴールが開いたか
 	bool goalOpened_;
 
