@@ -8,17 +8,17 @@ public:
 	~StageSelectScene() {};
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize() override;
 
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ›´æ–°
 	/// </summary>
 	void Update() override;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw() override;
 

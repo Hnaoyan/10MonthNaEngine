@@ -3,7 +3,7 @@
 #include "ViewProjection.h"
 #include "Model.h"
 
-#include "EffectManager.h"
+#include "../Effect/EffectManager.h"
 #include "Application/Others/RectangleCollider/RectangleCollider.h"
 
 // 前方宣言

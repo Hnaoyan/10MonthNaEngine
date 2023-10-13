@@ -1,8 +1,8 @@
 #pragma once
 #include "WorldTransform.h"
 #include "ViewProjection.h"
-#include "EffectManager.h"
-#include "ParticleManager.h"
+#include "../Effect/EffectManager.h"
+#include "../Particle/ParticleManager.h"
 #include "Model.h"
 #include <Application/Others/TimedCall/TimedCall.h>
 #include <Application/Others/RectangleCollider/RectangleCollider.h>

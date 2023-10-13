@@ -12,15 +12,11 @@
 #include "FollowCamera.h"
 #include "BaseScene.h"
 #include "BaseCamera.h"
-#include "EffectManager.h"
+#include "../Effect/EffectManager.h"
 
 #include <memory>
 
 // ゲームシーン用
-#include "Player.h"
-#include "Area.h"
-#include "BlockManager.h"
-#include "BossEnemy.h"
 #include "UIManager.h"
 #include "ParticleManager.h"
 
@@ -63,11 +59,6 @@ public: // メンバ関数
 	void CameraUpdate();
 
 	/// <summary>
-	/// 衝突確認
-	/// </summary>
-	void CollisionCheak();
-
-	/// <summary>
 	/// リセット
 	/// </summary>
 	void Reset();
@@ -100,23 +91,12 @@ private:	// メンバポインタ
 	/// </summary>
 
 	//エリア
-	std::unique_ptr<Area> area_;
-	std::unique_ptr<Model> areaModel_;
-	std::unique_ptr<Model> yellowLineModel_;
 
 	// プレイヤー
-	std::unique_ptr<Player> player_;
-	std::unique_ptr<Model> playerModel_;
 
 	//ブロック
-	std::unique_ptr<BlockManager> blockManager_;
-	std::unique_ptr<Model> blockModel_;
-	std::vector<uint32_t> blockTextureHandles_;
-	std::unique_ptr<Model> warningModel_;
 
-	// ボスエネミー
-	std::unique_ptr<BossEnemy> bossEnemy_;
-	std::unique_ptr<Model> bossEnemyModel_;
+	// エネミー
 
 	// マネージャ系
 	std::unique_ptr<EffectManager> effectManager_;
