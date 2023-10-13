@@ -267,6 +267,8 @@ void Model::PreDraw(ID3D12GraphicsCommandList* commandList)
 
 void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection)
 {
+	// アルファ値の更新
+	Update();
 	// パイプラインステートの設定
 	sCommandList_->SetPipelineState(sPipelineStates_[size_t(blendMode_)].Get());
 	// ライト
@@ -292,6 +294,8 @@ void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& vie
 
 void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, UINT textureHandle)
 {
+	// アルファ値の更新
+	Update();
 	// パイプラインステートの設定
 	sCommandList_->SetPipelineState(sPipelineStates_[size_t(blendMode_)].Get());
 	// ライト
@@ -365,14 +369,15 @@ void Model::Initialize(const std::string& modelName, bool smoothing)
 	LoadTextures();
 }
 
-void Model::SetAlphaValue(float alpha)
+void Model::Update()
 {
 	// マテリアルの数値を定数バッファに反映
 	for (auto& m : materials_) {
-		m.second->SetAlpha(alpha);
+		m.second->SetAlpha(alphaValue_);
 		m.second->Update();
 	}
 }
+
 
 void Model::LoadModel(const std::string& modelName, bool smoothing)
 {

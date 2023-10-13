@@ -6,6 +6,13 @@ UIManager* UIManager::GetInstance()
 	return &instance;
 }
 
+void UIManager::Update()
+{
+	for (UIBase* ui : uiSprites_) {
+		ui->Update();
+	}
+}
+
 void UIManager::Draw()
 {
 	for (UIBase* ui : uiSprites_) {

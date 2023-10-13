@@ -71,13 +71,13 @@ void GameScene::Initialize() {
 	bossEnemy_->Initialize(bossEnemyModel_.get(), blockManager_.get(), effectManager_.get());
 	bossEnemy_->SetParticleManager(particleManager_.get());
 	
-	//uint32_t sprite = TextureManager::Load("uvChecker.png");
-	//string spName_ = "UV";
-	//uint32_t ui = TextureManager::Load("white1x1.png");
-	//string uiName_ = "white";
+	uint32_t sprite = TextureManager::Load("uvChecker.png");
+	string spName_ = "UV";
+	uint32_t ui = TextureManager::Load("white1x1.png");
+	string uiName_ = "white";
 	uiManager_ = make_unique<UIManager>();
-	//uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
-	//uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
+	uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
+	uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
 
 
 }
@@ -87,12 +87,15 @@ void GameScene::Update()
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
+	uiManager_->Update();
 	effectManager_->Update();
-
 	particleManager_->Update();
 
 	if (input_->TriggerKey(DIK_9)) {
 		particleManager_->RandomRespown(player_->GetPosition());
+	}
+	if (input_->TriggerKey(DIK_0)) {
+		particleManager_->Test(player_->GetPosition());
 	}
 
 	// ブロックの死亡確認
@@ -146,7 +149,7 @@ void GameScene::Draw() {
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 
-	uiManager_->Draw();
+	//uiManager_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

@@ -7,6 +7,11 @@ void UIBase::Initialize(int texHandle)
 	size_ = sprite_->GetSize();
 }
 
+void UIBase::Update()
+{
+	sprite_->Update();
+}
+
 void UIBase::Draw()
 {
 	// 描画

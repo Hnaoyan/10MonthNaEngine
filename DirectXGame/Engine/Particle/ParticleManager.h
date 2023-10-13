@@ -34,6 +34,8 @@ public:
 	/// <param name="point"></param>
 	void RandomRespown(const Vector3& point);
 
+	void Test(const Vector3& point);
+
 private:
 	/// <summary>
 	/// パーティクルの更新処理

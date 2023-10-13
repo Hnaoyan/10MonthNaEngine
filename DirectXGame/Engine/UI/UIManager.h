@@ -17,6 +17,11 @@ public:
 	void Initialize() {};
 
 	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();

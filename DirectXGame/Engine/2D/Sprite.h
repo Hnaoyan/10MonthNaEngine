@@ -108,6 +108,11 @@ public:
 	bool Initialize();
 
 	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
@@ -173,6 +178,8 @@ public:
 	/// <param name="mode"></param>
 	void SetBlendMode(BlendMode mode) { blendMode_ = mode; }
 
+	void SetInvisible(bool isInv) { isInvisible_ = isInv; }
+
 private:
 
 	void TransferVertices();
@@ -221,6 +228,8 @@ private:	// メンバ関数
 	bool isFlipX_ = false;
 	// 上下反転
 	bool isFlipY_ = false;
+
+	bool isInvisible_ = false;
 
 	D3D12_RESOURCE_DESC resourceDesc_{};
 

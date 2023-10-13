@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseScene.h"
 
 class StageSelectScene : public BaseScene
@@ -8,17 +8,17 @@ public:
 	~StageSelectScene() {};
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize() override;
 
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update() override;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw() override;
 

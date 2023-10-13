@@ -17,6 +17,12 @@ public:
 	/// </summary>
 	/// <param name="texHandle"></param>
 	void Initialize(int texHandle);
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
 	/// <summary>
 	/// 描画
 	/// </summary>

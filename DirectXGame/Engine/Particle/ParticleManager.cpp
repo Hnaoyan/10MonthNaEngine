@@ -59,6 +59,13 @@ void ParticleManager::RandomRespown(const Vector3& point)
 	}
 }
 
+void ParticleManager::Test(const Vector3& point)
+{
+	Vector3 inverseVect = {};
+	Vector3 pos = point;
+	AddParticle3D(pos, inverseVect);
+}
+
 void ParticleManager::AddParticle2D(Vector3& position, Vector3& velocity)
 {
 	Particle* newParticle = new Particle();
@@ -75,5 +82,6 @@ void ParticleManager::AddParticle3D(Vector3& position, Vector3& velocity)
 	newParticle->Initialize(model_.get(), texture_);
 	newParticle->SetPosition(position);
 	newParticle->SetVelocity(velocity);
+	newParticle->SetRotate(Vector3(1.5f, 0.0f, 0.0f));
 	particles_.push_back(newParticle);
 }

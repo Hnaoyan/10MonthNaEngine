@@ -73,6 +73,8 @@ private:
 	// ブレンド
 	BlendMode blendMode_ = BlendMode::kNormal;
 
+	float alphaValue_ = 1.0f;
+
 public:
 	/// <summary>
 	/// 静的初期化
@@ -130,10 +132,17 @@ public:
 	void Initialize(const std::string& modelName, bool smoothing = false);
 
 	/// <summary>
+	/// 更新処理
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// アルファ値の設定
 	/// </summary>
 	/// <param name="alpha"></param>
-	void SetAlphaValue(float alpha);
+	void SetAlphaValue(float alpha) { alphaValue_ = alpha; }
+
+	float GetAlphaValue() { return alphaValue_; }
 
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 

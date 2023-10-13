@@ -7,6 +7,9 @@
 class Particle
 {
 public:
+	Particle() {};
+	~Particle() = default;
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -50,6 +53,9 @@ public: // 設定・取得
 	/// </summary>
 	/// <param name="view"></param>
 	void SetBillBoard(ViewProjection* view) { worldTransform_.BillBoardSetting(view, true); }
+
+	void SetRotate(const Vector3& rota) { worldTransform_.rotation_ = rota; }
+
 protected:
 	// モデル
 	Model* model_;

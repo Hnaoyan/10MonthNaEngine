@@ -323,6 +323,21 @@ bool Sprite::Initialize() {
 	return true;
 }
 
+void Sprite::Update()
+{
+
+	TransferVertices();
+
+	// ワールド行列の更新
+	matWorld_ = MatLib::MakeIdentity4x4();
+	matWorld_ = MatLib::Multiply(matWorld_, MatLib::MakeRotateZMatrix(rotation_));
+	matWorld_ = MatLib::Multiply(matWorld_, MatLib::MakeTranslateMatrix(Vector3(position_.x, position_.y, 0)));
+
+	// 定数バッファにデータ転送
+	constData_->color = color_;
+	constData_->mat = MatLib::Multiply(matWorld_, sMatProjection_);
+}
+
 void Sprite::SetAnchorPoint(const Vector2& anchorPoint)
 {
 	anchorpoint_ = anchorPoint;
@@ -378,16 +393,14 @@ void Sprite::TransferVertices()
 }
 
 void Sprite::Draw() {
+
 	// パイプラインの設定
 	sCommandList_->SetPipelineState(sPipelineStates_[size_t(blendMode_)].Get());
-	// ワールド行列の更新
-	matWorld_ = MatLib::MakeIdentity4x4();
-	matWorld_ = MatLib::Multiply(matWorld_, MatLib::MakeRotateZMatrix(rotation_));
-	matWorld_ = MatLib::Multiply(matWorld_, MatLib::MakeTranslateMatrix(Vector3(position_.x, position_.y, 0)));
-	
-	// 定数バッファにデータ転送
-	constData_->color = color_;
-	constData_->mat = MatLib::Multiply(matWorld_, sMatProjection_);
+
+	// 非表示処理
+	if (isInvisible_) {
+		return;
+	}
 
 	// 頂点バッファの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vbView_);
