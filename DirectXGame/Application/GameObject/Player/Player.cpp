@@ -2,7 +2,6 @@
 #include <algorithm>
 #include "Input.h"
 
-#include "Application/GameObject/Area/Area.h"
 #include "Application/Others/Math2d/Math2d.h"
 #include <GlobalVariables.h>
 #include <imgui.h>

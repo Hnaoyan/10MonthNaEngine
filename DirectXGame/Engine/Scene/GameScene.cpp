@@ -78,16 +78,16 @@ void GameScene::Update()
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
-	uiManager_->Update();
+	//uiManager_->Update();
 	effectManager_->Update();
-	particleManager_->Update();
+	//particleManager_->Update();
 
 	if (input_->TriggerKey(DIK_9)) {
-		particleManager_->RandomRespown(player_->GetPosition());
+		//particleManager_->RandomRespown(player_->GetPosition());
 	}
 	if (input_->TriggerKey(DIK_0)) {
-		Vector3 pos = { player_->GetPosition().x,player_->GetPosition().y - 1.0f,player_->GetPosition().z };
-		particleManager_->Test(pos);
+		//Vector3 pos = { player_->GetPosition().x,player_->GetPosition().y - 1.0f,player_->GetPosition().z };
+		//particleManager_->Test(pos);
 	}
 
 	if(effectManager_->IsStop()){
