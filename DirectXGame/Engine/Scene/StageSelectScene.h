@@ -13,7 +13,7 @@ public:
 	void Initialize() override;
 
 	/// <summary>
-	/// 毎フレーム処理
+	/// 更新
 	/// </summary>
 	void Update() override;
 
