@@ -156,10 +156,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Block\Block.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\BossEnemy\BossEnemy.cpp" />
-    <ClCompile Include="DirectXGame\Application\GameObject\MapSystem\MapSystem.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\PlayerAttack\PlayerAttack.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Player\Player.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\Command\Command.cpp" />
+    <ClCompile Include="DirectXGame\Application\Others\MapSystem\MapSystem.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\Math2d\Math2d.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.cpp" />
     <ClCompile Include="DirectXGame\Application\others\TimedCall\TimedCall.cpp" />
@@ -218,10 +218,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Block\Block.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\BossEnemy\BossEnemy.h" />
-    <ClInclude Include="DirectXGame\Application\GameObject\MapSystem\MapSystem.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\PlayerAttack\PlayerAttack.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Player\Player.h" />
     <ClInclude Include="DirectXGame\Application\Others\Command\Command.h" />
+    <ClInclude Include="DirectXGame\Application\Others\MapSystem\MapSystem.h" />
     <ClInclude Include="DirectXGame\Application\Others\Math2d\Math2d.h" />
     <ClInclude Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.h" />
     <ClInclude Include="DirectXGame\Application\others\TimedCall\TimedCall.h" />

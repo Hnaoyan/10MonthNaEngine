@@ -48,7 +48,7 @@ public: // 静的メンバ定数
 	static const uint32_t kMaximumNumberOfStages_;
 
 public: // メンバ関数
-	
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -100,7 +100,7 @@ private: // メンバ関数
 	/// ゲームオーバー(敵にぶつかってしまった)
 	/// </summary>
 	void GameOver();
-	
+
 	/// <summary>
 	/// リスタート
 	/// </summary>
@@ -120,6 +120,16 @@ private: // メンバ関数
 	/// マップ読み込み
 	/// </summary>
 	void StageLoad(const std::string& groupName);
+
+	/// <summary>
+	/// 値のセット
+	/// </summary>
+	/// <param name="groupName"></param>
+	/// <param name="key"></param>
+	/// <param name="value"></param>
+	void SetValue(const std::string& groupName, const std::string& key, int** value);
+	void SetValue(const std::string& groupName, const std::string& key, const Vector2& value);
+	void SetValue(const std::string& groupName, const std::string& key, std::vector<Vector2>& value);
 
 public: // メンバ定数
 
@@ -142,12 +152,13 @@ private: //メンバ変数
 
 	// ゴールが開いたか
 	bool goalOpened_;
-	
+
 	// 敵を捕まえた
 	std::vector<bool> capturedEnemy_;
 
 	// ステージデータ(ステージ番号、データ)
-	using Group = std::map<std::string, StageData>;
+	using Item = std::variant<int**, Vector2, std::vector<Vector2>>;
+	using Group = std::map<std::string, Item>;
 	std::map<std::string, Group> stageDatas_;
 
 	// ステージデータの保存先ファイルパス

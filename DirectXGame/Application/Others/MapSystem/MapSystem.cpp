@@ -2,7 +2,6 @@
 #include <cassert>
 #include <json.hpp>
 #include <fstream>
-#include <WinUser.h>
 
 //名前空間
 using namespace nlohmann;
@@ -23,7 +22,7 @@ void MapSystem::Initialize(int stageNum)
 {
 
 	// マップ
-	map_ = new int*[static_cast<size_t>(kMapSize_.y)];
+	map_ = new int* [static_cast<size_t>(kMapSize_.y)];
 	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
 		map_[y] = new int[static_cast<size_t>(kMapSize_.x)];
 	}
@@ -108,23 +107,35 @@ void MapSystem::Setting(int stageNum)
 	// ステージ番号
 	stageNum_ = stageNum;
 
+	/*
+
 	// 初期情報
 	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
 		++itGroup) {
 		// グループの参照を取得
 		Group& group = itGroup->second;
 		// ステージ番号確認
-		for (std::map<std::string, StageData>::iterator itData = group.begin();
-			itData != group.end(); ++itData) {
+		for (std::map<std::string, Item>::iterator itItem = group.begin();
+			itItem != group.end(); ++itItem) {
 			// 項目名を取得
-			const std::string& itemName = itData->first;
-			if (itemName == std::to_string(stageNum_)) {
-				// 項目を取得
-				initialData_ = itData->second;
-				break;
+			const std::string& itemName = itItem->first;
+			// 項目の参照を取得
+			Item& item = itItem->second;
+
+			// int32_t型の値を保持していれば
+			if (std::holds_alternative<int**>(item)) {
+				int*** ptr = std::get_if<int**>(&item);
+			}
+			else if (std::holds_alternative<Vector2>(item)) {
+				Vector2* ptr = std::get_if<Vector2>(&item);
+			}
+			else if (std::holds_alternative< std::vector<Vector2>>(item)) {
+				std::vector<Vector2>* ptr = std::get_if< std::vector<Vector2>>(&item);
 			}
 		}
 	}
+
+	*/
 
 	// マップ
 	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
@@ -176,7 +187,6 @@ void MapSystem::StagesLoad()
 
 void MapSystem::StageLoad(const std::string& groupName)
 {
-	/*
 
 	// 読み込むJSONファイルのフルパスを合成する
 	std::string filePath = kDirectoryPath + groupName + ".json";
@@ -186,8 +196,6 @@ void MapSystem::StageLoad(const std::string& groupName)
 	ifs.open(filePath);
 	// ファイルオープン失敗
 	if (!std::filesystem::exists(filePath)) {
-		std::string message = "Failed open data file for write.";
-		MessageBoxA(nullptr, message.c_str(), "GlobalVariables", 0);
 		assert(0);
 	}
 	json root;
@@ -207,40 +215,80 @@ void MapSystem::StageLoad(const std::string& groupName)
 	for (json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem) {
 		// アイテム名を取得
 		const std::string& itemName = itItem.key();
-		
-		StageData stageData;
-		uint32_t i = 0;
 
-		// マップ
-		for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
-			for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
-				stageData.map_[y][x] = itItem->at(i);
-				i++;
+		// int32_t型
+		if (itItem->is_array() && itItem->size() == static_cast<size_t>(kMapSize_.x) * static_cast<size_t>(kMapSize_.y)) {
+			// int型の値を登録
+			int** values;
+			values = new int* [static_cast<size_t>(kMapSize_.y)];
+			for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+				values[y] = new int[static_cast<size_t>(kMapSize_.x)];
 			}
+			size_t i = 0;
+			// マップ
+			for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+				for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
+					values[y][x] = itItem->at(i);
+					i++;
+				}
+			}
+			SetValue(groupName, itemName, values);
 		}
-		// プレイヤーの位置
-		stageData.playerPosition_.x = itItem->at(i);
-		i++;
-		stageData.playerPosition_.y = itItem->at(i);
-		i++;
-		// エネミーの位置
-		std::vector<Vector2> enemyPosition_;
-		for (size_t k = 0; initialData_.enemyPosition_.size(); k++) {
-			stageData.enemyPosition_.at(k).x = itItem->at(i);
-			i++;
-			stageData.enemyPosition_.at(k).y = itItem->at(i);
-			i++;
+		// 要素数が2の配列であれば
+		else if (itItem->is_array() && itItem->size() == 2) {
+			// float型のjson配列登録
+			Vector2 value = { itItem->at(0), itItem->at(1) };
+			SetValue(groupName, itemName, value);
 		}
-
-		// 檻の位置
-		std::vector<Vector2> cagePosition_;
-		// スタートの位置
-		Vector2 startPosition_;
-		// ゴールの位置
-		Vector2 goalPosition_;
+		// 要素数が多い配列であれば
+		else if (itItem->is_array() && itItem->size() > 2) {
+			// float型のjson配列登録
+			std::vector<Vector2> values;
+			size_t i = 0;
+			for (size_t k = 0; k < itItem->size(); k++) {
+				Vector2 value = { itItem->at(i), itItem->at(i + 1) };
+				values.push_back(value);
+				i += 2;
+			}
+			SetValue(groupName, itemName, values);
+		}
 
 	}
 
-	*/
+}
+
+void MapSystem::SetValue(const std::string& groupName, const std::string& key, int** value)
+{
+
+	// グループの参照を取得
+	Group& group = stageDatas_[groupName];
+	// 新しい項目のデータを設定
+	Item newItem{};
+	newItem = value;
+	// 設定した項目をstd::mapに追加
+	group[key] = newItem;
+
+}
+
+void MapSystem::SetValue(const std::string& groupName, const std::string& key, const Vector2& value) {
+
+	// グループの参照を取得
+	Group& group = stageDatas_[groupName];
+	// 新しい項目のデータを設定
+	Item newItem{};
+	newItem = value;
+	// 設定した項目をstd::mapに追加
+	group[key] = newItem;
+
+}
+void MapSystem::SetValue(const std::string& groupName, const std::string& key, std::vector<Vector2>& value) {
+
+	// グループの参照を取得
+	Group& group = stageDatas_[groupName];
+	// 新しい項目のデータを設定
+	Item newItem{};
+	newItem = value;
+	// 設定した項目をstd::mapに追加
+	group[key] = newItem;
 
 }
