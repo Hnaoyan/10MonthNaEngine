@@ -68,6 +68,8 @@ private: // メンバ関数
 
 	Vector2 BlockFind(const ViewProjection& viewProjection);
 
+	void DuplicateConfirmation(Vector2 pos);
+
 
 private: // メンバ変数
 

@@ -74,23 +74,77 @@ void MapEdit::Update(const ViewProjection& viewProjection)
 	}
 	//敵
 	if (input_->TriggerKey(DIK_E)) {
-		BlockFind(viewProjection);
+		pos = BlockFind(viewProjection);
 		if (pos.x >= 0.0f) {
-
+			bool find = false;
+			stageData_.enemyPosition_.remove_if([pos, &find](Vector2 enemyPosition) {
+				if (enemyPosition.x == pos.x && enemyPosition.y == pos.y) {
+					find = true;
+					return true;
+				}
+				return false;
+			});
+			if (find) {
+				enemyWT_.remove_if([pos, &find](WorldTransform worldTransform) {
+					if (worldTransform.translation_.x == pos.x * kSquareSize_.x && worldTransform.translation_.y == pos.y * kSquareSize_.y) {
+						return true;
+					}
+					return false;
+				});
+			}
+			else {
+				DuplicateConfirmation(pos);
+				if ( !(stageData_.startPosition_.x == pos.x && stageData_.startPosition_.y == pos.y) &&
+					!(stageData_.goalPosition_.x == pos.x && stageData_.goalPosition_.y == pos.y)) {
+					stageData_.enemyPosition_.push_back(pos);
+					WorldTransform worldTransform;
+					worldTransform.Initialize();
+					worldTransform.translation_ = { pos.x * kSquareSize_.x , pos.y * kSquareSize_.y, -2.0f };
+					worldTransform.UpdateMatrix();
+					enemyWT_.push_back(worldTransform);
+				}
+			}
 		}
 
 	}	
 	//檻
 	if (input_->TriggerKey(DIK_C)) {
-		BlockFind(viewProjection);
+		pos = BlockFind(viewProjection);
 		if (pos.x >= 0.0f) {
-
+			bool find = false;
+			stageData_.cagePosition_.remove_if([pos, &find](Vector2 cagePosition) {
+				if (cagePosition.x == pos.x && cagePosition.y == pos.y) {
+					find = true;
+					return true;
+				}
+				return false;
+				});
+			if (find) {
+				cageWT_.remove_if([pos, &find](WorldTransform worldTransform) {
+					if (worldTransform.translation_.x == pos.x * kSquareSize_.x && worldTransform.translation_.y == pos.y * kSquareSize_.y) {
+						return true;
+					}
+					return false;
+					});
+			}
+			else {
+				DuplicateConfirmation(pos);
+				if (!(stageData_.startPosition_.x == pos.x && stageData_.startPosition_.y == pos.y) &&
+					!(stageData_.goalPosition_.x == pos.x && stageData_.goalPosition_.y == pos.y)) {
+					stageData_.cagePosition_.push_back(pos);
+					WorldTransform worldTransform;
+					worldTransform.Initialize();
+					worldTransform.translation_ = { pos.x * kSquareSize_.x , pos.y * kSquareSize_.y, -2.0f };
+					worldTransform.UpdateMatrix();
+					cageWT_.push_back(worldTransform);
+				}
+			}
 		}
 
 	}
 	//スタート
 	if (input_->TriggerKey(DIK_S)) {
-		BlockFind(viewProjection);
+		pos = BlockFind(viewProjection);
 		if (pos.x >= 0.0f) {
 
 		}
@@ -98,7 +152,7 @@ void MapEdit::Update(const ViewProjection& viewProjection)
 	}
 	//ゴール
 	if (input_->TriggerKey(DIK_G)) {
-		BlockFind(viewProjection);
+		pos = BlockFind(viewProjection);
 		if (pos.x >= 0.0f) {
 
 		}
@@ -218,6 +272,47 @@ Vector2 MapEdit::BlockFind(const ViewProjection& viewProjection)
 	}
 
 	return Vector2( -1.0f, -1.0f);
+
+}
+
+void MapEdit::DuplicateConfirmation(Vector2 pos)
+{
+
+	bool find = false;
+	// 敵
+	stageData_.enemyPosition_.remove_if([pos, &find](Vector2 enemyPosition) {
+		if (enemyPosition.x == pos.x && enemyPosition.y == pos.y) {
+			find = true;
+			return true;
+		}
+		return false;
+		});
+	if (find) {
+		enemyWT_.remove_if([pos, &find](WorldTransform worldTransform) {
+			if (worldTransform.translation_.x == pos.x * kSquareSize_.x && worldTransform.translation_.y == pos.y * kSquareSize_.y) {
+				return true;
+			}
+			return false;
+			});
+		return;
+	}
+	// 檻
+	stageData_.cagePosition_.remove_if([pos, &find](Vector2 cagePosition) {
+		if (cagePosition.x == pos.x && cagePosition.y == pos.y) {
+			find = true;
+			return true;
+		}
+		return false;
+		});
+	if (find) {
+		cageWT_.remove_if([pos, &find](WorldTransform worldTransform) {
+			if (worldTransform.translation_.x == pos.x * kSquareSize_.x && worldTransform.translation_.y == pos.y * kSquareSize_.y) {
+				return true;
+			}
+			return false;
+			});
+		return;
+	}
 
 }
 
