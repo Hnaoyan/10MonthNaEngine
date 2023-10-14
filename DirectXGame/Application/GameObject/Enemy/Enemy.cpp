@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Others/MapSystem/MapSystem.h"
 
 void Enemy::Initialize(Model* model, const Vector2& position)
 {
@@ -35,7 +36,7 @@ void Enemy::Update(const Vector2& position)
 #endif // _DEBUG
 
 	position_ = position;
-	worldTransform_.translation_ = { position_.x * 2.0f, position_.y * 2.0f, -2.0f };
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -2.0f };
 	worldTransform_.UpdateMatrix();
 
 }
@@ -51,7 +52,7 @@ void Enemy::Setting(const Vector2& position)
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { position.x * 2.0f, position.y * 2.0f, -2.0f };
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -2.0f };
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();

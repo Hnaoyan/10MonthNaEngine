@@ -16,12 +16,17 @@ class EnemiesManager
 public: // メンバ関数
 
 	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~EnemiesManager();
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="mapSystem">マップシステム</param>
 	/// <param name="enemyModel">エネミーモデル</param>
 	/// <param name="cageModel">ケージモデル</param>
-	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel);
+	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t count);
 
 	/// <summary>
 	/// 更新
@@ -37,7 +42,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 設定
 	/// </summary>
-	void Setting();
+	void Setting(size_t count);
 
 	/// <summary>
 	/// エネミー追加

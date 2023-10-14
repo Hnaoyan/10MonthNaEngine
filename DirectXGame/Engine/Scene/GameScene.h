@@ -25,6 +25,7 @@
 #include "Others/MapSystem/MapSystem.h"
 #include "Application/GameObject/Player/Player.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
+#include "Application/GameObject/EnemiesManager/EnemiesManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -112,6 +113,9 @@ private:	// メンバポインタ
 	std::vector<uint32_t> blocktextureHandles_;
 
 	// エネミー
+	std::unique_ptr<EnemiesManager> enemiesManager_;
+	std::unique_ptr<Model> enemyModel_;
+	std::unique_ptr<Model> cageModel_;
 
 	// マネージャ系
 	std::unique_ptr<EffectManager> effectManager_;

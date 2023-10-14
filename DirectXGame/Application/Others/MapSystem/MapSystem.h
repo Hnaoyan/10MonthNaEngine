@@ -6,6 +6,7 @@
 #include <variant>
 
 #include "../Application/Others/Command/Command.h"
+#include "Application/GameObject/EnemiesManager/EnemiesManager.h"
 
 /// <summary>
 /// マップシステムクラス
@@ -66,6 +67,11 @@ public: // メンバ関数
 	/// </summary>
 	void Update(Command::CommandNumber commandNumber);
 
+	/// <summary>
+	/// 設定
+	/// </summary>
+	void Setting(int stageNum);
+
 private: // メンバ関数
 
 	/// <summary>
@@ -110,11 +116,6 @@ private: // メンバ関数
 	/// リスタート
 	/// </summary>
 	void Restart();
-
-	/// <summary>
-	/// 設定
-	/// </summary>
-	void Setting(int stageNum);
 
 	/// <summary>
 	/// マップ読み込み
@@ -169,6 +170,10 @@ public: // アクセッサ
 	// 檻
 	std::vector<Vector2> GetInitialCagePosition() { return initialStageData_.cagePosition_; }
 
+	size_t GetEnemyCount() { return enemyCount_; }
+
+	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
+
 public: // メンバ定数
 
 private: //メンバ変数
@@ -208,6 +213,9 @@ private: //メンバ変数
 
 	// ゲームオーバーフラグ
 	bool isGameOver_;
+
+	// エネミーズマネージャー
+	EnemiesManager* enemiesManager_;
 
 private: //メンバ変数(データ)
 

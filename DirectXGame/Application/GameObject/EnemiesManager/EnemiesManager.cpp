@@ -1,7 +1,24 @@
 #include "EnemiesManager.h"
 #include "Application/Others/MapSystem/MapSystem.h"
 
-void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel)
+EnemiesManager::~EnemiesManager()
+{
+
+	// 解放
+	for (Enemy* enemy : enemies_) {
+		if (enemy) {
+			delete enemy;
+		}
+	}
+	for (Cage* cage : cages_) {
+		if (cage) {
+			delete cage;
+		}
+	}
+
+}
+
+void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t count)
 {
 
 	// マップシステム
@@ -10,6 +27,8 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* 
 	enemyModel_ = enemyModel;
 
 	cageModel_ = cageModel;
+
+	Setting(count);
 
 }
 
@@ -39,9 +58,28 @@ void EnemiesManager::Draw(const ViewProjection& viewProjection)
 
 }
 
-void EnemiesManager::Setting()
+void EnemiesManager::Setting(size_t count)
 {
+	
+	// 解放
+	for (Enemy* enemy : enemies_) {
+		if (enemy) {
+			delete enemy;
+		}
+	}
+	for (Cage* cage : cages_) {
+		if (cage) {
+			delete cage;
+		}
+	}
+	// 生成
+	for (size_t i = 0; i < count; i++) {
+		AddEnemy(i); 
+		AddCage(i);
+	}
 
+
+	// 設定
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
 		enemy->Setting(mapSystem_->GetInitialEnemyPosition().at(i));

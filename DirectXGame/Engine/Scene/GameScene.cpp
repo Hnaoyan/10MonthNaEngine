@@ -50,6 +50,13 @@ void GameScene::Initialize() {
 	blockManager_->Initialize(blockModel_.get(), blocktextureHandles_, mapSystem_->GetMap());
 
 	// エネミー
+	enemyModel_.reset(Model::CreateFromObj("block", true));
+	cageModel_.reset(Model::CreateFromObj("block", true));
+	enemiesManager_ = make_unique<EnemiesManager>();
+	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount());
+
+	// マップシステム初期化
+	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
@@ -100,6 +107,7 @@ void GameScene::Update()
 		}
 		player_->Update(mapSystem_->GetPlayerPosition());
 		blockManager_->Update();
+		enemiesManager_->Update();
 
 	}
 
@@ -143,6 +151,7 @@ void GameScene::Draw() {
 	//particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
+	enemiesManager_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

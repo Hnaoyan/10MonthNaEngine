@@ -25,7 +25,7 @@ void Block::Initialize(Model* model, uint32_t textureHandle, Vector2 position, M
 void Block::Update()
 {
 
-	worldTransform_.translation_ = { position_.x * 2.0f, position_.y * 2.0f, 0.0f };
+	worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, 0.0f };
 	worldTransform_.UpdateMatrix();
 
 }
@@ -40,7 +40,7 @@ void Block::Draw(const ViewProjection& viewProjection)
 void Block::Setting(uint32_t textureHandle, MapSystem::MapNumber mapNum)
 {
 
-	worldTransform_.translation_ = { 0.0f,0.0f,0.0f };
+	worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, 0.0f };
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();

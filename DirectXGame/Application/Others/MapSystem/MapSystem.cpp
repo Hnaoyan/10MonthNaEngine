@@ -10,7 +10,7 @@ using namespace nlohmann;
 // マップのサイズ
 const Vector2 MapSystem::kMapSize_ = { 15.0f, 15.0f };
 // マスのサイズ
-const Vector2 MapSystem::kSquareSize_ = { 10.0f,10.0f };
+const Vector2 MapSystem::kSquareSize_ = { 2.0f, 2.0f };
 // ステージ数
 const uint32_t kMaximumNumberOfStages_ = 2;
 
@@ -81,6 +81,61 @@ void MapSystem::Update(Command::CommandNumber commandNumber)
 	GameClear();
 	// ゲームオーバーチェック
 	GameOver();
+
+}
+
+void MapSystem::Setting(int stageNum)
+{
+
+	// ステージ番号
+	stageNum_ = stageNum;
+
+	// グループ名の設定
+	std::string groupName = "StageData" + std::to_string(stageNum_);
+
+	// 初期情報
+	initialStageData_.map_ = GetMapValue(groupName, "map_");
+	initialStageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
+	initialStageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
+	//for(std::vector<Vector2>::iterator ; )
+	initialStageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
+	initialStageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
+	initialStageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
+
+	// マップ
+	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+		for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
+			map_[y][x] = initialStageData_.map_[y][x];
+		}
+	}
+	// プレイヤーの位置
+	playerPosition_ = initialStageData_.playerPosition_;
+	// エネミーの位置
+	// エネミーのカウント
+	enemyCount_ = 0;
+	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
+		Vector2 enemyPosition = initialStageData_.enemyPosition_.at(i);
+		enemyPosition_.push_back(enemyPosition);
+		enemyCount_++;
+	}
+
+	// ゴールが開いたか
+	goalOpened_ = false;
+	// 敵を捕まえた
+	// エネミーが起きている時
+	for (size_t i = 0; i < enemyCount_; i++) {
+		enemyAwake_.push_back(false);
+		capturedEnemy_.push_back(false);
+	}
+
+	// コマンド番号
+	comandNumber_ = Command::CommandNumber::None;
+
+	// ゲームクリアフラグ
+	isGameClaer_ = false;
+
+	// ゲームオーバーフラグ
+	isGameOver_ = false;
 
 }
 
@@ -284,65 +339,6 @@ void MapSystem::Restart()
 
 	// コマンド番号
 	comandNumber_ = Command::CommandNumber::None;
-
-}
-
-void MapSystem::Setting(int stageNum)
-{
-
-	// ステージ番号
-	stageNum_ = stageNum;
-
-	// グループ名の設定
-	std::string groupName = "StageData" + std::to_string(stageNum_);
-
-	// 初期情報
-	initialStageData_.map_ = GetMapValue(groupName, "map_");
-	initialStageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
-	initialStageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
-	//for(std::vector<Vector2>::iterator ; )
-	initialStageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
-	initialStageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
-	initialStageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
-
-	// マップ
-	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
-		for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
-			map_[y][x] = initialStageData_.map_[y][x];
-		}
-	}
-	// プレイヤーの位置
-	playerPosition_ = initialStageData_.playerPosition_;
-	// エネミーの位置
-	// エネミーのカウント
-	enemyCount_ = 0;
-	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
-		Vector2 enemyPosition = initialStageData_.enemyPosition_.at(i);
-		enemyPosition_.push_back(enemyPosition);
-		enemyCount_++;
-	}
-
-	// エネミーが起きている時
-	for (size_t i = 0; i < enemyCount_; i++) {
-		enemyAwake_.push_back(false);
-	}
-
-	// ゴールが開いたか
-	goalOpened_ = false;
-	// 敵を捕まえた
-	for (size_t i = 0; i < enemyCount_; i++) {
-		bool capturedEnemy = false;
-		capturedEnemy_.push_back(capturedEnemy);
-	}
-
-	// コマンド番号
-	comandNumber_ = Command::CommandNumber::None;
-
-	// ゲームクリアフラグ
-	isGameClaer_ = false;
-
-	// ゲームオーバーフラグ
-	isGameOver_ = false;
 
 }
 
