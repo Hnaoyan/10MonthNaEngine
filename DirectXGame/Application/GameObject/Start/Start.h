@@ -5,14 +5,10 @@
 
 #include "../Effect/EffectManager.h"
 
-// 前方宣言
-class Area;
-class BlockManager;
-
 /// <summary>
-/// プレイヤー
+/// スタート
 /// </summary>
-class Player
+class Start
 {
 
 public: // メンバ関数
@@ -26,7 +22,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const Vector2& position);
+	void Update();
 
 	/// <summary>
 	/// 描画

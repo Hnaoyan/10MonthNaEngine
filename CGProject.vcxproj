@@ -154,7 +154,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Block\Block.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Cage\Cage.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\EnemiesManager\EnemiesManager.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Enemy\Enemy.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Goal\Goal.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Player\Player.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Start\Start.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\Command\Command.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\MapSystem\MapSystem.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\Math2d\Math2d.cpp" />
@@ -214,7 +219,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Block\Block.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Cage\Cage.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\EnemiesManager\EnemiesManager.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Enemy\Enemy.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Goal\Goal.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Player\Player.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Start\Start.h" />
     <ClInclude Include="DirectXGame\Application\Others\Command\Command.h" />
     <ClInclude Include="DirectXGame\Application\Others\MapSystem\MapSystem.h" />
     <ClInclude Include="DirectXGame\Application\Others\Math2d\Math2d.h" />

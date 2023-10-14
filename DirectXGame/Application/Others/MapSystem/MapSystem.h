@@ -6,6 +6,7 @@
 #include <variant>
 
 #include "../Application/Others/Command/Command.h"
+#include "Application/GameObject/EnemiesManager/EnemiesManager.h"
 
 /// <summary>
 /// マップシステムクラス
@@ -66,6 +67,11 @@ public: // メンバ関数
 	/// </summary>
 	void Update(Command::CommandNumber commandNumber);
 
+	/// <summary>
+	/// 設定
+	/// </summary>
+	void Setting(int stageNum);
+
 private: // メンバ関数
 
 	/// <summary>
@@ -112,11 +118,6 @@ private: // メンバ関数
 	void Restart();
 
 	/// <summary>
-	/// 設定
-	/// </summary>
-	void Setting(int stageNum);
-
-	/// <summary>
 	/// マップ読み込み
 	/// </summary>
 	void StagesLoad();
@@ -146,9 +147,38 @@ private: // メンバ関数
 
 public: // アクセッサ
 
+	// マップ
+	int** GetMap() { return map_; }
+
+	// プレイヤー
 	Vector2 GetPlayerPosition() { return playerPosition_; }
 
-	int** GetMap() { return map_; }
+	// エネミーズ
+	std::vector<Vector2> GetEnemyPosition() { return enemyPosition_; }
+
+	// 初期情報
+
+	// マップ
+	int** GetInitialMap() { return initialStageData_.map_; }
+
+	// プレイヤー
+	Vector2 GetInitialPlayerPosition() { return initialStageData_.playerPosition_; }
+
+	// エネミーズ
+	std::vector<Vector2> GetInitialEnemyPosition() { return initialStageData_.enemyPosition_; }
+
+	// 檻
+	std::vector<Vector2> GetInitialCagePosition() { return initialStageData_.cagePosition_; }
+
+	// スタート位置
+	Vector2 GetInitialStartPosition() { return initialStageData_.startPosition_; }
+
+	// ゴール位置
+	Vector2 GetInitialGoalPosition() { return initialStageData_.goalPosition_; }
+
+	size_t GetEnemyCount() { return enemyCount_; }
+
+	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
 
 public: // メンバ定数
 
@@ -189,6 +219,9 @@ private: //メンバ変数
 
 	// ゲームオーバーフラグ
 	bool isGameOver_;
+
+	// エネミーズマネージャー
+	EnemiesManager* enemiesManager_;
 
 private: //メンバ変数(データ)
 

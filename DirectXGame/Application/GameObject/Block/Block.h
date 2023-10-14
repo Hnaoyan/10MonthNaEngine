@@ -50,6 +50,12 @@ public: // アクセッサ
 	/// <param name="position"></param>
 	Vector2 GetPosition() { return position_; }
 
+	/// <summary>
+	/// ゲットマップ番号
+	/// </summary>
+	/// <returns></returns>
+	MapSystem::MapNumber GetMapNum() { return mapNum_; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム

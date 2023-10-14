@@ -1,13 +1,7 @@
-#include "Player.h"
-#include <algorithm>
+#include "Start.h"
+#include "Others/MapSystem/MapSystem.h"
 
-#include "Application/Others/Math2d/Math2d.h"
-#include <GlobalVariables.h>
-#include <imgui.h>
-
-#include "Application/Others/MapSystem/MapSystem.h"
-
-void Player::Initialize(Model* model,const Vector2& position)
+void Start::Initialize(Model* model, const Vector2& position)
 {
 
 	// ワールドトランスフォーム
@@ -20,7 +14,7 @@ void Player::Initialize(Model* model,const Vector2& position)
 	// 調整項目クラスのインスタンス取得
 	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	// グループ名設定
-	//const char* groupName = "Player";
+	//const char* groupName = "Enemy";
 	// 指定した名前でグループ追加
 	//globalVariables->CreateGroup(groupName);
 
@@ -34,27 +28,25 @@ void Player::Initialize(Model* model,const Vector2& position)
 
 }
 
-void Player::Update(const Vector2& position)
+void Start::Update()
 {
 
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 #endif // _DEBUG
 
-	position_ = position;
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -2.0f };
 	worldTransform_.UpdateMatrix();
 
 }
 
-void Player::Draw(const ViewProjection& viewProjection)
+void Start::Draw(const ViewProjection& viewProjection)
 {
 
 	model_->Draw(worldTransform_, viewProjection);
 
 }
 
-void Player::Setting(const Vector2& position)
+void Start::Setting(const Vector2& position)
 {
 
 	// ワールドトランスフォーム
@@ -65,12 +57,6 @@ void Player::Setting(const Vector2& position)
 
 }
 
-void Player::ApplyGlobalVariables()
+void Start::ApplyGlobalVariables()
 {
-
-	// 調整項目クラスのインスタンス取得
-	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	// グループ名の設定
-	//const char* groupName = "Player";
-
 }

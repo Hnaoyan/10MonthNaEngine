@@ -37,19 +37,37 @@ void GameScene::Initialize() {
 	// プレイヤー
 	playerModel_.reset(Model::CreateFromObj("player", true));
 	player_ = make_unique<Player>();
-	player_->Initialize(playerModel_.get());
+	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
 
 	// ブロック
 	blockModel_.reset(Model::CreateFromObj("block", true));
-	uint32_t blockWalltextureHandle = TextureManager::Load("uvChecker.png");
-	uint32_t blockLoadtextureHandle = TextureManager::Load("uvChecker.png");
+	uint32_t blockWalltextureHandle = TextureManager::Load("block/block_00.png");
+	uint32_t blockLoadtextureHandle = TextureManager::Load("block/block_00.png");
+	uint32_t blockHoletextureHandle = TextureManager::Load("block/block_01.png");
 	blocktextureHandles_.push_back(blockWalltextureHandle);
 	blocktextureHandles_.push_back(blockLoadtextureHandle);
+	blocktextureHandles_.push_back(blockHoletextureHandle);
 	blockManager_ = make_unique<BlockManager>();
 	blockManager_->Initialize(blockModel_.get(), blocktextureHandles_, mapSystem_->GetMap());
 
 	// エネミー
+	enemyModel_.reset(Model::CreateFromObj("enemy", true));
+	cageModel_.reset(Model::CreateFromObj("cage", true));
+	enemiesManager_ = make_unique<EnemiesManager>();
+	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount());
+	// マップシステム
+	mapSystem_->SetEnemiesManager(enemiesManager_.get());
+
+	// スタート
+	startModel_.reset(Model::CreateFromObj("start", true));
+	start_ = make_unique<Start>();
+	start_->Initialize(startModel_.get(), mapSystem_->GetInitialStartPosition());
+
+	// ゴール
+	goalModel_.reset(Model::CreateFromObj("goal", true));
+	goal_ = make_unique<Goal>();
+	goal_->Initialize(goalModel_.get(), mapSystem_->GetInitialGoalPosition());
 
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
@@ -104,6 +122,9 @@ void GameScene::Update()
 		}
 		player_->Update(mapSystem_->GetPlayerPosition());
 		blockManager_->Update();
+		enemiesManager_->Update();
+		start_->Update();
+		goal_->Update();
 
 	}
 
@@ -147,6 +168,9 @@ void GameScene::Draw() {
 	//particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
+	enemiesManager_->Draw(viewProjection_);
+	start_->Draw(viewProjection_);
+	goal_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

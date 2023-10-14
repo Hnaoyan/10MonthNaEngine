@@ -285,6 +285,21 @@
     <ClCompile Include="DirectXGame\Application\Others\MapSystem\MapSystem.cpp">
       <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Cage\Cage.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\EnemiesManager\EnemiesManager.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Enemy\Enemy.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Goal\Goal.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Start\Start.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleWave.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -469,6 +484,21 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Scene\BaseScene.h">
       <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Enemy\Enemy.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Cage\Cage.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\EnemiesManager\EnemiesManager.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Goal\Goal.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Start\Start.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleWave.h">
       <Filter>ヘッダー ファイル</Filter>
