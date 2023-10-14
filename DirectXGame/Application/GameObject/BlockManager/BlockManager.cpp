@@ -65,6 +65,12 @@ void BlockManager::Update()
 #endif // _DEBUG
 
 	for (Block* block : blocks_) {
+		int x = static_cast<int>(block->GetPosition().x);
+		int y = static_cast<int>(block->GetPosition().y);
+		if (map_[y][x] == MapSystem::MapNumber::Hole &&
+			block->GetMapNum() != MapSystem::MapNumber::Hole) {
+			block->Fall(textureHandles_.at(1));
+		}
 		block->Update();
 	}
 

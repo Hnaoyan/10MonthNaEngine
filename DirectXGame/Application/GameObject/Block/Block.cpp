@@ -25,7 +25,13 @@ void Block::Initialize(Model* model, uint32_t textureHandle, Vector2 position, M
 void Block::Update()
 {
 
-	worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, 0.0f };
+	if (mapNum_ == MapSystem::MapNumber::Hole) {
+		worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, 4.0f };
+	}
+	else {
+		worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, 0.0f };
+	}
+
 	worldTransform_.UpdateMatrix();
 
 }

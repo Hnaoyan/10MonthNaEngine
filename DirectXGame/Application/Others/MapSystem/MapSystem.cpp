@@ -184,6 +184,7 @@ void MapSystem::BlockFall(int32_t x, int32_t y)
 {
 	// 道から穴に
 	map_[y][x] = Hole;
+
 }
 
 bool MapSystem::PlayerMove(int32_t x, int32_t y)
