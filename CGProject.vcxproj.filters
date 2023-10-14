@@ -297,6 +297,9 @@
     <ClCompile Include="DirectXGame\Application\GameObject\Goal\Goal.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Start\Start.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -489,6 +492,9 @@
       <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\GameObject\Goal\Goal.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Start\Start.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,7 +10,7 @@ using namespace nlohmann;
 // マップのサイズ
 const Vector2 MapSystem::kMapSize_ = { 15.0f, 15.0f };
 // マスのサイズ
-const Vector2 MapSystem::kSquareSize_ = { 2.0f, 2.0f };
+const Vector2 MapSystem::kSquareSize_ = { 10.0f, 10.0f };
 // ステージ数
 const uint32_t kMaximumNumberOfStages_ = 2;
 
