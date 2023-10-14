@@ -37,7 +37,7 @@ void GameScene::Initialize() {
 	// プレイヤー
 	playerModel_.reset(Model::CreateFromObj("player", true));
 	player_ = make_unique<Player>();
-	player_->Initialize(playerModel_.get());
+	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
 
 	// ブロック

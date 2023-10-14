@@ -57,7 +57,7 @@ void Player::Setting(const Vector2& position)
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { position_.x * 2.0f, position_.y * 2.0f, -2.0f };
+	worldTransform_.translation_ = { position.x * 2.0f, position.y * 2.0f, -2.0f };
 	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();
