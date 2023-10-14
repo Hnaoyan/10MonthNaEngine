@@ -66,6 +66,8 @@ public: // 設定・取得
 	/// <param name="scale"></param>
 	void SetScale(const Vector3& scale) { worldTransform_.scale_ = scale; }
 
+	void SetName(std::string name) { name_ = name; }
+
 protected:
 	// モデル
 	Model* model_ = nullptr;
@@ -73,8 +75,12 @@ protected:
 	WorldTransform worldTransform_ = {};
 	// 速さ
 	Vector3 velocity_ = {};
-
+	// スケール
 	Vector3 scale_ = {};
+
+	Material* material_ = nullptr;
+
+	std::string name_ = "";
 
 	// テクスチャ
 	uint32_t texture_ = 0u;

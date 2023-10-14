@@ -145,6 +145,8 @@ public:
 
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 
+	void SetMaterial(Material* material);
+
 	/// <summary>
 	/// モデル描画
 	/// </summary>
