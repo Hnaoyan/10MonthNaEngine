@@ -22,13 +22,13 @@
         ],
         "enemyPosition_": [
             2.0, 2.0,
-            2.0, 2.0
-        ],
-        "cagePosition_": [
             3.0, 3.0
         ],
-        "startPosition_": [
+        "cagePosition_": [
             4.0, 4.0
+        ],
+        "startPosition_": [
+            0.0, 0.0
         ],
         "goalPosition_": [
             5.0, 5.0

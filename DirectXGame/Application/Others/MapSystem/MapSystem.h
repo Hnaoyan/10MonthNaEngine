@@ -146,9 +146,28 @@ private: // メンバ関数
 
 public: // アクセッサ
 
+	// マップ
+	int** GetMap() { return map_; }
+
+	// プレイヤー
 	Vector2 GetPlayerPosition() { return playerPosition_; }
 
-	int** GetMap() { return map_; }
+	// エネミーズ
+	std::vector<Vector2> GetEnemyPosition() { return enemyPosition_; }
+
+	// 初期情報
+
+	// マップ
+	int** GetInitialMap() { return initialStageData_.map_; }
+
+	// プレイヤー
+	Vector2 GetInitialPlayerPosition() { return initialStageData_.playerPosition_; }
+
+	// エネミーズ
+	std::vector<Vector2> GetInitialEnemyPosition() { return initialStageData_.enemyPosition_; }
+
+	// 檻
+	std::vector<Vector2> GetInitialCagePosition() { return initialStageData_.cagePosition_; }
 
 public: // メンバ定数
 
