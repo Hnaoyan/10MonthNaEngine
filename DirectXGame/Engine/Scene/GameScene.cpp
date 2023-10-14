@@ -182,8 +182,8 @@ void GameScene::Draw() {
 
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
-	blockManager_->Draw(viewProjection_);
-	enemiesManager_->Draw(viewProjection_);
+	//blockManager_->Draw(viewProjection_);
+	//enemiesManager_->Draw(viewProjection_);
 	start_->Draw(viewProjection_);
 	goal_->Draw(viewProjection_);
 
