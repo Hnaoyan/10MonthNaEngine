@@ -129,6 +129,15 @@ void GameScene::Update()
 	}
 
 	// ゲームオーバーか
+	ImGui::Begin("State");
+	if (mapSystem_->GetIsGameClear()) {
+		ImGui::Text("GAMECLEAR");
+	}
+	if (mapSystem_->GetIsGameOver()) {
+		ImGui::Text("GAMEOVER");
+	}
+	ImGui::End();
+
 
 	// リセット
 	if (input_->TriggerKey(DIK_R)) {

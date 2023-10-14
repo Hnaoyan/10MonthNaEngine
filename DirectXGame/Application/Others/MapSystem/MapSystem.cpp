@@ -71,11 +71,16 @@ void MapSystem::Initialize(int stageNum)
 void MapSystem::Update(Command::CommandNumber commandNumber)
 {
 
+	// コマンド番号
+	comandNumber_ = commandNumber;
+
 	// 移動
-	Move(commandNumber);
+	Move(comandNumber_);
 
 	// 音を鳴らす
-	MakeSound();
+	if (comandNumber_ == Command::CommandNumber::Button) {
+		MakeSound();
+	}
 	
 	// ゲームクリアチェック
 	GameClear();
@@ -263,6 +268,12 @@ void MapSystem::EnemyMove()
 				}
 			}
 
+			// 檻に入る
+			if (enemyPosition_.at(i).x == initialStageData_.cagePosition_.at(i).x &&
+				enemyPosition_.at(i).y == initialStageData_.cagePosition_.at(i).y) {
+				capturedEnemy_.at(i) = true;
+			}
+
 		}
 	}
 
@@ -288,6 +299,15 @@ void MapSystem::MakeSound()
 
 void MapSystem::GameClear()
 {
+	if (!goalOpened_) {
+		goalOpened_ = true;
+		for (bool capturedEnemy : capturedEnemy_) {
+			if (!capturedEnemy) {
+				goalOpened_ = false;
+				break;
+			}
+		}
+	}
 
 	if (playerPosition_.x == initialStageData_.goalPosition_.x &&
 		playerPosition_.y == initialStageData_.goalPosition_.y &&
@@ -304,7 +324,7 @@ void MapSystem::GameOver()
 		// ぶつかった
 		if (playerPosition_.x == enemyPosition_.at(i).x && 
 			playerPosition_.y == enemyPosition_.at(i).y && 
-			capturedEnemy_.at(i)) {
+			enemyAwake_.at(i)) {
 			isGameOver_ = true;
 			return;
 		}

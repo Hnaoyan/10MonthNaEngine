@@ -180,6 +180,10 @@ public: // アクセッサ
 
 	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
 
+	bool GetIsGameClear() { return isGameClaer_; }
+
+	bool GetIsGameOver() { return isGameOver_; }
+
 public: // メンバ定数
 
 private: //メンバ変数
