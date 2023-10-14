@@ -6,6 +6,8 @@
 #include <vector>
 #include <list>
 #include <WorldTransform.h>
+#include <ViewProjection.h>
+#include <Model.h>
 
 /// <summary>
 /// マップエディタクラス
@@ -43,18 +45,32 @@ public: // 静的メンバ定数
 	// マップのサイズ
 	static const Vector2 kMapSize_;
 
+	// マスのサイズ
+	static const Vector2 kSquareSize_;
+
+public: // 静的メンバ変数
+
+	// ステージ数
+	static uint32_t kMaximumNumberOfStages_;
+
 public: // メンバ関数(edit部分)
 
-	void Initialize();
+
+
+	void Initialize(Model* enemymodel, Model* cagemodel, Model* startmodel, Model* goalmodel, Model* blockmodel);
 
 	void Update();
 
-	void Draw();
+	void Draw(const ViewProjection& viewProjection);
+
+	void Setting(size_t stageNum);
 
 private: // メンバ変数
 
 	// ステージ番号
-	int stageNum_;
+	size_t stageNum_;
+
+	StageData stageData_;
 
 private: // モデルとか
 
@@ -68,6 +84,13 @@ private: // モデルとか
 	WorldTransform goalWT_;
 	// ブロック
 	std::vector<WorldTransform> blockWT_;
+
+	// モデル
+	Model* enemyModel_ = nullptr;
+	Model* cageModel_ = nullptr;
+	Model* startModel_ = nullptr;
+	Model* goalModel_ = nullptr;
+	Model* blockModel_ = nullptr;
 
 public: // メンバ関数(読み込みなど)
 

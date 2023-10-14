@@ -8,6 +8,8 @@
 #include <memory>
 #include <Model.h>
 
+#include "Editor/MapEdit.h"
+
 class EditorScene : public BaseScene
 {
 
@@ -51,6 +53,16 @@ private:	// メンバポインタ
 	std::unique_ptr<BaseCamera> baseCamera_;
 
 	bool isDebug_ = false;
+
+
+	// マップエディタ
+	std::unique_ptr<MapEdit> mapEdit_;
+	std::unique_ptr<Model> enemyModel_;
+	std::unique_ptr<Model> cageModel_;
+	std::unique_ptr<Model> startModel_;
+	std::unique_ptr<Model> goalModel_;
+	std::unique_ptr<Model> blockModel_;
+
 
 };
 

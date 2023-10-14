@@ -15,8 +15,17 @@ void EditorScene::Initialize()
 	baseCamera_ = make_unique<BaseCamera>();
 	baseCamera_->Initialize();
 
-	baseCamera_->SetPosition({ 10.0f, 20.0f, -70.0f });
+	//baseCamera_->SetPosition({ 10.0f, 20.0f, -70.0f });
 	baseCamera_->SetRotation({ 0.0f, 0.0f, 0.0f });
+
+	enemyModel_.reset(Model::CreateFromObj("enemy", true));
+	cageModel_.reset(Model::CreateFromObj("cage", true));
+	startModel_.reset(Model::CreateFromObj("start", true));
+	goalModel_.reset(Model::CreateFromObj("goal", true));
+	blockModel_.reset(Model::CreateFromObj("block", true));
+
+	mapEdit_ = make_unique<MapEdit>();
+	mapEdit_->Initialize(enemyModel_.get(), cageModel_.get(), startModel_.get(), goalModel_.get(), blockModel_.get());
 
 }
 
@@ -28,6 +37,8 @@ void EditorScene::Update()
 	viewProjection_.matView = baseCamera_->GetView().matView;
 	viewProjection_.matProjection = baseCamera_->GetView().matProjection;
 	viewProjection_.TransferMatrix();
+
+	mapEdit_->Update();
 
 }
 
@@ -60,6 +71,7 @@ void EditorScene::Draw()
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	mapEdit_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

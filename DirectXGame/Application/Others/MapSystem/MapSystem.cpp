@@ -12,7 +12,7 @@ const Vector2 MapSystem::kMapSize_ = { 15.0f, 15.0f };
 // マスのサイズ
 const Vector2 MapSystem::kSquareSize_ = { 10.0f, 10.0f };
 // ステージ数
-const uint32_t kMaximumNumberOfStages_ = 2;
+const uint32_t MapSystem::kMaximumNumberOfStages_ = 2;
 
 MapSystem::~MapSystem()
 {
@@ -102,7 +102,6 @@ void MapSystem::Setting(int stageNum)
 	initialStageData_.map_ = GetMapValue(groupName, "map_");
 	initialStageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
 	initialStageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
-	//for(std::vector<Vector2>::iterator ; )
 	initialStageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
 	initialStageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
 	initialStageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
@@ -390,10 +389,8 @@ void MapSystem::StagesLoad()
 			continue;
 		}
 
-		// ファイル読み込み
-		for (size_t i = 0; i < static_cast<size_t>(2); i++) {
-			StageLoad(filePath.stem().string(), i);
-		}
+		StageLoad(filePath.stem().string(), static_cast<size_t>(MapSystem::kMaximumNumberOfStages_));
+
 	}
 
 }
@@ -418,56 +415,60 @@ void MapSystem::StageLoad(const std::string& groupName , size_t num)
 	// ファイルを閉じる
 	ifs.close();
 
-	// グループを検索
-	std::string name = groupName + std::to_string(num);
+	// ファイル読み込み
+	for (size_t s = 0; s < num; s++) {
 
-	json::iterator itGroup = root.find(name);
+		// グループを検索
+		std::string name = groupName + std::to_string(s);
 
-	// 未登録チェック
-	assert(itGroup != root.end());
+		json::iterator itGroup = root.find(name);
 
-	// 各アイテムについて
-	for (json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem) {
-		// アイテム名を取得
-		const std::string& itemName = itItem.key();
+		// 未登録チェック
+		assert(itGroup != root.end());
 
-		// int32_t型
-		if (itemName == "map_") {
-			// int型の値を登録
-			int** values;
-			values = new int* [static_cast<size_t>(kMapSize_.y)];
-			for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
-				values[y] = new int[static_cast<size_t>(kMapSize_.x)];
-			}
-			size_t i = 0;
-			// マップ
-			for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
-				for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
-					values[y][x] = itItem->at(i);
-					i++;
+		// 各アイテムについて
+		for (json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem) {
+			// アイテム名を取得
+			const std::string& itemName = itItem.key();
+
+			// int32_t型
+			if (itemName == "map_") {
+				// int型の値を登録
+				int** values;
+				values = new int* [static_cast<size_t>(kMapSize_.y)];
+				for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+					values[y] = new int[static_cast<size_t>(kMapSize_.x)];
 				}
+				size_t i = 0;
+				// マップ
+				for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+					for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
+						values[y][x] = itItem->at(i);
+						i++;
+					}
+				}
+				SetValue(name, itemName, values);
 			}
-			SetValue(name, itemName, values);
-		}
-		// 要素数が2の配列であれば
-		else if (itemName == "playerPosition_" || 
-				itemName == "startPosition_" || 
-			itemName == "goalPosition_") {
-			// float型のjson配列登録
-			Vector2 value = { itItem->at(0), itItem->at(1) };
-			SetValue(name, itemName, value);
-		}
-		// 要素数が多い配列であれば
-		else {
-			// float型のjson配列登録
-			std::vector<Vector2> values;
-			for (size_t k = 0; k < itItem->size(); k += 2) {
-				Vector2 value = { itItem->at(k), itItem->at(k + 1) };
-				values.push_back(value);
+			// 要素数が2の配列であれば
+			else if (itemName == "playerPosition_" ||
+				itemName == "startPosition_" ||
+				itemName == "goalPosition_") {
+				// float型のjson配列登録
+				Vector2 value = { itItem->at(0), itItem->at(1) };
+				SetValue(name, itemName, value);
 			}
-			SetValue(name, itemName, values);
-		}
+			// 要素数が多い配列であれば
+			else {
+				// float型のjson配列登録
+				std::vector<Vector2> values;
+				for (size_t k = 0; k < itItem->size(); k += 2) {
+					Vector2 value = { itItem->at(k), itItem->at(k + 1) };
+					values.push_back(value);
+				}
+				SetValue(name, itemName, values);
+			}
 
+		}
 	}
 
 }
