@@ -38,7 +38,7 @@ void EditorScene::Update()
 	viewProjection_.matProjection = baseCamera_->GetView().matProjection;
 	viewProjection_.TransferMatrix();
 
-	mapEdit_->Update();
+	mapEdit_->Update(viewProjection_);
 
 }
 

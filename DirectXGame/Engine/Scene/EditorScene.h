@@ -63,6 +63,5 @@ private:	// メンバポインタ
 	std::unique_ptr<Model> goalModel_;
 	std::unique_ptr<Model> blockModel_;
 
-
 };
 

@@ -2,6 +2,8 @@
 #include <cassert>
 #include <json.hpp>
 #include <fstream>
+#include <WinApp.h>
+#include <MatLib.h>
 
 //名前空間
 using namespace nlohmann;
@@ -40,16 +42,68 @@ void MapEdit::Initialize(Model* enemymodel,	Model* cagemodel, Model* startmodel,
 	goalModel_ = goalmodel;
 	blockModel_ = blockmodel;
 
+	// 敵の数
+	enemyNum_ = 0;
+	// 檻の数
+	cageNum_ = 0;
+
 	StagesLoad();
 
 	Setting(0);
 
+	input_ = Input::GetInstance();
+
 }
 
-void MapEdit::Update()
+void MapEdit::Update(const ViewProjection& viewProjection)
 {
 
+	Vector2 pos = { -1.0f, -1.0f};
 
+	// クリックされた(map変更)
+	if (input_->TriggerKey(DIK_SPACE)) {
+		pos = BlockFind(viewProjection);
+		if (pos.x >= 0.0f) {
+			if (stageData_.map_[static_cast<size_t>(pos.y)][static_cast<size_t>(pos.x)] == MapNumber::Road) {
+				stageData_.map_[static_cast<size_t>(pos.y)][static_cast<size_t>(pos.x)] = MapNumber::Hole;
+			}
+			else {
+				stageData_.map_[static_cast<size_t>(pos.y)][static_cast<size_t>(pos.x)] = MapNumber::Road;
+			}
+		}
+	}
+	//敵
+	if (input_->TriggerKey(DIK_E)) {
+		BlockFind(viewProjection);
+		if (pos.x >= 0.0f) {
+
+		}
+
+	}	
+	//檻
+	if (input_->TriggerKey(DIK_C)) {
+		BlockFind(viewProjection);
+		if (pos.x >= 0.0f) {
+
+		}
+
+	}
+	//スタート
+	if (input_->TriggerKey(DIK_S)) {
+		BlockFind(viewProjection);
+		if (pos.x >= 0.0f) {
+
+		}
+
+	}
+	//ゴール
+	if (input_->TriggerKey(DIK_G)) {
+		BlockFind(viewProjection);
+		if (pos.x >= 0.0f) {
+
+		}
+
+	}
 
 }
 
@@ -70,7 +124,10 @@ void MapEdit::Draw(const ViewProjection& viewProjection)
 	goalModel_->Draw(goalWT_, viewProjection);
 	// ブロック
 	for (WorldTransform worldTransform : blockWT_) {
-		blockModel_->Draw(worldTransform, viewProjection);
+		Vector2 result = { worldTransform.translation_.x / kSquareSize_.x , worldTransform.translation_.y / kSquareSize_.y };
+		if (stageData_.map_[static_cast<size_t>(result.y)][static_cast<size_t>(result.x)] == MapNumber::Road) {
+			blockModel_->Draw(worldTransform, viewProjection);
+		}
 	}
 
 }
@@ -79,6 +136,10 @@ void MapEdit::Setting(size_t stageNum)
 {
 
 	// 解放とかクリアとか
+	// エネミーの位置
+	enemyWT_.clear();
+	// 檻の位置
+	cageWT_.clear();
 
 	// ステージ番号
 	stageNum_ = stageNum;
@@ -118,6 +179,45 @@ void MapEdit::Setting(size_t stageNum)
 	goalWT_.Initialize();
 	goalWT_.translation_ = { stageData_.goalPosition_.x * kSquareSize_.x , stageData_.goalPosition_.y * kSquareSize_.y, -2.0f };
 	goalWT_.UpdateMatrix();
+
+}
+
+Vector2 MapEdit::BlockFind(const ViewProjection& viewProjection)
+{
+
+	POINT mousePos = { static_cast<LONG>(input_->GetMousePosition().x), static_cast<LONG>(input_->GetMousePosition().y) };
+	//クライアントエリア座標に変換する
+	//HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	//ScreenToClient(hwnd, &mousePos);
+	Vector2 mousePosVec = { static_cast<float>(mousePos.x) , static_cast<float>(mousePos.y) };
+
+	ViewProjection viewProjection_ = viewProjection;
+	//ビューポート行列
+	Matrix4x4 matViewport = MatLib::MakeViewportMatrix(0, 0, WinApp::kClientWidth, WinApp::kClientHeight, 0, 1);
+
+	//ビュー行列とプロジェクション行列,ビューポート行列を合成する
+	Matrix4x4 matViewProjectionViewport =
+		MatLib::Multiply(viewProjection.matView, MatLib::Multiply(viewProjection.matProjection, matViewport));
+
+	// ブロック
+	for (WorldTransform worldTransform : blockWT_) {
+		Vector3 positionM = { worldTransform.matWorld_.m[3][0] - kSquareSize_.x / 2.0f , worldTransform.matWorld_.m[3][1] + kSquareSize_.y / 2.0f , worldTransform.matWorld_.m[3][2] };
+		Vector3 positionP = { worldTransform.matWorld_.m[3][0] + kSquareSize_.x / 2.0f , worldTransform.matWorld_.m[3][1] - kSquareSize_.y / 2.0f , worldTransform.matWorld_.m[3][2] };
+		positionM = MatLib::Transform(positionM, matViewProjectionViewport);
+		positionP = MatLib::Transform(positionP, matViewProjectionViewport);
+
+		if (mousePosVec.x > positionM.x && mousePosVec.x < positionP.x &&
+			mousePosVec.y > positionM.y && mousePosVec.y < positionP.y) {
+			
+			//	mousePosVec.y > positionM.y && mousePosVec.y < positionP.y
+
+ 			Vector2 result = { worldTransform.translation_.x / kSquareSize_.x , worldTransform.translation_.y / kSquareSize_.y };
+			return result;
+		}
+
+	}
+
+	return Vector2( -1.0f, -1.0f);
 
 }
 

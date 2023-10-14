@@ -8,6 +8,7 @@
 #include <WorldTransform.h>
 #include <ViewProjection.h>
 #include <Model.h>
+#include <Input.h>
 
 /// <summary>
 /// マップエディタクラス
@@ -55,22 +56,33 @@ public: // 静的メンバ変数
 
 public: // メンバ関数(edit部分)
 
-
-
 	void Initialize(Model* enemymodel, Model* cagemodel, Model* startmodel, Model* goalmodel, Model* blockmodel);
 
-	void Update();
+	void Update(const ViewProjection& viewProjection);
 
 	void Draw(const ViewProjection& viewProjection);
 
 	void Setting(size_t stageNum);
+
+private: // メンバ関数
+
+	Vector2 BlockFind(const ViewProjection& viewProjection);
+
 
 private: // メンバ変数
 
 	// ステージ番号
 	size_t stageNum_;
 
+	// ステージデータ
 	StageData stageData_;
+
+	// 敵の数
+	size_t enemyNum_;
+	// 檻の数
+	size_t cageNum_;
+
+	Input* input_ = nullptr;
 
 private: // モデルとか
 
