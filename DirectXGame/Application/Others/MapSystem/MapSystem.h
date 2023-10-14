@@ -170,6 +170,12 @@ public: // アクセッサ
 	// 檻
 	std::vector<Vector2> GetInitialCagePosition() { return initialStageData_.cagePosition_; }
 
+	// スタート位置
+	Vector2 GetInitialStartPosition() { return initialStageData_.startPosition_; }
+
+	// ゴール位置
+	Vector2 GetInitialGoalPosition() { return initialStageData_.goalPosition_; }
+
 	size_t GetEnemyCount() { return enemyCount_; }
 
 	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }

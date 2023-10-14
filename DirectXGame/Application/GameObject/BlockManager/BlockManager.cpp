@@ -31,12 +31,7 @@ void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles
 			Block* block = new Block();
 			textureHandles_ = textureHandles;
 			int num = map_[y][x];
-			int textureNum = num;
-			if (static_cast<MapSystem::MapNumber>(textureNum) == MapSystem::MapNumber::Hole) {
-				textureNum = 0;
-			}
-
-			block->Initialize(model_, textureHandles_[textureNum], Vector2(static_cast<float>(x), static_cast<float>(y)), static_cast<MapSystem::MapNumber>(num));
+			block->Initialize(model_, textureHandles_[num], Vector2(static_cast<float>(x), static_cast<float>(y)), static_cast<MapSystem::MapNumber>(num));
 			blocks_.push_back(block);
 		}
 	}
@@ -69,7 +64,7 @@ void BlockManager::Update()
 		int y = static_cast<int>(block->GetPosition().y);
 		if (map_[y][x] == MapSystem::MapNumber::Hole &&
 			block->GetMapNum() != MapSystem::MapNumber::Hole) {
-			block->Fall(textureHandles_.at(1));
+			block->Fall(textureHandles_[MapSystem::MapNumber::Hole]);
 		}
 		block->Update();
 	}
@@ -92,11 +87,7 @@ void BlockManager::Setting()
 	for (Block* block : blocks_) {
 		Vector2 pos = block->GetPosition();
 		int num = map_[static_cast<int>(pos.y)][static_cast<int>(pos.x)];
-		int textureNum = num;
-		if (static_cast<MapSystem::MapNumber>(textureNum) == MapSystem::MapNumber::Hole) {
-			textureNum = 0;
-		}
-		block->Setting(textureHandles_[textureNum], static_cast<MapSystem::MapNumber>(num));
+		block->Setting(textureHandles_[num], static_cast<MapSystem::MapNumber>(num));
 	}
 
 }
