@@ -5,14 +5,10 @@
 
 #include "../Effect/EffectManager.h"
 
-// 前方宣言
-class Area;
-class BlockManager;
-
 /// <summary>
-/// プレイヤー
+/// エネミー
 /// </summary>
-class Player
+class Enemy
 {
 
 public: // メンバ関数

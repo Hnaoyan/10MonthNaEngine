@@ -189,10 +189,14 @@ void MapSystem::EnemyMove()
 			int x = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
 			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
 
+			// 出来ればyに動く(壁であればx)
 			if (x < y) {
 
 			}
 			else if (x < y) {
+
+			}
+			else {
 
 			}
 

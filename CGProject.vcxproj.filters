@@ -285,6 +285,9 @@
     <ClCompile Include="DirectXGame\Application\Others\MapSystem\MapSystem.cpp">
       <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Enemy\Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -466,6 +469,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Scene\BaseScene.h">
       <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Enemy\Enemy.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
