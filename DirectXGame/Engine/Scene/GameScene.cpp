@@ -96,7 +96,6 @@ void GameScene::Update()
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
-	//uiManager_->Update();
 	effectManager_->Update();
 	//particleManager_->Update();
 

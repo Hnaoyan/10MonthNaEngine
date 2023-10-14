@@ -11,7 +11,6 @@ ParticleManager* ParticleManager::GetInstance()
 void ParticleManager::Initialize(ViewProjection* view)
 {
 	view_ = view;
-	//model_.reset(Model::CreateFromObj("block", true));
 	model_.reset(Model::CreatePlane());
 	texture_ = TextureManager::Load("plane/test.png");
 }
@@ -58,11 +57,13 @@ void ParticleManager::ParticleProcess()
 		switch (pattern_)
 		{
 		case ParticleManager::PatternNum::kNone:
+
 			break;
 		case ParticleManager::PatternNum::kMove:
 			WaveInitialize();
 			break;
 		case ParticleManager::PatternNum::kVibration:
+
 			break;
 		}
 		patternRequest_ = std::nullopt;

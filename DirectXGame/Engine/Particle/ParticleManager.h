@@ -58,8 +58,14 @@ private: // enumクラスの管理系
 
 private: // パターンの更新と初期化関数
 #pragma region パターンそれぞれの関数
+	/// <summary>
+	/// 波の動きの初期化
+	/// </summary>
 	void WaveInitialize();
 
+	/// <summary>
+	/// 波の動きの更新
+	/// </summary>
 	void WaveUpdate();
 
 #pragma endregion
