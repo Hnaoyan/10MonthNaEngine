@@ -146,7 +146,13 @@ void MapEdit::Update(const ViewProjection& viewProjection)
 	if (input_->TriggerKey(DIK_S)) {
 		pos = BlockFind(viewProjection);
 		if (pos.x >= 0.0f) {
-
+			if (!(stageData_.goalPosition_.x == pos.x && stageData_.goalPosition_.y == pos.y)) {
+				DuplicateConfirmation(pos);
+				stageData_.startPosition_ = pos;
+				stageData_.playerPosition_ = pos;
+				startWT_.translation_ = { pos.x * kSquareSize_.x , pos.y * kSquareSize_.y, -2.0f };
+				startWT_.UpdateMatrix();
+			}
 		}
 
 	}
@@ -154,7 +160,12 @@ void MapEdit::Update(const ViewProjection& viewProjection)
 	if (input_->TriggerKey(DIK_G)) {
 		pos = BlockFind(viewProjection);
 		if (pos.x >= 0.0f) {
-
+			if (!(stageData_.startPosition_.x == pos.x && stageData_.startPosition_.y == pos.y)) {
+				DuplicateConfirmation(pos);
+				stageData_.goalPosition_ = pos;
+				goalWT_.translation_ = { pos.x * kSquareSize_.x , pos.y * kSquareSize_.y, -2.0f };
+				goalWT_.UpdateMatrix();
+			}
 		}
 
 	}
