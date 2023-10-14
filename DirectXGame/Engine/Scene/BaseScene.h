@@ -1,7 +1,7 @@
 #pragma once
 
 enum Scene {
-	TITLE,GAMESCENE,CLEAR,
+	TITLE,GAMESCENE,CLEAR,EDITOR
 };
 
 class BaseScene 

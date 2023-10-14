@@ -309,6 +309,9 @@
     <ClCompile Include="DirectXGame\Editor\MapEdit.cpp">
       <Filter>エディタファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engine\Scene\EditorScene.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -511,6 +514,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Editor\MapEdit.h">
       <Filter>エディタファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engine\Scene\EditorScene.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

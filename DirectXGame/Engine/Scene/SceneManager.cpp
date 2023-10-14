@@ -5,8 +5,9 @@ SceneManager::SceneManager()
 	sceneArray_[TITLE] = std::make_unique<TitleScene>();
 	sceneArray_[GAMESCENE] = std::make_unique<GameScene>();
 	sceneArray_[CLEAR] = std::make_unique<GameScene>();
+	sceneArray_[EDITOR] = std::make_unique<EditorScene>();
 
-	sceneNum_ = GAMESCENE;
+	sceneNum_ = EDITOR;
 	sceneArray_[sceneNum_]->Initialize();
 }
 

@@ -3,10 +3,11 @@
 #include "BaseScene.h"
 #include "TitleScene.h"
 #include "GameScene.h"
+#include "EditorScene.h"
 
 class SceneManager {
 private:
-	std::unique_ptr<BaseScene> sceneArray_[3];
+	std::unique_ptr<BaseScene> sceneArray_[4];
 
 	int sceneNum_;
 	int prevSceneNum_;
