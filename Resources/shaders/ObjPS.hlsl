@@ -24,7 +24,7 @@ float4 main(VSOutput input) : SV_TARGET
     {
         if (directLight[i].active)
         {
-            float3 dotLightNormal = dot(-directLight[i].lightv, input.normal);
+            float3 dotLightNormal = dot(directLight[i].lightv, input.normal);
             
             float3 reflect = normalize(-directLight[i].lightv + 2 * dotLightNormal * input.normal);
             

@@ -37,7 +37,7 @@ void ParticleManager::WaveUpdate()
 		patternRequest_ = PatternNum::kNone;
 	}
 	if (waveTimer_.frameCount % 30 == 0) {
-		Test(Vector3(0, 0, 0));
+		Test(Vector3(0, 0, 50.0f));
 	}
 }
 
