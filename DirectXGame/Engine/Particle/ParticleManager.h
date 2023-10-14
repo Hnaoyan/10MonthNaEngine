@@ -46,6 +46,10 @@ public:
 		kVibration,	// 振動時
 	};
 
+public:
+
+	void SetRequest(PatternNum number) { patternRequest_ = number; }
+
 private: // enumクラスの管理系
 	/// <summary>
 	/// 分岐変数
@@ -55,6 +59,12 @@ private: // enumクラスの管理系
 	/// リクエスト
 	/// </summary>
 	std::optional<PatternNum> patternRequest_ = std::nullopt;
+
+	struct PatternControl {
+		int frameCount, endCount;
+	};
+
+	PatternControl waveTimer_;
 
 private: // パターンの更新と初期化関数
 #pragma region パターンそれぞれの関数
@@ -94,6 +104,8 @@ private:
 	/// <param name="velocity"></param>
 	void AddParticle3D(Vector3& position,Vector3& velocity);
 
+	void AddWave(const Vector3& pos, const Vector3& velo);
+
 private:
 	std::list<Particle*> particles_;
 
@@ -101,6 +113,6 @@ private:
 
 	std::unique_ptr<Model> model_;
 
-	ViewProjection* view_;
+	ViewProjection* view_ = nullptr;
 };
 

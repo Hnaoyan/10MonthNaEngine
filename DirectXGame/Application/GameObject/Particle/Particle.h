@@ -7,7 +7,7 @@
 class Particle
 {
 public:
-	Particle() {};
+	Particle();
 	~Particle() = default;
 
 	/// <summary>
@@ -68,13 +68,13 @@ public: // 設定・取得
 
 protected:
 	// モデル
-	Model* model_;
+	Model* model_ = nullptr;
 	// ワールドトランスフォーム（座標）
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_ = {};
 	// 速さ
-	Vector3 velocity_;
+	Vector3 velocity_ = {};
 
-	Vector3 scale_;
+	Vector3 scale_ = {};
 
 	// テクスチャ
 	uint32_t texture_ = 0u;

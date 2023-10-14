@@ -1,7 +1,12 @@
 #include "Particle.h"
 #include "VectorLib.h"
 
-void Particle::Initialize(Model* model, uint32_t texture) 
+Particle::Particle()
+{
+
+}
+
+void Particle::Initialize(Model* model, uint32_t texture)
 {
 	// モデル設定
 	model_ = model;

@@ -14,7 +14,7 @@ struct WorldTransform
 	Vector3 scale_ = { 1,1,1 };
 	Vector3 rotation_ = { 0,0,0 };
 	Vector3 translation_ = { 0,0,0 };
-	Matrix4x4 matWorld_;
+	Matrix4x4 matWorld_ = {};
 	WorldTransform* parent_ = nullptr;
 	ViewProjection* view_ = nullptr;
 	bool isBillBoard_ = false;

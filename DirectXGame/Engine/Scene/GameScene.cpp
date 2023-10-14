@@ -8,6 +8,14 @@
 
 using namespace std;
 
+GameScene::GameScene()
+{
+	// プレイヤー
+	playerModel_.reset(Model::CreateFromObj("player", true));
+	blockModel_.reset(Model::CreateFromObj("block", true));
+
+}
+
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -34,8 +42,6 @@ void GameScene::Initialize() {
 	mapSystem_ = make_unique<MapSystem>();
 	mapSystem_->Initialize(0);
 
-	// プレイヤー
-	playerModel_.reset(Model::CreateFromObj("player", true));
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
@@ -73,8 +79,8 @@ void GameScene::Initialize() {
 	effectManager_ = make_unique<EffectManager>();
 	effectManager_->Initialize();
 	// パーティクルエフェクト
-	//particleManager_ = make_unique<ParticleManager>();
-	//particleManager_->Initialize(baseCamera_->GetViewPlayer());
+	particleManager_ = make_unique<ParticleManager>();
+	particleManager_->Initialize(baseCamera_->GetViewPlayer());
 
 	// マネージャーの設定
 	//player_->SetEffectManager(effectManager_.get());
@@ -97,13 +103,14 @@ void GameScene::Update()
 	CameraUpdate();
 
 	effectManager_->Update();
-	//particleManager_->Update();
+	particleManager_->Update();
 
 	if (input_->TriggerKey(DIK_9)) {
-		//particleManager_->RandomRespown(player_->GetPosition());
+		particleManager_->RandomRespown(Vector3(0,0,0));
 	}
 	if (input_->TriggerKey(DIK_0)) {
-		//Vector3 pos = { player_->GetPosition().x,player_->GetPosition().y - 1.0f,player_->GetPosition().z };
+		particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
+		//Vector3 pos = { 0,0,0 };
 		//particleManager_->Test(pos);
 	}
 
@@ -173,7 +180,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//particleManager_->Draw(viewProjection_);
+	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
 	enemiesManager_->Draw(viewProjection_);

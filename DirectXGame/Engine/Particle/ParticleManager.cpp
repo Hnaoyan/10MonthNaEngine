@@ -1,6 +1,7 @@
 #include "ParticleManager.h"
 #include "TextureManager.h"
 #include "VectorLib.h"
+#include "ParticleWave.h"
 
 ParticleManager* ParticleManager::GetInstance()
 {
@@ -12,7 +13,7 @@ void ParticleManager::Initialize(ViewProjection* view)
 {
 	view_ = view;
 	model_.reset(Model::CreatePlane());
-	texture_ = TextureManager::Load("plane/test.png");
+	texture_ = TextureManager::Load("plane/test2.png");
 }
 
 void ParticleManager::Update()
@@ -24,12 +25,20 @@ void ParticleManager::Update()
 
 void ParticleManager::WaveInitialize()
 {
-
+	waveTimer_ = { 0,60 };
 }
 
 void ParticleManager::WaveUpdate()
 {
-
+	// フレームカウント
+	waveTimer_.frameCount++;
+	// 終了判定
+	if (waveTimer_.frameCount > waveTimer_.endCount) {
+		patternRequest_ = PatternNum::kNone;
+	}
+	if (waveTimer_.frameCount % 30 == 0) {
+		Test(Vector3(0, 0, 0));
+	}
 }
 
 void ParticleManager::ParticleUpdate()
@@ -127,4 +136,12 @@ void ParticleManager::AddParticle3D(Vector3& position, Vector3& velocity)
 	newParticle->SetRotate(Vector3(1.65f, 0.0f, 0.0f));
 	newParticle->SetScale(Vector3(2.0f, 2.0f, 1.0f));
 	particles_.push_back(newParticle);
+}
+
+void ParticleManager::AddWave(const Vector3& pos, const Vector3& velo)
+{
+	//ParticleWave* newParticle = new ParticleWave();
+	pos;
+	velo;
+
 }
