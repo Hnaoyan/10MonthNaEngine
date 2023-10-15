@@ -4,6 +4,7 @@
 #include <fstream>
 #include <WinApp.h>
 #include <MatLib.h>
+#include <imgui.h>
 
 //名前空間
 using namespace nlohmann;
@@ -14,7 +15,34 @@ const Vector2 MapEdit::kMapSize_ = { 15.0f, 15.0f };
 // マスのサイズ
 const Vector2 MapEdit::kSquareSize_ = { 10.0f, 10.0f };
 // ステージ数
-uint32_t MapEdit::kMaximumNumberOfStages_ = 2;
+uint32_t MapEdit::kMaximumNumberOfStages_ = 0;
+
+MapEdit::~MapEdit()
+{
+	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
+		++itGroup) {
+
+		std::string string = itGroup->first;
+
+		// 指定グループが存在するか
+		assert(stageDatas_.find(string) != stageDatas_.end());
+		//  グループの参照を取得
+		Group& group = stageDatas_[string];
+		// 指定グループに指定キーが存在するか
+		assert(group.find("map_") != group.end());
+		// 指定グループから指定のキーの値を取得
+		int** map = std::get<0>(group["map_"]);
+		for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+			if (map[y] != nullptr) {
+				delete map[y];
+			}
+		}
+		if (map) {
+			delete map;
+		}
+
+	}
+}
 
 void MapEdit::Initialize(Model* enemymodel,	Model* cagemodel, Model* startmodel, Model* goalmodel,	Model* blockmodel)
 {
@@ -59,6 +87,19 @@ void MapEdit::Update(const ViewProjection& viewProjection)
 {
 
 	Vector2 pos = { -1.0f, -1.0f};
+
+	// ステージ変更
+	ImGui::Begin("Editor");
+	ImGui::Text("Stage%d", stageNum_);
+	if (ImGui::Button("nextStage")) {
+		stageNum_++;
+		Setting(stageNum_);
+	}
+	if (ImGui::Button("preStage") && stageNum_ > 0) {
+		stageNum_--;
+		Setting(stageNum_);
+	}
+	ImGui::End();
 
 	// クリックされた(map変更)
 	if (input_->TriggerKey(DIK_SPACE)) {
@@ -212,13 +253,19 @@ void MapEdit::Setting(size_t stageNum)
 	// グループ名の設定
 	std::string groupName = "StageData" + std::to_string(stageNum_);
 
-	// 初期情報
-	stageData_.map_ = GetMapValue(groupName, "map_");
-	stageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
-	stageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
-	stageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
-	stageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
-	stageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
+	if (stageNum_ >= kMaximumNumberOfStages_) {
+		AddStage(groupName);
+	}
+	else {
+		// 初期情報
+		stageData_.map_ = GetMapValue(groupName, "map_");
+		stageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
+		stageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
+		stageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
+		stageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
+		stageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
+	}
+
 
 	// エネミーの位置
 	for (Vector2 pos : stageData_.enemyPosition_) {
@@ -251,9 +298,6 @@ Vector2 MapEdit::BlockFind(const ViewProjection& viewProjection)
 {
 
 	POINT mousePos = { static_cast<LONG>(input_->GetMousePosition().x), static_cast<LONG>(input_->GetMousePosition().y) };
-	//クライアントエリア座標に変換する
-	//HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	//ScreenToClient(hwnd, &mousePos);
 	Vector2 mousePosVec = { static_cast<float>(mousePos.x) , static_cast<float>(mousePos.y) };
 
 	ViewProjection viewProjection_ = viewProjection;
@@ -327,6 +371,75 @@ void MapEdit::DuplicateConfirmation(Vector2 pos)
 
 }
 
+void MapEdit::StageDatasDelete()
+{
+
+	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
+		++itGroup) {
+
+		std::string string = itGroup->first;
+
+		// 指定グループが存在するか
+		assert(stageDatas_.find(string) != stageDatas_.end());
+		//  グループの参照を取得
+		Group& group = stageDatas_[string];
+		// 指定グループに指定キーが存在するか
+		assert(group.find("map_") != group.end());
+		// 指定グループから指定のキーの値を取得
+		int** map = std::get<0>(group["map_"]);
+		for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+			if (map[y] != nullptr) {
+				delete map[y];
+			}
+		}
+		if (map) {
+			delete map;
+		}
+
+	}
+
+	stageDatas_.clear();
+
+}
+
+void MapEdit::AddStage(std::string groupName)
+{
+
+	// 初期情報
+	int** map;
+	map = new int* [static_cast<size_t>(kMapSize_.y)];
+	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+		map[y] = new int[static_cast<size_t>(kMapSize_.x)];
+	}
+	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+		for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
+			map[y][x] = MapNumber::Road;
+		}
+	}
+
+	SetValue(groupName, "map_", map);
+	stageData_.map_ = GetMapValue(groupName, "map_");
+
+	std::list<Vector2> enemyPosition;
+	SetValue(groupName, "enemyPosition_", enemyPosition);
+	stageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
+
+	std::list<Vector2> cagePosition;
+	SetValue(groupName, "cagePosition_", cagePosition);
+	stageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
+
+	Vector2 startPosition = {0.0f, 0.0f};
+	SetValue(groupName, "startPosition_", startPosition);
+	stageData_.startPosition_ = GetPositionValue(groupName, "startPosition_");
+	SetValue(groupName, "playerPosition_", startPosition);
+	stageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
+
+	Vector2 goalPosition = { 14.0f, 14.0f };
+	SetValue(groupName, "goalPosition_", goalPosition);
+	stageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
+
+}
+
 void MapEdit::StagesLoad()
 {
 
@@ -347,13 +460,13 @@ void MapEdit::StagesLoad()
 			continue;
 		}
 
-		StageLoad(filePath.stem().string(), static_cast<size_t>(MapEdit::kMaximumNumberOfStages_));
+		StageLoad(filePath.stem().string());
 
 	}
 
 }
 
-void MapEdit::StageLoad(const std::string& groupName, size_t num)
+void MapEdit::StageLoad(const std::string& groupName)
 {
 
 	// 読み込むJSONファイルのフルパスを合成する
@@ -373,16 +486,24 @@ void MapEdit::StageLoad(const std::string& groupName, size_t num)
 	// ファイルを閉じる
 	ifs.close();
 
+	// マップ数
+	kMaximumNumberOfStages_ = 0;
+
 	// ファイル読み込み
-	for (size_t s = 0; s < num; s++) {
+	while (1) {
 
 		// グループを検索
-		std::string name = groupName + std::to_string(s);
+		std::string name = groupName + std::to_string(kMaximumNumberOfStages_);
 
 		json::iterator itGroup = root.find(name);
 
 		// 未登録チェック
-		assert(itGroup != root.end());
+		if (itGroup == root.end()) {
+			break;
+		}
+		else {
+			kMaximumNumberOfStages_++;
+		}
 
 		// 各アイテムについて
 		for (json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem) {

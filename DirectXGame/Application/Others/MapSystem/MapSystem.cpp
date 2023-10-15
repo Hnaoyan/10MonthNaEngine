@@ -23,8 +23,6 @@ MapSystem::~MapSystem()
 	delete map_;
 
 	// データマップ
-
-
 	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
 		++itGroup) {
 		

@@ -56,6 +56,8 @@ public: // 静的メンバ変数
 
 public: // メンバ関数(edit部分)
 
+	~MapEdit();
+
 	void Initialize(Model* enemymodel, Model* cagemodel, Model* startmodel, Model* goalmodel, Model* blockmodel);
 
 	void Update(const ViewProjection& viewProjection);
@@ -69,6 +71,10 @@ private: // メンバ関数
 	Vector2 BlockFind(const ViewProjection& viewProjection);
 
 	void DuplicateConfirmation(Vector2 pos);
+
+	void StageDatasDelete();
+
+	void AddStage(std::string groupName);
 
 
 private: // メンバ変数
@@ -116,7 +122,7 @@ public: // メンバ関数(読み込みなど)
 	/// <summary>
 	/// マップ読み込み
 	/// </summary>
-	void StageLoad(const std::string& groupName, size_t num);
+	void StageLoad(const std::string& groupName);
 
 	/// <summary>
 	/// 値のセット
