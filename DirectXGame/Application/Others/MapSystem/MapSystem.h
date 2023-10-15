@@ -227,6 +227,9 @@ private: //メンバ変数
 	// 敵を捕まえた
 	std::vector<bool> capturedEnemy_;
 
+	// 檻を使った
+	std::vector<bool> usedCage_;
+
 	// コマンド番号
 	Command::CommandNumber comandNumber_;
 

@@ -136,11 +136,16 @@ void MapSystem::Setting(int stageNum)
 	goalOpened_ = false;
 	// 敵を捕まえた
 	// エネミーが起きている時
+	// 檻を使った
 	enemyAwake_.clear();
 	capturedEnemy_.clear();
+	usedCage_.clear();
 	for (size_t i = 0; i < enemyCount_; i++) {
 		enemyAwake_.push_back(false);
 		capturedEnemy_.push_back(false);
+	}
+	for (size_t i = 0; i < cageCount_; i++) {
+		usedCage_.push_back(false);
 	}
 
 	// コマンド番号
@@ -310,11 +315,16 @@ void MapSystem::EnemyMove(int32_t x, int32_t y)
 			}
 
 			// 檻に入る
+			int k = 0;
 			for (Vector2 cagePosition : initialStageData_.cagePosition_) {
 				if (enemyPosition_.at(i).x == cagePosition.x &&
-					enemyPosition_.at(i).y == cagePosition.y) {
+					enemyPosition_.at(i).y == cagePosition.y &&
+					!usedCage_.at(k)) {
 					capturedEnemy_.at(i) = true;
+					usedCage_.at(k) = true;
+					break;
 				}
+				k++;
 			}
 
 		}
@@ -407,9 +417,13 @@ void MapSystem::Restart()
 	// 敵を捕まえた
 	capturedEnemy_.clear();
 	enemyAwake_.clear();
+	usedCage_.clear();
 	for (size_t i = 0; i < enemyCount_; i++) {
 		enemyAwake_.push_back(false);
 		capturedEnemy_.push_back(false);
+	}
+	for (size_t i = 0; i < cageCount_; i++){
+		usedCage_.push_back(false);
 	}
 
 	// コマンド番号
