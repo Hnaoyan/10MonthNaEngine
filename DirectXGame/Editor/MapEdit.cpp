@@ -457,6 +457,8 @@ void MapEdit::AddStage(const std::string& groupName)
 void MapEdit::StagesLoad()
 {
 
+	StageDatasDelete();
+
 	std::string saveDirectryPath = kDirectoryPath;
 	// ディレクトリがなければスキップする
 	if (!std::filesystem::exists(saveDirectryPath)) {

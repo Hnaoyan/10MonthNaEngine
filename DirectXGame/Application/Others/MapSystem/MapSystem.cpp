@@ -370,6 +370,8 @@ void MapSystem::Restart()
 void MapSystem::StagesLoad()
 {
 
+	StageDatasDelete();
+
 	std::string saveDirectryPath = kDirectoryPath;
 	// ディレクトリがなければスキップする
 	if (!std::filesystem::exists(saveDirectryPath)) {
@@ -468,6 +470,37 @@ void MapSystem::StageLoad(const std::string& groupName , size_t num)
 
 		}
 	}
+
+}
+
+void MapSystem::StageDatasDelete()
+{
+
+	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
+		++itGroup) {
+
+		std::string string = itGroup->first;
+
+		// 指定グループが存在するか
+		assert(stageDatas_.find(string) != stageDatas_.end());
+		//  グループの参照を取得
+		Group& group = stageDatas_[string];
+		// 指定グループに指定キーが存在するか
+		assert(group.find("map_") != group.end());
+		// 指定グループから指定のキーの値を取得
+		int** map = std::get<0>(group["map_"]);
+		for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+			if (map[y] != nullptr) {
+				delete map[y];
+			}
+		}
+		if (map) {
+			delete map;
+		}
+
+	}
+
+	stageDatas_.clear();
 
 }
 

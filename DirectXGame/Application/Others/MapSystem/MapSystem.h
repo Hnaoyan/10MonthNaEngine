@@ -128,6 +128,11 @@ private: // メンバ関数
 	void StageLoad(const std::string& groupName, size_t num);
 
 	/// <summary>
+	/// ステージデータ削除
+	/// </summary>
+	void StageDatasDelete();
+
+	/// <summary>
 	/// 値のセット
 	/// </summary>
 	/// <param name="groupName"></param>
