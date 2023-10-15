@@ -67,11 +67,13 @@ void EnemiesManager::Setting(size_t count)
 			delete enemy;
 		}
 	}
+	enemies_.clear();
 	for (Cage* cage : cages_) {
 		if (cage) {
 			delete cage;
 		}
 	}
+	cages_.clear();
 	// 生成
 	for (size_t i = 0; i < count; i++) {
 		AddEnemy(i); 

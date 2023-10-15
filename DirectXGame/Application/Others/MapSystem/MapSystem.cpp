@@ -79,6 +79,9 @@ void MapSystem::Update(Command::CommandNumber commandNumber)
 	if (comandNumber_ == Command::CommandNumber::Button) {
 		MakeSound();
 	}
+	else if (comandNumber_ == Command::CommandNumber::Restart) {
+		Restart();
+	}
 	
 	// ゲームクリアチェック
 	GameClear();
@@ -138,6 +141,9 @@ void MapSystem::Setting(int stageNum)
 
 	// ゲームオーバーフラグ
 	isGameOver_ = false;
+
+	// リスタートフラグ
+	isRestart_ = false;
 
 }
 
@@ -350,20 +356,32 @@ void MapSystem::Restart()
 	playerPosition_ = initialStageData_.playerPosition_;
 
 	// エネミーの位置
-	for (size_t i = 0; initialStageData_.enemyPosition_.size(); i++) {
+	enemyPosition_.clear();
+	enemyCount_ = 0;
+	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
 		enemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
+		enemyCount_++;
 	}
 
 	// ゴールが開いたか
 	goalOpened_ = false;
 
 	// 敵を捕まえた
-	for (size_t i = 0; capturedEnemy_.size(); i++) {
-		capturedEnemy_.at(i) = false;
+	capturedEnemy_.clear();
+	enemyAwake_.clear();
+	for (size_t i = 0; i < enemyCount_; i++) {
+		enemyAwake_.push_back(false);
+		capturedEnemy_.push_back(false);
 	}
 
 	// コマンド番号
 	comandNumber_ = Command::CommandNumber::None;
+
+	isGameClaer_ = false;
+
+	isGameOver_ = false;
+
+	isRestart_ = true;
 
 }
 

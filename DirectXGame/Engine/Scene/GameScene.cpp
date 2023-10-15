@@ -119,6 +119,9 @@ void GameScene::Update()
 		if (!command_->GetAcceptingInput()) {
 			mapSystem_->Update(command_->GetCommandNumber());
 			command_->SetAcceptingInput(true);
+			if (mapSystem_->GetIsRestart()) {
+				Reset();
+			}
 		}
 		player_->Update(mapSystem_->GetPlayerPosition());
 		blockManager_->Update();
@@ -243,11 +246,13 @@ void GameScene::CameraUpdate()
 void GameScene::Reset()
 {
 
-	// プレイヤー
+	player_->Setting(mapSystem_->GetInitialPlayerPosition());
+	blockManager_->Setting();
+	enemiesManager_->Setting(mapSystem_->GetEnemyCount());
+	start_->Setting(mapSystem_->GetInitialStartPosition());
+	goal_->Setting(mapSystem_->GetInitialGoalPosition());
 
-	// ブロックマネージャー
-
-	// エネミー
+	mapSystem_->SetIsRestart(false);
 
 }
 

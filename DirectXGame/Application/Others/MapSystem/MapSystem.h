@@ -189,6 +189,10 @@ public: // アクセッサ
 
 	bool GetIsGameOver() { return isGameOver_; }
 
+	bool GetIsRestart() { return isRestart_; }
+
+	void SetIsRestart(bool isRestart) { isRestart_ = isRestart; }
+
 public: // メンバ定数
 
 private: //メンバ変数
@@ -231,6 +235,9 @@ private: //メンバ変数
 
 	// エネミーズマネージャー
 	EnemiesManager* enemiesManager_;
+
+	// リスタートフラグ
+	bool isRestart_;
 
 private: //メンバ変数(データ)
 
