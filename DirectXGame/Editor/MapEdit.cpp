@@ -416,6 +416,7 @@ void MapEdit::StageDatasDelete()
 void MapEdit::AddStage(const std::string& groupName)
 {
 
+	kMaximumNumberOfStages_++;
 	stageDatas_[groupName];
 
 	// 初期情報
