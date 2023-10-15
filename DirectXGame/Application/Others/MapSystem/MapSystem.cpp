@@ -289,6 +289,11 @@ bool MapSystem::PlayerMove(int32_t x, int32_t y)
 void MapSystem::EnemyMove(int32_t x, int32_t y)
 {
 
+	std::vector<Vector2> prePos;
+	for (size_t i = 0; i < enemyCount_; i++) {
+		prePos.push_back(enemyPosition_.at(i));
+	}
+
 	// エネミーが起きている時
 	for (size_t i = 0; i < enemyCount_; i++) {
 		if (enemyAwake_.at(i) && !capturedEnemy_.at(i)) {
@@ -327,6 +332,24 @@ void MapSystem::EnemyMove(int32_t x, int32_t y)
 				k++;
 			}
 
+		}
+	}
+
+	// 重なり判定
+	for (size_t i = 0; i < enemyCount_ - 1; i++) {
+		for (size_t j = i + 1; j < enemyCount_; j++) {
+			// 重なっている
+			if (enemyPosition_.at(i).x == enemyPosition_.at(j).x &&
+				enemyPosition_.at(i).y == enemyPosition_.at(j).y ) {
+				if (capturedEnemy_.at(j) || !enemyAwake_.at(j)) {
+					// iを動かす
+					enemyPosition_.at(i) = prePos.at(i);
+				}
+				else {
+					// jを動かす
+					enemyPosition_.at(j) = prePos.at(j);
+				}
+			}	
 		}
 	}
 
