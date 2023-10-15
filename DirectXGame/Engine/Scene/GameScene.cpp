@@ -99,6 +99,10 @@ void GameScene::Initialize() {
 
 void GameScene::Update()
 {
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		sceneNum = TITLE;
+	}
+
 	/// カメラ関係の更新処理
 	CameraUpdate();
 

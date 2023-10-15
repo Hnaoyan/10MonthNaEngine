@@ -20,4 +20,5 @@ public:
 
 	void Draw();
 
+	void LoadScene(int number);
 };
