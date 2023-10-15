@@ -182,6 +182,7 @@ public: // アクセッサ
 	Vector2 GetInitialGoalPosition() { return initialStageData_.goalPosition_; }
 
 	size_t GetEnemyCount() { return enemyCount_; }
+	size_t GetCageCount() { return cageCount_; }
 
 	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
 
@@ -214,6 +215,8 @@ private: //メンバ変数
 
 	// エネミーのカウント
 	size_t enemyCount_;
+	// 檻のカウント
+	size_t cageCount_;
 
 	// エネミーが起きている時
 	std::vector<bool> enemyAwake_;

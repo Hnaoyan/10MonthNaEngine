@@ -18,7 +18,7 @@ EnemiesManager::~EnemiesManager()
 
 }
 
-void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t count)
+void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t enemyCount, size_t cageCount)
 {
 
 	// マップシステム
@@ -28,7 +28,7 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* 
 
 	cageModel_ = cageModel;
 
-	Setting(count);
+	Setting(enemyCount, cageCount);
 
 }
 
@@ -58,7 +58,7 @@ void EnemiesManager::Draw(const ViewProjection& viewProjection)
 
 }
 
-void EnemiesManager::Setting(size_t count)
+void EnemiesManager::Setting(size_t enemyCount, size_t cageCount)
 {
 	
 	// 解放
@@ -75,11 +75,12 @@ void EnemiesManager::Setting(size_t count)
 	}
 	cages_.clear();
 	// 生成
-	for (size_t i = 0; i < count; i++) {
+	for (size_t i = 0; i < enemyCount; i++) {
 		AddEnemy(i); 
+	}
+	for (size_t i = 0; i < cageCount; i++) {
 		AddCage(i);
 	}
-
 
 	// 設定
 	size_t i = 0;

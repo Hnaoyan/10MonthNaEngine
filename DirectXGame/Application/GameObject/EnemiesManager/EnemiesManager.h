@@ -26,7 +26,7 @@ public: // メンバ関数
 	/// <param name="mapSystem">マップシステム</param>
 	/// <param name="enemyModel">エネミーモデル</param>
 	/// <param name="cageModel">ケージモデル</param>
-	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t count);
+	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t enemyCount, size_t cageCount);
 
 	/// <summary>
 	/// 更新
@@ -42,7 +42,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 設定
 	/// </summary>
-	void Setting(size_t count);
+	void Setting(size_t enemyCount, size_t cageCount);
 
 	/// <summary>
 	/// エネミー追加

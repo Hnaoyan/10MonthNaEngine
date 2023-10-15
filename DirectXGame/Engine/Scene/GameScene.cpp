@@ -55,7 +55,7 @@ void GameScene::Initialize() {
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
 	cageModel_.reset(Model::CreateFromObj("cage", true));
 	enemiesManager_ = make_unique<EnemiesManager>();
-	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount());
+	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
@@ -261,7 +261,7 @@ void GameScene::Reset()
 
 	player_->Setting(mapSystem_->GetInitialPlayerPosition());
 	blockManager_->Setting();
-	enemiesManager_->Setting(mapSystem_->GetEnemyCount());
+	enemiesManager_->Setting(mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	start_->Setting(mapSystem_->GetInitialStartPosition());
 	goal_->Setting(mapSystem_->GetInitialGoalPosition());
 

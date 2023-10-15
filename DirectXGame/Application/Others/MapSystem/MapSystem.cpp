@@ -129,6 +129,9 @@ void MapSystem::Setting(int stageNum)
 		enemyCount_++;
 	}
 
+	//檻のカウント
+	cageCount_ = initialStageData_.cagePosition_.size();
+
 	// ゴールが開いたか
 	goalOpened_ = false;
 	// 敵を捕まえた
@@ -392,10 +395,8 @@ void MapSystem::Restart()
 
 	// エネミーの位置
 	enemyPosition_.clear();
-	enemyCount_ = 0;
 	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
 		enemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
-		enemyCount_++;
 	}
 
 	// ゴールが開いたか
