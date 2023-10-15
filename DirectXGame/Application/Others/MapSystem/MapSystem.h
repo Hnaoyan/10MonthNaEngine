@@ -100,7 +100,7 @@ private: // メンバ関数
 	/// <summary>
 	/// エネミーの移動
 	/// </summary>
-	void EnemyMove();
+	void EnemyMove(int32_t x, int32_t y);
 
 	/// <summary>
 	/// 音を鳴らす
