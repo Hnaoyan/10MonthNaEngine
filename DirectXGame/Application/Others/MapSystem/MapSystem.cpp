@@ -217,7 +217,7 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	// 成功
 	if (haveMoved) {
 		// エネミーの移動
-		EnemyMove();
+		EnemyMove(playerPosX, playerPosY);
 	}
 	// 失敗
 	else {
@@ -281,19 +281,19 @@ bool MapSystem::PlayerMove(int32_t x, int32_t y)
 
 }
 
-void MapSystem::EnemyMove()
+void MapSystem::EnemyMove(int32_t x, int32_t y)
 {
 
 	// エネミーが起きている時
 	for (size_t i = 0; i < enemyCount_; i++) {
 		if (enemyAwake_.at(i) && !capturedEnemy_.at(i)) {
 			// 行動する
-			int x = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
-			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
+			int distanceX = static_cast<int>(std::fabsf(x - enemyPosition_.at(i).x));
+			int distanceY = static_cast<int>(std::fabsf(y - enemyPosition_.at(i).y));
 
 			// 出来ればyに動く
-			if (x < y) {
-				if (playerPosition_.y < enemyPosition_.at(i).y) {
+			if (distanceX < distanceY) {
+				if (y < enemyPosition_.at(i).y) {
 					enemyPosition_.at(i).y -= 1.0f;
 				}
 				else {
@@ -301,7 +301,7 @@ void MapSystem::EnemyMove()
 				}
 			}
 			else {
-				if (playerPosition_.x < enemyPosition_.at(i).x) {
+				if (x < enemyPosition_.at(i).x) {
 					enemyPosition_.at(i).x -= 1.0f;
 				}
 				else {
@@ -310,9 +310,11 @@ void MapSystem::EnemyMove()
 			}
 
 			// 檻に入る
-			if (enemyPosition_.at(i).x == initialStageData_.cagePosition_.at(i).x &&
-				enemyPosition_.at(i).y == initialStageData_.cagePosition_.at(i).y) {
-				capturedEnemy_.at(i) = true;
+			for (Vector2 cagePosition : initialStageData_.cagePosition_) {
+				if (enemyPosition_.at(i).x == cagePosition.x &&
+					enemyPosition_.at(i).y == cagePosition.y) {
+					capturedEnemy_.at(i) = true;
+				}
 			}
 
 		}
