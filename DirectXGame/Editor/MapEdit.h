@@ -76,6 +76,9 @@ private: // メンバ関数
 
 	void AddStage(const std::string& groupName);
 
+public: // アクセッサ
+
+	size_t GetStageNum() { return stageNum_; }
 
 private: // メンバ変数
 

@@ -12,7 +12,7 @@ const Vector2 MapSystem::kMapSize_ = { 15.0f, 15.0f };
 // マスのサイズ
 const Vector2 MapSystem::kSquareSize_ = { 10.0f, 10.0f };
 // ステージ数
-const uint32_t MapSystem::kMaximumNumberOfStages_ = 2;
+uint32_t MapSystem::kMaximumNumberOfStages_ = 0;
 
 MapSystem::~MapSystem()
 {
@@ -101,6 +101,10 @@ void MapSystem::Setting(int stageNum)
 
 	// 初期情報
 	initialStageData_.map_ = GetMapValue(groupName, "map_");
+
+	initialStageData_.enemyPosition_.clear();
+	initialStageData_.cagePosition_.clear();
+
 	initialStageData_.playerPosition_ = GetPositionValue(groupName, "playerPosition_");
 	initialStageData_.enemyPosition_ = GetPositionsValue(groupName, "enemyPosition_");
 	initialStageData_.cagePosition_ = GetPositionsValue(groupName, "cagePosition_");
@@ -118,6 +122,7 @@ void MapSystem::Setting(int stageNum)
 	// エネミーの位置
 	// エネミーのカウント
 	enemyCount_ = 0;
+	enemyPosition_.clear();
 	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
 		Vector2 enemyPosition = initialStageData_.enemyPosition_.at(i);
 		enemyPosition_.push_back(enemyPosition);
@@ -128,6 +133,8 @@ void MapSystem::Setting(int stageNum)
 	goalOpened_ = false;
 	// 敵を捕まえた
 	// エネミーが起きている時
+	enemyAwake_.clear();
+	capturedEnemy_.clear();
 	for (size_t i = 0; i < enemyCount_; i++) {
 		enemyAwake_.push_back(false);
 		capturedEnemy_.push_back(false);
@@ -144,6 +151,34 @@ void MapSystem::Setting(int stageNum)
 
 	// リスタートフラグ
 	isRestart_ = false;
+
+}
+
+void MapSystem::StagesLoad()
+{
+
+	StageDatasDelete();
+
+	std::string saveDirectryPath = kDirectoryPath;
+	// ディレクトリがなければスキップする
+	if (!std::filesystem::exists(saveDirectryPath)) {
+		return;
+	}
+	std::filesystem::directory_iterator dir_it(saveDirectryPath);
+	for (const std::filesystem::directory_entry& entry : dir_it) {
+		// ファイルパスを取得
+		const std::filesystem::path& filePath = entry.path();
+
+		// ファイル拡張子を取得
+		std::string extension = filePath.extension().string();
+		// .jsonファイル以外はスキップ
+		if (extension.compare(".json") != 0) {
+			continue;
+		}
+
+		StageLoad(filePath.stem().string());
+
+	}
 
 }
 
@@ -385,35 +420,7 @@ void MapSystem::Restart()
 
 }
 
-void MapSystem::StagesLoad()
-{
-
-	StageDatasDelete();
-
-	std::string saveDirectryPath = kDirectoryPath;
-	// ディレクトリがなければスキップする
-	if (!std::filesystem::exists(saveDirectryPath)) {
-		return;
-	}
-	std::filesystem::directory_iterator dir_it(saveDirectryPath);
-	for (const std::filesystem::directory_entry& entry : dir_it) {
-		// ファイルパスを取得
-		const std::filesystem::path& filePath = entry.path();
-
-		// ファイル拡張子を取得
-		std::string extension = filePath.extension().string();
-		// .jsonファイル以外はスキップ
-		if (extension.compare(".json") != 0) {
-			continue;
-		}
-
-		StageLoad(filePath.stem().string(), static_cast<size_t>(MapSystem::kMaximumNumberOfStages_));
-
-	}
-
-}
-
-void MapSystem::StageLoad(const std::string& groupName , size_t num)
+void MapSystem::StageLoad(const std::string& groupName)
 {
 
 	// 読み込むJSONファイルのフルパスを合成する
@@ -433,16 +440,24 @@ void MapSystem::StageLoad(const std::string& groupName , size_t num)
 	// ファイルを閉じる
 	ifs.close();
 
+	// マップ数
+	kMaximumNumberOfStages_ = 0;
+
 	// ファイル読み込み
-	for (size_t s = 0; s < num; s++) {
+	while (1) {
 
 		// グループを検索
-		std::string name = groupName + std::to_string(s);
+		std::string name = groupName + std::to_string(kMaximumNumberOfStages_);
 
 		json::iterator itGroup = root.find(name);
 
 		// 未登録チェック
-		assert(itGroup != root.end());
+		if (itGroup == root.end()) {
+			break;
+		}
+		else {
+			kMaximumNumberOfStages_++;
+		}
 
 		// 各アイテムについて
 		for (json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem) {

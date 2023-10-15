@@ -29,6 +29,8 @@
 #include "Application/GameObject/Start/Start.h"
 #include "Application/GameObject/Goal/Goal.h"
 
+
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -59,6 +61,12 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw() override;
+
+	/// <summary>
+	/// 設定
+	/// </summary>
+	/// <param name="preScene"></param>
+	void Setting(Scene preScene) override;
 
 public: // メンバ関数
 

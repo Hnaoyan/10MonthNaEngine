@@ -32,7 +32,7 @@ void GameScene::Initialize() {
 
 	// マップ
 	mapSystem_ = make_unique<MapSystem>();
-	mapSystem_->Initialize(0);
+	mapSystem_->Initialize(stageNum);
 
 	// プレイヤー
 	playerModel_.reset(Model::CreateFromObj("player", true));
@@ -200,6 +200,19 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::Setting(Scene preScene)
+{
+
+	if (preScene == Scene::EDITOR) {
+		mapSystem_->StagesLoad();
+	}
+
+	mapSystem_->Setting(stageNum);
+
+	Reset();
+
 }
 
 void GameScene::CameraUpdate()

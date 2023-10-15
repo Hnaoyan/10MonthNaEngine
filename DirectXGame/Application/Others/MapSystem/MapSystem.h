@@ -48,7 +48,7 @@ public: // 静的メンバ定数
 	static const Vector2 kSquareSize_;
 
 	// ステージ数
-	static const uint32_t kMaximumNumberOfStages_;
+	static uint32_t kMaximumNumberOfStages_;
 
 public: // メンバ関数
 
@@ -71,6 +71,11 @@ public: // メンバ関数
 	/// 設定
 	/// </summary>
 	void Setting(int stageNum);
+
+	/// <summary>
+	/// マップ読み込み
+	/// </summary>
+	void StagesLoad();
 
 private: // メンバ関数
 
@@ -120,12 +125,7 @@ private: // メンバ関数
 	/// <summary>
 	/// マップ読み込み
 	/// </summary>
-	void StagesLoad();
-
-	/// <summary>
-	/// マップ読み込み
-	/// </summary>
-	void StageLoad(const std::string& groupName, size_t num);
+	void StageLoad(const std::string& groupName);
 
 	/// <summary>
 	/// ステージデータ削除

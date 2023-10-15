@@ -23,6 +23,10 @@ public: // 仮想関数
 	/// デストラクタ
 	/// </summary>
 	virtual ~BaseScene() = default;
+	/// <summary>
+	/// 設定
+	/// </summary>
+	virtual void Setting(Scene preScene) { preScene ;};
 
 public: // 取得・設定
 	/// <summary>
@@ -31,9 +35,18 @@ public: // 取得・設定
 	/// <returns></returns>
 	int GetSceneNum() { return sceneNum; }
 
+	/// <summary>
+	/// シーン番号取得
+	/// </summary>
+	/// <returns></returns>
+	void SetSceneNum(int num) { sceneNum = num; }
+
 protected:
 	/// <summary>
 	/// シーン番号
 	/// </summary>
 	static int sceneNum;
+	
+	static int stageNum;
+
 };

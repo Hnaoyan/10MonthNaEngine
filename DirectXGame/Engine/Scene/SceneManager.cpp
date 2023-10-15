@@ -3,23 +3,42 @@
 SceneManager::SceneManager() 
 { 
 	sceneArray_[TITLE] = std::make_unique<TitleScene>();
+	sceneArray_[TITLE]->Initialize();
 	sceneArray_[GAMESCENE] = std::make_unique<GameScene>();
-	sceneArray_[CLEAR] = std::make_unique<GameScene>();
+	sceneArray_[GAMESCENE]->Initialize();
+	sceneArray_[CLEAR] = std::make_unique<TitleScene>();
+	sceneArray_[CLEAR]->Initialize();
 	sceneArray_[EDITOR] = std::make_unique<EditorScene>();
+	sceneArray_[EDITOR]->Initialize();
 
 	sceneNum_ = GAMESCENE;
-	sceneArray_[sceneNum_]->Initialize();
+	//sceneArray_[sceneNum_]->Initialize();
 }
 
 SceneManager::~SceneManager() {}
 
 void SceneManager::Update() 
 { 
+
+#ifdef _DEBUG
+
+	if (Input::GetInstance()->TriggerKey(DIK_1)) {
+		if (sceneNum_ == GAMESCENE) {
+			sceneArray_[sceneNum_]->SetSceneNum(EDITOR);
+		}
+		else if (sceneNum_ == EDITOR) {
+			sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
+		}
+	}
+
+#endif // DEBUG
+
 	prevSceneNum_ = this->sceneNum_;
 	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	if (prevSceneNum_ != sceneNum_) {
-		sceneArray_[sceneNum_]->Initialize();
+		//sceneArray_[sceneNum_]->Initialize();
+		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
 	}
 
 	sceneArray_[sceneNum_]->Update();

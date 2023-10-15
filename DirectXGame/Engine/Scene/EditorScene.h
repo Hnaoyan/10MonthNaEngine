@@ -54,7 +54,6 @@ private:	// メンバポインタ
 
 	bool isDebug_ = false;
 
-
 	// マップエディタ
 	std::unique_ptr<MapEdit> mapEdit_;
 	std::unique_ptr<Model> enemyModel_;

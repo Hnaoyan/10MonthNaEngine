@@ -40,6 +40,8 @@ void EditorScene::Update()
 
 	mapEdit_->Update(viewProjection_);
 
+	stageNum = static_cast<int>(mapEdit_->GetStageNum());
+
 }
 
 void EditorScene::Draw()
