@@ -137,10 +137,10 @@ void ParticleManager::ParticleProcess()
 
 			break;
 		case PatternNum::kExplosion:
-			//ExplosionUpdate();
-			for (int i = 0; i < 10; i++) {
-				RandomRespown({ 70.0f,60.0f,-100.0f });
-			}
+			ExplosionUpdate();
+			//for (int i = 0; i < 10; i++) {
+			//	RandomRespown({ 70.0f,60.0f,-100.0f });
+			//}
 			break;
 		}
 		patternRequest_ = std::nullopt;

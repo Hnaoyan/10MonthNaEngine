@@ -23,5 +23,11 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(ViewProjection& viewProjection) override;
 
+	void SetIsWave(bool flag) { isWave_ = flag; }
+
+private:
+	float wave_t_;
+	bool isWave_ = false;
+
 };
 

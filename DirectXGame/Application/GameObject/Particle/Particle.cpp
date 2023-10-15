@@ -34,5 +34,6 @@ void Particle::Update()
 
 void Particle::Draw(ViewProjection& viewProjection) 
 {
+	//model_->Draw(worldTransform_, viewProjection);
 	model_->Draw(worldTransform_, viewProjection, texture_);
 }
