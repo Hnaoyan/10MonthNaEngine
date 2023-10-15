@@ -110,7 +110,8 @@ void GameScene::Update()
 	particleManager_->Update();
 
 	if (input_->TriggerKey(DIK_9)) {
-		particleManager_->RandomRespown(Vector3(0,0,0));
+		//particleManager_->RandomRespown(Vector3(0,0,0));
+		particleManager_->SetRequest(ParticleManager::PatternNum::kExplosion);
 	}
 	if (input_->TriggerKey(DIK_0)) {
 		particleManager_->SetRequest(ParticleManager::PatternNum::kMove);

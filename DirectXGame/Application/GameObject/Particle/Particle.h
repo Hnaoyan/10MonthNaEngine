@@ -29,6 +29,7 @@ public:
 	virtual void Draw(ViewProjection& viewProjection);
 
 public: // 設定・取得
+#pragma region 設定と取得
 	/// <summary>
 	/// フラグの取得
 	/// </summary>
@@ -42,12 +43,12 @@ public: // 設定・取得
 	/// 座標設定
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPosition(Vector3& pos) { worldTransform_.translation_ = pos; }
+	void SetPosition(const Vector3& pos) { worldTransform_.translation_ = pos; }
 	/// <summary>
 	/// 速さ設定
 	/// </summary>
 	/// <param name="velo"></param>
-	void SetVelocity(Vector3& velo) { velocity_ = velo; }
+	void SetVelocity(const Vector3& velo) { velocity_ = velo; }
 	/// <summary>
 	/// ビルボードの設定
 	/// </summary>
@@ -66,7 +67,12 @@ public: // 設定・取得
 	/// <param name="scale"></param>
 	void SetScale(const Vector3& scale) { worldTransform_.scale_ = scale; }
 
+	/// <summary>
+	/// 名前設定
+	/// </summary>
+	/// <param name="name"></param>
 	void SetName(std::string name) { name_ = name; }
+#pragma endregion
 
 protected:
 	// モデル

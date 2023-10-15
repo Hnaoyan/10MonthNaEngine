@@ -2,12 +2,12 @@
 
 SceneManager::SceneManager() 
 { 
-	//sceneArray_[TITLE] = std::make_unique<TitleScene>();
-	//sceneArray_[GAMESCENE] = std::make_unique<GameScene>();
+	sceneArray_[TITLE] = std::make_unique<TitleScene>();
+	sceneArray_[GAMESCENE] = std::make_unique<GameScene>();
 	////sceneArray_[CLEAR] = std::make_unique<GameScene>();
 
 	sceneNum_ = GAMESCENE;
-	LoadScene(sceneNum_);
+	//LoadScene(sceneNum_);
 	sceneArray_[sceneNum_]->Initialize();
 }
 
@@ -19,9 +19,9 @@ void SceneManager::Update()
 	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	if (prevSceneNum_ != sceneNum_) {
-		LoadScene(sceneNum_);
+		//LoadScene(sceneNum_);
 		sceneArray_[sceneNum_]->Initialize();
-		sceneArray_[prevSceneNum_].release();
+		//sceneArray_[prevSceneNum_].release();
 	}
 
 	sceneArray_[sceneNum_]->Update();

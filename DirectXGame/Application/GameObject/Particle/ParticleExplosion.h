@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "Particle.h"
 
-
-class ParticleWave : public Particle
+class ParticleExplosion : public Particle
 {
 public:
 	/// <summary>
@@ -22,6 +21,7 @@ public:
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw(ViewProjection& viewProjection) override;
+
 
 };
 
