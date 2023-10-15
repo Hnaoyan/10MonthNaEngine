@@ -92,12 +92,25 @@ void MapEdit::Update(const ViewProjection& viewProjection)
 	ImGui::Begin("Editor");
 	ImGui::Text("Stage%d", stageNum_);
 	if (ImGui::Button("nextStage")) {
+		// グループ名の設定
+		std::string groupName = "StageData" + std::to_string(stageNum_);
+		SaveData(groupName);
 		stageNum_++;
 		Setting(stageNum_);
 	}
 	if (ImGui::Button("preStage") && stageNum_ > 0) {
+		// グループ名の設定
+		std::string groupName = "StageData" + std::to_string(stageNum_);
+		SaveData(groupName);
 		stageNum_--;
 		Setting(stageNum_);
+	}
+	if (ImGui::Button("Save")) {
+		// グループ名の設定
+		std::string groupName = "StageData" + std::to_string(stageNum_);
+		SaveData(groupName);
+		groupName = "StageData";
+		SaveFile(groupName);
 	}
 	ImGui::End();
 
@@ -318,9 +331,7 @@ Vector2 MapEdit::BlockFind(const ViewProjection& viewProjection)
 		if (mousePosVec.x > positionM.x && mousePosVec.x < positionP.x &&
 			mousePosVec.y > positionM.y && mousePosVec.y < positionP.y) {
 			
-			//	mousePosVec.y > positionM.y && mousePosVec.y < positionP.y
-
- 			Vector2 result = { worldTransform.translation_.x / kSquareSize_.x , worldTransform.translation_.y / kSquareSize_.y };
+			Vector2 result = { worldTransform.translation_.x / kSquareSize_.x , worldTransform.translation_.y / kSquareSize_.y };
 			return result;
 		}
 
@@ -402,8 +413,10 @@ void MapEdit::StageDatasDelete()
 
 }
 
-void MapEdit::AddStage(std::string groupName)
+void MapEdit::AddStage(const std::string& groupName)
 {
+
+	stageDatas_[groupName];
 
 	// 初期情報
 	int** map;
@@ -622,5 +635,112 @@ std::list<Vector2> MapEdit::GetPositionsValue(const std::string& groupName, cons
 	assert(group.find(key) != group.end());
 	// 指定グループから指定のキーの値を取得
 	return std::get<2>(group[key]);
+
+}
+
+void MapEdit::SaveData(const std::string& groupName)
+{
+
+	for (std::map<std::string, Group>::iterator itGroup = stageDatas_.begin(); itGroup != stageDatas_.end();
+		++itGroup) {
+
+		std::string string = itGroup->first;
+		if (string == groupName) {
+
+			// 指定グループが存在するか
+			assert(stageDatas_.find(string) != stageDatas_.end());
+			//  グループの参照を取得
+			Group& group = stageDatas_[string];
+
+			group["enemyPosition_"] = stageData_.enemyPosition_;
+			group["cagePosition_"] = stageData_.cagePosition_;
+			group["startPosition_"] = stageData_.startPosition_;
+			group["playerPosition_"] = stageData_.playerPosition_;
+			group["goalPosition_"] = stageData_.goalPosition_;
+		}
+
+	}
+
+
+}
+
+void MapEdit::SaveFile(const std::string& groupName)
+{
+
+	json root;
+	root = json::object();
+
+	for (size_t i = 0; i < kMaximumNumberOfStages_; i++) {
+
+
+		std::string name = groupName + std::to_string(i);
+		// グループを検索
+		std::map<std::string, Group>::iterator itGroup = stageDatas_.find(name);
+
+		// 未登録チェック
+		assert(itGroup != stageDatas_.end());
+
+		// jsonオブジェクト登録
+		root[name] = json::object();
+
+		// 各項目について
+		for (std::map<std::string, Item>::iterator itItem = itGroup->second.begin();
+			itItem != itGroup->second.end(); ++itItem) {
+
+			// 項目名を取得
+			const std::string& itemName = itItem->first;
+			// 項目の参照を取得
+			Item& item = itItem->second;
+
+			// int32_t型の値を保持していれば
+			if (std::holds_alternative<int**>(item)) {
+				// int32_t型の値を登録
+				int** values = std::get<int**>(item);
+				for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
+					for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
+						root[name][itemName] += values[y][x];
+					}
+				}
+
+			}
+			else if (std::holds_alternative<Vector2>(item)) {
+				Vector2 value = std::get<Vector2>(item);
+				root[name][itemName] = json::array({ value.x, value.y });
+			}
+			else if (std::holds_alternative<std::list<Vector2>>(item)) {
+				// float型のjson配列登録
+				std::list<Vector2> values = std::get<std::list<Vector2>>(item);
+				for (Vector2 value : values) {
+					root[name][itemName] += value.x;
+					root[name][itemName] += value.y;
+				}
+			}
+		}
+
+	}
+
+	// ディレクトリがなければ作成する
+	std::filesystem::path dir(kDirectoryPath);
+	if (!std::filesystem::exists(kDirectoryPath)) {
+		std::filesystem::create_directories(kDirectoryPath);
+	}
+	// 書き込むJSONファイルのフルパスを合成する
+	std::string filePath = kDirectoryPath + groupName + ".json";
+	// 書き込み用ファイルストリーム
+	std::ofstream ofs;
+	// ファイルを書き込み用に開く
+	ofs.open(filePath);
+
+	// ファイルオープン失敗？
+	if (ofs.fail()) {
+		std::string message = "Failed open data file for write.";
+		MessageBoxA(nullptr, message.c_str(), "GlobalVariables", 0);
+		assert(0);
+		return;
+	}
+	// ファイルにjson文字列を書き込む(インデント幅4)
+	ofs << std::setw(4) << root << std::endl;
+	// ファイルを閉じる
+	ofs.close();
 
 }

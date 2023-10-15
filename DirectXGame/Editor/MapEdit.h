@@ -74,7 +74,7 @@ private: // メンバ関数
 
 	void StageDatasDelete();
 
-	void AddStage(std::string groupName);
+	void AddStage(const std::string& groupName);
 
 
 private: // メンバ変数
@@ -142,10 +142,21 @@ public: // メンバ関数(読み込みなど)
 	Vector2 GetPositionValue(const std::string& groupName, const std::string& key);
 	std::list<Vector2> GetPositionsValue(const std::string& groupName, const std::string& key);
 
+	/// <summary>
+	/// データ保存
+	/// </summary>
+	void SaveData(const std::string& groupName);
+	/// <summary>
+	/// ファイルに書き出し
+	/// </summary>
+	/// <param name="groupName"></param>
+	void SaveFile(const std::string& groupName);
+
+
 private: //メンバ変数(データ)
 
 	// ステージデータ(ステージ番号、データ)
-	using Item = std::variant<int**, Vector2, std::list<Vector2>, float*>;
+	using Item = std::variant<int**, Vector2, std::list<Vector2>>;
 	using Group = std::map<std::string, Item>;
 	std::map<std::string, Group> stageDatas_;
 
