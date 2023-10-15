@@ -635,9 +635,12 @@ std::list<Vector2> MapEdit::GetPositionsValue(const std::string& groupName, cons
 	//  グループの参照を取得
 	Group& group = stageDatas_[groupName];
 	// 指定グループに指定キーが存在するか
-	assert(group.find(key) != group.end());
-	// 指定グループから指定のキーの値を取得
-	return std::get<2>(group[key]);
+	if (group.find(key) != group.end()) {
+		// 指定グループから指定のキーの値を取得
+		return std::get<2>(group[key]);
+	}
+	std::list<Vector2> result;
+	return result;
 
 }
 
