@@ -10,6 +10,11 @@ EnemiesManager::~EnemiesManager()
 			delete enemy;
 		}
 	}
+	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		if (enemyMovePlan) {
+			delete enemyMovePlan;
+		}
+	}
 	for (Cage* cage : cages_) {
 		if (cage) {
 			delete cage;
@@ -18,13 +23,15 @@ EnemiesManager::~EnemiesManager()
 
 }
 
-void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t enemyCount, size_t cageCount)
+void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, size_t enemyCount, size_t cageCount)
 {
 
 	// マップシステム
 	mapSystem_ = mapSystem;
 
 	enemyModel_ = enemyModel;
+
+	enemyMovePlanModel_ = enemyMovePlanModel;
 
 	cageModel_ = cageModel;
 
@@ -40,6 +47,11 @@ void EnemiesManager::Update()
 		enemy->Update(mapSystem_->GetEnemyPosition().at(i));
 		i++;
 	}
+	i = 0;
+	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		enemyMovePlan->Update(mapSystem_->GetNextEnemyPosition().at(i));
+		i++;
+	}
 	for (Cage* cage : cages_) {
 		cage->Update();
 	}
@@ -51,6 +63,14 @@ void EnemiesManager::Draw(const ViewProjection& viewProjection)
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw(viewProjection);
+	}
+	size_t i = 0;
+	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		if ( !(enemyMovePlan->GetPosition().x == enemies_.at(i)->GetPosition().x &&
+			enemyMovePlan->GetPosition().y == enemies_.at(i)->GetPosition().y) ) {
+			enemyMovePlan->Draw(viewProjection);
+		}
+		i++;
 	}
 	for (Cage* cage : cages_) {
 		cage->Draw(viewProjection);
@@ -68,6 +88,12 @@ void EnemiesManager::Setting(size_t enemyCount, size_t cageCount)
 		}
 	}
 	enemies_.clear();
+	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		if (enemyMovePlan) {
+			delete enemyMovePlan;
+		}
+	}
+	enemyMovePlans_.clear();
 	for (Cage* cage : cages_) {
 		if (cage) {
 			delete cage;
@@ -89,6 +115,11 @@ void EnemiesManager::Setting(size_t enemyCount, size_t cageCount)
 		i++;
 	}
 	i = 0;
+	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		enemyMovePlan->Update(mapSystem_->GetNextEnemyPosition().at(i));
+		i++;
+	}
+	i = 0;
 	for (Cage* cage : cages_) {
 		cage->Setting(mapSystem_->GetInitialCagePosition().at(i));
 		i++;
@@ -102,6 +133,10 @@ void EnemiesManager::AddEnemy(size_t num)
 	Enemy* enemy = new Enemy();
 	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num));
 	enemies_.push_back(enemy);
+
+	EnemyMovePlan* enemyMovePlan = new EnemyMovePlan();
+	enemyMovePlan->Initialize(enemyMovePlanModel_, mapSystem_->GetInitialEnemyPosition().at(num));
+	enemyMovePlans_.push_back(enemyMovePlan);
 
 }
 

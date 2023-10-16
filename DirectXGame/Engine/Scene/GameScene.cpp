@@ -53,9 +53,10 @@ void GameScene::Initialize() {
 
 	// エネミー
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
+	enemyMovePlanModel_.reset(Model::CreateFromObj("enemyMovePlan", true));
 	cageModel_.reset(Model::CreateFromObj("cage", true));
 	enemiesManager_ = make_unique<EnemiesManager>();
-	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
+	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Application/GameObject/Enemy/Enemy.h"
+#include "Application/GameObject/EnemyMovePlan/EnemyMovePlan.h"
 #include "Application/GameObject/Cage/Cage.h"
 
 #include <vector>
@@ -26,7 +27,7 @@ public: // メンバ関数
 	/// <param name="mapSystem">マップシステム</param>
 	/// <param name="enemyModel">エネミーモデル</param>
 	/// <param name="cageModel">ケージモデル</param>
-	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* cageModel, size_t enemyCount, size_t cageCount);
+	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, size_t enemyCount, size_t cageCount);
 
 	/// <summary>
 	/// 更新
@@ -62,6 +63,11 @@ private: // メンバ変数
 	std::vector<Enemy*> enemies_;
 	// モデル
 	Model* enemyModel_ = nullptr;
+
+	// エネミーの移動計画
+	std::vector<EnemyMovePlan*> enemyMovePlans_;
+	// モデル
+	Model* enemyMovePlanModel_;
 
 	// 檻
 	std::vector<Cage*> cages_;

@@ -125,6 +125,7 @@ private:	// メンバポインタ
 	// エネミー
 	std::unique_ptr<EnemiesManager> enemiesManager_;
 	std::unique_ptr<Model> enemyModel_;
+	std::unique_ptr<Model> enemyMovePlanModel_;
 	std::unique_ptr<Model> cageModel_;
 	
 	// スタート
