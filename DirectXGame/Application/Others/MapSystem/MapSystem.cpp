@@ -123,9 +123,11 @@ void MapSystem::Setting(int stageNum)
 	// エネミーのカウント
 	enemyCount_ = 0;
 	enemyPosition_.clear();
+	nextEnemyPosition_.clear();
 	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
 		Vector2 enemyPosition = initialStageData_.enemyPosition_.at(i);
 		enemyPosition_.push_back(enemyPosition);
+		nextEnemyPosition_.push_back(enemyPosition);
 		enemyCount_++;
 	}
 
@@ -222,7 +224,7 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	// 成功
 	if (haveMoved) {
 		// エネミーの移動
-		EnemyMove(playerPosX, playerPosY);
+		EnemyMove();
 	}
 	// 失敗
 	else {
@@ -286,50 +288,56 @@ bool MapSystem::PlayerMove(int32_t x, int32_t y)
 
 }
 
-void MapSystem::EnemyMove(int32_t x, int32_t y)
+void MapSystem::EnemyMove()
 {
 
-	std::vector<Vector2> prePos;
+	// 移動
 	for (size_t i = 0; i < enemyCount_; i++) {
-		prePos.push_back(enemyPosition_.at(i));
+		enemyPosition_.at(i) = nextEnemyPosition_.at(i);
+		// 檻に入る
+		int k = 0;
+		for (Vector2 cagePosition : initialStageData_.cagePosition_) {
+			if (enemyPosition_.at(i).x == cagePosition.x &&
+				enemyPosition_.at(i).y == cagePosition.y &&
+				!usedCage_.at(k)) {
+				capturedEnemy_.at(i) = true;
+				usedCage_.at(k) = true;
+				break;
+			}
+			k++;
+		}
 	}
+
+	EnemyMovePlan();
+
+}
+
+void MapSystem::EnemyMovePlan()
+{
 
 	// エネミーが起きている時
 	for (size_t i = 0; i < enemyCount_; i++) {
 		if (enemyAwake_.at(i) && !capturedEnemy_.at(i)) {
 			// 行動する
-			int distanceX = static_cast<int>(std::fabsf(x - enemyPosition_.at(i).x));
-			int distanceY = static_cast<int>(std::fabsf(y - enemyPosition_.at(i).y));
+			int distanceX = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
+			int distanceY = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
 
 			// 出来ればyに動く
 			if (distanceX < distanceY) {
-				if (y < enemyPosition_.at(i).y) {
-					enemyPosition_.at(i).y -= 1.0f;
+				if (playerPosition_.y < enemyPosition_.at(i).y) {
+					nextEnemyPosition_.at(i).y -= 1.0f;
 				}
 				else {
-					enemyPosition_.at(i).y += 1.0f;
+					nextEnemyPosition_.at(i).y += 1.0f;
 				}
 			}
 			else {
-				if (x < enemyPosition_.at(i).x) {
-					enemyPosition_.at(i).x -= 1.0f;
+				if (playerPosition_.x < enemyPosition_.at(i).x) {
+					nextEnemyPosition_.at(i).x -= 1.0f;
 				}
 				else {
-					enemyPosition_.at(i).x += 1.0f;
+					nextEnemyPosition_.at(i).x += 1.0f;
 				}
-			}
-
-			// 檻に入る
-			int k = 0;
-			for (Vector2 cagePosition : initialStageData_.cagePosition_) {
-				if (enemyPosition_.at(i).x == cagePosition.x &&
-					enemyPosition_.at(i).y == cagePosition.y &&
-					!usedCage_.at(k)) {
-					capturedEnemy_.at(i) = true;
-					usedCage_.at(k) = true;
-					break;
-				}
-				k++;
 			}
 
 		}
@@ -339,17 +347,17 @@ void MapSystem::EnemyMove(int32_t x, int32_t y)
 	for (size_t i = 0; i < enemyCount_ - 1; i++) {
 		for (size_t j = i + 1; j < enemyCount_; j++) {
 			// 重なっている
-			if (enemyPosition_.at(i).x == enemyPosition_.at(j).x &&
-				enemyPosition_.at(i).y == enemyPosition_.at(j).y ) {
+			if (nextEnemyPosition_.at(i).x == nextEnemyPosition_.at(j).x &&
+				nextEnemyPosition_.at(i).y == nextEnemyPosition_.at(j).y) {
 				if (capturedEnemy_.at(j) || !enemyAwake_.at(j)) {
 					// iを動かす
-					enemyPosition_.at(i) = prePos.at(i);
+					nextEnemyPosition_.at(i) = enemyPosition_.at(i);
 				}
 				else {
 					// jを動かす
-					enemyPosition_.at(j) = prePos.at(j);
+					nextEnemyPosition_.at(j) = enemyPosition_.at(j);
 				}
-			}	
+			}
 		}
 	}
 
@@ -370,6 +378,8 @@ void MapSystem::MakeSound()
 
 		}
 	}
+
+	EnemyMovePlan();
 
 }
 
@@ -430,8 +440,10 @@ void MapSystem::Restart()
 
 	// エネミーの位置
 	enemyPosition_.clear();
+	nextEnemyPosition_.clear();
 	for (size_t i = 0; i < initialStageData_.enemyPosition_.size(); i++) {
 		enemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
+		nextEnemyPosition_.push_back(initialStageData_.enemyPosition_.at(i));
 	}
 
 	// ゴールが開いたか
