@@ -100,7 +100,12 @@ private: // メンバ関数
 	/// <summary>
 	/// エネミーの移動
 	/// </summary>
-	void EnemyMove(int32_t x, int32_t y);
+	void EnemyMove();
+
+	/// <summary>
+	/// エネミーの移動計画
+	/// </summary>
+	void EnemyMovePlan();
 
 	/// <summary>
 	/// 音を鳴らす
@@ -212,6 +217,8 @@ private: //メンバ変数
 
 	// エネミーの位置
 	std::vector<Vector2> enemyPosition_;
+	// エネミーの次の位置
+	std::vector<Vector2> nextEnemyPosition_;
 
 	// エネミーのカウント
 	size_t enemyCount_;
