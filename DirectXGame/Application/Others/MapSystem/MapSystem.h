@@ -186,18 +186,29 @@ public: // アクセッサ
 	// ゴール位置
 	Vector2 GetInitialGoalPosition() { return initialStageData_.goalPosition_; }
 
+	// エネミーのカウント
 	size_t GetEnemyCount() { return enemyCount_; }
+	
+	// 檻のカウント
 	size_t GetCageCount() { return cageCount_; }
 
+	// エネミーズマネージャー
 	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
 
+	// ゲームクリアフラグ
 	bool GetIsGameClear() { return isGameClaer_; }
 
+	// ゲームオーバーフラグ
 	bool GetIsGameOver() { return isGameOver_; }
 
+	// リスタートフラグ
 	bool GetIsRestart() { return isRestart_; }
 
+	// リスタートフラグ
 	void SetIsRestart(bool isRestart) { isRestart_ = isRestart; }
+
+	// エネミーの次の位置
+	std::vector<Vector2> GetNextEnemyPosition() { return nextEnemyPosition_; }
 
 public: // メンバ定数
 

@@ -6,9 +6,9 @@
 #include "../Effect/EffectManager.h"
 
 /// <summary>
-/// エネミー
+/// エネミーの移動計画
 /// </summary>
-class Enemy
+class EnemyMovePlan
 {
 
 public: // メンバ関数
