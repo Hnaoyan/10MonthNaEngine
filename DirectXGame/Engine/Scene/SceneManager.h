@@ -7,7 +7,7 @@
 
 class SceneManager {
 private:
-	std::unique_ptr<BaseScene> sceneArray_[4];
+	std::unique_ptr<BaseScene> sceneArray_[5];
 
 	int sceneNum_;
 	int prevSceneNum_;

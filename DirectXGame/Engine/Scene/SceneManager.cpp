@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "StageSelectScene.h"
 
 SceneManager::SceneManager() 
 { 
@@ -10,8 +11,10 @@ SceneManager::SceneManager()
 	sceneArray_[CLEAR]->Initialize();
 	sceneArray_[EDITOR] = std::make_unique<EditorScene>();
 	sceneArray_[EDITOR]->Initialize();
+	sceneArray_[STAGESELECT] = std::make_unique<StageSelectScene>();
+	sceneArray_[STAGESELECT]->Initialize();
 
-	sceneNum_ = GAMESCENE;
+	sceneNum_ = STAGESELECT;
 	//sceneArray_[sceneNum_]->Initialize();
 }
 
