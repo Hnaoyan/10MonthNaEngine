@@ -87,3 +87,148 @@ Vector3 MathCalc::Slerp(const Vector3& v1, const Vector3& v2, float t) {
 
 	return result;
 }
+
+#pragma region イージング計算
+Vector3 MathCalc::Ease(float t, Vector3& start, Vector3& end)
+{
+	return Vector3((1.0f - t) * start.x + t * end.x,
+		(1.0f - t) * start.y + t * end.y,
+		(1.0f - t) * start.z + t * end.z);
+}
+
+Vector2 MathCalc::Ease(float t, Vector2& start, Vector2& end)
+{
+	return Vector2((1.0f - t) * start.x + t * end.x,
+		(1.0f - t) * start.y + t * end.y);
+}
+
+float MathCalc::Ease(float t, float start, float end)
+{
+	return ((1.0f - t) * start + t * end);
+}
+#pragma endregion
+
+#pragma region float Easing
+
+float MathCalc::EaseInQuadF(float t, float start, float end) {
+	float easeT = t * t;
+	return (1.0f - easeT) * start + easeT * end;
+}
+
+float MathCalc::EaseOutQuadF(float t, float start, float end) {
+	float easeT = 1.0f - powf(1.0f - t, 2.0f);
+	return (1.0f - easeT) * start + easeT * end;
+}
+
+float MathCalc::EaseInOutQuadF(float t, float start, float end) {
+	float easeT = t > 0.5f ? 2.0f * t * t
+		: 1.0f - powf(-2.0f * t + 2.0f, 2.0f) / 2.0f;
+
+	return (1.0f - easeT) * start + easeT * end;
+}
+
+float MathCalc::EaseInCubicF(float t, float start, float end) {
+	float easeT = t * t * t;
+	return (1.0f - easeT) * start + easeT * end;
+}
+
+float MathCalc::EaseOutCubicF(float t, float start, float end) {
+	float easeT = 1.0f - powf(1.0f - t, 3.0f);
+	return (1.0f - easeT) * start + easeT * end;
+}
+
+float MathCalc::EaseInOutCubicF(float t, float start, float end) {
+	float easeT = t > 0.5f ? 4.0f * t * t * t
+		: 1.0f - powf(-2.0f * t + 2, 3.0f) / 2.0f;
+
+	return (1.0f - easeT) * start + easeT * end;
+}
+#pragma endregion
+
+#pragma region Vector2 Easing
+Vector2 MathCalc::EaseInQuadF(float t, Vector2 start, Vector2 end) {
+	float easeT = t * t;
+	return Vector2(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y);
+}
+Vector2 MathCalc::EaseOutQuadF(float t, Vector2 start, Vector2 end) {
+	float easeT = 1.0f - powf(1.0f - t, 2.0f);
+	return Vector2(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y);
+}
+Vector2 MathCalc::EaseInOutQuadF(float t, Vector2 start, Vector2 end) {
+	float easeT = t > 0.5f ? 2.0f * t * t : 1.0f - powf(-2.0f * t + 2.0f, 2.0f) / 2.0f;
+
+	return Vector2(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y);
+}
+
+Vector2 MathCalc::EaseInCubicF(float t, Vector2 start, Vector2 end) {
+	float easeT = t * t * t;
+	return Vector2(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y);
+}
+Vector2 MathCalc::EaseOutCubicF(float t, Vector2 start, Vector2 end) {
+	float easeT = 1.0f - powf(1.0f - t, 3.0f);
+	return Vector2(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y);
+}
+Vector2 MathCalc::EaseInOutCubicF(float t, Vector2 start, Vector2 end) {
+	float easeT = t > 0.5f ? 4.0f * t * t * t : 1.0f - powf(-2.0f * t + 2, 3.0f) / 2.0f;
+
+	return Vector2(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y);
+}
+
+
+#pragma endregion
+
+#pragma region Vector3 Easing
+Vector3 MathCalc::EaseInQuadF(float t, Vector3 start, Vector3 end) {
+	float easeT = t * t;
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
+Vector3 MathCalc::EaseOutQuadF(float t, Vector3 start, Vector3 end) {
+	float easeT = 1.0f - powf(1.0f - t, 2.0f);
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
+Vector3 MathCalc::EaseInOutQuadF(float t, Vector3 start, Vector3 end) {
+	float easeT = t > 0.5f ? 2.0f * t * t : 1.0f - powf(-2.0f * t + 2.0f, 2.0f) / 2.0f;
+
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
+
+Vector3 MathCalc::EaseInCubicF(float t, Vector3 start, Vector3 end) {
+	float easeT = t * t * t;
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
+Vector3 MathCalc::EaseOutCubicF(float t, Vector3 start, Vector3 end) {
+	float easeT = 1.0f - powf(1.0f - t, 3.0f);
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
+Vector3 MathCalc::EaseInOutCubicF(float t, Vector3 start, Vector3 end) {
+	float easeT = t > 0.5f ? 4.0f * t * t * t : 1.0f - powf(-2.0f * t + 2, 3.0f) / 2.0f;
+	return Ease(easeT,start,end);
+}
+#pragma endregion
