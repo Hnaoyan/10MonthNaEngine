@@ -36,6 +36,8 @@ void BlockManager::Initialize(Model* model, std::vector<uint32_t> textureHandles
 		}
 	}
 
+	Update();
+
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
 	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();

@@ -312,11 +312,11 @@
     <ClCompile Include="DirectXGame\Application\GameObject\Start\Start.cpp">
       <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\GameObject\EnemyMovePlan\EnemyMovePlan.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="DirectXGame\Application\Others\AnimationManager\AnimationManager.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="DirectXGame\Application\GameObject\EnemyMovePlan\EnemyMovePlan.cpp">
+      <Filter>アプリケーションファイル\ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -524,11 +524,11 @@
     <ClInclude Include="DirectXGame\Application\GameObject\Start\Start.h">
       <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameObject\EnemyMovePlan\EnemyMovePlan.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXGame\Application\Others\AnimationManager\AnimationManager.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXGame\Application\GameObject\EnemyMovePlan\EnemyMovePlan.h">
+      <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
