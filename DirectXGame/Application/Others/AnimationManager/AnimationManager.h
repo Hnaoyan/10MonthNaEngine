@@ -47,6 +47,11 @@ public: // メンバ関数
 	/// <param name="function">関数</param>
 	void SetActionAnimation(std::function<void()> function);
 
+public: // アクセッサ
+
+	// 行動アニメーションしているか
+	bool GetIsActionAnimation() { return isActionAnimation_; }
+
 private: // メンバ変数
 
 	// 待機アニメーション関数リスト

@@ -7,7 +7,7 @@ void AnimationManager::Initialize()
 	actionAnimationTimer_ = 0;
 
 	// 行動アニメーションタイム
-	actionAnimationTime_ = 60;
+	actionAnimationTime_ = 20;
 
 	// 行動アニメーションしているか
 	isActionAnimation_ = false;
@@ -35,6 +35,7 @@ void AnimationManager::ActionUpdate()
 	actionAnimationTimer_++;
 	if (actionAnimationTimer_ == actionAnimationTime_) {
 		isActionAnimation_ = false;
+		actionAnimations_.clear();
 	}
 
 }

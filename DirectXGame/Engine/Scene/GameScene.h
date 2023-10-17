@@ -28,8 +28,7 @@
 #include "Application/GameObject/EnemiesManager/EnemiesManager.h"
 #include "Application/GameObject/Start/Start.h"
 #include "Application/GameObject/Goal/Goal.h"
-
-
+#include "Application/Others/AnimationManager/AnimationManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -157,6 +156,7 @@ private:	// メンバポインタ
 	std::unique_ptr<EffectManager> effectManager_;
 	std::unique_ptr<UIManager> uiManager_;
 	std::unique_ptr<ParticleManager> particleManager_;
+	std::unique_ptr<AnimationManager> animationManager_;
 
 	std::unique_ptr<Sprite> sprite_;
 	Vector2 size_;
