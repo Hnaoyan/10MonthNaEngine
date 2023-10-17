@@ -74,6 +74,7 @@ void GameScene::Initialize() {
 	animationManager_ = make_unique<AnimationManager>();
 	animationManager_->Initialize();
 	// 待機アニメーションを設定していく
+	SetWaitingAnimation();
 
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
@@ -128,18 +129,11 @@ void GameScene::Update()
 
 		//アニメーション
 		if (command_->GetAcceptingInput()) {
-			WaitingCommand();
+			WaitingAnimation();
 		}
 		else {
 			ActionAnimation();
 		}
-
-		// マップシステムクラスからの更新情報取得
-		player_->Update(mapSystem_->GetPlayerPosition());
-		blockManager_->Update();
-		enemiesManager_->Update();
-		start_->Update();
-		goal_->Update();
 
 	}
 
@@ -281,6 +275,12 @@ void GameScene::WaitingCommand()
 		if (mapSystem_->GetIsRestart()) {
 			Reset();
 		}
+		// マップシステムクラスからの更新情報取得
+		player_->Update(mapSystem_->GetPlayerPosition());
+		blockManager_->Update();
+		enemiesManager_->Update();
+		start_->Update();
+		goal_->Update();
 		// アニメーションマネージャーアクションスタート
 		animationManager_->ActionStart();
 	}
@@ -323,6 +323,15 @@ void GameScene::Reset()
 	//アニメーション関数
 	animationManager_->Reset();
 	// 待機アニメーションを設定していく
+	SetWaitingAnimation();
+
+}
+
+void GameScene::SetWaitingAnimation()
+{
+	// プレイヤー
+	player_->WaitingAnimationInitialize();
+	animationManager_->SetWaitingAnimation(std::bind(&Player::WaitingAnimationUpdate, player_.get()));
 
 }
 

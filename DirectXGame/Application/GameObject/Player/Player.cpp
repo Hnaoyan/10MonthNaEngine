@@ -65,6 +65,26 @@ void Player::Setting(const Vector2& position)
 
 }
 
+void Player::WaitingAnimationInitialize()
+{
+}
+
+void Player::WaitingAnimationUpdate()
+{
+
+	worldTransform_.rotation_.x += 0.01f;
+	worldTransform_.UpdateMatrix();
+
+}
+
+void Player::ActionAnimationInitialize()
+{
+}
+
+void Player::ActionAnimationUpdate()
+{
+}
+
 void Player::ApplyGlobalVariables()
 {
 
