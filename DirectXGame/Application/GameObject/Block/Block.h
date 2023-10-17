@@ -36,6 +36,11 @@ public: // メンバ関数
 	/// </summary>
 	void Fall(uint32_t textureHandle);
 
+	/// <summary>
+	/// ブロック落下アニメーション
+	/// </summary>
+	void FallAnimation(float startPoint, float endPoint);
+
 public: // アクセッサ
 
 	/// <summary>
@@ -45,10 +50,22 @@ public: // アクセッサ
 	void SetPosition(Vector2 position) { position_ = position; }
 
 	/// <summary>
-	/// セットポジション
+	/// ゲットポジション
 	/// </summary>
 	/// <param name="position"></param>
 	Vector2 GetPosition() { return position_; }
+
+	/// <summary>
+	/// セットフラグ
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetIsFallNow(bool flag) { isFallNow_ = flag; }
+
+	/// <summary>
+	/// ゲットフラグ
+	/// </summary>
+	/// <returns></returns>
+	bool GetFallNow() { return isFallNow_; }
 
 	/// <summary>
 	/// ゲットマップ番号
@@ -72,6 +89,12 @@ private: // メンバ変数
 
 	// マップ番号
 	MapSystem::MapNumber mapNum_;
+
+	// 落下中か
+	bool isFallNow_ = false;
+
+	// 落下中補完レート
+	float fall_t_ = 0;
 
 };
 

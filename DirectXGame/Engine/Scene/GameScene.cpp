@@ -294,6 +294,8 @@ void GameScene::WaitingCommand()
 		goal_->Update();
 		// アニメーションマネージャーアクションスタート
 		animationManager_->ActionStart();
+		// ブロックマネージャー
+		animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
 	}
 
 }
@@ -343,6 +345,11 @@ void GameScene::SetWaitingAnimation()
 	// プレイヤー
 	player_->WaitingAnimationInitialize();
 	animationManager_->SetWaitingAnimation(std::bind(&Player::WaitingAnimationUpdate, player_.get()));
+
+}
+
+void GameScene::SetActionAnimation()
+{
 
 }
 

@@ -35,6 +35,11 @@ public: // メンバ関数
 	/// </summary>
 	void Setting();
 
+	/// <summary>
+	/// アクション中関数
+	/// </summary>
+	void ActionAnimationUpdate();
+
 private: // メンバ関数
 
 	/// <summary>
@@ -58,5 +63,8 @@ private: // メンバ変数
 	// マップ
 	int** map_;
 
+	// イージング座標
+	const float easeStartPoint_ = 0;
+	const float easeEndPoint_ = 100.0f;
 };
 

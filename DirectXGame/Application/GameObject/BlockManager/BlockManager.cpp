@@ -59,6 +59,7 @@ void BlockManager::Update()
 
 #ifdef _DEBUG
 	ApplyGlobalVariables();
+
 #endif // _DEBUG
 
 	for (Block* block : blocks_) {
@@ -92,6 +93,15 @@ void BlockManager::Setting()
 		block->Setting(textureHandles_[num], static_cast<MapSystem::MapNumber>(num));
 	}
 
+}
+
+void BlockManager::ActionAnimationUpdate()
+{
+	for (Block* block : blocks_) {
+		if (block->GetFallNow()) {
+			block->FallAnimation(easeStartPoint_, easeEndPoint_);
+		}
+	}
 }
 
 void BlockManager::ApplyGlobalVariables()

@@ -99,6 +99,11 @@ private: // メンバ関数 ゲームシステム
 	/// </summary>
 	void SetWaitingAnimation();
 
+	/// <summary>
+	/// 行動アニメーションセット
+	/// </summary>
+	void SetActionAnimation();
+
 public: // メンバ関数 モデル
 
 	/// <summary>
