@@ -61,9 +61,13 @@ public:
 
 	HINSTANCE GetHInstance() const { return windowClass_.hInstance; }
 
+	//float GetRandom(float max, float min);
+
 private:// メンバ変数
 	// Window関連
 	HWND hwnd_ = nullptr;		// ウィンドウハンドル
 	WNDCLASS windowClass_{};	// ウィンドウクラス
+	
+	//std::mt19937 randomEngine;
 
 };

@@ -7,9 +7,10 @@ void BaseCamera::Initialize()
 	viewProjection_.Initialize();
 
 	// 位置・角度の設定
-	initPosition_ = { 70.0f, 70.0f, -200.0f };
+	initPosition_ = { 73.0f, -80.0f, -95.0f };
 	viewProjection_.translate_ = initPosition_;
-	viewProjection_.rotation_ = { 0.36f,0,0 };
+	viewProjection_.rotation_ = { -0.926f,0.0f,0.0f };
+	fov_ = 45.0f;
 	// 調整項目クラスのインスタンス取得
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	// グループ名設定

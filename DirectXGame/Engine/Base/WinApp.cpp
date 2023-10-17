@@ -4,6 +4,8 @@
 #include "imgui_impl_dx12.h"
 #include "imgui_impl_win32.h"
 
+#include <random>
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void Log(const std::string& message) {
@@ -73,6 +75,10 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t cl
 void WinApp::InitializeRandomizer()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
+
+	//// ランダム生成器
+	//std::random_device seedGenerator;
+	//randomEngine.seed(seedGenerator());
 }
 
 bool WinApp::ProcessMessage() {
@@ -89,6 +95,12 @@ bool WinApp::ProcessMessage() {
 	}
 	return false;
 }
+
+//float WinApp::GetRandom(float max, float min)
+//{
+//	std::uniform_real_distribution<float> distribution(min, max);
+//	return distribution(randomEngine());
+//}
 
 WinApp* WinApp::GetInstance() {
 	static WinApp instance;
