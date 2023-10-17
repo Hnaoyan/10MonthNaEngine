@@ -358,8 +358,6 @@ void Sprite::SetSpriteRect(const Vector2& texBase, const Vector2& texSize)
 
 void Sprite::TransferVertices()
 {
-	//HRESULT result = S_FALSE;
-
 	// 4頂点
 	enum { LB, LT, RB, RT };
 

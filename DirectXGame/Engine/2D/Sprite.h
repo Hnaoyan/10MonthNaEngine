@@ -185,8 +185,17 @@ public:
 	/// <param name="mode"></param>
 	void SetBlendMode(BlendMode mode) { blendMode_ = mode; }
 
+	/// <summary>
+	/// 表示か非表示かの設定
+	/// </summary>
+	/// <param name="isInv"></param>
 	void SetInvisible(bool isInv) { isInvisible_ = isInv; }
 
+	/// <summary>
+	/// 描画サイズ設定
+	/// </summary>
+	/// <param name="texBase"></param>
+	/// <param name="texSize"></param>
 	void SetSpriteRect(const Vector2& texBase, const Vector2& texSize);
 
 private:

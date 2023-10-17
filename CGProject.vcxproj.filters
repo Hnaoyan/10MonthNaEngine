@@ -267,7 +267,7 @@
     <ClCompile Include="DirectXGame\Engine\Effect\EffectManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engine\UI\UIManager.cpp">
+    <ClCompile Include="DirectXGame\Engine\UI\SpriteManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Engine\UI\UIBase.cpp">
@@ -467,7 +467,7 @@
     <ClInclude Include="DirectXGame\Engine\Effect\EffectManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Engine\UI\UIManager.h">
+    <ClInclude Include="DirectXGame\Engine\UI\SpriteManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\UI\UIBase.h">
@@ -534,6 +534,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="resources\shaders\Obj.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\Particle.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>

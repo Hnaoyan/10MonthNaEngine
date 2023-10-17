@@ -90,7 +90,7 @@ void GameScene::Initialize() {
 	//string spName_ = "UV";
 	//uint32_t ui = TextureManager::Load("white1x1.png");
 	//string uiName_ = "white";
-	//uiManager_ = make_unique<UIManager>();
+	//uiManager_ = make_unique<SpriteManager>();
 	//uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
 	//uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
 

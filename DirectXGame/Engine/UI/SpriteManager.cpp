@@ -1,26 +1,26 @@
-﻿#include "UIManager.h"
+﻿#include "SpriteManager.h"
 
-UIManager* UIManager::GetInstance()
+SpriteManager* SpriteManager::GetInstance()
 {
-	static UIManager instance;
+	static SpriteManager instance;
 	return &instance;
 }
 
-void UIManager::Update()
+void SpriteManager::Update()
 {
 	for (UIBase* ui : uiSprites_) {
 		ui->Update();
 	}
 }
 
-void UIManager::Draw()
+void SpriteManager::Draw()
 {
 	for (UIBase* ui : uiSprites_) {
 		ui->Draw();
 	}
 }
 
-void UIManager::AddUI(int texHandle, const Vector2& position, const Vector2& anchor, const std::string& name)
+void SpriteManager::AddUI(int texHandle, const Vector2& position, const Vector2& anchor, const std::string& name)
 {
 	UIBase* newUi = new UIBase(name);
 	newUi->SetPosition(position);
@@ -29,7 +29,7 @@ void UIManager::AddUI(int texHandle, const Vector2& position, const Vector2& anc
 	uiSprites_.push_back(newUi);
 }
 
-void UIManager::DeleteUI(const std::string& name)
+void SpriteManager::DeleteUI(const std::string& name)
 {
 	for (auto it = uiSprites_.begin(); it != uiSprites_.end(); ++it) {
 		if ((*it)->GetTagName() == name) {
@@ -39,7 +39,7 @@ void UIManager::DeleteUI(const std::string& name)
 	}
 }
 
-UIBase* UIManager::GetUI(const std::string& name)
+UIBase* SpriteManager::GetUI(const std::string& name)
 {
 	for (auto ui : uiSprites_) {
 		if (ui->GetTagName() == name) {

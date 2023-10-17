@@ -2,14 +2,14 @@
 #include "UIBase.h"
 #include <list>
 
-class UIManager
+class SpriteManager
 {
 public:
 	/// <summary>
 	/// シングルトンインスタンス
 	/// </summary>
 	/// <returns></returns>
-	static UIManager* GetInstance();
+	static SpriteManager* GetInstance();
 
 	/// <summary>
 	/// 初期化
@@ -46,6 +46,12 @@ public:
 	/// <param name="name"></param>
 	/// <returns></returns>
 	UIBase* GetUI(const std::string& name);
+
+	/// <summary>
+	/// スプライトのリストを取得
+	/// </summary>
+	/// <returns></returns>
+	std::list<UIBase*> GetList() { return uiSprites_; }
 
 private:
 	std::list<UIBase*> uiSprites_;
