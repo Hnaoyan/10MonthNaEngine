@@ -15,6 +15,11 @@ public:
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 public: // 設定・取得
 #pragma region セッターとゲッター
 	/// <summary>

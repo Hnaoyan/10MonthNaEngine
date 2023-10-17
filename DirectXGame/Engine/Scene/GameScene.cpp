@@ -13,6 +13,12 @@ GameScene::GameScene()
 	// プレイヤー
 	playerModel_.reset(Model::CreateFromObj("player", true));
 	blockModel_.reset(Model::CreateFromObj("block", true));
+	enemyModel_.reset(Model::CreateFromObj("enemy", true));
+	enemyMovePlanModel_.reset(Model::CreateFromObj("enemyMovePlan", true));
+	cageModel_.reset(Model::CreateFromObj("cage", true));
+	startModel_.reset(Model::CreateFromObj("start", true));
+	goalModel_.reset(Model::CreateFromObj("goal", true));
+	blockModel_.reset(Model::CreateFromObj("block", true));
 
 }
 
@@ -47,7 +53,6 @@ void GameScene::Initialize() {
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
 
 	// ブロック
-	blockModel_.reset(Model::CreateFromObj("block", true));
 	uint32_t blockWalltextureHandle = TextureManager::Load("block/block_00.png");
 	uint32_t blockLoadtextureHandle = TextureManager::Load("block/block_00.png");
 	uint32_t blockHoletextureHandle = TextureManager::Load("block/block_01.png");
@@ -58,21 +63,16 @@ void GameScene::Initialize() {
 	blockManager_->Initialize(blockModel_.get(), blocktextureHandles_, mapSystem_->GetMap());
 
 	// エネミー
-	enemyModel_.reset(Model::CreateFromObj("enemy", true));
-	enemyMovePlanModel_.reset(Model::CreateFromObj("enemyMovePlan", true));
-	cageModel_.reset(Model::CreateFromObj("cage", true));
 	enemiesManager_ = make_unique<EnemiesManager>();
 	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
 	// スタート
-	startModel_.reset(Model::CreateFromObj("start", true));
 	start_ = make_unique<Start>();
 	start_->Initialize(startModel_.get(), mapSystem_->GetInitialStartPosition());
 
 	// ゴール
-	goalModel_.reset(Model::CreateFromObj("goal", true));
 	goal_ = make_unique<Goal>();
 	goal_->Initialize(goalModel_.get(), mapSystem_->GetInitialGoalPosition());
 
@@ -100,9 +100,9 @@ void GameScene::Initialize() {
 
 void GameScene::Update()
 {
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-		sceneNum = TITLE;
-	}
+	//if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+	//	sceneNum = TITLE;
+	//}
 
 	/// カメラ関係の更新処理
 	CameraUpdate();
@@ -191,8 +191,8 @@ void GameScene::Draw() {
 
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
-	//blockManager_->Draw(viewProjection_);
-	//enemiesManager_->Draw(viewProjection_);
+	blockManager_->Draw(viewProjection_);
+	enemiesManager_->Draw(viewProjection_);
 	start_->Draw(viewProjection_);
 	goal_->Draw(viewProjection_);
 

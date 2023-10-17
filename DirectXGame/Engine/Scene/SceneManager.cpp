@@ -38,7 +38,7 @@ void SceneManager::Update()
 
 	if (prevSceneNum_ != sceneNum_) {
 		//LoadScene(sceneNum_);
-		sceneArray_[sceneNum_]->Initialize();
+		//sceneArray_[sceneNum_]->Initialize();
 		//sceneArray_[prevSceneNum_].release();
 		//sceneArray_[sceneNum_]->Initialize();
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
