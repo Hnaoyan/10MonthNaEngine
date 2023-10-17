@@ -68,7 +68,7 @@ public: // メンバ関数
 	/// <param name="preScene"></param>
 	void Setting(Scene preScene) override;
 
-public: // メンバ関数
+private: // メンバ関数 ゲームシステム
 
 	/// <summary>
 	/// カメラ更新
@@ -76,9 +76,26 @@ public: // メンバ関数
 	void CameraUpdate();
 
 	/// <summary>
+	/// コマンド待ち
+	/// </summary>
+	void WaitingCommand();
+
+	/// <summary>
+	/// 待機アニメーション
+	/// </summary>
+	void WaitingAnimation();
+
+	/// <summary>
+	/// 行動アニメーション
+	/// </summary>
+	void ActionAnimation();
+
+	/// <summary>
 	/// リセット
 	/// </summary>
 	void Reset();
+
+public: // メンバ関数 モデル
 
 	/// <summary>
 	/// モデル読み込み場所

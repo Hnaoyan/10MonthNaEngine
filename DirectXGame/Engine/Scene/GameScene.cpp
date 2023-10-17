@@ -113,22 +113,21 @@ void GameScene::Update()
 		// ヒットストップ関係の時間処理
 		effectManager_->HitStopUpdate();
 	}
+	// ヒットストップしていない
 	else {
-		// コマンド
-		command_->Update();
-		// マップ
-		if (!command_->GetAcceptingInput()) {
-			mapSystem_->Update(command_->GetCommandNumber());
-			command_->SetAcceptingInput(true);
-			if (mapSystem_->GetIsRestart()) {
-				Reset();
-			}
+
+		//コマンド待ち
+		if (command_->GetAcceptingInput()) {
+			WaitingCommand();
 		}
-		player_->Update(mapSystem_->GetPlayerPosition());
-		blockManager_->Update();
-		enemiesManager_->Update();
-		start_->Update();
-		goal_->Update();
+
+		//アニメーション
+		if (command_->GetAcceptingInput()) {
+			WaitingCommand();
+		}
+		else {
+			ActionAnimation();
+		}
 
 	}
 
@@ -253,6 +252,51 @@ void GameScene::CameraUpdate()
 		viewProjection_.matProjection = baseCamera_->GetView().matProjection;
 		viewProjection_.TransferMatrix();
 	}
+
+
+}
+
+void GameScene::WaitingCommand()
+{
+
+	// コマンド待ち
+	command_->Update();
+	// コマンドが入力された
+	if (!command_->GetAcceptingInput()) {
+		//マップシステムを動かす
+		mapSystem_->Update(command_->GetCommandNumber());
+		// マップシステムクラスからの更新情報取得
+		player_->Update(mapSystem_->GetPlayerPosition());
+		blockManager_->Update();
+		enemiesManager_->Update();
+		start_->Update();
+		goal_->Update();
+		// リセット
+		if (mapSystem_->GetIsRestart()) {
+			Reset();
+		}
+	}
+
+}
+
+void GameScene::WaitingAnimation()
+{
+
+	// 待機アニメーションする
+
+}
+
+void GameScene::ActionAnimation()
+{
+
+	// 行動アニメーションする
+
+	// 待機アニメーションする
+
+	// 行動アニメーションカウントがマックスならコマンド待ち
+			
+	// コマンド待機状態へ
+	command_->SetAcceptingInput(true);
 
 
 }
