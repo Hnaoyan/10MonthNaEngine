@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "Particle.h"
 
-
-class ParticleWave : public Particle
+class ParticleExplosion : public Particle
 {
 public:
 	/// <summary>
@@ -23,11 +22,6 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(ViewProjection& viewProjection) override;
 
-	void SetIsWave(bool flag) { isWave_ = flag; }
-
-private:
-	float wave_t_;
-	bool isWave_ = false;
 
 };
 

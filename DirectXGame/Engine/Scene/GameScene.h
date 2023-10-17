@@ -18,7 +18,7 @@
 #include <vector>
 
 // ゲームシーン用
-#include "UIManager.h"
+#include "SpriteManager.h"
 #include "ParticleManager.h"
 
 #include "Application/Others/Command/Command.h"
@@ -40,7 +40,7 @@ public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	GameScene() {};
+	GameScene();
 
 	/// <summary>
 	/// デストラクタ
@@ -138,7 +138,7 @@ private:	// メンバポインタ
 
 	// マネージャ系
 	std::unique_ptr<EffectManager> effectManager_;
-	std::unique_ptr<UIManager> uiManager_;
+	std::unique_ptr<SpriteManager> uiManager_;
 	std::unique_ptr<ParticleManager> particleManager_;
 
 	std::unique_ptr<Sprite> sprite_;

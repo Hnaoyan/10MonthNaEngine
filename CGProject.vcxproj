@@ -213,11 +213,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\GameScene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\SceneManager.cpp" />
-    <ClCompile Include="DirectXGame\Engine\UI\UIManager.cpp" />
+    <ClCompile Include="DirectXGame\Engine\UI\SpriteManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\UI\UIBase.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Scene\StageSelectScene.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleWave.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
@@ -284,8 +285,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Engine\Scene\GameScene.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\SceneManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleWave.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="DirectXGame\Engine\UI\UIManager.h" />
+    <ClInclude Include="DirectXGame\Engine\UI\SpriteManager.h" />
     <ClInclude Include="DirectXGame\Engine\UI\UIBase.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\StageSelectScene.h" />
@@ -300,6 +302,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Obj.hlsli" />
+    <None Include="Resources\shaders\Particle.hlsli" />
     <None Include="resources\shaders\Sprite.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

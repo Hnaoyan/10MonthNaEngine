@@ -371,17 +371,18 @@ void Model::Initialize(const std::string& modelName, bool smoothing)
 
 void Model::Update()
 {
-	//// マテリアルの数値を定数バッファに反映
-	//for (auto& m : materials_) {
-	//	m.second->SetAlpha(alphaValue_);
-	//	m.second->Update();
-	//}
+	// マテリアルの数値を定数バッファに反映
+	for (auto& m : materials_) {
+		//m.second->SetAlpha(alphaValue_);
+		m.second->Update();
+	}
 }
 
 void Model::SetAlphaValue(float alpha) {
 	// マテリアルの数値を定数バッファに反映
 	for (auto& m : materials_) {
 		m.second->SetAlpha(alpha);
+		m.second->Update();
 	}
 }
 
@@ -391,6 +392,28 @@ float Model::GetAlphaValue() {
 		result = m.second->GetAlpha();
 	}
 	return result;
+}
+
+void Model::SetMaterial(Material* material)
+{
+	materials_.emplace(material->name_, material);
+	for (auto& m : meshes_) {
+		m->SetMaterial(material);
+	}
+
+	// メッシュのバッファ生成
+	for (auto& m : meshes_) {
+		m->CreateBuffers();
+	}
+
+	// マテリアルの数値を定数バッファに反映
+	for (auto& m : materials_) {
+		m.second->Update();
+	}
+
+	// テクスチャの読み込み
+	LoadTextures();
+
 }
 
 void Model::LoadModel(const std::string& modelName, bool smoothing)
