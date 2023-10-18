@@ -3,6 +3,12 @@
 #include <json.hpp>
 #include <fstream>
 
+#include "Application/GameObject/EnemiesManager/EnemiesManager.h"
+#include "Application/GameObject/BlockManager/BlockManager.h"
+#include "Application/GameObject/Player/Player.h"
+#include "Application/GameObject/Start/Start.h"
+#include "Application/GameObject/Goal/Goal.h"
+
 //名前空間
 using namespace nlohmann;
 

@@ -6,7 +6,13 @@
 #include <variant>
 
 #include "../Application/Others/Command/Command.h"
-#include "Application/GameObject/EnemiesManager/EnemiesManager.h"
+
+// 前方宣言
+class Player;
+class EnemiesManager;
+class BlockManager;
+class Start;
+class Goal;
 
 /// <summary>
 /// マップシステムクラス
@@ -192,9 +198,6 @@ public: // アクセッサ
 	// 檻のカウント
 	size_t GetCageCount() { return cageCount_; }
 
-	// エネミーズマネージャー
-	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
-
 	// ゲームクリアフラグ
 	bool GetIsGameClear() { return isGameClaer_; }
 
@@ -209,6 +212,19 @@ public: // アクセッサ
 
 	// エネミーの次の位置
 	std::vector<Vector2> GetNextEnemyPosition() { return nextEnemyPosition_; }
+
+public: // ポインタアクセッサ
+
+	// エネミーズマネージャー
+	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
+	// ブロックマネージャー
+	void SetBlockManager(BlockManager* blockManager) { blockManager_ = blockManager; }
+	// プレイヤー
+	void SetPlayer(Player* player) { player_ = player; }
+	// スタート
+	void SetStart(Start* start) { start_ = start; }
+	// ゴール
+	void SetGoal(Goal* goal) { goal_ = goal; }
 
 public: // メンバ定数
 
@@ -257,11 +273,26 @@ private: //メンバ変数
 	// ゲームオーバーフラグ
 	bool isGameOver_;
 
+	// リスタートフラグ
+	bool isRestart_;
+
+
+private: // ポインタ
+
 	// エネミーズマネージャー
 	EnemiesManager* enemiesManager_;
 
-	// リスタートフラグ
-	bool isRestart_;
+	// ブロックマネージャー
+	BlockManager* blockManager_;
+	
+	// プレイヤー
+	Player* player_;
+
+	// スタート
+	Start* start_;
+
+	// ゴール
+	Goal* goal_;
 
 private: //メンバ変数(データ)
 
