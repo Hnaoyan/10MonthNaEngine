@@ -161,6 +161,12 @@ void GameScene::Update()
 	ImGui::Begin("State");
 	if (mapSystem_->GetIsGameClear()) {
 		ImGui::Text("GAMECLEAR");
+
+		// 最終ステージじゃない
+		if (stageNum != stageMax - 1) {
+			stageNum++;
+			Setting(GAMESCENE);
+		}
 	}
 	if (mapSystem_->GetIsGameOver()) {
 		ImGui::Text("GAMEOVER");
