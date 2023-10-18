@@ -325,18 +325,18 @@ void MapSystem::EnemyMovePlan()
 			// 出来ればyに動く
 			if (distanceX < distanceY) {
 				if (playerPosition_.y < enemyPosition_.at(i).y) {
-					nextEnemyPosition_.at(i).y -= 1.0f;
+					nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y - 1.0f;
 				}
 				else {
-					nextEnemyPosition_.at(i).y += 1.0f;
+					nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y + 1.0f;
 				}
 			}
 			else {
 				if (playerPosition_.x < enemyPosition_.at(i).x) {
-					nextEnemyPosition_.at(i).x -= 1.0f;
+					nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x - 1.0f;
 				}
 				else {
-					nextEnemyPosition_.at(i).x += 1.0f;
+					nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x + 1.0f;
 				}
 			}
 
