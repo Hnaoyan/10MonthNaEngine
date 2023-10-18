@@ -20,9 +20,11 @@ void StageSelectScene::Initialize()
 		positions_[i] = {200.0f * i, 360.0f};
 	}
 
+	positions_[2] = { 640.0f, 360.0f };
+
 	// サイズ
 	for (size_t i = 0; i < 5; i++) {
-		sizes_[i] = {108, 72} ;
+		sizes_[i] = {1280, 720} ;
 	}
 
 	// スプライト
@@ -105,9 +107,10 @@ void StageSelectScene::Draw()
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	
-	for (size_t i = 0; i < 5; i++) {
-		sprite_[i]->Draw();
-	}
+	//for (size_t i = 0; i < 5; i++) {
+	//	sprite_[i]->Draw();
+	//}
+	sprite_[2]->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
