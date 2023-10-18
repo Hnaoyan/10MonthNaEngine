@@ -136,27 +136,30 @@ void TransitionManager::CloudTransition()
 {
 	Vector3 scale = {};
 	//---1Wave---//
-	// X:70~80
 	scale = { 3.0f,3.0f,3.0f };
-	AddObject(Vector3(60.0f, -7.0f, 0), scale);
-	AddObject(Vector3(65.0f, -3.0f, 0), scale);
-	scale = { 4.5f,4.5f,4.5f };
-	AddObject(Vector3(75.0f, -18.5f, 1.0f), scale);
-	AddObject(Vector3(85.0f, 4.0f, 0), scale);
-	AddObject(Vector3(100.0f, -8.0f, 0), scale);
-
+	AddObject(Vector3(50.0f, -7.0f, 0), scale);
+	AddObject(Vector3(55.0f, -3.0f, 0), scale);
 	//---2Wave---//
-	scale = { 6,6,6 };
-	AddObject(Vector3(110.0f, 3.0f, 0), scale);
-	AddObject(Vector3(115.0f, -20.0f, 0), scale);
-	AddObject(Vector3(130.0f, -8.0f, 0), scale);
+	scale = { 4.5f,4.5f,4.5f };
+	AddObject(Vector3(65.0f, -18.5f, 1.0f), scale);
+	AddObject(Vector3(75.0f, 4.0f, 0), scale);
+	AddObject(Vector3(90.0f, -8.0f, 0), scale);
 
 	//---3Wave---//
-	scale = { 8,8,8 };
-	AddObject(Vector3(160.0f, 4.0f, 0), scale);
-	AddObject(Vector3(175.0f, -3.0f, 1.0f), scale);
-	AddObject(Vector3(175.0f, -18.5f, -1.0f), scale);
+	scale = { 6,6,6 };
+	AddObject(Vector3(100.0f, 3.0f, 0), scale);
+	AddObject(Vector3(105.0f, -20.0f, 0), scale);
+	AddObject(Vector3(120.0f, -8.0f, 0), scale);
 
+	//---4Wave---//
+	scale = { 8,8,8 };
+	AddObject(Vector3(150.0f, 4.0f, 0), scale);
+	AddObject(Vector3(165.0f, -3.0f, 1.0f), scale);
+	AddObject(Vector3(165.0f, -18.5f, -1.0f), scale);
+
+	//---5Wave---//
+	AddObject(Vector3(175.0f, 4.0f, 1.0f), scale);
+	AddObject(Vector3(175.0f, -10.5f, -1.0f), scale);
 }
 
 void TransitionManager::AddObject(const Vector3& position, const Vector3& scale)

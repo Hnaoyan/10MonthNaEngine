@@ -18,7 +18,7 @@ SceneManager::SceneManager()
 	sceneArray_[STAGESELECT]->Initialize();
 
 	sceneNum_ = TITLE;
-	changeNum_ = TITLE;
+	//changeNum_ = TITLE;
 	//sceneArray_[sceneNum_]->Initialize();
 }
 
