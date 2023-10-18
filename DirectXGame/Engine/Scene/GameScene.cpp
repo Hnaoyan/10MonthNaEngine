@@ -121,7 +121,8 @@ void GameScene::Update()
 		particleManager_->SetRequest(ParticleManager::PatternNum::kExplosion);
 	}
 	if (input_->TriggerKey(DIK_0)) {
-		particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
+		//particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
+		sceneNum = TITLE;
 		//Vector3 pos = { 0,0,0 };
 		//particleManager_->Test(pos);
 	}

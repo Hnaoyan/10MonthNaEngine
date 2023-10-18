@@ -16,6 +16,8 @@ private:
 	int sceneNum_;
 	int prevSceneNum_;
 
+	int changeNum_;
+
 public:
 	SceneManager();
 	~SceneManager();

@@ -15,6 +15,7 @@ SceneManager::SceneManager()
 	sceneArray_[EDITOR]->Initialize();
 
 	sceneNum_ = TITLE;
+	changeNum_ = TITLE;
 	//sceneArray_[sceneNum_]->Initialize();
 }
 
@@ -37,6 +38,9 @@ void SceneManager::Update()
 #endif // DEBUG
 
 	prevSceneNum_ = this->sceneNum_;
+	//if (Input::GetInstance()->TriggerKey(DIK_7)) {
+	//	sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
+	//}
 	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	if (prevSceneNum_ != sceneNum_) {
@@ -45,6 +49,16 @@ void SceneManager::Update()
 		//sceneArray_[prevSceneNum_].release();
 		//sceneArray_[sceneNum_]->Initialize();
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+	}
+
+	//if (transitionManager_->IsGetSceneChanger() && changeNum_ != sceneNum_) {
+	//	//sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
+	//	sceneNum_ = changeNum_;
+	//	sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+	//}
+
+	if (transitionManager_->IsGetSceneChanger()) {
+		sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
 	}
 
 	// 遷移更新
@@ -57,11 +71,12 @@ void SceneManager::Update()
 
 void SceneManager::Draw() 
 {
+	// シーン描画
+	sceneArray_[sceneNum_]->Draw(); 
+
 	// 遷移描画
 	transitionManager_->Draw();
 
-	// シーン描画
-	sceneArray_[sceneNum_]->Draw(); 
 }
 
 void SceneManager::LoadScene(int number)

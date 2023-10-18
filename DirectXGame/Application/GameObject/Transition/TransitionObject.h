@@ -15,7 +15,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(const float Transition_T);
 
 	/// <summary>
 	/// 描画
@@ -23,6 +23,11 @@ public:
 	/// <param name="view"></param>
 	void Draw(ViewProjection& view);
 
+	/// <summary>
+	/// 生成時の設定
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="scale"></param>
 	void InstanceSetting(const Vector3& pos, const Vector3& scale);
 
 private:
@@ -30,6 +35,12 @@ private:
 	Model* model_ = nullptr;
 	Vector3 velocity_ = {};
 	Vector3 prevPos_ = {};
+
+	bool isTrans_ = false;
+
+	float t_ = 0;
+
+	Vector3 end_ = {};
 
 public: // アクセッサ
 	/// <summary>

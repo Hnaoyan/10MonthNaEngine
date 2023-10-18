@@ -27,12 +27,24 @@ public:
 	/// <returns></returns>
 	static TransitionManager* GetInstance();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 遷移の呼び出し
+	/// </summary>
 	void TransitionSetting();
 
 private: // 遷移用関数
@@ -50,7 +62,7 @@ private: // 遷移用関数
 	/// オブジェクト追加
 	/// </summary>
 	/// <param name="position"></param>
-	void AddObject(const Vector3& position);
+	void AddObject(const Vector3& position, const Vector3& scale);
 
 private:
 	/// <summary>
@@ -58,9 +70,17 @@ private:
 	/// </summary>
 	bool isNowTransition_ = false;
 
-	int transitionTimer_ = 0;
+	float transitionTimer_ = 0;
 
 	int endTimer_ = 0;
+
+	bool isSceneChanger_ = false;
+
+public:
+
+	bool IsGetSceneChanger() { return isSceneChanger_; }
+
+	bool GetNowTransition() { return isNowTransition_; }
 
 private:
 	// モデル
