@@ -7,7 +7,7 @@ void AnimationManager::Initialize()
 	actionAnimationTimer_ = 0;
 
 	// 行動アニメーションタイム
-	actionAnimationTime_ = 20;
+	actionAnimationTime_ = 1;
 
 	// 行動アニメーションしているか
 	isActionAnimation_ = false;
