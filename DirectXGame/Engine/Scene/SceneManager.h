@@ -10,7 +10,7 @@
 
 class SceneManager {
 private:
-	std::unique_ptr<BaseScene> sceneArray_[4];
+	std::unique_ptr<BaseScene> sceneArray_[5];
 	std::unique_ptr<TransitionManager> transitionManager_;
 
 	int sceneNum_;
