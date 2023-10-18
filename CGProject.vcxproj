@@ -167,6 +167,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Application\Others\Math2d\Math2d.cpp" />
     <ClCompile Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.cpp" />
     <ClCompile Include="DirectXGame\Application\others\TimedCall\TimedCall.cpp" />
+    <ClCompile Include="DirectXGame\Application\SelectScene\StagePhot\StagePhot.cpp" />
     <ClCompile Include="DirectXGame\Editor\MapEdit.cpp" />
     <ClCompile Include="DirectXGame\Engine\2D\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engine\2D\SpriteCommon.cpp" />
@@ -239,6 +240,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Application\Others\Math2d\Math2d.h" />
     <ClInclude Include="DirectXGame\Application\Others\RectangleCollider\RectangleCollider.h" />
     <ClInclude Include="DirectXGame\Application\others\TimedCall\TimedCall.h" />
+    <ClInclude Include="DirectXGame\Application\SelectScene\StagePhot\StagePhot.h" />
     <ClInclude Include="DirectXGame\Editor\MapEdit.h" />
     <ClInclude Include="DirectXGame\Engine\2D\Sprite.h" />
     <ClInclude Include="DirectXGame\Engine\2D\SpriteCommon.h" />

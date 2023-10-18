@@ -1,5 +1,13 @@
 ﻿#pragma once
 #include "BaseScene.h"
+#include "Sprite.h"
+#include <vector>
+#include <Input.h>
+#include "DirectXCommon.h"
+#include "Model.h"
+#include <Audio.h>
+
+#include "Application/SelectScene/StagePhot/StagePhot.h"
 
 class StageSelectScene : public BaseScene
 {
@@ -21,6 +29,34 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw() override;
+
+private: // メンバ関数
+
+	void MoveRight();
+
+	void MoveLeft();
+
+private: // メンバ変数 (ステージ写真)
+
+	DirectXCommon* dxCommon_ = nullptr;
+	Input* input_ = nullptr;
+	Audio* audio_ = nullptr;
+
+	// テクスチャハンドル
+	std::vector<uint32_t> textureHandles_;
+
+	// 動いているか
+	bool isMoveRight_;
+	bool isMoveLeft_;
+
+	// イージング
+	float easeTimer_;
+	float easeSpeed_;
+
+	
+	//オブジェクト
+	// ステージ写真
+	std::unique_ptr<StagePhot> stagePhot_ = nullptr;
 
 };
 

@@ -57,6 +57,27 @@ public: // メンバ関数
 	/// <param name="num">番号</param>
 	void AddCage(size_t num);
 
+	/// <summary>
+	/// エネミー情報取得
+	/// </summary>
+	/// <param name="posision">位置</param>
+	/// <returns></returns>
+	Enemy* GetEnemy(Vector2 posision);
+
+	/// <summary>
+	/// エネミー行動計画情報取得
+	/// </summary>
+	/// <param name="posision">位置</param>
+	/// <returns></returns>
+	EnemyMovePlan* GetEnemyMovePlan(Vector2 posision);
+
+	/// <summary>
+	/// 檻情報取得
+	/// </summary>
+	/// <param name="posision">位置</param>
+	/// <returns></returns>
+	Cage* GetCage(Vector2 posision);
+
 private: // メンバ変数
 
 	// エネミーズ

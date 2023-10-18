@@ -3,6 +3,12 @@
 #include <json.hpp>
 #include <fstream>
 
+#include "Application/GameObject/EnemiesManager/EnemiesManager.h"
+#include "Application/GameObject/BlockManager/BlockManager.h"
+#include "Application/GameObject/Player/Player.h"
+#include "Application/GameObject/Start/Start.h"
+#include "Application/GameObject/Goal/Goal.h"
+
 //名前空間
 using namespace nlohmann;
 
@@ -325,18 +331,18 @@ void MapSystem::EnemyMovePlan()
 			// 出来ればyに動く
 			if (distanceX < distanceY) {
 				if (playerPosition_.y < enemyPosition_.at(i).y) {
-					nextEnemyPosition_.at(i).y -= 1.0f;
+					nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y - 1.0f;
 				}
 				else {
-					nextEnemyPosition_.at(i).y += 1.0f;
+					nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y + 1.0f;
 				}
 			}
 			else {
 				if (playerPosition_.x < enemyPosition_.at(i).x) {
-					nextEnemyPosition_.at(i).x -= 1.0f;
+					nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x - 1.0f;
 				}
 				else {
-					nextEnemyPosition_.at(i).x += 1.0f;
+					nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x + 1.0f;
 				}
 			}
 

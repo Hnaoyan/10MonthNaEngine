@@ -148,3 +148,39 @@ void EnemiesManager::AddCage(size_t num)
 	cages_.push_back(cage);
 
 }
+
+Enemy* EnemiesManager::GetEnemy(Vector2 posision)
+{
+
+	for (Enemy* enemy : enemies_) {
+		if (enemy->GetPosition().x == posision.x &&
+			enemy->GetPosition().y == posision.y) {
+			return enemy;
+		}
+	}
+
+	return nullptr;
+}
+
+EnemyMovePlan* EnemiesManager::GetEnemyMovePlan(Vector2 posision)
+{
+	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		if (enemyMovePlan->GetPosition().x == posision.x &&
+			enemyMovePlan->GetPosition().y == posision.y) {
+			return enemyMovePlan;
+		}
+	}
+	return nullptr;
+}
+
+Cage* EnemiesManager::GetCage(Vector2 posision)
+{
+
+	for (Cage* cage : cages_) {
+		if (cage->GetPosition().x == posision.x &&
+			cage->GetPosition().y == posision.y) {
+			return cage;
+		}
+	}
+	return nullptr;
+}

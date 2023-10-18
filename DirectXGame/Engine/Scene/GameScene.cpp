@@ -51,6 +51,8 @@ void GameScene::Initialize() {
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
+	// マップシステム
+	mapSystem_->SetPlayer(player_.get());
 
 	// ブロック
 	uint32_t blockWalltextureHandle = TextureManager::Load("block/block_00.png");
@@ -61,6 +63,8 @@ void GameScene::Initialize() {
 	blocktextureHandles_.push_back(blockHoletextureHandle);
 	blockManager_ = make_unique<BlockManager>();
 	blockManager_->Initialize(blockModel_.get(), blocktextureHandles_, mapSystem_->GetMap());
+	// マップシステム
+	mapSystem_->SetBlockManager(blockManager_.get());
 
 	// エネミー
 	enemiesManager_ = make_unique<EnemiesManager>();
@@ -71,10 +75,14 @@ void GameScene::Initialize() {
 	// スタート
 	start_ = make_unique<Start>();
 	start_->Initialize(startModel_.get(), mapSystem_->GetInitialStartPosition());
+	// マップシステム
+	mapSystem_->SetStart(start_.get());
 
 	// ゴール
 	goal_ = make_unique<Goal>();
 	goal_->Initialize(goalModel_.get(), mapSystem_->GetInitialGoalPosition());
+	// マップシステム
+	mapSystem_->SetGoal(goal_.get());
 
 	// アニメーションマネージャー
 	animationManager_ = make_unique<AnimationManager>();
