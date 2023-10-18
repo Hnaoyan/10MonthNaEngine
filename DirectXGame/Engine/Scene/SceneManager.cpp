@@ -1,7 +1,10 @@
-#include "SceneManager.h"
+﻿#include "SceneManager.h"
 
 SceneManager::SceneManager() 
 { 
+	transitionManager_ = std::make_unique<TransitionManager>();
+	transitionManager_->Initialize();
+
 	sceneArray_[TITLE] = std::make_unique<TitleScene>();
 	sceneArray_[TITLE]->Initialize();
 	sceneArray_[GAMESCENE] = std::make_unique<GameScene>();
@@ -11,7 +14,7 @@ SceneManager::SceneManager()
 	sceneArray_[EDITOR] = std::make_unique<EditorScene>();
 	sceneArray_[EDITOR]->Initialize();
 
-	sceneNum_ = GAMESCENE;
+	sceneNum_ = TITLE;
 	//sceneArray_[sceneNum_]->Initialize();
 }
 
@@ -22,14 +25,14 @@ void SceneManager::Update()
 
 #ifdef _DEBUG
 
-	if (Input::GetInstance()->TriggerKey(DIK_1)) {
-		if (sceneNum_ == GAMESCENE) {
-			sceneArray_[sceneNum_]->SetSceneNum(EDITOR);
-		}
-		else if (sceneNum_ == EDITOR) {
-			sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
-		}
-	}
+	//if (Input::GetInstance()->TriggerKey(DIK_1)) {
+	//	if (sceneNum_ == GAMESCENE) {
+	//		sceneArray_[sceneNum_]->SetSceneNum(EDITOR);
+	//	}
+	//	else if (sceneNum_ == EDITOR) {
+	//		sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
+	//	}
+	//}
 
 #endif // DEBUG
 
@@ -44,12 +47,22 @@ void SceneManager::Update()
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
 	}
 
+	// 遷移更新
+	transitionManager_->Update();
+
+	// シーン更新
 	sceneArray_[sceneNum_]->Update();
 
 }
 
 void SceneManager::Draw() 
-{ sceneArray_[sceneNum_]->Draw(); }
+{
+	// 遷移描画
+	transitionManager_->Draw();
+
+	// シーン描画
+	sceneArray_[sceneNum_]->Draw(); 
+}
 
 void SceneManager::LoadScene(int number)
 {

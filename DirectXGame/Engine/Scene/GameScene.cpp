@@ -15,10 +15,10 @@ GameScene::GameScene()
 	blockModel_.reset(Model::CreateFromObj("block", true));
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
 	enemyMovePlanModel_.reset(Model::CreateFromObj("enemyMovePlan", true));
-	cageModel_.reset(Model::CreateFromObj("cage", true));
+	cageModel_.reset(Model::CreateFromObj("Cage", true));
 	startModel_.reset(Model::CreateFromObj("start", true));
-	goalModel_.reset(Model::CreateFromObj("goal", true));
-	blockModel_.reset(Model::CreateFromObj("block", true));
+	goalModel_.reset(Model::CreateFromObj("Goal", true));
+	//blockModel_.reset(Model::CreateFromObj("block", true));
 
 }
 

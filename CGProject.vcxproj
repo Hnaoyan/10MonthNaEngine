@@ -220,6 +220,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Engine\Scene\StageSelectScene.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleWave.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Transition\TransitionManager.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Transition\TransitionObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
@@ -293,6 +295,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Engine\UI\UIBase.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\Engine\Scene\StageSelectScene.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Transition\TransitionManager.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Transition\TransitionObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />
