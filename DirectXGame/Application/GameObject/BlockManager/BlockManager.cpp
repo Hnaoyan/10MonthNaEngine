@@ -93,6 +93,8 @@ void BlockManager::Setting()
 		block->Setting(textureHandles_[num], static_cast<MapSystem::MapNumber>(num));
 	}
 
+	Update();
+
 }
 
 Block* BlockManager::GetBlock(Vector2 position)

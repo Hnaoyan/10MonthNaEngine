@@ -83,6 +83,11 @@ public: // メンバ関数
 	/// </summary>
 	void StagesLoad();
 
+	/// <summary>
+	/// リスタート
+	/// </summary>
+	void Restart();
+
 private: // メンバ関数
 
 	/// <summary>
@@ -127,11 +132,6 @@ private: // メンバ関数
 	/// ゲームオーバー(敵にぶつかってしまった)
 	/// </summary>
 	void GameOver();
-
-	/// <summary>
-	/// リスタート
-	/// </summary>
-	void Restart();
 
 	/// <summary>
 	/// マップ読み込み
