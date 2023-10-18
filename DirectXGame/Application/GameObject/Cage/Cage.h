@@ -50,6 +50,12 @@ public: // アクセッサ
 	/// <param name="position"></param>
 	void SetPosition(const Vector2& position) { position_ = position; }
 
+	/// <summary>
+	/// ゲットポジション
+	/// </summary>
+	/// <returns></returns>
+	Vector2 GetPosition() { return position_; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
