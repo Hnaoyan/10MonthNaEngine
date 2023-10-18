@@ -39,6 +39,17 @@ public: // メンバ関数
 	/// </summary>
 	void Setting(const Vector2& position);
 
+public: // アニメーション
+
+	void WaitingAnimationInitialize();
+
+	void WaitingAnimationUpdate();
+
+	void ActionAnimationInitialize();
+
+	void ActionAnimationUpdate();
+
+
 private: //メンバ関数
 
 	/// <summary>

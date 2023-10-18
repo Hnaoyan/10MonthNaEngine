@@ -28,8 +28,7 @@
 #include "Application/GameObject/EnemiesManager/EnemiesManager.h"
 #include "Application/GameObject/Start/Start.h"
 #include "Application/GameObject/Goal/Goal.h"
-
-
+#include "Application/Others/AnimationManager/AnimationManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -68,7 +67,7 @@ public: // メンバ関数
 	/// <param name="preScene"></param>
 	void Setting(Scene preScene) override;
 
-public: // メンバ関数
+private: // メンバ関数 ゲームシステム
 
 	/// <summary>
 	/// カメラ更新
@@ -76,9 +75,31 @@ public: // メンバ関数
 	void CameraUpdate();
 
 	/// <summary>
+	/// コマンド待ち
+	/// </summary>
+	void WaitingCommand();
+
+	/// <summary>
+	/// 待機アニメーション
+	/// </summary>
+	void WaitingAnimation();
+
+	/// <summary>
+	/// 行動アニメーション
+	/// </summary>
+	void ActionAnimation();
+
+	/// <summary>
 	/// リセット
 	/// </summary>
 	void Reset();
+
+	/// <summary>
+	/// 待機アニメーションセット
+	/// </summary>
+	void SetWaitingAnimation();
+
+public: // メンバ関数 モデル
 
 	/// <summary>
 	/// モデル読み込み場所
@@ -140,6 +161,7 @@ private:	// メンバポインタ
 	std::unique_ptr<EffectManager> effectManager_;
 	std::unique_ptr<UIManager> uiManager_;
 	std::unique_ptr<ParticleManager> particleManager_;
+	std::unique_ptr<AnimationManager> animationManager_;
 
 	std::unique_ptr<Sprite> sprite_;
 	Vector2 size_;

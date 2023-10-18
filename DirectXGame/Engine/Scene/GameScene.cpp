@@ -70,6 +70,12 @@ void GameScene::Initialize() {
 	goal_ = make_unique<Goal>();
 	goal_->Initialize(goalModel_.get(), mapSystem_->GetInitialGoalPosition());
 
+	// アニメーションマネージャー
+	animationManager_ = make_unique<AnimationManager>();
+	animationManager_->Initialize();
+	// 待機アニメーションを設定していく
+	SetWaitingAnimation();
+
 	// エフェクト
 	effectManager_ = make_unique<EffectManager>();
 	effectManager_->Initialize();
@@ -113,22 +119,21 @@ void GameScene::Update()
 		// ヒットストップ関係の時間処理
 		effectManager_->HitStopUpdate();
 	}
+	// ヒットストップしていない
 	else {
-		// コマンド
-		command_->Update();
-		// マップ
-		if (!command_->GetAcceptingInput()) {
-			mapSystem_->Update(command_->GetCommandNumber());
-			command_->SetAcceptingInput(true);
-			if (mapSystem_->GetIsRestart()) {
-				Reset();
-			}
+
+		//コマンド待ち
+		if (command_->GetAcceptingInput()) {
+			WaitingCommand();
 		}
-		player_->Update(mapSystem_->GetPlayerPosition());
-		blockManager_->Update();
-		enemiesManager_->Update();
-		start_->Update();
-		goal_->Update();
+
+		//アニメーション
+		if (command_->GetAcceptingInput()) {
+			WaitingAnimation();
+		}
+		else {
+			ActionAnimation();
+		}
 
 	}
 
@@ -257,6 +262,53 @@ void GameScene::CameraUpdate()
 
 }
 
+void GameScene::WaitingCommand()
+{
+
+	// コマンド待ち
+	command_->Update();
+	// コマンドが入力された
+	if (!command_->GetAcceptingInput()) {
+		//マップシステムを動かす
+		mapSystem_->Update(command_->GetCommandNumber());
+		// リセット
+		if (mapSystem_->GetIsRestart()) {
+			Reset();
+		}
+		// マップシステムクラスからの更新情報取得
+		player_->Update(mapSystem_->GetPlayerPosition());
+		blockManager_->Update();
+		enemiesManager_->Update();
+		start_->Update();
+		goal_->Update();
+		// アニメーションマネージャーアクションスタート
+		animationManager_->ActionStart();
+	}
+
+}
+
+void GameScene::WaitingAnimation()
+{
+
+	// 待機アニメーションする
+	animationManager_->WaitUpdate();
+
+}
+
+void GameScene::ActionAnimation()
+{
+
+	// 行動アニメーションする
+	animationManager_->ActionUpdate();
+
+	// 行動アニメーションカウントがマックスならコマンド待ち
+	if (!animationManager_->GetIsActionAnimation()) {
+		// コマンド待機状態へ
+		command_->SetAcceptingInput(true);
+	}
+
+}
+
 void GameScene::Reset()
 {
 
@@ -267,6 +319,19 @@ void GameScene::Reset()
 	goal_->Setting(mapSystem_->GetInitialGoalPosition());
 
 	mapSystem_->SetIsRestart(false);
+
+	//アニメーション関数
+	animationManager_->Reset();
+	// 待機アニメーションを設定していく
+	SetWaitingAnimation();
+
+}
+
+void GameScene::SetWaitingAnimation()
+{
+	// プレイヤー
+	player_->WaitingAnimationInitialize();
+	animationManager_->SetWaitingAnimation(std::bind(&Player::WaitingAnimationUpdate, player_.get()));
 
 }
 
