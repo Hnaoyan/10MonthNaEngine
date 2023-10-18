@@ -94,6 +94,18 @@ void BlockManager::Setting()
 
 }
 
+Block* BlockManager::GetBlock(Vector2 position)
+{
+	for (Block* block : blocks_) {
+		Vector2 blockPos = block->GetPosition();
+		if (position.x == blockPos.x &&
+			position.y == blockPos.y) {
+			return block;
+		}
+	}
+	return nullptr;
+}
+
 void BlockManager::ApplyGlobalVariables()
 {
 

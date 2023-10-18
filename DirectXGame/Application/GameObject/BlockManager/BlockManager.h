@@ -35,6 +35,13 @@ public: // メンバ関数
 	/// </summary>
 	void Setting();
 
+	/// <summary>
+	/// ブロック情報取得
+	/// </summary>
+	/// <param name="position">位置</param>
+	/// <returns></returns>
+	Block* GetBlock(Vector2 position);
+
 private: // メンバ関数
 
 	/// <summary>
