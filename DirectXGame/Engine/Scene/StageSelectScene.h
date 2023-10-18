@@ -7,6 +7,8 @@
 #include "Model.h"
 #include <Audio.h>
 
+#include "Application/SelectScene/StagePhot/StagePhot.h"
+
 class StageSelectScene : public BaseScene
 {
 public:
@@ -43,26 +45,18 @@ private: // メンバ変数 (ステージ写真)
 	// テクスチャハンドル
 	std::vector<uint32_t> textureHandles_;
 
-	// スプライト5つ
-	std::unique_ptr<Sprite> sprite_[5];
-	std::unique_ptr<Sprite> sprite2_;
-	std::unique_ptr<Sprite> sprite3_;
-	std::unique_ptr<Sprite> sprite4_;
-	std::unique_ptr<Sprite> sprite5_;
-
-	// スプライト固定座標
-	Vector2 positions_[5];
-
-	// サイズ
-	Vector2 sizes_[5];
-
 	// 動いているか
 	bool isMoveRight_;
 	bool isMoveLeft_;
 
-	// 
-	float easeTimer;
-	float easeSpeed;
+	// イージング
+	float easeTimer_;
+	float easeSpeed_;
+
+	
+	//オブジェクト
+	// ステージ写真
+	std::unique_ptr<StagePhot> stagePhot_ = nullptr;
 
 };
 

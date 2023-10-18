@@ -115,6 +115,9 @@
     <Filter Include="エディタファイル">
       <UniqueIdentifier>{30587bda-ba8e-49aa-9163-c677165efbe4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="アプリケーションファイル\セレクトシーン">
+      <UniqueIdentifier>{6024ee26-f97a-435d-af56-5591ec59ac50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\main.cpp">
@@ -317,6 +320,12 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\GameObject\EnemyMovePlan\EnemyMovePlan.cpp">
       <Filter>アプリケーションファイル\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\SelectScene\StagePhot\StagePhot.cpp">
+      <Filter>アプリケーションファイル\セレクトシーン</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +538,12 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\GameObject\EnemyMovePlan\EnemyMovePlan.h">
       <Filter>アプリケーションファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\SelectScene\StagePhot\StagePhot.h">
+      <Filter>アプリケーションファイル\セレクトシーン</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

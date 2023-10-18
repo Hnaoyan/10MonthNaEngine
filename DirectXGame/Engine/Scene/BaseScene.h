@@ -47,6 +47,14 @@ protected:
 	/// </summary>
 	static int sceneNum;
 	
+	/// <summary>
+	/// ステージ番号
+	/// </summary>
 	static int stageNum;
+
+	/// <summary>
+	/// ステージ最大数
+	/// </summary>
+	static const int stageMax;
 
 };

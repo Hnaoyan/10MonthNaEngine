@@ -9,36 +9,31 @@ void StageSelectScene::Initialize()
 	audio_ = Audio::GetInstance();
 
 	// テクスチャハンドル (ステージ数)
-	const size_t StageMax = 5;
-	for (size_t i = 0; i < StageMax; i++) {
+	for (size_t i = 0; i < stageMax; i++) {
 		uint32_t textureHandle = TextureManager::Load("stagePhot/stagePhot" + std::to_string(i + 1) + ".png");
 		textureHandles_.push_back(textureHandle);
 	}
 
-	// スプライト固定座標
-	for (size_t i = 0; i < 5; i++) {
-		positions_[i] = {200.0f * i, 360.0f};
-	}
+	// x
+	// 矢印サイズ128*2
+	// 余白サイズ32*2*2
+	// 隣のステージ64*2
 
-	positions_[2] = { 640.0f, 360.0f };
+	// イージング
+	easeSpeed_ = 0.05f;
 
-	// サイズ
-	for (size_t i = 0; i < 5; i++) {
-		sizes_[i] = {1280, 720} ;
-	}
-
-	// スプライト
-	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
-	Vector2 anchorPoint = { 0.5f, 0.5f };
-
-	for (size_t i = 0; i < 5; i++) {
-		sprite_[i].reset(Sprite::Create(textureHandles_[0], positions_[i], color, anchorPoint, false, false));
-		sprite_[i]->SetSize(sizes_[i]);
-		sprite_[i]->Update();
-	}
-
+	// セッティングへ
+	// 動いているか
 	isMoveRight_ = false;
 	isMoveLeft_ = false;
+
+	// イージング
+	easeTimer_ = 0.0f;
+
+	//オブジェクト
+	// ステージ写真
+	stagePhot_ = std::make_unique<StagePhot>();
+	stagePhot_->Initialize(textureHandles_, stageMax);
 
 }
 
@@ -55,11 +50,22 @@ void StageSelectScene::Update()
 		// 入力受付
 		if (input_->TriggerKey(DIK_D) || input_->TriggerKey(DIK_RIGHT)) {
 			isMoveRight_ = true;
-			easeTimer = 0;
+			easeTimer_ = 0;
+			stageNum++;
+			if (stageNum == stageMax) {
+				stageNum = 0;
+			}
 		}
-		if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFT)) {
+		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFT)) {
 			isMoveLeft_ = true;
-			easeTimer = 0;
+			easeTimer_ = 0;
+			stageNum--;
+			if (stageNum == -1) {
+				stageNum = stageMax - 1;
+			}
+		}
+		else if (input_->TriggerKey(DIK_SPACE)) {
+			sceneNum = GAMESCENE;
 		}
 	}
 
@@ -107,10 +113,7 @@ void StageSelectScene::Draw()
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	
-	//for (size_t i = 0; i < 5; i++) {
-	//	sprite_[i]->Draw();
-	//}
-	sprite_[2]->Draw();
+	stagePhot_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -122,19 +125,25 @@ void StageSelectScene::Draw()
 void StageSelectScene::MoveRight()
 {
 
-	easeTimer += easeSpeed;
-	if (easeTimer >= 1.0f) {
+	easeTimer_ += easeSpeed_;
+	if (easeTimer_ >= 1.0f) {
 		isMoveRight_ = false;
+		stagePhot_->MoveRight(1.0f);
 	}
 	else {
-
+		stagePhot_->MoveRight(easeTimer_);
 	}
 }
 
 void StageSelectScene::MoveLeft()
 {
-	easeTimer += easeSpeed;
-	if (easeTimer >= 1.0f) {
+	easeTimer_ += easeSpeed_;
+	if (easeTimer_ >= 1.0f) {
 		isMoveLeft_ = false;
+		stagePhot_->MoveLeft(1.0f);
 	}
+	else {
+		stagePhot_->MoveLeft(easeTimer_);
+	}
+
 }
