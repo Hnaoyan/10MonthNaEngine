@@ -163,14 +163,11 @@ void GameScene::Update()
 	}
 	if (mapSystem_->GetIsGameOver()) {
 		ImGui::Text("GAMEOVER");
+		mapSystem_->Restart();
+		Reset();
 	}
 	ImGui::End();
 
-
-	// リセット
-	if (input_->TriggerKey(DIK_R)) {
-		Reset();
-	}
 }
 
 void GameScene::Draw() {
