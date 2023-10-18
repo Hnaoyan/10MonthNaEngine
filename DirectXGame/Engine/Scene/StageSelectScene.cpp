@@ -35,7 +35,6 @@ void StageSelectScene::Initialize()
 		sprite_[i]->Update();
 	}
 
-
 	isMoveRight_ = false;
 	isMoveLeft_ = false;
 
