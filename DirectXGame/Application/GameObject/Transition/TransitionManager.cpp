@@ -139,6 +139,8 @@ void TransitionManager::CloudTransition()
 	scale = { 3.0f,3.0f,3.0f };
 	AddObject(Vector3(50.0f, -7.0f, 0), scale);
 	AddObject(Vector3(55.0f, -3.0f, 0), scale);
+	AddObject(Vector3(55.0f, -10.0f, 0), scale);
+
 	//---2Wave---//
 	scale = { 4.5f,4.5f,4.5f };
 	AddObject(Vector3(65.0f, -18.5f, 1.0f), scale);
@@ -158,8 +160,10 @@ void TransitionManager::CloudTransition()
 	AddObject(Vector3(165.0f, -18.5f, -1.0f), scale);
 
 	//---5Wave---//
-	AddObject(Vector3(175.0f, 4.0f, 1.0f), scale);
-	AddObject(Vector3(175.0f, -10.5f, -1.0f), scale);
+	scale = { 4,4,4 };
+	AddObject(Vector3(175.0f, 4.0f, 2.0f), scale);
+	AddObject(Vector3(175.0f, -10.5f, -7.0f), scale);
+	AddObject(Vector3(185.0f, 0.5f, 5.0f), scale);
 }
 
 void TransitionManager::AddObject(const Vector3& position, const Vector3& scale)
