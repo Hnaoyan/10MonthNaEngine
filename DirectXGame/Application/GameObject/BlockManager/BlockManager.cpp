@@ -59,6 +59,7 @@ void BlockManager::Update()
 
 #ifdef _DEBUG
 	ApplyGlobalVariables();
+
 #endif // _DEBUG
 
 	for (Block* block : blocks_) {
@@ -106,6 +107,15 @@ Block* BlockManager::GetBlock(Vector2 position)
 		}
 	}
 	return nullptr;
+}
+
+void BlockManager::ActionAnimationUpdate()
+{
+	for (Block* block : blocks_) {
+		if (block->GetFallNow()) {
+			block->FallAnimation(easeStartPoint_, easeEndPoint_);
+		}
+	}
 }
 
 void BlockManager::ApplyGlobalVariables()

@@ -10,7 +10,7 @@ void StageSelectScene::Initialize()
 
 	// テクスチャハンドル (ステージ数)
 	for (size_t i = 0; i < stageMax; i++) {
-		uint32_t textureHandle = TextureManager::Load("stagePhot/stagePhot" + std::to_string(i + 1) + ".png");
+		uint32_t textureHandle = TextureManager::Load("stagePhot/stagePhot" + std::to_string(i) + ".png");
 		textureHandles_.push_back(textureHandle);
 	}
 

@@ -15,10 +15,10 @@ GameScene::GameScene()
 	blockModel_.reset(Model::CreateFromObj("block", true));
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
 	enemyMovePlanModel_.reset(Model::CreateFromObj("enemyMovePlan", true));
-	cageModel_.reset(Model::CreateFromObj("cage", true));
+	cageModel_.reset(Model::CreateFromObj("Cage", true));
 	startModel_.reset(Model::CreateFromObj("start", true));
-	goalModel_.reset(Model::CreateFromObj("goal", true));
-	blockModel_.reset(Model::CreateFromObj("block", true));
+	goalModel_.reset(Model::CreateFromObj("Goal", true));
+	//blockModel_.reset(Model::CreateFromObj("block", true));
 
 }
 
@@ -129,7 +129,8 @@ void GameScene::Update()
 		particleManager_->SetRequest(ParticleManager::PatternNum::kExplosion);
 	}
 	if (input_->TriggerKey(DIK_0)) {
-		particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
+		//particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
+		sceneNum = TITLE;
 		//Vector3 pos = { 0,0,0 };
 		//particleManager_->Test(pos);
 	}
@@ -305,6 +306,8 @@ void GameScene::WaitingCommand()
 		goal_->Update();
 		// アニメーションマネージャーアクションスタート
 		animationManager_->ActionStart();
+		// ブロックマネージャー
+		animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
 	}
 
 }
@@ -356,6 +359,11 @@ void GameScene::SetWaitingAnimation()
 	animationManager_->SetWaitingAnimation(std::bind(&Player::WaitingAnimationUpdate, player_.get()));
 
 }
+
+//void GameScene::SetActionAnimation()
+//{
+//
+//}
 
 void GameScene::ModelSetting()
 {

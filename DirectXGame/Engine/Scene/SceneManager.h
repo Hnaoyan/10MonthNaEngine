@@ -1,16 +1,22 @@
 ﻿#pragma once
 #include <memory>
+#include "DirectXCommon.h"
+#include "Sprite.h"
 #include "BaseScene.h"
 #include "TitleScene.h"
 #include "GameScene.h"
 #include "EditorScene.h"
+#include "Transition/TransitionManager.h"
 
 class SceneManager {
 private:
 	std::unique_ptr<BaseScene> sceneArray_[5];
+	std::unique_ptr<TransitionManager> transitionManager_;
 
 	int sceneNum_;
 	int prevSceneNum_;
+
+	int changeNum_;
 
 public:
 	SceneManager();

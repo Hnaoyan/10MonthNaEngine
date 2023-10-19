@@ -1,7 +1,7 @@
 #include "BaseScene.h"
 
-int BaseScene::sceneNum = STAGESELECT;
+int BaseScene::sceneNum = TITLE;
 
 int BaseScene::stageNum = 0;
 
-const int BaseScene::stageMax = 5;
+const int BaseScene::stageMax = 15;
