@@ -423,8 +423,8 @@ void MapSystem::GameClear()
 		particleManager_->GoalEffectSetting(Vector3(MapSystem::kSquareSize_.x * initialStageData_.goalPosition_.x,
 			MapSystem::kSquareSize_.y * initialStageData_.goalPosition_.y, -10.0f));
 
-		particleManager_->CatchEnemyGenerate(Vector3(MapSystem::kSquareSize_.x * initialStageData_.goalPosition_.x,
-			MapSystem::kSquareSize_.y * initialStageData_.goalPosition_.y, -10.0f));
+		//particleManager_->CatchEnemyGenerate(Vector3(MapSystem::kSquareSize_.x * initialStageData_.goalPosition_.x,
+		//	MapSystem::kSquareSize_.y * initialStageData_.goalPosition_.y, -10.0f));
 	}
 
 	if (playerPosition_.x == initialStageData_.goalPosition_.x &&
@@ -480,6 +480,7 @@ void MapSystem::Restart()
 
 	// ゴールが開いたか
 	goalOpened_ = false;
+	particleManager_->SetOpen(false);
 
 	// 敵を捕まえた
 	capturedEnemy_.clear();

@@ -12,7 +12,7 @@ ParticleManager::ParticleManager()
 {
 	planeModel_.reset(Model::CreatePlane());
 	cubeModel_.reset(Model::CreateFromObj("block", true));
-	texture_ = TextureManager::Load("plane/test2.png");
+	texture_ = TextureManager::Load("plane/test.png");
 }
 
 ParticleManager* ParticleManager::GetInstance()
