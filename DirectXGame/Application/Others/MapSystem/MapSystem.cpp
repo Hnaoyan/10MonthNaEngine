@@ -443,7 +443,7 @@ void MapSystem::GameOver()
 		// ぶつかった
 		if (playerPosition_.x == enemyPosition_.at(i).x && 
 			playerPosition_.y == enemyPosition_.at(i).y && 
-			enemyAwake_.at(i)) {
+			enemyAwake_.at(i) && !capturedEnemy_.at(i)) {
 			isGameOver_ = true;
 			return;
 		}
