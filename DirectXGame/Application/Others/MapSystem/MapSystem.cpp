@@ -144,6 +144,7 @@ void MapSystem::Setting(int stageNum)
 
 	// ゴールが開いたか
 	goalOpened_ = false;
+	particleManager_->SetOpen(false);
 	// 敵を捕まえた
 	// エネミーが起きている時
 	// 檻を使った
@@ -480,7 +481,6 @@ void MapSystem::Restart()
 
 	// ゴールが開いたか
 	goalOpened_ = false;
-	particleManager_->SetOpen(false);
 
 	// 敵を捕まえた
 	capturedEnemy_.clear();
