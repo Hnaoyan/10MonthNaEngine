@@ -25,9 +25,11 @@ public:
 
 	void SetIsWave(bool flag) { isWave_ = flag; }
 
+	void SetAddScaleValue(const Vector2 value) { addScaleValue = value; }
+
 private:
 	float wave_t_;
 	bool isWave_ = false;
-
+	Vector2 addScaleValue = {};
 };
 

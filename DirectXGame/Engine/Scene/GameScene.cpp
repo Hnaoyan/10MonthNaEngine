@@ -133,16 +133,6 @@ void GameScene::Update()
 	effectManager_->Update();
 	particleManager_->Update();
 
-	if (input_->TriggerKey(DIK_9)) {
-		//particleManager_->RandomRespown(Vector3(0,0,0));
-		particleManager_->SetRequest(ParticleManager::PatternNum::kExplosion);
-	}
-	if (input_->TriggerKey(DIK_0)) {
-		particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
-		//sceneNum = TITLE;
-		//particleManager_->Test(Vector3(0,0,0));
-	}
-
 	if(effectManager_->IsStop()){
 		// ヒットストップ関係の時間処理
 		effectManager_->HitStopUpdate();

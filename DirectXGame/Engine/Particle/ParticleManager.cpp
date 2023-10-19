@@ -8,11 +8,15 @@
 #include "GlobalVariables.h"
 #include "Input.h"
 
+#pragma region 初期化
+
 ParticleManager::ParticleManager()
 {
 	planeModel_.reset(Model::CreatePlane());
 	cubeModel_.reset(Model::CreateFromObj("block", true));
 	texture_ = TextureManager::Load("plane/test.png");
+	goalEffectTexture_ = texture_;
+	waveEffectTexture_ = TextureManager::Load("plane/test2.png");
 }
 
 ParticleManager* ParticleManager::GetInstance()
@@ -27,7 +31,7 @@ void ParticleManager::Initialize(ViewProjection* view)
 	view_ = view;
 
 	// ゴールが空いている時の管理変数
-	goalOpen_ = { 0,30,false };
+	goalOpenParameters_ = { 0,30,false };
 
 #pragma region json管理
 	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -38,38 +42,81 @@ void ParticleManager::Initialize(ViewProjection* view)
 	ApplyGlobalVariables();
 #pragma endregion
 }
+#pragma endregion
+
+#pragma region 全体的な更新処理
 
 void ParticleManager::Update()
 {
-	// ゴール解放中のエフェクト
-	GoalEffectUpdate();
 	// パターンごとの処理
 	ParticleProcess();
 	// パーティクルの更新
 	ParticleUpdate();
 
 }
-
-void ParticleManager::WaveInitialize()
+void ParticleManager::ParticleUpdate()
 {
-	waveTimer_ = { 0,60,true };
-	AddWave({ 70.0f,60.0f,-15.0f }, { 1.5f,1.5f,1.0f });
+	// リストの更新
+	for (Particle* particle : particles_) {
+		particle->Update();
+	}
+	// リストの削除・リリース
+	particles_.remove_if([](Particle* particle) {
+		if (particle->IsDead()) {
+			delete particle;
+			// セーフガード
+			particle = nullptr;
+			return true;
+		}
+		return false;
+		});
+}
+
+void ParticleManager::ParticleProcess()
+{
+	// ゴール解放中のエフェクト
+	GoalEffectUpdate();
+
+	// 起こす波の動き
+	WaveUpdate();
+
+}
+
+void ParticleManager::Draw(ViewProjection& viewProjection)
+{
+	// 描画
+	for (Particle* particle : particles_) {
+		particle->Draw(viewProjection);
+	}
+}
+#pragma endregion
+
+
+void ParticleManager::WaveSetting(const Vector3& position)
+{
+	waveParameters_ = { 0,60,50,true };
+	waveRespawnPosition_ = position;
+	waveRespawnPosition_.z += 5.0f;
+	AddWave(waveRespawnPosition_, { 5.0f,5.0f,1.0f });
 }
 
 void ParticleManager::WaveUpdate()
 {
-	// フレームカウント
-	waveTimer_.frameCount++;
-	// 終了判定
-	if (waveTimer_.frameCount > waveTimer_.endCount) {
-		patternRequest_ = PatternNum::kNone;
-	}
-	if (waveTimer_.frameCount % 30 == 0) {
-		AddWave({ 70.0f,60.0f,-15.0f }, { 1.5f,1.5f,1.0f });
+	if (waveParameters_.isNow) {
+		// フレームカウント
+		waveParameters_.frameCount++;
+		// 終了判定
+		if (waveParameters_.frameCount > waveParameters_.endCount) {
+			waveParameters_.isNow = false;
+		}
+		// 出現処理
+		if (waveParameters_.frameCount % waveParameters_.addInterval_ == 0) {
+			AddWave(waveRespawnPosition_, { 5.0f,5.0f,1.0f });
+		}
 	}
 }
 
-void ParticleManager::ExplosionInitialize()
+void ParticleManager::ExplosionSetting()
 {
 }
 
@@ -116,98 +163,24 @@ void ParticleManager::ExplosionUpdate()
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
 {
 	goalPosition_ = pos;
-	goalOpen_.isNow = true;
-	goalOpen_.endCount = 30;
+	goalOpenParameters_ = { 0,30,true };
 }
 
 void ParticleManager::GoalEffectUpdate()
 {
-	if (goalOpen_.isNow) {
-		goalOpen_.frameCount += 1;
-		if (goalOpen_.frameCount >= goalOpen_.endCount) {
+	if (goalOpenParameters_.isNow) {
+		goalOpenParameters_.frameCount += 1;
+		if (goalOpenParameters_.frameCount >= goalOpenParameters_.endCount) {
 			AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), {2.0f,2.0f,2.0f});
-			goalOpen_.frameCount = 0;
+			goalOpenParameters_.frameCount = 0;
 		}
 	}
-
-	if (Input::GetInstance()->TriggerKey(DIK_G)) {
-		AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), { 1.0f,1.0f,1.0f });
-	}
-
 }
 
 void ParticleManager::CatchEnemyGenerate(const Vector3& pos)
 {
 	for (int i = 0; i < 10; i++) {
 		AddSmokeParticle(pos, { 0.5f,0.5f,0.5f });
-	}
-}
-
-void ParticleManager::ParticleUpdate()
-{
-	// リストの更新
-	for (Particle* particle : particles_) {
-		particle->Update();
-	}
-	// リストの削除・リリース
-	particles_.remove_if([](Particle* particle) {
-		if (particle->IsDead()) {
-			delete particle;
-			// セーフガード
-			particle = nullptr;
-			return true;
-		}
-		return false;
-	});
-}
-
-void ParticleManager::ParticleProcess()
-{
-	if (patternRequest_) {
-		pattern_ = patternRequest_.value();
-
-		switch (pattern_)
-		{
-		case PatternNum::kNone:
-
-			break;
-		case PatternNum::kMove:
-			WaveInitialize();
-			break;
-		case PatternNum::kVibration:
-
-			break;
-		case PatternNum::kExplosion:
-			ExplosionUpdate();
-			//for (int i = 0; i < 10; i++) {
-			//	RandomRespown({ 70.0f,60.0f,-100.0f });
-			//}
-			break;
-		}
-		patternRequest_ = std::nullopt;
-	}
-
-	switch (pattern_)
-	{
-	case PatternNum::kNone:
-		break;
-	case PatternNum::kMove:
-		WaveUpdate();
-		break;
-	case PatternNum::kVibration:
-
-		break;
-	case PatternNum::kExplosion:
-
-		break;
-	}
-}
-
-void ParticleManager::Draw(ViewProjection& viewProjection)
-{
-	// 描画
-	for (Particle* particle : particles_) {
-		particle->Draw(viewProjection);
 	}
 }
 
@@ -223,14 +196,14 @@ void ParticleManager::RandomRespown(const Vector3& point)
 	}
 }
 
+#pragma region パーティクルの生成関数
 void ParticleManager::AddWave(const Vector3& pos, const Vector3& scale)
 {
 	ParticleWave* newParticle = new ParticleWave();
-	newParticle->Initialize(planeModel_.get(), texture_);
+	newParticle->Initialize(planeModel_.get(), waveEffectTexture_);
 	newParticle->SetPosition(pos);
-	newParticle->SetVelocity({ 0,0,0 });
-	newParticle->SetRotate(Vector3(0.0f, 0.0f, 0.0f));
 	newParticle->SetScale(scale);
+	newParticle->SetAddScaleValue(Vector2(0.4f, 0.4f));
 	particles_.push_back(newParticle);
 }
 
@@ -248,7 +221,7 @@ void ParticleManager::AddExplosion(const Vector3& pos, const Vector3& velo)
 void ParticleManager::AddGoalParticle(const Vector3& pos, const Vector3& velo, const Vector3& scale)
 {
 	ParticleGoal* newParticle = new ParticleGoal();
-	newParticle->Initialize(planeModel_.get(), texture_);
+	newParticle->Initialize(planeModel_.get(), goalEffectTexture_);
 	// 座標
 	newParticle->SetPosition(pos);
 	// 回転
@@ -290,3 +263,4 @@ void ParticleManager::ApplyGlobalVariables()
 	//const char* groupName = "ParticleManager";
 
 }
+#pragma endregion

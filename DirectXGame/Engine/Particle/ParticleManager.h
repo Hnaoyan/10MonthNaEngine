@@ -39,74 +39,67 @@ public: // 基本
 	/// <param name="point"></param>
 	void RandomRespown(const Vector3& point);
 
-	void Test(const Vector3& point);
-
 public:
 
-	enum class PatternNum {
-		kNone,	// 通常
-		kMove,	// 移動時
-		kVibration,	// 振動時
-		kExplosion,	// 破裂
-	};
+	void SetOpen(bool isOpen) { goalOpenParameters_.isNow = isOpen; }
 
-public:
-
-	void SetRequest(PatternNum number) { patternRequest_ = number; }
-
-	void SetOpen(bool isOpen) { goalOpen_.isNow = isOpen; }
-
-private: // enumクラスの管理系
-	/// <summary>
-	/// 分岐変数
-	/// </summary>
-	PatternNum pattern_ = PatternNum::kNone;
-	/// <summary>
-	/// リクエスト
-	/// </summary>
-	std::optional<PatternNum> patternRequest_ = std::nullopt;
-
-	struct PatternControl {
+private: // それぞれの管理変数
+	// 管理用構造体
+	struct ParticleEffectParameter {
 		int frameCount, endCount;
+		int addInterval_;
 		bool isNow;
 	};
 
-	PatternControl waveTimer_;
+	// 波
+	ParticleEffectParameter waveParameters_ = { 0,0,0,false };
 
-private: // パターンの更新と初期化関数
+	Vector3 waveRespawnPosition_;
+
+	uint32_t waveEffectTexture_ = 0u;
+
+	// ゴール
+	ParticleEffectParameter goalOpenParameters_ = { 0,0,0,false };
+
+	Vector3 goalPosition_ = {};
+
+	uint32_t goalEffectTexture_ = 0u;
+
+	// 死亡
+
+private: // パターンの更新
 #pragma region パターンそれぞれの関数
-	/// <summary>
-	/// 波エフェクトの初期化
-	/// </summary>
-	void WaveInitialize();
-
 	/// <summary>
 	/// 波エフェクトの更新
 	/// </summary>
 	void WaveUpdate();
-
-	/// <summary>
-	/// 爆発エフェクトの初期化
-	/// </summary>
-	void ExplosionInitialize();
-
-	/// <summary>
-	/// 爆発エフェクトの更新
-	/// </summary>
-	void ExplosionUpdate();
-
-public:
-	/// <summary>
-	/// ゴール解放時の設定
-	/// </summary>
-	void GoalEffectSetting(const Vector3& pos);
-
 	/// <summary>
 	/// ゴールが解放されてる時のエフェクト
 	/// </summary>
 	/// <param name="pos"></param>
 	/// <param name="scale"></param>
 	void GoalEffectUpdate();
+
+	/// <summary>
+	/// 爆発エフェクトの初期化
+	/// </summary>
+	void ExplosionSetting();
+
+	/// <summary>
+	/// 爆発エフェクトの更新
+	/// </summary>
+	void ExplosionUpdate();
+
+public: // 外部で呼び出す準備関数
+	/// <summary>
+	/// 波エフェクトの初期化
+	/// </summary>
+	void WaveSetting(const Vector3& position);
+
+	/// <summary>
+	/// ゴール解放時の設定
+	/// </summary>
+	void GoalEffectSetting(const Vector3& pos);
 
 	/// <summary>
 	/// 捕まえた際のエフェクト
@@ -168,7 +161,5 @@ private:
 
 	ViewProjection* view_ = nullptr;
 
-	Vector3 goalPosition_ = {};
-	PatternControl goalOpen_ = { 0,30,false };
 };
 

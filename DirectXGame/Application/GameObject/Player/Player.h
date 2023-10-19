@@ -90,6 +90,11 @@ public: // アクセッサ
 	/// <returns></returns>
 	uint32_t GetAnimationTMax() { return static_cast<uint32_t>(animationTMax_); }
 
+	/// <summary>
+	/// ゲットポジション
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetWorldTransformPosition() { return Vector3(worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2]); }
 private: // メンバ変数
 
 	//ワールドトランスフォーム
