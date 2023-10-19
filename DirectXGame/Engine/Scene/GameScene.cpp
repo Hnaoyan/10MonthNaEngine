@@ -357,10 +357,10 @@ void GameScene::SetWaitingAnimation()
 
 }
 
-void GameScene::SetActionAnimation()
-{
-
-}
+//void GameScene::SetActionAnimation()
+//{
+//
+//}
 
 void GameScene::ModelSetting()
 {
