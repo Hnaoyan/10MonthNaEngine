@@ -17,9 +17,6 @@ void ParticleWave::Update()
 		float fre = 5.0f;
 		velocity_.y = amp * std::cosf(1.0f * float(std::numbers::pi) * fre * wave_t_);
 	}
-	//float alpha = model_->GetAlphaValue() - 0.02f;
-	//model_->SetAlphaValue(alpha);
-	//worldTransform_.translation_.y = 0.5f * std::sinf(0.5f * wave_t_ + worldTransform_.translation_.y);
 	Particle::Update();
 	worldTransform_.scale_.x += 0.02f;
 	worldTransform_.scale_.y += 0.02f;

@@ -36,6 +36,29 @@ public: // Vector3
 	/// <returns></returns>
 	static Vector3 Scaler(const Vector3& v1, const float scaler);
 
+public:
+	/// <summary>
+	/// 加算
+	/// </summary>
+	/// <param name="v1"></param>
+	/// <param name="v2"></param>
+	/// <returns></returns>
+	static Vector2 Add(const Vector2& v1, const Vector2& v2);
+	/// <summary>
+	/// 減算
+	/// </summary>
+	/// <param name="v1"></param>
+	/// <param name="v2"></param>
+	/// <returns></returns>
+	static Vector2 Subtract(const Vector2& v1, const Vector2& v2);
+
+	/// <summary>
+	/// スカラー倍
+	/// </summary>
+	/// <param name="v1"></param>
+	/// <param name="scaler"></param>
+	/// <returns></returns>
+	static Vector2 Scaler(const Vector2& v1, const float scaler);
 
 };
 

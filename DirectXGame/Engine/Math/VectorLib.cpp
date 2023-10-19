@@ -41,3 +41,29 @@ Vector3 VectorLib::Scaler(const Vector3& v1, const float scaler) {
 	return result;
 }
 #pragma endregion
+
+#pragma region Vector2
+Vector2 VectorLib::Add(const Vector2& v1, const Vector2& v2)
+{
+	Vector2 v{};
+
+	v.x = v1.x + v2.x;
+	v.y = v1.y + v2.y;
+
+	return v;
+}
+Vector2 VectorLib::Subtract(const Vector2& v1, const Vector2& v2)
+{
+	Vector2 result;
+	result.x = v1.x - v2.x;
+	result.y = v1.y - v2.y;
+	return result;
+}
+Vector2 VectorLib::Scaler(const Vector2& v1, const float scaler)
+{
+	Vector2 result;
+	result.x = v1.x * scaler;
+	result.y = v1.y * scaler;
+	return result;
+}
+#pragma endregion

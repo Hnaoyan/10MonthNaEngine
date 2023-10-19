@@ -194,7 +194,7 @@ void Sprite::StaticInitialize(ID3D12Device* device, int window_width, int window
 	// αブレンド
 	blenddesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 	blenddesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	blenddesc.RenderTarget[0].DestBlend = D3D12_BLEND_ZERO;
 	// ブレンドステート
 	gPipeline.BlendState = blenddesc;
 	// グラフィックスパイプラインの生成

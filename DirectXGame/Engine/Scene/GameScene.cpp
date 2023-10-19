@@ -18,6 +18,7 @@ GameScene::GameScene()
 	cageModel_.reset(Model::CreateFromObj("Cage", true));
 	startModel_.reset(Model::CreateFromObj("start", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
+	skyDomeModel_.reset(Model::CreateFromObj("tenkyu", true));
 
 }
 
@@ -28,6 +29,10 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	viewProjection_.Initialize();
+
+	skyDomeWorldTransform_.Initialize();
+	skyDomeWorldTransform_.translation_ = { 70.0f,10.0f, -40.0f};
+	skyDomeWorldTransform_.scale_ = { 50.0f,50.0f,50.0f };
 
 	baseCamera_ = make_unique<BaseCamera>();
 	baseCamera_->Initialize();
@@ -112,16 +117,6 @@ void GameScene::Initialize() {
 
 	// マネージャーの設定
 	//player_->SetEffectManager(effectManager_.get());
-	
-	// UIの設定
-	//uint32_t sprite = TextureManager::Load("uvChecker.png");
-	//string spName_ = "UV";
-	//uint32_t ui = TextureManager::Load("white1x1.png");
-	//string uiName_ = "white";
-	//uiManager_ = make_unique<SpriteManager>();
-	//uiManager_->AddUI(sprite, { 200,100 }, { 0.0f,0.0f }, spName_);
-	//uiManager_->AddUI(ui, { 100,50 }, { 0.5f,0.5f }, uiName_);
-
 
 }
 
@@ -133,6 +128,7 @@ void GameScene::Update()
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
+	skyDomeWorldTransform_.UpdateMatrix();
 	effectManager_->Update();
 	particleManager_->Update();
 
@@ -218,6 +214,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);

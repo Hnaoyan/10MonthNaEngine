@@ -141,6 +141,9 @@ private:	// メンバポインタ
 	// マップ
 	std::unique_ptr<MapSystem> mapSystem_;
 
+	// 天球モデル
+	std::unique_ptr<Model> skyDomeModel_;
+
 	// プレイヤー
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Model> playerModel_;
@@ -185,7 +188,7 @@ private:	// メンバポインタ
 	// slash
 	uint32_t slashTextureHandle_;
 
-
+	WorldTransform skyDomeWorldTransform_;
 
 	std::unique_ptr<Sprite> sprite_;
 	Vector2 size_;

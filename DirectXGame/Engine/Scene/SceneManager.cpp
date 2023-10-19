@@ -41,9 +41,6 @@ void SceneManager::Update()
 #endif // DEBUG
 
 	prevSceneNum_ = this->sceneNum_;
-	//if (Input::GetInstance()->TriggerKey(DIK_7)) {
-	//	sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
-	//}
 	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	if (prevSceneNum_ != sceneNum_) {
@@ -53,12 +50,6 @@ void SceneManager::Update()
 		//sceneArray_[sceneNum_]->Initialize();
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
 	}
-
-	//if (transitionManager_->IsGetSceneChanger() && changeNum_ != sceneNum_) {
-	//	//sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
-	//	sceneNum_ = changeNum_;
-	//	sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-	//}
 
 	if (transitionManager_->IsGetSceneChanger()) {
 		sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
