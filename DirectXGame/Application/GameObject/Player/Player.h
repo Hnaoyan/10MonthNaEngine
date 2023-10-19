@@ -15,6 +15,17 @@ class BlockManager;
 class Player
 {
 
+public: // サブクラス
+
+	// 移動番号
+	enum class ActionNumber{
+		None,
+		kLeft,
+		kRight,
+		kTop,
+		kBottom
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -45,9 +56,13 @@ public: // アニメーション
 
 	void WaitingAnimationUpdate();
 
-	void ActionAnimationInitialize();
+	void ActionAnimationInitialize(uint32_t num);
 
 	void ActionAnimationUpdate();
+
+	void MoveAnimationInitialize(ActionNumber actionNumber);
+
+	void MoveAnimationUpdate();
 
 
 private: //メンバ関数
@@ -75,6 +90,24 @@ private: // メンバ変数
 
 	// 現在のマス
 	Vector2 position_;
+
+	// MoveAnimation
+	// スタート角度
+	Vector3 moveAnimationStartRotate_;
+	// エンド角度
+	Vector3 moveAnimationEndRotate_;
+	// t
+	float moveAnimationT_;
+	// tマックス
+	float moveAnimationTMax_;
+	// 親
+	WorldTransform moveAnimationWorldTransform_;
+
+	// 行動アニメーションをした
+	bool isActionAnimation_;
+
+	// 行動アニメーション番号
+	ActionNumber actionNumber_;
 
 };
 

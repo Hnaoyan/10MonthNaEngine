@@ -233,9 +233,13 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	if (haveMoved) {
 		// エネミーの移動
 		EnemyMove();
+		// 移動成功アニメーション
+		player_->ActionAnimationInitialize(commandNumber);
 	}
 	// 失敗
 	else {
+		// 移動失敗アニメーション
+		player_->ActionAnimationInitialize(Command::CommandNumber::None);
 
 	}
 
