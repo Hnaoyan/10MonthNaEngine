@@ -3,6 +3,9 @@
 #include <StructManager.h>
 #include <Sprite.h>
 
+/// <summary>
+/// ステージ写真
+/// </summary>
 class StagePhot
 {
 

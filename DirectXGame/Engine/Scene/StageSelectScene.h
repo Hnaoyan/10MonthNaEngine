@@ -8,6 +8,7 @@
 #include <Audio.h>
 
 #include "Application/SelectScene/StagePhot/StagePhot.h"
+#include "Application/SelectScene/StageSelectUI/StageSelectUI.h"
 
 class StageSelectScene : public BaseScene
 {
@@ -43,7 +44,12 @@ private: // メンバ変数 (ステージ写真)
 	Audio* audio_ = nullptr;
 
 	// テクスチャハンドル
-	std::vector<uint32_t> textureHandles_;
+	std::vector<uint32_t> stagePhotTextureHandles_;
+
+	// テクスチャハンドル
+	uint32_t leftTextureHandle_;
+	uint32_t rightTextureHandle_;
+	uint32_t stageSelectTextureHandle_;
 
 	// 動いているか
 	bool isMoveRight_;
@@ -53,10 +59,11 @@ private: // メンバ変数 (ステージ写真)
 	float easeTimer_;
 	float easeSpeed_;
 
-	
 	//オブジェクト
 	// ステージ写真
 	std::unique_ptr<StagePhot> stagePhot_ = nullptr;
+	// UI
+	std::unique_ptr<StageSelectUI> stageSelectUI_ = nullptr;
 
 };
 

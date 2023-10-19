@@ -11,13 +11,13 @@ void StageSelectScene::Initialize()
 	// テクスチャハンドル (ステージ数)
 	for (size_t i = 0; i < stageMax; i++) {
 		uint32_t textureHandle = TextureManager::Load("stagePhot/stagePhot" + std::to_string(i) + ".png");
-		textureHandles_.push_back(textureHandle);
+		stagePhotTextureHandles_.push_back(textureHandle);
 	}
 
-	// x
-	// 矢印サイズ128*2
-	// 余白サイズ32*2*2
-	// 隣のステージ64*2
+	// テクスチャハンドル
+	leftTextureHandle_ = TextureManager::Load("Image/stageSelectArrowLeft.png");
+	rightTextureHandle_ = TextureManager::Load("Image/stageSelectArrowRight.png");
+	stageSelectTextureHandle_ = TextureManager::Load("Image/stageSelect.png");
 
 	// イージング
 	easeSpeed_ = 0.05f;
@@ -33,7 +33,10 @@ void StageSelectScene::Initialize()
 	//オブジェクト
 	// ステージ写真
 	stagePhot_ = std::make_unique<StagePhot>();
-	stagePhot_->Initialize(textureHandles_, stageMax);
+	stagePhot_->Initialize(stagePhotTextureHandles_, stageMax);
+	// UI
+	stageSelectUI_ = std::make_unique<StageSelectUI>();
+	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_);
 
 }
 
@@ -112,7 +115,8 @@ void StageSelectScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	
+
+	stageSelectUI_->Draw();
 	stagePhot_->Draw();
 
 	// スプライト描画後処理
