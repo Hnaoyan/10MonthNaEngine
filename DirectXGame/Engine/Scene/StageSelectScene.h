@@ -50,6 +50,7 @@ private: // メンバ変数 (ステージ写真)
 	uint32_t leftTextureHandle_;
 	uint32_t rightTextureHandle_;
 	uint32_t stageSelectTextureHandle_;
+	uint32_t stageNumberTextureHandle_;
 
 	// 動いているか
 	bool isMoveRight_;

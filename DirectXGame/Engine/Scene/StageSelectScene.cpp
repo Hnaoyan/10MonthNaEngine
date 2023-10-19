@@ -18,6 +18,7 @@ void StageSelectScene::Initialize()
 	leftTextureHandle_ = TextureManager::Load("Image/stageSelectArrowLeft.png");
 	rightTextureHandle_ = TextureManager::Load("Image/stageSelectArrowRight.png");
 	stageSelectTextureHandle_ = TextureManager::Load("Image/stageSelect.png");
+	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
 
 	// イージング
 	easeSpeed_ = 0.05f;
@@ -36,7 +37,7 @@ void StageSelectScene::Initialize()
 	stagePhot_->Initialize(stagePhotTextureHandles_, stageMax);
 	// UI
 	stageSelectUI_ = std::make_unique<StageSelectUI>();
-	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_);
+	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_);
 
 }
 
@@ -58,6 +59,7 @@ void StageSelectScene::Update()
 			if (stageNum == stageMax) {
 				stageNum = 0;
 			}
+			stageSelectUI_->SetStageNum(stageNum);
 		}
 		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFT)) {
 			isMoveLeft_ = true;
@@ -66,6 +68,7 @@ void StageSelectScene::Update()
 			if (stageNum == -1) {
 				stageNum = stageMax - 1;
 			}
+			stageSelectUI_->SetStageNum(stageNum);
 		}
 		else if (input_->TriggerKey(DIK_SPACE)) {
 			sceneNum = GAMESCENE;
@@ -115,8 +118,8 @@ void StageSelectScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
-	stageSelectUI_->Draw();
+	
+	stageSelectUI_->Draw(!isMoveLeft_ && !isMoveRight_);
 	stagePhot_->Draw();
 
 	// スプライト描画後処理
