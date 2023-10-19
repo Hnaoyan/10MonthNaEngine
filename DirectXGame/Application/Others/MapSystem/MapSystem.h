@@ -13,6 +13,7 @@ class EnemiesManager;
 class BlockManager;
 class Start;
 class Goal;
+class CaptureEnemyUI;
 
 /// <summary>
 /// マップシステムクラス
@@ -225,6 +226,8 @@ public: // ポインタアクセッサ
 	void SetStart(Start* start) { start_ = start; }
 	// ゴール
 	void SetGoal(Goal* goal) { goal_ = goal; }
+	// 敵の数表示
+	void SetCaptureEnemyUI(CaptureEnemyUI* captureEnemyUI) { captureEnemyUI_ = captureEnemyUI; }
 
 public: // メンバ定数
 
@@ -293,6 +296,9 @@ private: // ポインタ
 
 	// ゴール
 	Goal* goal_;
+
+	// 敵の数表示
+	CaptureEnemyUI* captureEnemyUI_;
 
 private: //メンバ変数(データ)
 

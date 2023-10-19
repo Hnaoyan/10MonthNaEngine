@@ -97,6 +97,19 @@ void GameScene::Initialize() {
 	particleManager_ = make_unique<ParticleManager>();
 	particleManager_->Initialize(baseCamera_->GetViewPlayer());
 
+	// 敵の数カウント
+	// テクスチャ
+	// EnemyKazu
+	enmyKazuTextureHandle_ = TextureManager::Load("gameSceneUI/enemyKazu.png");
+	// num
+	numTextureHandle_ = TextureManager::Load("gameSceneUI/enemyNumber.png");
+	// slash
+	slashTextureHandle_ = TextureManager::Load("gameSceneUI/enemyNaname.png");
+	captureEnemyUI_ = make_unique<CaptureEnemyUI>();
+	captureEnemyUI_->Initialize(enmyKazuTextureHandle_, numTextureHandle_, slashTextureHandle_);
+	// マップシステム
+	mapSystem_->SetCaptureEnemyUI(captureEnemyUI_.get());
+
 	// マネージャーの設定
 	//player_->SetEffectManager(effectManager_.get());
 	
@@ -224,6 +237,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	captureEnemyUI_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -344,6 +358,8 @@ void GameScene::Reset()
 	goal_->Setting(mapSystem_->GetInitialGoalPosition());
 
 	mapSystem_->SetIsRestart(false);
+	
+	captureEnemyUI_->Setting(static_cast<uint32_t>(mapSystem_->GetEnemyCount()));
 
 	//アニメーション関数
 	animationManager_->Reset();

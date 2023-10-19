@@ -9,6 +9,8 @@
 #include "Application/GameObject/Start/Start.h"
 #include "Application/GameObject/Goal/Goal.h"
 
+#include "Application/UI/CaptureEnemyUI/CaptureEnemyUI.h"
+
 //名前空間
 using namespace nlohmann;
 
@@ -308,6 +310,17 @@ void MapSystem::EnemyMove()
 				!usedCage_.at(k)) {
 				capturedEnemy_.at(i) = true;
 				usedCage_.at(k) = true;
+
+
+				int num = 0;
+				// 捕まえた敵の数取得、UIにおくる
+				for (bool capturedEnemy : capturedEnemy_) {
+					if (capturedEnemy) {
+						num++;
+					}
+				}
+				captureEnemyUI_->EnemyCountUpdate(num);
+
 				break;
 			}
 			k++;

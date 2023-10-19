@@ -30,6 +30,10 @@
 #include "Application/GameObject/Goal/Goal.h"
 #include "Application/Others/AnimationManager/AnimationManager.h"
 
+// UI
+#include "Application/UI/CaptureEnemyUI/CaptureEnemyUI.h"
+
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -167,6 +171,23 @@ private:	// メンバポインタ
 	std::unique_ptr<SpriteManager> uiManager_;
 	std::unique_ptr<ParticleManager> particleManager_;
 	std::unique_ptr<AnimationManager> animationManager_;
+
+
+	/// <summary>
+	/// UI用
+	/// </summary>
+	
+	// 敵の数カウント
+	std::unique_ptr<CaptureEnemyUI> captureEnemyUI_;
+	// テクスチャ
+	// EnemyKazu
+	uint32_t enmyKazuTextureHandle_;
+	// num
+	uint32_t numTextureHandle_;
+	// slash
+	uint32_t slashTextureHandle_;
+
+
 
 	std::unique_ptr<Sprite> sprite_;
 	Vector2 size_;
