@@ -123,8 +123,6 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 
 private:	// メンバポインタ
-	// カメラ
-	//std::unique_ptr<DebugCamera> debugCamera_;
 	// ベースカメラ
 	std::unique_ptr<BaseCamera> baseCamera_;
 

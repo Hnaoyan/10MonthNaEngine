@@ -224,6 +224,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Transition\TransitionManager.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Transition\TransitionObject.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameObject\Particle\ParticleGoal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
@@ -294,6 +295,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DirectXGame\Engine\Scene\SceneManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleWave.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleExplosion.h" />
+    <ClInclude Include="DirectXGame\Application\GameObject\Particle\ParticleGoal.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="DirectXGame\Engine\UI\SpriteManager.h" />
     <ClInclude Include="DirectXGame\Engine\UI\UIBase.h" />

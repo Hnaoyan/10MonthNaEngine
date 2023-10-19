@@ -18,7 +18,6 @@ GameScene::GameScene()
 	cageModel_.reset(Model::CreateFromObj("Cage", true));
 	startModel_.reset(Model::CreateFromObj("start", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
-	//blockModel_.reset(Model::CreateFromObj("block", true));
 
 }
 
@@ -36,7 +35,12 @@ void GameScene::Initialize() {
 	baseCamera_->SetPosition({ 10.0f, 20.0f, -70.0f });
 	baseCamera_->SetRotation({ 0.0f, 0.0f, 0.0f });
 
-	collisionManager = make_unique<CollisionManager>();
+	// エフェクト
+	effectManager_ = make_unique<EffectManager>();
+	effectManager_->Initialize();
+	// パーティクルエフェクト
+	particleManager_ = make_unique<ParticleManager>();
+	particleManager_->Initialize(baseCamera_->GetViewPlayer());
 
 	// ゲームシーン用
 
@@ -47,6 +51,7 @@ void GameScene::Initialize() {
 	// マップ
 	mapSystem_ = make_unique<MapSystem>();
 	mapSystem_->Initialize(stageNum);
+	mapSystem_->SetParticleManager(particleManager_.get());
 
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
@@ -90,12 +95,7 @@ void GameScene::Initialize() {
 	// 待機アニメーションを設定していく
 	SetWaitingAnimation();
 
-	// エフェクト
-	effectManager_ = make_unique<EffectManager>();
-	effectManager_->Initialize();
-	// パーティクルエフェクト
-	particleManager_ = make_unique<ParticleManager>();
-	particleManager_->Initialize(baseCamera_->GetViewPlayer());
+	
 
 	// 敵の数カウント
 	// テクスチャ
@@ -130,7 +130,6 @@ void GameScene::Update()
 	//if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 	//	sceneNum = TITLE;
 	//}
-
 	/// カメラ関係の更新処理
 	CameraUpdate();
 
@@ -142,10 +141,9 @@ void GameScene::Update()
 		particleManager_->SetRequest(ParticleManager::PatternNum::kExplosion);
 	}
 	if (input_->TriggerKey(DIK_0)) {
-		//particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
-		sceneNum = TITLE;
-		//Vector3 pos = { 0,0,0 };
-		//particleManager_->Test(pos);
+		particleManager_->SetRequest(ParticleManager::PatternNum::kMove);
+		//sceneNum = TITLE;
+		//particleManager_->Test(Vector3(0,0,0));
 	}
 
 	if(effectManager_->IsStop()){
@@ -202,6 +200,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+
 
 	//uiManager_->Draw();
 

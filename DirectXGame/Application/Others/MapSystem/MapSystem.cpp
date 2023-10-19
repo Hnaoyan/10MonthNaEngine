@@ -409,6 +409,7 @@ void MapSystem::MakeSound()
 void MapSystem::GameClear()
 {
 	if (!goalOpened_) {
+		// ゴールエフェクトの準備
 		goalOpened_ = true;
 		for (bool capturedEnemy : capturedEnemy_) {
 			if (!capturedEnemy) {
@@ -416,6 +417,14 @@ void MapSystem::GameClear()
 				break;
 			}
 		}
+	}
+	if(goalOpened_)
+	{
+		particleManager_->GoalEffectSetting(Vector3(MapSystem::kSquareSize_.x * initialStageData_.goalPosition_.x,
+			MapSystem::kSquareSize_.y * initialStageData_.goalPosition_.y, -10.0f));
+
+		particleManager_->CatchEnemyGenerate(Vector3(MapSystem::kSquareSize_.x * initialStageData_.goalPosition_.x,
+			MapSystem::kSquareSize_.y * initialStageData_.goalPosition_.y, -10.0f));
 	}
 
 	if (playerPosition_.x == initialStageData_.goalPosition_.x &&

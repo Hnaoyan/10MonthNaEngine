@@ -54,6 +54,8 @@ public:
 
 	void SetRequest(PatternNum number) { patternRequest_ = number; }
 
+	void SetOpen(bool isOpen) { goalOpen_.isNow = isOpen; }
+
 private: // enumクラスの管理系
 	/// <summary>
 	/// 分岐変数
@@ -92,6 +94,25 @@ private: // パターンの更新と初期化関数
 	/// 爆発エフェクトの更新
 	/// </summary>
 	void ExplosionUpdate();
+
+public:
+	/// <summary>
+	/// ゴール解放時の設定
+	/// </summary>
+	void GoalEffectSetting(const Vector3& pos);
+
+	/// <summary>
+	/// ゴールが解放されてる時のエフェクト
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="scale"></param>
+	void GoalEffectUpdate();
+
+	/// <summary>
+	/// 捕まえた際のエフェクト
+	/// </summary>
+	void CatchEnemyGenerate(const Vector3& pos);
+
 #pragma endregion
 private:
 	/// <summary>
@@ -105,18 +126,6 @@ private:
 	void ParticleProcess();
 
 	/// <summary>
-	/// パーティクルの追加（板ポリ
-	/// </summary>
-	/// <param name="position"></param>
-	/// <param name="velocity"></param>
-	void AddParticle2D(Vector3& position, Vector3& velocity);
-	/// <summary>
-	/// パーティクルの追加（ブロック
-	/// </summary>
-	/// <param name="position"></param>
-	/// <param name="velocity"></param>
-	void AddParticle3D(Vector3& position,Vector3& velocity);
-	/// <summary>
 	/// 波エフェクトの追加
 	/// </summary>
 	/// <param name="pos"></param>
@@ -128,6 +137,21 @@ private:
 	/// <param name="pos"></param>
 	/// <param name="velo"></param>
 	void AddExplosion(const Vector3& pos, const Vector3& velo);
+
+	/// <summary>
+	/// ゴール用エフェクトの追加
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="velo"></param>
+	void AddGoalParticle(const Vector3& pos, const Vector3& velo, const Vector3& scale);
+
+	/// <summary>
+	/// かごに入った時のエフェクト
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="velo"></param>
+	/// <param name="scale"></param>
+	void AddSmokeParticle(const Vector3& pos, const Vector3& scale);
 
 	/// <summary>
 	/// json管理
@@ -143,5 +167,8 @@ private:
 	std::unique_ptr<Model> cubeModel_;
 
 	ViewProjection* view_ = nullptr;
+
+	Vector3 goalPosition_ = {};
+	PatternControl goalOpen_{ 0,30,false };
 };
 

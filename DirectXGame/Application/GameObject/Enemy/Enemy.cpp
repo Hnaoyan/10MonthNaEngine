@@ -36,7 +36,7 @@ void Enemy::Update(const Vector2& position)
 #endif // _DEBUG
 
 	position_ = position;
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -10.0f };
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -15.0f };
 	worldTransform_.UpdateMatrix();
 
 }
@@ -54,7 +54,7 @@ void Enemy::Setting(const Vector2& position)
 	// ワールドトランスフォーム
 	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -10.0f };
 	worldTransform_.rotation_ = { -1.5f,0.0f,0.0f };
-	worldTransform_.scale_ = { 10.0f,10.0f,10.0f };
+	worldTransform_.scale_ = { 8.0f,8.0f,8.0f };
 	worldTransform_.UpdateMatrix();
 
 }

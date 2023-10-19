@@ -6,6 +6,7 @@
 #include <variant>
 
 #include "../Application/Others/Command/Command.h"
+#include "ParticleManager.h"
 
 // 前方宣言
 class Player;
@@ -220,6 +221,8 @@ public: // ポインタアクセッサ
 	void SetEnemiesManager(EnemiesManager* enemiesManager) { enemiesManager_ = enemiesManager; }
 	// ブロックマネージャー
 	void SetBlockManager(BlockManager* blockManager) { blockManager_ = blockManager; }
+	// パーティクルマネージャー
+	void SetParticleManager(ParticleManager* particleManager) { particleManager_ = particleManager; }
 	// プレイヤー
 	void SetPlayer(Player* player) { player_ = player; }
 	// スタート
@@ -288,6 +291,9 @@ private: // ポインタ
 	// ブロックマネージャー
 	BlockManager* blockManager_;
 	
+	// パーティクルマネージャー
+	ParticleManager* particleManager_;
+
 	// プレイヤー
 	Player* player_;
 
