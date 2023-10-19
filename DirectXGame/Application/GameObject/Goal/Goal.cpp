@@ -36,10 +36,6 @@ void Goal::Update()
 	ApplyGlobalVariables();
 #endif // _DEBUG
 
-	ImGui::Begin("goal");
-	ImGui::DragFloat3("rota", &worldTransform_.rotation_.x, 0.01f, -6.0f, 6.0f);
-	ImGui::End();
-
 	worldTransform_.UpdateMatrix();
 
 }
@@ -55,7 +51,7 @@ void Goal::Setting(const Vector2& position)
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -0.01f };
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -0.04f };
 	worldTransform_.rotation_ = { 4.71f,0.0f,0.0f };
 	worldTransform_.scale_ = { 5.0f,5.0f,5.0f };
 	worldTransform_.UpdateMatrix();

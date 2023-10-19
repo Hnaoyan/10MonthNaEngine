@@ -169,6 +169,6 @@ private:
 	ViewProjection* view_ = nullptr;
 
 	Vector3 goalPosition_ = {};
-	PatternControl goalOpen_{ 0,30,false };
+	PatternControl goalOpen_ = { 0,30,false };
 };
 

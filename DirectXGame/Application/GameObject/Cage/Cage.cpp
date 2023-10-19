@@ -50,7 +50,7 @@ void Cage::Setting(const Vector2& position)
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -20.0f };
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -15.0f };
 	worldTransform_.rotation_ = { -1.5f,0.0f,0.0f };
 	worldTransform_.scale_ = { 7.5f,7.5f,7.5f };
 	model_->SetAlphaValue(0.85f);

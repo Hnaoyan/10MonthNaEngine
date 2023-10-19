@@ -50,8 +50,8 @@ void GameScene::Initialize() {
 
 	// マップ
 	mapSystem_ = make_unique<MapSystem>();
-	mapSystem_->Initialize(stageNum);
 	mapSystem_->SetParticleManager(particleManager_.get());
+	mapSystem_->Initialize(stageNum);
 
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());

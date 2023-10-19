@@ -84,8 +84,8 @@ void Block::FallAnimation(float startPoint, float endPoint)
 		isFallNow_ = false;
 	}
 	else {
-		fall_t_ += 0.02f;
+		fall_t_ += 1.0f / 20.0f;
 	}
-	worldTransform_.translation_.z = MathCalc::EaseOutCubicF(fall_t_, startPoint, endPoint);
+	worldTransform_.translation_.z = MathCalc::EaseInCubicF(fall_t_, startPoint, endPoint);
 	worldTransform_.UpdateMatrix();
 }
