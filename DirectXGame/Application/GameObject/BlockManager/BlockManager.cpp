@@ -77,8 +77,17 @@ void BlockManager::Update()
 void BlockManager::Draw(const ViewProjection& viewProjection)
 {
 
-	for (Block* block : blocks_) {
-		block->Draw(viewProjection);
+	//15*15
+	uint32_t num = 0;
+	for (int i = 14; i >= 0; i--) {
+		for (int j = 0; j < 7; j++) {
+			num = i * 15 + j;
+			blocks_[num]->Draw(viewProjection);
+			num = i * 15 + 14 - j;
+			blocks_[num]->Draw(viewProjection);
+		}
+		num = i * 15 + 7;
+		blocks_[num]->Draw(viewProjection);
 	}
 
 }
