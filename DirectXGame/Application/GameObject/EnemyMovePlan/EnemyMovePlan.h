@@ -56,6 +56,7 @@ public: // アクセッサ
 	/// <returns></returns>
 	Vector2 GetPosition() { return position_; }
 
+	void SetRotate(float direct) { directRotate_ = direct; }
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -67,5 +68,6 @@ private: // メンバ変数
 	// 現在のマス
 	Vector2 position_;
 
+	float directRotate_;
 };
 

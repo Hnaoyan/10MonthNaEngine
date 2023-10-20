@@ -78,6 +78,12 @@ public: // メンバ関数
 	/// <returns></returns>
 	Cage* GetCage(Vector2 posision);
 
+	/// <summary>
+	/// 方向取得
+	/// </summary>
+	/// <param name="rotate"></param>
+	void SetDirect(float rotate) { direct_ = rotate; }
+
 private: //メンバ関数
 
 	/// <summary>
@@ -110,5 +116,6 @@ private: // メンバ変数
 	// マップシステム
 	MapSystem* mapSystem_;
 
+	float direct_ = 0;
 };
 

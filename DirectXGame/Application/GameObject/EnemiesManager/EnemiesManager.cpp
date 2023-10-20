@@ -56,10 +56,13 @@ void EnemiesManager::Update()
 			int enemyMapY = static_cast<int>(enemy->GetPosition().y);
 			EnemyDangerUpdate(enemyMapX, enemyMapY);
 		}
+		enemy->SetRotate(direct_);
+		enemy->Update(mapSystem_->GetEnemyPosition().at(i));
 		i++;
 	}
 	i = 0;
 	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
+		enemyMovePlan->SetRotate(direct_);
 		enemyMovePlan->Update(mapSystem_->GetNextEnemyPosition().at(i));
 		i++;
 	}

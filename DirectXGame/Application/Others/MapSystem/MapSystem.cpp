@@ -354,17 +354,21 @@ void MapSystem::EnemyMovePlan()
 			if (distanceX < distanceY) {
 				if (playerPosition_.y < enemyPosition_.at(i).y) {
 					nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y - 1.0f;
+					enemiesManager_->SetDirect(0);
 				}
 				else {
 					nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y + 1.0f;
+					enemiesManager_->SetDirect(3.14f);
 				}
 			}
 			else {
 				if (playerPosition_.x < enemyPosition_.at(i).x) {
 					nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x - 1.0f;
+					enemiesManager_->SetDirect(-1.57f);
 				}
 				else {
 					nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x + 1.0f;
+					enemiesManager_->SetDirect(1.57f);
 				}
 			}
 

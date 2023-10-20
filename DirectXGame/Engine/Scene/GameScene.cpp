@@ -14,7 +14,7 @@ GameScene::GameScene()
 	playerModel_.reset(Model::CreateFromObj("player", true));
 	blockModel_.reset(Model::CreateFromObj("block", true));
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
-	enemyMovePlanModel_.reset(Model::CreateFromObj("enemyMovePlan", true));
+	enemyMovePlanModel_.reset(Model::CreateFromObj("Arrow", true));
 	cageModel_.reset(Model::CreateFromObj("Cage", true));
 	startModel_.reset(Model::CreateFromObj("start", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
