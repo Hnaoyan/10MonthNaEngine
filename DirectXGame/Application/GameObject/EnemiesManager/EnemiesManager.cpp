@@ -201,6 +201,20 @@ Cage* EnemiesManager::GetCage(Vector2 posision)
 	return nullptr;
 }
 
+void EnemiesManager::ActionAnimationInitialize()
+{
+	for (Enemy* enemy : enemies_) {
+		enemy->ActionAnimationInitialize();
+	}
+}
+
+void EnemiesManager::ActionAnimationUpdate()
+{
+	for (Enemy* enemy : enemies_) {
+		enemy->ActionAnimationUpdate();
+	}
+}
+
 void EnemiesManager::EnemyDangerUpdate(int x, int y)
 {
 

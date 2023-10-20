@@ -35,6 +35,10 @@ public: // メンバ関数
 	/// </summary>
 	void Setting(const Vector2& position);
 
+	void ActionAnimationInitialize();
+
+	void ActionAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -70,5 +74,10 @@ private: // メンバ変数
 	Vector2 position_;
 
 	float rotate_;
+
+	// アニメーションの最初の座標
+	Vector2 animationStartPosition_;
+	// アニメーションの補間レート
+	float animationT_;
 };
 

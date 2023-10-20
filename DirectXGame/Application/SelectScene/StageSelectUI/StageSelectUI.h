@@ -89,5 +89,9 @@ private: // メンバ変数
 	// ステージナンバー
 	uint32_t stageNum_;
 
+	// 動きの変数
+	float waveAnimation_t_;
+	Vector2 waveVelocity_ = {};
+
 };
 

@@ -74,7 +74,7 @@ void StageSelectScene::Update()
 			sceneNum = GAMESCENE;
 		}
 	}
-
+	stageSelectUI_->Update();
 }
 
 void StageSelectScene::Draw()

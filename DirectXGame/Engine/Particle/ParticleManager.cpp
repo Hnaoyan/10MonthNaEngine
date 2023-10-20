@@ -14,6 +14,7 @@ ParticleManager::ParticleManager()
 {
 	planeModel_.reset(Model::CreatePlane());
 	cubeModel_.reset(Model::CreateFromObj("block", true));
+	deadEffectModel_.reset(Model::CreateFromObj("player", true));
 	texture_ = TextureManager::Load("plane/test.png");
 	goalEffectTexture_ = texture_;
 	waveEffectTexture_ = TextureManager::Load("plane/test2.png");
@@ -120,44 +121,76 @@ void ParticleManager::ExplosionSetting()
 {
 }
 
-void ParticleManager::ExplosionUpdate()
+void ParticleManager::ExplosionUpdate(const Vector3& position)
 {
-	float pos_z = 40.0f;
+	//float pos_z = 40.0f;
+	//// 右
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,-1 });
+	//// 右上
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,-1 });
+	//// 右下
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,-1 });
+	//// 左
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,-1 });
+	//// 左上
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,-1 });
+	//// 左下
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,-1 });
+	//// 上
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,-1 });
+	//// 下
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,0 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,-1 });
+	//// 奥手前
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,0,1 });
+	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,0,-1 });
 	// 右
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,-1 });
+	AddExplosion(position, { 1,0,0 });
+	AddExplosion(position, { 1,0,1 });
+	AddExplosion(position, { 1,0,-1 });
 	// 右上
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,-1 });
+	AddExplosion(position, { 1,1,0 });
+	AddExplosion(position, { 1,1,1 });
+	AddExplosion(position, { 1,1,-1 });
 	// 右下
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,-1 });
+	AddExplosion(position, { 1,-1,0 });
+	AddExplosion(position, { 1,-1,1 });
+	AddExplosion(position, { 1,-1,-1 });
 	// 左
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,-1 });
+	AddExplosion(position, { -1,0,0 });
+	AddExplosion(position, { -1,0,1 });
+	AddExplosion(position, { -1,0,-1 });
 	// 左上
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,-1 });
+	AddExplosion(position, { -1,1,0 });
+	AddExplosion(position, { -1,1,1 });
+	AddExplosion(position, { -1,1,-1 });
 	// 左下
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,-1 });
+	AddExplosion(position, { -1,-1,0 });
+	AddExplosion(position, { -1,-1,1 });
+	AddExplosion(position, { -1,-1,-1 });
 	// 上
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,-1 });
+	AddExplosion(position, { 0,1,0 });
+	AddExplosion(position, { 0,1,1 });
+	AddExplosion(position, { 0,1,-1 });
 	// 下
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,0 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,-1 });
-	// 奥手前
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,0,1 });
-	AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,0,-1 });
+	AddExplosion(position, { 0,-1,0 });
+	AddExplosion(position, { 0,-1,1 });
+	AddExplosion(position, { 0,-1,-1 });
 }
 
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
@@ -186,12 +219,13 @@ void ParticleManager::CatchEnemyGenerate(const Vector3& pos)
 
 void ParticleManager::RandomRespown(const Vector3& point)
 {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 10; i++) {
 		Vector3 resPos = { (float)(rand() % 5 - 2) + point.x,(float)(rand() % 5 - 2) + point.y ,(float)(rand() % 5 - 2) + point.z };
 		Vector3 inverseVect = VectorLib::Subtract(resPos, point);
-		float speed = 5.0f;
-		float deltaTime = (1.0f / 60.0f) * speed;
-		inverseVect = VectorLib::Scaler(inverseVect, deltaTime);
+		float speed = 1.5f;
+		//float deltaTime = (1.0f / 60.0f) * speed;
+		inverseVect = VectorLib::Scaler(MathCalc::Normalize(inverseVect), speed);
+		inverseVect.y += 3.0f;
 		AddExplosion(resPos, inverseVect);
 	}
 }
@@ -210,7 +244,7 @@ void ParticleManager::AddWave(const Vector3& pos, const Vector3& scale)
 void ParticleManager::AddExplosion(const Vector3& pos, const Vector3& velo)
 {
 	ParticleExplosion* newParticle = new ParticleExplosion();
-	newParticle->Initialize(cubeModel_.get(), texture_);
+	newParticle->Initialize(deadEffectModel_.get(), texture_);
 	newParticle->SetPosition(pos);
 	newParticle->SetVelocity(velo);
 	newParticle->SetRotate(Vector3(1.65f, 0.0f, 0.0f));
