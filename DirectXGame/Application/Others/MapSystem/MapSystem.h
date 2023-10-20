@@ -215,6 +215,9 @@ public: // アクセッサ
 	// エネミーの次の位置
 	std::vector<Vector2> GetNextEnemyPosition() { return nextEnemyPosition_; }
 
+	// エネミーが起きている時
+	std::vector<bool> GetEnemyAwake() { return enemyAwake_; }
+
 public: // ポインタアクセッサ
 
 	// エネミーズマネージャー

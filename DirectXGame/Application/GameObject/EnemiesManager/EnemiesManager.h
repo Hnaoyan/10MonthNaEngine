@@ -27,7 +27,7 @@ public: // メンバ関数
 	/// <param name="mapSystem">マップシステム</param>
 	/// <param name="enemyModel">エネミーモデル</param>
 	/// <param name="cageModel">ケージモデル</param>
-	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, size_t enemyCount, size_t cageCount);
+	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount);
 
 	/// <summary>
 	/// 更新
@@ -78,6 +78,13 @@ public: // メンバ関数
 	/// <returns></returns>
 	Cage* GetCage(Vector2 posision);
 
+private: //メンバ関数
+
+	/// <summary>
+	///  エネミー危険範囲更新
+	/// </summary>
+	void EnemyDangerUpdate(int x, int y);
+
 private: // メンバ変数
 
 	// エネミーズ
@@ -94,6 +101,11 @@ private: // メンバ変数
 	std::vector<Cage*> cages_;
 	// モデル
 	Model* cageModel_ = nullptr;
+
+	// エネミー危険範囲
+	std::list<WorldTransform> enemyDangerPositions_;
+	// モデル
+	Model* enemyDangerModel_;
 
 	// マップシステム
 	MapSystem* mapSystem_;

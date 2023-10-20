@@ -19,6 +19,7 @@ GameScene::GameScene()
 	startModel_.reset(Model::CreateFromObj("start", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
 	skyDomeModel_.reset(Model::CreateFromObj("tenkyu", true));
+	enemyDagerModel_.reset(Model::CreateFromObj("enemyDanger", true));
 
 }
 
@@ -78,7 +79,7 @@ void GameScene::Initialize() {
 
 	// エネミー
 	enemiesManager_ = make_unique<EnemiesManager>();
-	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
+	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
@@ -363,6 +364,13 @@ void GameScene::Reset()
 	animationManager_->Reset();
 	// 待機アニメーションを設定していく
 	SetWaitingAnimation();
+
+	// マップシステムクラスからの更新情報取得
+	player_->Update(mapSystem_->GetPlayerPosition());
+	blockManager_->Update();
+	enemiesManager_->Update();
+	start_->Update();
+	goal_->Update();
 
 }
 

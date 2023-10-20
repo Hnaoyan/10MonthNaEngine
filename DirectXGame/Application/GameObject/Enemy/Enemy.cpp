@@ -28,7 +28,7 @@ void Enemy::Initialize(Model* model, const Vector2& position)
 
 }
 
-void Enemy::Update(const Vector2& position)
+void Enemy::Update(const Vector2& position, bool enemyAwake)
 {
 
 #ifdef _DEBUG
@@ -36,7 +36,15 @@ void Enemy::Update(const Vector2& position)
 #endif // _DEBUG
 
 	position_ = position;
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -15.0f };
+	float positionZ = 0.0f;
+	if (enemyAwake) {
+		positionZ = -15.0f;
+	}
+	else {
+		positionZ = -10.0f;
+	}
+
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, positionZ };
 	worldTransform_.UpdateMatrix();
 
 }

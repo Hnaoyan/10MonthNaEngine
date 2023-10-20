@@ -22,7 +22,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const Vector2& position);
+	void Update(const Vector2& position, bool enemyAwake);
 
 	/// <summary>
 	/// 描画

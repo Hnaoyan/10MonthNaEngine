@@ -23,7 +23,7 @@ EnemiesManager::~EnemiesManager()
 
 }
 
-void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, size_t enemyCount, size_t cageCount)
+void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount)
 {
 
 	// マップシステム
@@ -35,16 +35,27 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* 
 
 	cageModel_ = cageModel;
 
+	enemyDangerModel_ = enemyDangerModel;
+
 	Setting(enemyCount, cageCount);
 
 }
 
 void EnemiesManager::Update()
 {
+	// エネミー危険範囲
+	enemyDangerPositions_.clear();
 
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
-		enemy->Update(mapSystem_->GetEnemyPosition().at(i));
+		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i));
+		// エネミー危険範囲
+		if (!mapSystem_->GetEnemyAwake().at(i)) {
+			// エネミー位置
+			int enemyMapX = static_cast<int>(enemy->GetPosition().x);
+			int enemyMapY = static_cast<int>(enemy->GetPosition().y);
+			EnemyDangerUpdate(enemyMapX, enemyMapY);
+		}
 		i++;
 	}
 	i = 0;
@@ -76,6 +87,9 @@ void EnemiesManager::Draw(const ViewProjection& viewProjection)
 		cage->Draw(viewProjection);
 	}
 
+	for (WorldTransform enemyDangerPosition : enemyDangerPositions_) {
+		enemyDangerModel_->Draw(enemyDangerPosition, viewProjection);
+	}
 }
 
 void EnemiesManager::Setting(size_t enemyCount, size_t cageCount)
@@ -183,4 +197,55 @@ Cage* EnemiesManager::GetCage(Vector2 posision)
 		}
 	}
 	return nullptr;
+}
+
+void EnemiesManager::EnemyDangerUpdate(int x, int y)
+{
+
+		float enemyPositionZ = -5.1f;
+		// 左
+		int enemyMapLeft = x - 1;
+		if (enemyMapLeft >= 0) {
+			if (mapSystem_->GetMap()[y][enemyMapLeft] == MapSystem::MapNumber::Road) {
+				WorldTransform worldTransform;
+				worldTransform.Initialize();
+				worldTransform.translation_ = { static_cast<float>(enemyMapLeft) * MapSystem::kSquareSize_.x, static_cast<float>(y) * MapSystem::kSquareSize_.y, enemyPositionZ };
+				worldTransform.UpdateMatrix();
+				enemyDangerPositions_.push_back(worldTransform);
+			}
+		}
+		// 右
+		int enemyMapRight = x + 1;
+		if (enemyMapRight < MapSystem::kMapSize_.x) {
+			if (mapSystem_->GetMap()[y][enemyMapRight] == MapSystem::MapNumber::Road) {
+				WorldTransform worldTransform;
+				worldTransform.Initialize();
+				worldTransform.translation_ = { static_cast<float>(enemyMapRight) * MapSystem::kSquareSize_.x, static_cast<float>(y) * MapSystem::kSquareSize_.y, enemyPositionZ };
+				worldTransform.UpdateMatrix();
+				enemyDangerPositions_.push_back(worldTransform);
+			}
+		}
+		// 上
+		int enemyMapTop = y + 1;
+		if (enemyMapTop < MapSystem::kMapSize_.y) {
+			if (mapSystem_->GetMap()[enemyMapTop][x] == MapSystem::MapNumber::Road) {
+				WorldTransform worldTransform;
+				worldTransform.Initialize();
+				worldTransform.translation_ = { static_cast<float>(x) * MapSystem::kSquareSize_.x, static_cast<float>(enemyMapTop) * MapSystem::kSquareSize_.y, enemyPositionZ };
+				worldTransform.UpdateMatrix();
+				enemyDangerPositions_.push_back(worldTransform);
+			}
+		}
+		// 下
+		int enemyMapBottom = y - 1;
+		if (enemyMapBottom >= 0) {
+			if (mapSystem_->GetMap()[enemyMapBottom][x] == MapSystem::MapNumber::Road) {
+				WorldTransform worldTransform;
+				worldTransform.Initialize();
+				worldTransform.translation_ = { static_cast<float>(x) * MapSystem::kSquareSize_.x, static_cast<float>(enemyMapBottom) * MapSystem::kSquareSize_.y, enemyPositionZ };
+				worldTransform.UpdateMatrix();
+				enemyDangerPositions_.push_back(worldTransform);
+			}
+		}
+
 }
