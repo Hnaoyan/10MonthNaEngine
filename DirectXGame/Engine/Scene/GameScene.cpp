@@ -19,7 +19,7 @@ GameScene::GameScene()
 	startModel_.reset(Model::CreateFromObj("start", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
 	skyDomeModel_.reset(Model::CreateFromObj("tenkyu", true));
-	enemyDagerModel_.reset(Model::CreateFromObj("enemyDanger", true));
+	enemyDagerModel_.reset(Model::CreateFromObj("danger", true));
 
 	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
 }

@@ -204,7 +204,7 @@ Cage* EnemiesManager::GetCage(Vector2 posision)
 void EnemiesManager::EnemyDangerUpdate(int x, int y)
 {
 
-		float enemyPositionZ = -5.1f;
+		float enemyPositionZ = -7.0f;
 		// 左
 		int enemyMapLeft = x - 1;
 		if (enemyMapLeft >= 0) {
