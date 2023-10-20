@@ -133,9 +133,9 @@ private: // VibrationAnimation
 	// めり込み位置
 	Vector3 vibrationAnimationFillPostion_;
 	// スタート角度
-
+	Vector3 vibrationAnimationStartRotate_;
 	// エンド角度
-
+	Vector3 vibrationAnimationEndRotate_;
 	// ジャンプサイズ
 	Vector3 vibrationAnimationJumpScale_;
 	// めり込みサイズ

@@ -33,7 +33,7 @@ void AnimationManager::ActionUpdate()
 	WaitUpdate();
 
 	actionAnimation_.animationTimer_++;
-	if (actionAnimation_.animationTimer_ == actionAnimation_.animationTime_) {
+	if (actionAnimation_.animationTimer_ > actionAnimation_.animationTime_) {
 		actionAnimation_.isAnimation_ = false;
 		actionAnimation_.animations_.clear();
 	}
