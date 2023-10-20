@@ -31,7 +31,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 設定
 	/// </summary>
-	void Setting();
+	void Setting(size_t stageNum);
 
 	/// <summary>
 	/// 右移動

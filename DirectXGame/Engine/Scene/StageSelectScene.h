@@ -31,6 +31,11 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void Setting(Scene preScene) override;
+
 private: // メンバ関数
 
 	void MoveRight();

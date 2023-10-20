@@ -129,6 +129,16 @@ void StageSelectScene::Draw()
 
 }
 
+void StageSelectScene::Setting(Scene preScene)
+{
+
+	if (preScene == GAMESCENE) {
+		stageSelectUI_->SetStageNum(stageNum);
+		stagePhot_->Setting(stageNum);
+	}
+
+}
+
 void StageSelectScene::MoveRight()
 {
 

@@ -183,6 +183,12 @@ void GameScene::Update()
 	}
 	ImGui::End();
 
+	// ESCでゲームセレクトへ
+	if (input_->TriggerKey(DIK_ESCAPE)) {
+		sceneNum = STAGESELECT;
+	}
+
+
 }
 
 void GameScene::Draw() {

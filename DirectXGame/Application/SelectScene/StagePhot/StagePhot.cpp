@@ -33,7 +33,7 @@ void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax
 	// ステージナンバー
 	stageMax_ = stageMax;
 
-	Setting();
+	Setting(0);
 
 }
 
@@ -52,17 +52,13 @@ void StagePhot::Draw()
 
 }
 
-void StagePhot::Setting()
+void StagePhot::Setting(size_t stageNum)
 {
-	// スプライトのテクスチャ
-	sprite_[0]->SetTextureHandle(textureHandles_[stageMax_ - 2]);
-	sprite_[1]->SetTextureHandle(textureHandles_[stageMax_ - 1]);
-	sprite_[2]->SetTextureHandle(textureHandles_[0]);
-	sprite_[3]->SetTextureHandle(textureHandles_[1]);
-	sprite_[4]->SetTextureHandle(textureHandles_[2]);
 
 	// ステージナンバー
-	stageNum_ = 0;
+	stageNum_ = stageNum;
+	// スプライトのテクスチャ
+	TextureHandleChange();
 
 }
 
