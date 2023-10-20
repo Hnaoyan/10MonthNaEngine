@@ -21,6 +21,7 @@ GameScene::GameScene()
 	skyDomeModel_.reset(Model::CreateFromObj("tenkyu", true));
 	enemyDagerModel_.reset(Model::CreateFromObj("enemyDanger", true));
 
+	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
 }
 
 void GameScene::Initialize() {
@@ -115,6 +116,10 @@ void GameScene::Initialize() {
 	captureEnemyUI_->Initialize(enmyKazuTextureHandle_, numTextureHandle_, slashTextureHandle_);
 	// マップシステム
 	mapSystem_->SetCaptureEnemyUI(captureEnemyUI_.get());
+	// ステージ番号
+	stageNumberUI_ = make_unique<StageNumberUI>();
+	stageNumberUI_->Initialize(stageNumberTextureHandle_);
+	stageNumberUI_->Setting(stageNum);
 
 	// マネージャーの設定
 	//player_->SetEffectManager(effectManager_.get());
@@ -163,6 +168,7 @@ void GameScene::Update()
 		// 最終ステージじゃない
 		if (stageNum != stageMax - 1) {
 			stageNum++;
+			stageNumberUI_->Setting(stageNum);
 			Setting(GAMESCENE);
 		}
 	}
@@ -231,6 +237,7 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	captureEnemyUI_->Draw();
+	stageNumberUI_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

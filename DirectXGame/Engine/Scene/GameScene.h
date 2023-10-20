@@ -31,7 +31,8 @@
 #include "Application/Others/AnimationManager/AnimationManager.h"
 
 // UI
-#include "Application/UI/CaptureEnemyUI/CaptureEnemyUI.h"
+#include "UI/CaptureEnemyUI/CaptureEnemyUI.h"
+#include "UI/StageNumberUI/StageNumberUI.h"
 
 
 /// <summary>
@@ -181,6 +182,8 @@ private:	// メンバポインタ
 	
 	// 敵の数カウント
 	std::unique_ptr<CaptureEnemyUI> captureEnemyUI_;
+	// ステージ番号
+	std::unique_ptr<StageNumberUI> stageNumberUI_;
 	// テクスチャ
 	// EnemyKazu
 	uint32_t enmyKazuTextureHandle_;
@@ -188,6 +191,8 @@ private:	// メンバポインタ
 	uint32_t numTextureHandle_;
 	// slash
 	uint32_t slashTextureHandle_;
+	// テクスチャハンドル
+	uint32_t stageNumberTextureHandle_;
 
 	WorldTransform skyDomeWorldTransform_;
 

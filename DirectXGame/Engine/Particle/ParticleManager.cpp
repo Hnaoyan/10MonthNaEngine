@@ -203,7 +203,7 @@ void ParticleManager::AddWave(const Vector3& pos, const Vector3& scale)
 	newParticle->Initialize(planeModel_.get(), waveEffectTexture_);
 	newParticle->SetPosition(pos);
 	newParticle->SetScale(scale);
-	newParticle->SetAddScaleValue(Vector2(0.1f, 0.1f));
+	newParticle->SetAddScaleValue(Vector2(0.6f, 0.6f));
 	particles_.push_back(newParticle);
 }
 
