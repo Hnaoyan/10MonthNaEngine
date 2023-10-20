@@ -10,7 +10,7 @@ void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTe
 	// 説明(上のやつ)
 	enemyCountTextureHandle_ = enemyCountTextureHandle;
 	enemyCountSize_ = {224.0f, 80.0f};
-	enemyCountPosition_ = { 1056.0f,  544.0f };
+	enemyCountPosition_ = { 1056.0f,  524.0f };
 	enemyCountSprite_.reset(Sprite::Create(enemyCountTextureHandle_, enemyCountPosition_, color, anchorpoint, false, false));
 	enemyCountSprite_->SetSize(enemyCountSize_);
 	enemyCountSprite_->Update();
