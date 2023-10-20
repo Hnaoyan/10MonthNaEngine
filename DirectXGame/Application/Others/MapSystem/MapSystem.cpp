@@ -373,14 +373,66 @@ void MapSystem::EnemyMovePlan()
 			// 重なっている
 			if (nextEnemyPosition_.at(i).x == nextEnemyPosition_.at(j).x &&
 				nextEnemyPosition_.at(i).y == nextEnemyPosition_.at(j).y) {
+				
+				// jが動けない
 				if (capturedEnemy_.at(j) || !enemyAwake_.at(j)) {
-					// iを動かす
+					// 一旦戻す
 					nextEnemyPosition_.at(i) = enemyPosition_.at(i);
+					// 行動する
+					int distanceX = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(i).x));
+					int distanceY = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
+
+					// さっきとは別の軸で動く
+					if (distanceX > distanceY) {
+						if (playerPosition_.y < enemyPosition_.at(i).y) {
+							nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y - 1.0f;
+						}
+						else {
+							nextEnemyPosition_.at(i).y = enemyPosition_.at(i).y + 1.0f;
+						}
+					}
+					else {
+						if (playerPosition_.x < enemyPosition_.at(i).x) {
+							nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x - 1.0f;
+						}
+						else {
+							nextEnemyPosition_.at(i).x = enemyPosition_.at(i).x + 1.0f;
+						}
+					}
 				}
+
+				// iが動けない
+				else if (capturedEnemy_.at(i) || !enemyAwake_.at(i)) {
+					// 一旦戻す
+					nextEnemyPosition_.at(j) = enemyPosition_.at(j);
+					// 行動する
+					int distanceX = static_cast<int>(std::fabsf(playerPosition_.x - enemyPosition_.at(j).x));
+					int distanceY = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(j).y));
+
+					// さっきとは別の軸で動く
+					if (distanceX > distanceY) {
+						if (playerPosition_.y < enemyPosition_.at(j).y) {
+							nextEnemyPosition_.at(j).y = enemyPosition_.at(j).y - 1.0f;
+						}
+						else {
+							nextEnemyPosition_.at(j).y = enemyPosition_.at(j).y + 1.0f;
+						}
+					}
+					else {
+						if (playerPosition_.x < enemyPosition_.at(j).x) {
+							nextEnemyPosition_.at(j).x = enemyPosition_.at(j).x - 1.0f;
+						}
+						else {
+							nextEnemyPosition_.at(j).x = enemyPosition_.at(j).x + 1.0f;
+						}
+					}
+				}
+
+				// 両者ともに動ける
 				else {
-					// jを動かす
 					nextEnemyPosition_.at(j) = enemyPosition_.at(j);
 				}
+
 			}
 		}
 	}
