@@ -204,6 +204,17 @@ void Player::MoveAnimationUpdate()
 		// 親子関係外す
 		worldTransform_.translation_ = { worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2] };
 		worldTransform_.rotation_ = worldTransform_.rotation_ + moveAnimationWorldTransform_.rotation_;
+		// 角度
+		if (worldTransform_.rotation_.x <= -6.28f || worldTransform_.rotation_.x <= 6.28f) {
+			worldTransform_.rotation_.x = 0.0f;
+		}
+		if (worldTransform_.rotation_.y <= -6.28f || worldTransform_.rotation_.y <= 6.28f) {
+			worldTransform_.rotation_.y = 0.0f;
+		}
+		if (worldTransform_.rotation_.z <= -6.28f || worldTransform_.rotation_.z <= 6.28f) {
+			worldTransform_.rotation_.z = 0.0f;
+		}
+
 		worldTransform_.parent_ = nullptr;
 		// トランスフォーム
 		worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, -10.0f };
@@ -224,12 +235,21 @@ void Player::VibrationAnimationInitialize()
 	// t
 	animationT_ = 0;
 	// tマックス
-	animationTMax_ = 40;
+	animationTMax_ = 60;
 
-	// スタート角度
+	// スタート位置
 	vibrationAnimationGroundPostion_ = worldTransform_.translation_;
-	// エンド角度
+	// エンド位置
 	vibrationAnimationHighPostion_ = { worldTransform_.translation_ .x, worldTransform_.translation_.y, worldTransform_.translation_.z - 15.0f };
+	// めり込み位置
+	vibrationAnimationFillPostion_ = { worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z + 2.0f };
+
+	// 角度によって変更
+
+	// ジャンプサイズ
+	vibrationAnimationJumpScale_ = { 0.6f, 0.6f, 1.4f};
+	// めり込みサイズ
+	vibrationAnimationFillScale_ = { 1.4f, 1.4f, 0.6f};
 
 }
 
@@ -238,6 +258,53 @@ void Player::VibrationAnimationUpdate()
 
 	animationT_ += 1.0f / animationTMax_;
 
+	// ジャンプ準備 1/8
+	if (animationT_ < 1.0f / 8.0f) {
+		float t = animationT_ * 8.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.translation_ = MathCalc::EaseInQuadF(t, vibrationAnimationGroundPostion_, vibrationAnimationFillPostion_);
+		worldTransform_.scale_ = MathCalc::EaseInQuadF(t, Vector3{ 1.0f, 1.0f, 1.0f}, vibrationAnimationFillScale_);
+	}
+	// ジャンプ上昇 2/8
+	else if (animationT_ < 3.0f / 8.0f) {
+		float t = (animationT_ - 1.0f / 8.0f) * 8.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.translation_ = MathCalc::EaseOutQuadF(t, vibrationAnimationFillPostion_, vibrationAnimationHighPostion_);
+		worldTransform_.scale_ = MathCalc::EaseOutQuadF(t, vibrationAnimationFillScale_, vibrationAnimationJumpScale_);
+	}
+	// 回転         2/8
+	else if (animationT_ < 5.0f / 8.0f) {
+		float t = (animationT_ - 3.0f / 8.0f) * 8.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.rotation_.x = MathCalc::EaseInQuadF(t, 0.0f, 6.28f);
+		worldTransform_.scale_ = MathCalc::EaseInQuadF(t, vibrationAnimationJumpScale_, Vector3{ 1.0f, 1.0f, 1.0f });
+	}
+	// 下降         2/8
+	else if (animationT_ < 7.0f / 8.0f) {
+		float t = (animationT_ - 5.0f / 8.0f) * 8.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.translation_ = MathCalc::EaseInQuadF(t, vibrationAnimationHighPostion_, vibrationAnimationFillPostion_);
+		worldTransform_.scale_ = MathCalc::EaseInQuadF(t, Vector3{ 1.0f, 1.0f, 1.0f }, vibrationAnimationFillScale_);
+	}
+	// 硬直         1/8
+	else if (animationT_ < 1.0f) {
+		float t = (animationT_ - 7.0f / 8.0f) * 8.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.translation_ = MathCalc::EaseOutQuadF(t, vibrationAnimationFillPostion_, vibrationAnimationGroundPostion_);
+		worldTransform_.scale_ = MathCalc::EaseOutQuadF(t, vibrationAnimationFillScale_, Vector3{ 1.0f, 1.0f, 1.0f });
+	}
+
+	/*
 	if (animationT_ < 0.5f) {
 		float t = animationT_ * 2.0f;
 		if (t > 1.0f) {
@@ -252,6 +319,7 @@ void Player::VibrationAnimationUpdate()
 		}
 		worldTransform_.translation_ = MathCalc::EaseOutQuadF(t, vibrationAnimationHighPostion_, vibrationAnimationGroundPostion_);
 	}
+	*/
 
 	worldTransform_.UpdateMatrix();
 

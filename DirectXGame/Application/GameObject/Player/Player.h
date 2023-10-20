@@ -125,12 +125,21 @@ private: // MoveAnimation
 	// 親
 	WorldTransform moveAnimationWorldTransform_;
 
-
 private: // VibrationAnimation
-	// スタート角度
+	// スタート位置
 	Vector3 vibrationAnimationGroundPostion_;
-	// エンド角度
+	// エンド位置
 	Vector3 vibrationAnimationHighPostion_;
+	// めり込み位置
+	Vector3 vibrationAnimationFillPostion_;
+	// スタート角度
+
+	// エンド角度
+
+	// ジャンプサイズ
+	Vector3 vibrationAnimationJumpScale_;
+	// めり込みサイズ
+	Vector3 vibrationAnimationFillScale_;
 
 };
 
