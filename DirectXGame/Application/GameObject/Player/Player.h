@@ -22,8 +22,9 @@ public: // サブクラス
 		None,
 		kLeft,
 		kRight,
-		kTop,
-		kBottom
+		kUp,
+		kDown,
+		kVibration
 	};
 
 public: // メンバ関数
@@ -64,6 +65,9 @@ public: // アニメーション
 
 	void MoveAnimationUpdate();
 
+	void VibrationAnimationInitialize();
+
+	void VibrationAnimationUpdate();
 
 private: //メンバ関数
 
@@ -80,6 +84,12 @@ public: // アクセッサ
 	/// <param name="position"></param>
 	void SetPosition(const Vector2& position) { position_ = position; }
 
+	/// <summary>
+	/// tマックス(uint32_t)
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetAnimationTMax() { return static_cast<uint32_t>(animationTMax_); }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -91,23 +101,31 @@ private: // メンバ変数
 	// 現在のマス
 	Vector2 position_;
 
-	// MoveAnimation
-	// スタート角度
-	Vector3 moveAnimationStartRotate_;
-	// エンド角度
-	Vector3 moveAnimationEndRotate_;
-	// t
-	float moveAnimationT_;
-	// tマックス
-	float moveAnimationTMax_;
-	// 親
-	WorldTransform moveAnimationWorldTransform_;
-
 	// 行動アニメーションをした
 	bool isActionAnimation_;
 
 	// 行動アニメーション番号
 	ActionNumber actionNumber_;
+
+	// t
+	float animationT_;
+	// tマックス
+	float animationTMax_;
+
+private: // MoveAnimation
+	// スタート角度
+	Vector3 moveAnimationStartRotate_;
+	// エンド角度
+	Vector3 moveAnimationEndRotate_;
+	// 親
+	WorldTransform moveAnimationWorldTransform_;
+
+
+private: // VibrationAnimation
+	// スタート角度
+	Vector3 vibrationAnimationGroundPostion_;
+	// エンド角度
+	Vector3 vibrationAnimationHighPostion_;
 
 };
 

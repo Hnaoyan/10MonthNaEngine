@@ -40,12 +40,12 @@ void AnimationManager::ActionUpdate()
 
 }
 
-void AnimationManager::ActionStart()
+void AnimationManager::ActionStart(uint32_t animationTime)
 {
 
 	actionAnimation_.isAnimation_ = true;
 	actionAnimation_.animationTimer_ = 0;
-
+	actionAnimation_.animationTime_ = animationTime;
 }
 
 void AnimationManager::GameClearUpdate()

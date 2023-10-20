@@ -86,6 +86,8 @@ void MapSystem::Update(Command::CommandNumber commandNumber)
 	// 音を鳴らす
 	if (comandNumber_ == Command::CommandNumber::Button) {
 		MakeSound();
+		// 移動成功アニメーション
+		player_->ActionAnimationInitialize(static_cast<uint32_t>(Player::ActionNumber::kVibration));
 	}
 	else if (comandNumber_ == Command::CommandNumber::Restart) {
 		Restart();

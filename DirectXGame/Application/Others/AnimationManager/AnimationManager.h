@@ -51,7 +51,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 行動開始時設定
 	/// </summary>
-	void ActionStart();
+	void ActionStart(uint32_t animationTime);
 
 	/// <summary>
 	/// ゲームクリア時更新処理
@@ -112,6 +112,9 @@ public: // アクセッサ
 
 	// ゲームオーバーアニメーションしているか
 	bool GetIsGameOverAnimation() { return gameOverAnimation_.isAnimation_; }
+
+	// 行動アニメーションタイム設定
+	void SetActionAnimationTime(uint32_t animationTime) { actionAnimation_.animationTime_ = animationTime; }
 
 private: // メンバ変数
 

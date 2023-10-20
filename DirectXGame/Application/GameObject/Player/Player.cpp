@@ -20,7 +20,7 @@ void Player::Initialize(Model* model,const Vector2& position)
 	model_ = model;
 
 	// tマックス
-	moveAnimationTMax_ = 20;
+	animationTMax_ = 20;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -97,11 +97,14 @@ void Player::ActionAnimationInitialize(uint32_t num)
 	case Player::ActionNumber::kRight:
 		MoveAnimationInitialize(actionNumber_);
 		break;
-	case Player::ActionNumber::kTop:
+	case Player::ActionNumber::kUp:
 		MoveAnimationInitialize(actionNumber_);
 		break;
-	case Player::ActionNumber::kBottom:
+	case Player::ActionNumber::kDown:
 		MoveAnimationInitialize(actionNumber_);
+		break;
+	case Player::ActionNumber::kVibration:
+		VibrationAnimationInitialize();
 		break;
 	default:
 		break;
@@ -120,11 +123,14 @@ void Player::ActionAnimationUpdate()
 	case Player::ActionNumber::kRight:
 		MoveAnimationUpdate();
 		break;
-	case Player::ActionNumber::kTop:
+	case Player::ActionNumber::kUp:
 		MoveAnimationUpdate();
 		break;
-	case Player::ActionNumber::kBottom:
+	case Player::ActionNumber::kDown:
 		MoveAnimationUpdate();
+		break;
+	case Player::ActionNumber::kVibration:
+		VibrationAnimationUpdate();
 		break;
 	default:
 		break;
@@ -136,12 +142,15 @@ void Player::ActionAnimationUpdate()
 void Player::MoveAnimationInitialize(ActionNumber actionNumber)
 {
 
+	// t
+	animationT_ = 0;
+	// tマックス
+	animationTMax_ = 20;
+
 	// MoveAnimation
 	// スタート角度
 	moveAnimationStartRotate_ = { 0.0f,0.0f,0.0f };
 	moveAnimationEndRotate_ = { 0.0f,0.0f,0.0f };
-	// t
-	moveAnimationT_ = 0;
 	// 親
 	moveAnimationWorldTransform_.translation_ = worldTransform_.translation_;
 	moveAnimationWorldTransform_.translation_.z += MapSystem::kSquareSize_.y / 2.0f;
@@ -163,13 +172,13 @@ void Player::MoveAnimationInitialize(ActionNumber actionNumber)
 		moveAnimationWorldTransform_.translation_.x += MapSystem::kSquareSize_.x / 2.0f;
 		worldTransform_.translation_.x -= MapSystem::kSquareSize_.x / 2.0f;
 		break;
-	case ActionNumber::kTop:
+	case ActionNumber::kUp:
 		// エンド角度
 		moveAnimationEndRotate_.x += 1.57f;
 		moveAnimationWorldTransform_.translation_.y += MapSystem::kSquareSize_.y / 2.0f;
 		worldTransform_.translation_.y -= MapSystem::kSquareSize_.y / 2.0f;
 		break;
-	case ActionNumber::kBottom:
+	case ActionNumber::kDown:
 		// エンド角度
 		moveAnimationEndRotate_.x -= 1.57f;
 		moveAnimationWorldTransform_.translation_.y -= MapSystem::kSquareSize_.y / 2.0f;
@@ -188,10 +197,10 @@ void Player::MoveAnimationInitialize(ActionNumber actionNumber)
 void Player::MoveAnimationUpdate()
 {
 
-	moveAnimationT_ += 1.0f / moveAnimationTMax_;
-	if (moveAnimationT_ >= 1.0f) {
-		moveAnimationT_ = 1.0f;
-		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(moveAnimationT_, moveAnimationStartRotate_, moveAnimationEndRotate_);
+	animationT_ += 1.0f / animationTMax_;
+	if (animationT_ >= 1.0f) {
+		animationT_ = 1.0f;
+		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(animationT_, moveAnimationStartRotate_, moveAnimationEndRotate_);
 		// 親子関係外す
 		worldTransform_.translation_ = { worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2] };
 		worldTransform_.rotation_ = worldTransform_.rotation_ + moveAnimationWorldTransform_.rotation_;
@@ -200,11 +209,50 @@ void Player::MoveAnimationUpdate()
 		worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, -10.0f };
 	}
 	else {
-		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(moveAnimationT_, moveAnimationStartRotate_, moveAnimationEndRotate_);
+		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(animationT_, moveAnimationStartRotate_, moveAnimationEndRotate_);
 	}
 
 	// 更新
 	moveAnimationWorldTransform_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
+
+}
+
+void Player::VibrationAnimationInitialize()
+{
+
+	// t
+	animationT_ = 0;
+	// tマックス
+	animationTMax_ = 40;
+
+	// スタート角度
+	vibrationAnimationGroundPostion_ = worldTransform_.translation_;
+	// エンド角度
+	vibrationAnimationHighPostion_ = { worldTransform_.translation_ .x, worldTransform_.translation_.y, worldTransform_.translation_.z - 15.0f };
+
+}
+
+void Player::VibrationAnimationUpdate()
+{
+
+	animationT_ += 1.0f / animationTMax_;
+
+	if (animationT_ < 0.5f) {
+		float t = animationT_ * 2.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.translation_ = MathCalc::EaseInQuadF(t, vibrationAnimationGroundPostion_, vibrationAnimationHighPostion_);
+	}
+	else {
+		float t = (animationT_ - 0.5f) * 2.0f;
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		worldTransform_.translation_ = MathCalc::EaseOutQuadF(t, vibrationAnimationHighPostion_, vibrationAnimationGroundPostion_);
+	}
+
 	worldTransform_.UpdateMatrix();
 
 }

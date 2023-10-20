@@ -322,7 +322,7 @@ void GameScene::WaitingCommand()
 		start_->Update();
 		goal_->Update();
 		// アニメーションマネージャーアクションスタート
-		animationManager_->ActionStart();
+		animationManager_->ActionStart(player_->GetAnimationTMax());
 		//プレイヤー
 		animationManager_->SetActionAnimation(std::bind(&Player::ActionAnimationUpdate, player_.get()));
 		// ブロックマネージャー
