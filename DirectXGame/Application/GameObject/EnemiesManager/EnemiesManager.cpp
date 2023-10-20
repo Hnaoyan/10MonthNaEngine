@@ -48,6 +48,7 @@ void EnemiesManager::Update()
 
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
+		enemy->SetRotate(direct_);
 		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i));
 		// エネミー危険範囲
 		if (!mapSystem_->GetEnemyAwake().at(i)) {
@@ -56,8 +57,6 @@ void EnemiesManager::Update()
 			int enemyMapY = static_cast<int>(enemy->GetPosition().y);
 			EnemyDangerUpdate(enemyMapX, enemyMapY);
 		}
-		enemy->SetRotate(direct_);
-		enemy->Update(mapSystem_->GetEnemyPosition().at(i));
 		i++;
 	}
 	i = 0;
