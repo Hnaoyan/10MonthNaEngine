@@ -84,8 +84,10 @@ void GameScene::Initialize() {
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
 	// ゴール
+	goalRedTextureHandle_ = TextureManager::Load("goal/Goal_00.png");
+	goalBlueTextureHandle_ = TextureManager::Load("goal/Goal_01.png");
 	goal_ = make_unique<Goal>();
-	goal_->Initialize(goalModel_.get(), mapSystem_->GetInitialGoalPosition());
+	goal_->Initialize(goalModel_.get(), mapSystem_->GetInitialGoalPosition(), goalRedTextureHandle_, goalBlueTextureHandle_);
 	// マップシステム
 	mapSystem_->SetGoal(goal_.get());
 

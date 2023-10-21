@@ -173,6 +173,8 @@ private:	// メンバポインタ
 	// ゴール
 	std::unique_ptr<Goal> goal_;
 	std::unique_ptr<Model> goalModel_;
+	uint32_t goalRedTextureHandle_;
+	uint32_t goalBlueTextureHandle_;
 
 	// マネージャ系
 	std::unique_ptr<EffectManager> effectManager_;

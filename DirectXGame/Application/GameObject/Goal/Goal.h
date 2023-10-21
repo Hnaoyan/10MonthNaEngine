@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position);
+	void Initialize(Model* model, const Vector2& position, uint32_t textureHandleRed, uint32_t textureHandleBlue);
 
 	/// <summary>
 	/// 更新
@@ -50,6 +50,12 @@ public: // アクセッサ
 	/// <param name="position"></param>
 	void SetPosition(const Vector2& position) { position_ = position; }
 
+	/// <summary>
+	/// ゴールが開いたか
+	/// </summary>
+	/// <param name="goalOpened"></param>
+	void SetGoalOpened(bool goalOpened) { goalOpened_ = goalOpened; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -61,6 +67,11 @@ private: // メンバ変数
 	// 現在のマス
 	Vector2 position_;
 
+	// テクスチャハンドル
+	uint32_t textureHandles_[2];
+
+	// ゴールが開いたか
+	bool goalOpened_;
 
 };
 

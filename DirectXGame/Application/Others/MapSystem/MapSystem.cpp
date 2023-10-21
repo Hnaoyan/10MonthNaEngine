@@ -6,7 +6,6 @@
 #include "Application/GameObject/EnemiesManager/EnemiesManager.h"
 #include "Application/GameObject/BlockManager/BlockManager.h"
 #include "Application/GameObject/Player/Player.h"
-#include "Application/GameObject/Start/Start.h"
 #include "Application/GameObject/Goal/Goal.h"
 
 #include "Application/UI/CaptureEnemyUI/CaptureEnemyUI.h"
@@ -481,6 +480,10 @@ void MapSystem::GameClear()
 			}
 		}
 	}
+	
+	// ゴール
+	goal_->SetGoalOpened(goalOpened_);
+
 	if(goalOpened_)
 	{
 		particleManager_->GoalEffectSetting(Vector3(MapSystem::kSquareSize_.x * initialStageData_.goalPosition_.x,

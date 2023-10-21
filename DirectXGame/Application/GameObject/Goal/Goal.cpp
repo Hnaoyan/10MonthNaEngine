@@ -2,7 +2,7 @@
 #include "Others/MapSystem/MapSystem.h"
 #include "ImGuiManager.h"
 
-void Goal::Initialize(Model* model, const Vector2& position)
+void Goal::Initialize(Model* model, const Vector2& position, uint32_t textureHandleRed, uint32_t textureHandleBlue)
 {
 
 	// ワールドトランスフォーム
@@ -10,6 +10,13 @@ void Goal::Initialize(Model* model, const Vector2& position)
 
 	// モデル
 	model_ = model;
+
+	// テクスチャハンドル
+	textureHandles_[0] = textureHandleRed;
+	textureHandles_[1] = textureHandleBlue;
+	
+	// ゴールが開いたか
+	goalOpened_ = false;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -42,8 +49,12 @@ void Goal::Update()
 
 void Goal::Draw(const ViewProjection& viewProjection)
 {
-
-	model_->Draw(worldTransform_, viewProjection);
+	if (goalOpened_) {
+		model_->Draw(worldTransform_, viewProjection, textureHandles_[1]);
+	}
+	else {
+		model_->Draw(worldTransform_, viewProjection, textureHandles_[0]);
+	}
 
 }
 

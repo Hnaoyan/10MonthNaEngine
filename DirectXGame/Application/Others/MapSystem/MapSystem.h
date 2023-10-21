@@ -12,7 +12,6 @@
 class Player;
 class EnemiesManager;
 class BlockManager;
-class Start;
 class Goal;
 class CaptureEnemyUI;
 
@@ -228,8 +227,6 @@ public: // ポインタアクセッサ
 	void SetParticleManager(ParticleManager* particleManager) { particleManager_ = particleManager; }
 	// プレイヤー
 	void SetPlayer(Player* player) { player_ = player; }
-	// スタート
-	void SetStart(Start* start) { start_ = start; }
 	// ゴール
 	void SetGoal(Goal* goal) { goal_ = goal; }
 	// 敵の数表示
@@ -299,9 +296,6 @@ private: // ポインタ
 
 	// プレイヤー
 	Player* player_;
-
-	// スタート
-	Start* start_;
 
 	// ゴール
 	Goal* goal_;
