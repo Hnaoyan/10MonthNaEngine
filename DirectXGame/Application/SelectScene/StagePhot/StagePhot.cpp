@@ -1,5 +1,6 @@
 #include "StagePhot.h"
 #include "../Engine/Math/MathCalc.h"
+#include <numbers>
 
 void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax)
 {
@@ -39,8 +40,14 @@ void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax
 
 void StagePhot::Update()
 {
+	waveAnimation_t_ += 0.01f;
+	float amplitude = 0.3f;
+	float fre = 5.0f;
+	waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
 
-
+	positions_[2] = VectorLib::Add(positions_[2], waveVelocity_);
+	sprite_[2]->SetPosition(positions_[2]);
+	sprite_[2]->Update();
 }
 
 void StagePhot::Draw()
