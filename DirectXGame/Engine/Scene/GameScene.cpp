@@ -257,6 +257,8 @@ void GameScene::Setting(Scene preScene)
 	}
 
 	mapSystem_->Setting(stageNum);
+	// ステージ番号UIの更新
+	stageNumberUI_->Setting(stageNum);
 
 	Reset();
 
