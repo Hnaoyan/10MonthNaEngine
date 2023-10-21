@@ -89,7 +89,7 @@ void Enemy::ActionAnimationUpdate()
 		animationT_ += (1.0f / 20.0f);
 		Vector3 easePosition = MathCalc::EaseInCubicF(animationT_,
 			Vector3(animationStartPosition_.x, animationStartPosition_.y, 0),
-			Vector3(animationEndPosition_.x, animationEndPosition_.y, 0));
+			Vector3(position_.x, position_.y, 0));
 		easePosition = { easePosition.x * MapSystem::kSquareSize_.x ,easePosition.y * MapSystem::kSquareSize_.y };
 		worldTransform_.translation_.x = easePosition.x;
 		worldTransform_.translation_.y = easePosition.y;
