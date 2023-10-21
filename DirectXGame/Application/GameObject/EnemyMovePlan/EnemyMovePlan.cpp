@@ -56,7 +56,7 @@ void EnemyMovePlan::Setting(const Vector2& position)
 	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -5.0f };
 	directRotate_ = 3.14f;
 	worldTransform_.rotation_ = { 1.5f,0.0f,directRotate_ };
-	worldTransform_.scale_ = { 5.0f,3.0f,5.0f };
+	worldTransform_.scale_ = { 5.0f,5.0f,5.0f };
 	worldTransform_.UpdateMatrix();
 
 }

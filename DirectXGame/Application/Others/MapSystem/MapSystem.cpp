@@ -238,6 +238,8 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	if (haveMoved) {
 		// エネミーの移動
 		EnemyMove();
+		// アニメーション初期化
+		enemiesManager_->ActionAnimationInitialize();
 		// 移動成功アニメーション
 		player_->ActionAnimationInitialize(commandNumber);
 	}

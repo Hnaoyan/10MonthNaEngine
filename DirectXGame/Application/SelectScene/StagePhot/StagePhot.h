@@ -68,5 +68,9 @@ private:
 	size_t stageMax_;
 	size_t stageNum_;
 
+	// 動きの変数
+	float waveAnimation_t_;
+	Vector2 waveVelocity_ = {};
+
 };
 

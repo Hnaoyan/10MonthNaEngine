@@ -85,10 +85,11 @@ private: // パターンの更新
 	/// </summary>
 	void ExplosionSetting();
 
+public:
 	/// <summary>
 	/// 爆発エフェクトの更新
 	/// </summary>
-	void ExplosionUpdate();
+	void ExplosionUpdate(const Vector3& position);
 
 public: // 外部で呼び出す準備関数
 	/// <summary>
@@ -158,6 +159,7 @@ private:
 
 	std::unique_ptr<Model> planeModel_;
 	std::unique_ptr<Model> cubeModel_;
+	std::unique_ptr<Model> deadEffectModel_;
 
 	ViewProjection* view_ = nullptr;
 

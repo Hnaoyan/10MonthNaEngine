@@ -84,6 +84,10 @@ public: // メンバ関数
 	/// <param name="rotate"></param>
 	void SetDirect(float rotate) { direct_ = rotate; }
 
+	void ActionAnimationInitialize();
+
+	void ActionAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>

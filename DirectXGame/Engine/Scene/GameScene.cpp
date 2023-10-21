@@ -138,6 +138,10 @@ void GameScene::Update()
 	effectManager_->Update();
 	particleManager_->Update();
 
+	if (Input::GetInstance()->TriggerKey(DIK_V)) {
+		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+	}
+
 	if(effectManager_->IsStop()){
 		// ヒットストップ関係の時間処理
 		effectManager_->HitStopUpdate();
@@ -324,6 +328,8 @@ void GameScene::WaitingCommand()
 		animationManager_->SetActionAnimation(std::bind(&Player::ActionAnimationUpdate, player_.get()));
 		// ブロックマネージャー
 		animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
+		// エネミーマネージャー
+		//animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
 	}
 
 }

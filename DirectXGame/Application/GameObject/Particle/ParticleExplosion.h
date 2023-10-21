@@ -22,6 +22,14 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(ViewProjection& viewProjection) override;
 
+	/// <summary>
+	/// 初速度設定
+	/// </summary>
+	/// <param name="speed"></param>
+	void SetInitialSpeed(float speed);
+
+private:
+	float initialSpeedY_ = 3.0f;
 
 };
 

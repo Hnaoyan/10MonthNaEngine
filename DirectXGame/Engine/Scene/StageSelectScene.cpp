@@ -74,7 +74,10 @@ void StageSelectScene::Update()
 			sceneNum = GAMESCENE;
 		}
 	}
-
+	if (!isMoveLeft_ && !isMoveRight_) {
+		stagePhot_->Update();
+		stageSelectUI_->Update();
+	}
 }
 
 void StageSelectScene::Draw()

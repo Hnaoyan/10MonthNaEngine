@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "MathCalc.h"
 #include "Others/MapSystem/MapSystem.h"
 
 void Enemy::Initialize(Model* model, const Vector2& position)
@@ -44,6 +45,7 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 		positionZ = -10.0f;
 	}
 
+	worldTransform_.translation_.z = positionZ;
 	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, positionZ };
 	worldTransform_.rotation_.z = (-1.57f) + rotate_;
 	worldTransform_.UpdateMatrix();
@@ -62,11 +64,34 @@ void Enemy::Setting(const Vector2& position)
 
 	// ワールドトランスフォーム
 	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -2.0f };
+	position_ = { worldTransform_.translation_.x,worldTransform_.translation_.y };
 	rotate_ = -1.57f;
 	worldTransform_.rotation_ = { -1.5f,0.0f,rotate_ };
 	worldTransform_.scale_ = { 8.0f,8.0f,8.0f };
 	worldTransform_.UpdateMatrix();
 
+}
+
+void Enemy::ActionAnimationInitialize()
+{
+	animationT_ = 0;
+}
+
+void Enemy::ActionAnimationUpdate()
+{
+	if (animationT_ >= 1.0f) {
+		animationT_ = 1.0f;
+	}
+	else {
+		animationT_ += (1.0f + 20.0f);
+		Vector3 easePosition = MathCalc::EaseInQuadF(animationT_,
+			Vector3(animationStartPosition_.x, animationStartPosition_.y, 0),
+			Vector3(position_.x, position_.y, 0));
+		worldTransform_.translation_.x = easePosition.x;
+		worldTransform_.translation_.y = easePosition.y;
+	}
+	
+	worldTransform_.UpdateMatrix();
 }
 
 void Enemy::ApplyGlobalVariables()
