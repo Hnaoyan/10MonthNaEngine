@@ -373,7 +373,7 @@ void MapSystem::EnemyMovePlan()
 					enemiesManager_->SetDirect(1.57f);
 				}
 			}
-
+			//enemiesManager_->SetAnimationPosition(nextEnemyPosition_.at(i));
 		}
 	}
 

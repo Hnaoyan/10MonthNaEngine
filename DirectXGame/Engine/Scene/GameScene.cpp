@@ -331,7 +331,7 @@ void GameScene::WaitingCommand()
 		// ブロックマネージャー
 		animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
 		// エネミーマネージャー
-		//animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
+		animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
 	}
 
 }
