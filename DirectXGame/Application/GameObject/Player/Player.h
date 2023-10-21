@@ -19,11 +19,15 @@ public: // サブクラス
 
 	// 移動番号
 	enum class ActionNumber{
-		None,
+		kNone,
 		kLeft,
 		kRight,
 		kUp,
 		kDown,
+		kLeftError,
+		kRightError,
+		kUpError,
+		kDownError,
 		kVibration
 	};
 
@@ -64,6 +68,10 @@ public: // アニメーション
 	void MoveAnimationInitialize(ActionNumber actionNumber);
 
 	void MoveAnimationUpdate();
+
+	void MoveErrorAnimationInitialize(ActionNumber actionNumber);
+
+	void MoveErrorAnimationUpdate();
 
 	void VibrationAnimationInitialize();
 
@@ -125,6 +133,11 @@ private: // MoveAnimation
 	// 親
 	WorldTransform moveAnimationWorldTransform_;
 
+	// スタートスケール
+	Vector3 moveAnimationStartScale_;
+	// 中間スケール
+	Vector3 moveAnimationMiddleScale_;
+
 private: // VibrationAnimation
 	// スタート位置
 	Vector3 vibrationAnimationGroundPostion_;
@@ -142,4 +155,3 @@ private: // VibrationAnimation
 	Vector3 vibrationAnimationFillScale_;
 
 };
-

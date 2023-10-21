@@ -68,7 +68,7 @@ void Player::Setting(const Vector2& position)
 	worldTransform_.parent_ = nullptr;
 	worldTransform_.UpdateMatrix();
 
-	actionNumber_ = ActionNumber::None;
+	actionNumber_ = ActionNumber::kNone;
 
 }
 
@@ -92,16 +92,16 @@ void Player::ActionAnimationInitialize(uint32_t num)
 	switch (actionNumber_)
 	{
 	case Player::ActionNumber::kLeft:
-		MoveAnimationInitialize(actionNumber_);
-		break;
 	case Player::ActionNumber::kRight:
-		MoveAnimationInitialize(actionNumber_);
-		break;
 	case Player::ActionNumber::kUp:
-		MoveAnimationInitialize(actionNumber_);
-		break;
 	case Player::ActionNumber::kDown:
 		MoveAnimationInitialize(actionNumber_);
+		break;
+	case Player::ActionNumber::kLeftError:
+	case Player::ActionNumber::kRightError:
+	case Player::ActionNumber::kUpError:
+	case Player::ActionNumber::kDownError:
+		MoveErrorAnimationInitialize(actionNumber_);
 		break;
 	case Player::ActionNumber::kVibration:
 		VibrationAnimationInitialize();
@@ -118,16 +118,16 @@ void Player::ActionAnimationUpdate()
 	switch (actionNumber_)
 	{
 	case Player::ActionNumber::kLeft:
-		MoveAnimationUpdate();
-		break;
 	case Player::ActionNumber::kRight:
-		MoveAnimationUpdate();
-		break;
 	case Player::ActionNumber::kUp:
-		MoveAnimationUpdate();
-		break;
 	case Player::ActionNumber::kDown:
 		MoveAnimationUpdate();
+		break;
+	case Player::ActionNumber::kLeftError:
+	case Player::ActionNumber::kRightError:
+	case Player::ActionNumber::kUpError:
+	case Player::ActionNumber::kDownError:
+		MoveErrorAnimationUpdate();
 		break;
 	case Player::ActionNumber::kVibration:
 		VibrationAnimationUpdate();
@@ -145,7 +145,12 @@ void Player::MoveAnimationInitialize(ActionNumber actionNumber)
 	// t
 	animationT_ = 0;
 	// tマックス
-	animationTMax_ = 20;
+	animationTMax_ = 10;
+
+	// スタートスケール
+	moveAnimationStartScale_ = worldTransform_.scale_;
+	// 中間スケール
+	moveAnimationMiddleScale_ = VectorLib::Add(worldTransform_.scale_, Vector3{ 0.2f, 0.2f, 0.2f});
 
 	// MoveAnimation
 	// スタート角度
@@ -220,6 +225,110 @@ void Player::MoveAnimationUpdate()
 		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(animationT_, moveAnimationStartRotate_, moveAnimationEndRotate_);
 	}
 
+	// 1.0f / 2.0f
+	if (animationT_ < 1.0f / 2.0f) {
+		float t = animationT_ * 2.0f;
+		worldTransform_.scale_ = MathCalc::EaseOutCubicF(t, moveAnimationStartScale_, moveAnimationMiddleScale_);
+	}
+	//  1.0f / 2.0f
+	else {
+		float t = (animationT_ - 1.0f / 2.0f) * 2.0f;
+		worldTransform_.scale_ = MathCalc::EaseInCubicF(t, moveAnimationMiddleScale_, moveAnimationStartScale_);
+	}
+
+	// 更新
+	moveAnimationWorldTransform_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
+
+}
+
+void Player::MoveErrorAnimationInitialize(ActionNumber actionNumber)
+{
+
+	// t
+	animationT_ = 0;
+	// tマックス
+	animationTMax_ = 20;
+
+	// スタートスケール
+	moveAnimationStartScale_ = worldTransform_.scale_;
+	// 中間スケール
+	moveAnimationMiddleScale_ = VectorLib::Add(worldTransform_.scale_, Vector3{ 0.2f, 0.2f, 0.2f });
+
+	// MoveAnimation
+	// スタート角度
+	moveAnimationStartRotate_ = { 0.0f,0.0f,0.0f };
+	moveAnimationEndRotate_ = { 0.0f,0.0f,0.0f };
+	// 親
+	moveAnimationWorldTransform_.translation_ = worldTransform_.translation_;
+	moveAnimationWorldTransform_.translation_.z += MapSystem::kSquareSize_.y / 2.0f;
+	moveAnimationWorldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
+
+	worldTransform_.translation_ = { 0.0f, 0.0f, -MapSystem::kSquareSize_.y / 2.0f };
+
+	switch (actionNumber)
+	{
+	case ActionNumber::kLeftError:
+		// エンド角度
+		moveAnimationEndRotate_.y += 1.0f;
+		moveAnimationWorldTransform_.translation_.x -= MapSystem::kSquareSize_.x / 2.0f;
+		worldTransform_.translation_.x += MapSystem::kSquareSize_.x / 2.0f;
+		break;
+	case ActionNumber::kRightError:
+		// エンド角度
+		moveAnimationEndRotate_.y -= 1.0f;
+		moveAnimationWorldTransform_.translation_.x += MapSystem::kSquareSize_.x / 2.0f;
+		worldTransform_.translation_.x -= MapSystem::kSquareSize_.x / 2.0f;
+		break;
+	case ActionNumber::kUpError:
+		// エンド角度
+		moveAnimationEndRotate_.x += 1.0f;
+		moveAnimationWorldTransform_.translation_.y += MapSystem::kSquareSize_.y / 2.0f;
+		worldTransform_.translation_.y -= MapSystem::kSquareSize_.y / 2.0f;
+		break;
+	case ActionNumber::kDownError:
+		// エンド角度
+		moveAnimationEndRotate_.x -= 1.0f;
+		moveAnimationWorldTransform_.translation_.y -= MapSystem::kSquareSize_.y / 2.0f;
+		worldTransform_.translation_.y += MapSystem::kSquareSize_.y / 2.0f;
+		break;
+	default:
+		break;
+	}
+	moveAnimationWorldTransform_.UpdateMatrix();
+	worldTransform_.parent_ = &moveAnimationWorldTransform_;
+	worldTransform_.UpdateMatrix();
+
+}
+
+void Player::MoveErrorAnimationUpdate()
+{
+
+	animationT_ += 1.0f / animationTMax_;
+	// 3.0f / 4.0f
+	if (animationT_ < 3.0f / 4.0f) {
+		float t = animationT_ * 4.0f / 3.0f;
+		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseOutCubicF(t, moveAnimationStartRotate_, moveAnimationEndRotate_);
+		worldTransform_.scale_ = MathCalc::EaseOutCubicF(t, moveAnimationStartScale_, moveAnimationMiddleScale_);
+	}
+	//  1.0f / 4.0f
+	else {
+		float t = (animationT_ - 3.0f / 4.0f) * 4.0f;
+		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(t, moveAnimationEndRotate_, moveAnimationStartRotate_);
+		worldTransform_.scale_ = MathCalc::EaseOutCubicF(t, moveAnimationMiddleScale_, moveAnimationStartScale_);
+	}
+
+	if (animationT_ >= 1.0f) {
+		animationT_ = 1.0f;
+		moveAnimationWorldTransform_.rotation_ = moveAnimationStartRotate_;
+		// 親子関係外す
+		worldTransform_.translation_ = { worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2] };
+		worldTransform_.rotation_ = worldTransform_.rotation_ + moveAnimationWorldTransform_.rotation_;
+		worldTransform_.parent_ = nullptr;
+		// トランスフォーム
+		worldTransform_.translation_ = { position_.x * MapSystem::kSquareSize_.x, position_.y * MapSystem::kSquareSize_.y, -10.0f };
+	}
+	
 	// 更新
 	moveAnimationWorldTransform_.UpdateMatrix();
 	worldTransform_.UpdateMatrix();
