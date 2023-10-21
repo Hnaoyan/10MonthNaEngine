@@ -20,6 +20,18 @@ public:
 	/// </summary>
 	void ApplyGlobalVariables();
 
+public: // オープニングアニメーション
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void OpeningAnimationInitialize();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void OpeningAnimationUpdate();
+
 public: // 設定・取得
 #pragma region セッターとゲッター
 	/// <summary>
@@ -69,13 +81,37 @@ public: // 設定・取得
 	/// <returns></returns>
 	Vector3 GetInitPosition() { return initPosition_; }
 
+	/// <summary>
+	/// オープニングアニメーションフレーム数
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetOpeningFrame() { return openingFrame_; }
+
 #pragma endregion
 private:
 
 	ViewProjection viewProjection_;
 
 	Vector3 initPosition_;
+	Vector3 initRotate_;
 
 	float fov_ = 45.0f;
+
+private: // オープニングアニメーション
+	
+	// オープニングスタート位置
+	Vector3 openingStartPostion_;
+	// オープニングエンド位置
+	Vector3 openingEndPostion_;
+	// オープニングスタート角度
+	Vector3 openingStartRotate_;
+	// オープニングエンド角度
+	Vector3 openingEndRotate_;
+
+	// フレーム数
+	uint32_t openingFrame_;
+	// t
+	float openingT_;
+
 };
 

@@ -51,7 +51,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 行動開始時設定
 	/// </summary>
-	void ActionStart(uint32_t animationTime);
+	void ActionInitialize(uint32_t animationTime);
 
 	/// <summary>
 	/// ゲームクリア時更新処理
@@ -61,7 +61,7 @@ public: // メンバ関数
 	/// <summary>
 	/// ゲームクリア開始時設定
 	/// </summary>
-	void GameClearStart();
+	void GameClearInitialize();
 
 	/// <summary>
 	/// ゲームオーバー時更新処理
@@ -71,7 +71,17 @@ public: // メンバ関数
 	/// <summary>
 	/// ゲームオーバー開始時設定
 	/// </summary>
-	void GameOverStart();
+	void GameOverInitialize();
+
+	/// <summary>
+	///  オープニング時更新処理
+	/// </summary>
+	void OpeningUpdate();
+
+	/// <summary>
+	/// オープニング開始時設定
+	/// </summary>
+	void OpeningInitialize();
 
 	/// <summary>
 	/// リセット
@@ -102,6 +112,12 @@ public: // メンバ関数
 	/// <param name="function">関数</param>
 	void SetGameOverAnimation(std::function<void()> function);
 
+	/// <summary>
+	/// オープニングアニメーション関数リスト追加
+	/// </summary>
+	/// <param name="function">関数</param>
+	void SetOpeningAnimation(std::function<void()> function);
+
 public: // アクセッサ
 
 	// 行動アニメーションしているか
@@ -113,8 +129,14 @@ public: // アクセッサ
 	// ゲームオーバーアニメーションしているか
 	bool GetIsGameOverAnimation() { return gameOverAnimation_.isAnimation_; }
 
+	// オープニングアニメーションしているか
+	bool GetIsOpeningAnimation() { return openingAnimation_.isAnimation_; }
+
 	// 行動アニメーションタイム設定
 	void SetActionAnimationTime(uint32_t animationTime) { actionAnimation_.animationTime_ = animationTime; }
+
+	// オープニングアニメーションタイム設定
+	void SetOpeningAnimationTime(uint32_t animationTime) { openingAnimation_.animationTime_ = animationTime; }
 
 private: // メンバ変数
 
@@ -129,6 +151,9 @@ private: // メンバ変数
 
 	// ゲームオーバーアニメーション
 	AnimationStruct gameOverAnimation_;
+
+	// オープニングアニメーション
+	AnimationStruct openingAnimation_;
 
 };
 

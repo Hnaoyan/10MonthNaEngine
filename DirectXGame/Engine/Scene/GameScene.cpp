@@ -149,17 +149,30 @@ void GameScene::Update()
 	// ヒットストップしていない
 	else {
 
-		//コマンド待ち
-		if (command_->GetAcceptingInput()) {
-			WaitingCommand();
+		// オープニングアニメーション
+		if (animationManager_->GetIsOpeningAnimation()) {
+			OpeningAnimation();
 		}
+		else if (animationManager_->GetIsGameClearAnimation()) {
 
-		//アニメーション
-		if (command_->GetAcceptingInput()) {
-			WaitingAnimation();
 		}
+		else if (animationManager_->GetIsGameOverAnimation()) {
+
+		}
+		// ゲーム中
 		else {
-			ActionAnimation();
+			//コマンド待ち
+			if (command_->GetAcceptingInput()) {
+				WaitingCommand();
+			}
+
+			//アニメーション
+			if (command_->GetAcceptingInput()) {
+				WaitingAnimation();
+			}
+			else {
+				ActionAnimation();
+			}
 		}
 
 	}
@@ -287,7 +300,9 @@ void GameScene::CameraUpdate()
 		baseCamera_->SetPosition(EffectManager::ShakeUpdate(baseCamera_->GetInitPosition(), kFloatType));
 	}
 	else {
-		baseCamera_->ResetPosition();
+		if (!animationManager_->GetIsOpeningAnimation()) {
+			baseCamera_->ResetPosition();
+		}
 	}
 
 	baseCamera_->Update();
@@ -318,20 +333,23 @@ void GameScene::WaitingCommand()
 		if (mapSystem_->GetIsRestart()) {
 			Reset();
 		}
-		// マップシステムクラスからの更新情報取得
-		player_->Update(mapSystem_->GetPlayerPosition());
-		blockManager_->Update();
-		enemiesManager_->Update();
-		start_->Update();
-		goal_->Update();
-		// アニメーションマネージャーアクションスタート
-		animationManager_->ActionStart(player_->GetAnimationTMax());
-		//プレイヤー
-		animationManager_->SetActionAnimation(std::bind(&Player::ActionAnimationUpdate, player_.get()));
-		// ブロックマネージャー
-		animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
-		// エネミーマネージャー
-		//animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
+		else {
+			// マップシステムクラスからの更新情報取得
+			player_->Update(mapSystem_->GetPlayerPosition());
+			blockManager_->Update();
+			enemiesManager_->Update();
+			start_->Update();
+			goal_->Update();
+			// アニメーションマネージャーアクションスタート
+			animationManager_->ActionInitialize(player_->GetAnimationTMax());
+			//プレイヤー
+			animationManager_->SetActionAnimation(std::bind(&Player::ActionAnimationUpdate, player_.get()));
+			// ブロックマネージャー
+			animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
+			// エネミーマネージャー
+			//animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
+		}
+
 	}
 
 }
@@ -358,6 +376,28 @@ void GameScene::ActionAnimation()
 
 }
 
+void GameScene::GameClearAnimation()
+{
+}
+
+void GameScene::GameOverAnimation()
+{
+}
+
+void GameScene::OpeningAnimation()
+{
+
+	// 行動アニメーションする
+	animationManager_->OpeningUpdate();
+
+	// 行動アニメーションカウントがマックスならコマンド待ち
+	if (!animationManager_->GetIsOpeningAnimation()) {
+		// コマンド待機状態へ
+		command_->SetAcceptingInput(true);
+	}
+
+}
+
 void GameScene::Reset()
 {
 
@@ -375,6 +415,12 @@ void GameScene::Reset()
 	animationManager_->Reset();
 	// 待機アニメーションを設定していく
 	SetWaitingAnimation();
+	// オープニングアニメーション
+	animationManager_->OpeningInitialize();
+	animationManager_->SetOpeningAnimation(std::bind(&BaseCamera::OpeningAnimationUpdate, baseCamera_.get()));
+	baseCamera_->OpeningAnimationInitialize();
+	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
+	command_->SetAcceptingInput(false);
 
 	// マップシステムクラスからの更新情報取得
 	player_->Update(mapSystem_->GetPlayerPosition());
@@ -392,11 +438,6 @@ void GameScene::SetWaitingAnimation()
 	//animationManager_->SetWaitingAnimation(std::bind(&Player::WaitingAnimationUpdate, player_.get()));
 
 }
-
-//void GameScene::SetActionAnimation()
-//{
-//
-//}
 
 void GameScene::ModelSetting()
 {

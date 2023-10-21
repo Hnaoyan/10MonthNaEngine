@@ -246,7 +246,7 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	// 失敗
 	else {
 		// 移動失敗アニメーション
-		player_->ActionAnimationInitialize(Command::CommandNumber::None);
+		//player_->ActionAnimationInitialize(Command::CommandNumber::None);
 
 	}
 

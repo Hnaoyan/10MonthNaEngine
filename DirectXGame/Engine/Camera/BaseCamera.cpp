@@ -1,5 +1,6 @@
 #include "BaseCamera.h"
 #include "ImGuiManager.h"
+#include <Math/MathCalc.h>
 
 void BaseCamera::Initialize()
 {
@@ -7,10 +8,14 @@ void BaseCamera::Initialize()
 	viewProjection_.Initialize();
 
 	// 位置・角度の設定
-	initPosition_ = { 73.0f, -80.0f, -95.0f };
+	initPosition_ = { 73.0f, -35.9f, -158.0f };
+	initRotate_ = { -0.550f, 0.0f, 0.0f};
 	viewProjection_.translate_ = initPosition_;
 	viewProjection_.rotation_ = { -0.926f,0.0f,0.0f };
 	fov_ = 45.0f;
+
+	OpeningAnimationInitialize();
+
 	// 調整項目クラスのインスタンス取得
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	// グループ名設定
@@ -22,6 +27,7 @@ void BaseCamera::Initialize()
 	globalVariables->AddItem(groupName, "scale", viewProjection_.scale_);
 	globalVariables->AddItem(groupName, "Fov", fov_);
 	ApplyGlobalVariables();
+
 }
 
 void BaseCamera::Update()
@@ -37,7 +43,7 @@ void BaseCamera::Update()
 //	ImGui::End();
 //#endif // _DEBUG
 
-	ApplyGlobalVariables();
+	//ApplyGlobalVariables();
 
 	// データの更新と転送
 	viewProjection_.SetFov(fov_);
@@ -56,6 +62,42 @@ void BaseCamera::ApplyGlobalVariables()
 	viewProjection_.rotation_ = globalVariables->GetVector3Value(groupName, "rotate");
 	viewProjection_.scale_ = globalVariables->GetVector3Value(groupName, "scale");
 	fov_ = globalVariables->GetFloatValue(groupName, "Fov");
+}
+
+void BaseCamera::OpeningAnimationInitialize()
+{
+
+	// オープニングスタート位置
+	openingStartPostion_ = { initPosition_.x, initPosition_.y - 100.0f, 0.0f};
+	// オープニングエンド位置
+	openingEndPostion_ = initPosition_;
+	// オープニングスタート角度
+	openingStartRotate_ = { -1.57f, 0.0f, 0.0f };
+	// オープニングエンド角度
+	openingEndRotate_ = initRotate_;
+
+	// フレーム数
+	openingFrame_ = 90;
+	// t
+	openingT_ = 0.0f;
+
+}
+
+void BaseCamera::OpeningAnimationUpdate()
+{
+	
+	//t計算
+	openingT_ += 1.0f / static_cast<float>(openingFrame_);
+	if (openingT_ > 1.0f) {
+		openingT_ = 1.0f;
+	}
+
+	viewProjection_.translate_ = MathCalc::EaseInCubicF(openingT_, openingStartPostion_, openingEndPostion_);
+	viewProjection_.rotation_ = MathCalc::EaseInCubicF(openingT_, openingStartRotate_, openingEndRotate_);
+
+	// ビュープロジェクション更新
+	viewProjection_.UpdateMatrix();
+
 }
 
 void BaseCamera::ResetPosition()

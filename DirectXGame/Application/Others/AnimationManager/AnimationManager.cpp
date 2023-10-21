@@ -12,6 +12,9 @@ void AnimationManager::Initialize()
 	// ゲームオーバーアニメーション
 	gameOverAnimation_.Initialize();
 
+	// オープニングアニメーション
+	openingAnimation_.Initialize();
+
 }
 
 void AnimationManager::WaitUpdate()
@@ -40,12 +43,13 @@ void AnimationManager::ActionUpdate()
 
 }
 
-void AnimationManager::ActionStart(uint32_t animationTime)
+void AnimationManager::ActionInitialize(uint32_t animationTime)
 {
 
 	actionAnimation_.isAnimation_ = true;
 	actionAnimation_.animationTimer_ = 0;
 	actionAnimation_.animationTime_ = animationTime;
+
 }
 
 void AnimationManager::GameClearUpdate()
@@ -56,14 +60,14 @@ void AnimationManager::GameClearUpdate()
 	}
 
 	gameClearAnimation_.animationTimer_++;
-	if (gameClearAnimation_.animationTimer_ == gameClearAnimation_.animationTime_) {
+	if (gameClearAnimation_.animationTimer_ > gameClearAnimation_.animationTime_) {
 		gameClearAnimation_.isAnimation_ = false;
 		gameClearAnimation_.animations_.clear();
 	}
 
 }
 
-void AnimationManager::GameClearStart()
+void AnimationManager::GameClearInitialize()
 {
 
 	gameClearAnimation_.isAnimation_ = true;
@@ -79,18 +83,41 @@ void AnimationManager::GameOverUpdate()
 	}
 
 	gameOverAnimation_.animationTimer_++;
-	if (gameOverAnimation_.animationTimer_ == gameOverAnimation_.animationTime_) {
+	if (gameOverAnimation_.animationTimer_ > gameOverAnimation_.animationTime_) {
 		gameOverAnimation_.isAnimation_ = false;
 		gameOverAnimation_.animations_.clear();
 	}
 
 }
 
-void AnimationManager::GameOverStart()
+void AnimationManager::GameOverInitialize()
 {
 
 	gameOverAnimation_.isAnimation_ = true;
 	gameOverAnimation_.animationTimer_ = 0;
+
+}
+
+void AnimationManager::OpeningUpdate()
+{
+
+	for (std::function<void()> function : openingAnimation_.animations_) {
+		function();
+	}
+
+	openingAnimation_.animationTimer_++;
+	if (openingAnimation_.animationTimer_ > openingAnimation_.animationTime_) {
+		openingAnimation_.isAnimation_ = false;
+		openingAnimation_.animations_.clear();
+	}
+	
+}
+
+void AnimationManager::OpeningInitialize()
+{
+
+	openingAnimation_.isAnimation_ = true;
+	openingAnimation_.animationTimer_ = 0;
 
 }
 
@@ -103,6 +130,7 @@ void AnimationManager::Reset()
 	actionAnimation_.Reset();
 	gameClearAnimation_.Reset();
 	gameOverAnimation_.Reset();
+	openingAnimation_.Reset();
 
 }
 
@@ -131,6 +159,13 @@ void AnimationManager::SetGameOverAnimation(std::function<void()> function)
 {
 
 	gameOverAnimation_.animations_.push_back(function);
+
+}
+
+void AnimationManager::SetOpeningAnimation(std::function<void()> function)
+{
+
+	openingAnimation_.animations_.push_back(function);
 
 }
 

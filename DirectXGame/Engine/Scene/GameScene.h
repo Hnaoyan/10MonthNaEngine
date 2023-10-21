@@ -95,6 +95,21 @@ private: // メンバ関数 ゲームシステム
 	void ActionAnimation();
 
 	/// <summary>
+	/// ゲームクリアアニメーション
+	/// </summary>
+	void GameClearAnimation();
+
+	/// <summary>
+	/// ゲームオーバーアニメーション
+	/// </summary>
+	void GameOverAnimation();
+
+	/// <summary>
+	/// オープニングアニメーション
+	/// </summary>
+	void OpeningAnimation();
+
+	/// <summary>
 	/// リセット
 	/// </summary>
 	void Reset();
@@ -103,11 +118,6 @@ private: // メンバ関数 ゲームシステム
 	/// 待機アニメーションセット
 	/// </summary>
 	void SetWaitingAnimation();
-
-	/// <summary>
-	/// 行動アニメーションセット
-	/// </summary>
-	void SetActionAnimation();
 
 public: // メンバ関数 モデル
 
