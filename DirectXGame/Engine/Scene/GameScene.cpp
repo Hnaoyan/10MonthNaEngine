@@ -16,7 +16,6 @@ GameScene::GameScene()
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
 	enemyMovePlanModel_.reset(Model::CreateFromObj("Arrow", true));
 	cageModel_.reset(Model::CreateFromObj("Cage", true));
-	startModel_.reset(Model::CreateFromObj("start", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
 	skyDomeModel_.reset(Model::CreateFromObj("tenkyu", true));
 	enemyDagerModel_.reset(Model::CreateFromObj("danger", true));
@@ -83,12 +82,6 @@ void GameScene::Initialize() {
 	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
-
-	// スタート
-	start_ = make_unique<Start>();
-	start_->Initialize(startModel_.get(), mapSystem_->GetInitialStartPosition());
-	// マップシステム
-	mapSystem_->SetStart(start_.get());
 
 	// ゴール
 	goal_ = make_unique<Goal>();
@@ -239,7 +232,6 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
 	enemiesManager_->Draw(viewProjection_);
-	start_->Draw(viewProjection_);
 	goal_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
@@ -338,7 +330,6 @@ void GameScene::WaitingCommand()
 			player_->Update(mapSystem_->GetPlayerPosition());
 			blockManager_->Update();
 			enemiesManager_->Update();
-			start_->Update();
 			goal_->Update();
 			// アニメーションマネージャーアクションスタート
 			animationManager_->ActionInitialize(player_->GetAnimationTMax());
@@ -404,7 +395,6 @@ void GameScene::Reset()
 	player_->Setting(mapSystem_->GetInitialPlayerPosition());
 	blockManager_->Setting();
 	enemiesManager_->Setting(mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
-	start_->Setting(mapSystem_->GetInitialStartPosition());
 	goal_->Setting(mapSystem_->GetInitialGoalPosition());
 
 	mapSystem_->SetIsRestart(false);
@@ -426,7 +416,6 @@ void GameScene::Reset()
 	player_->Update(mapSystem_->GetPlayerPosition());
 	blockManager_->Update();
 	enemiesManager_->Update();
-	start_->Update();
 	goal_->Update();
 
 }
