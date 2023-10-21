@@ -54,30 +54,30 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 
 void StageSelectUI::Update()
 {
-	waveAnimation_t_ += 0.01f;
-	float amplitude = 0.3f;
-	float fre = 5.0f;
-	waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
+	//waveAnimation_t_ += 0.01f;
+	//float amplitude = 0.3f;
+	//float fre = 5.0f;
+	//waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
 
-	// 上のUI
-	stageNumberPostion_ = VectorLib::Add(stageNumberPostion_, waveVelocity_);
-	stageNumberSprite_->SetPosition(stageNumberPostion_);
-	stageNumberSprite_->Update();
-	
-	// 左右の矢印
-	leftPostion_ = VectorLib::Add(leftPostion_, waveVelocity_);
-	rightPostion_ = VectorLib::Add(rightPostion_, waveVelocity_);
+	//// 上のUI
+	//stageNumberPostion_ = VectorLib::Add(stageNumberPostion_, waveVelocity_);
+	//stageNumberSprite_->SetPosition(stageNumberPostion_);
+	//stageNumberSprite_->Update();
+	//
+	//// 左右の矢印
+	//leftPostion_ = VectorLib::Add(leftPostion_, waveVelocity_);
+	//rightPostion_ = VectorLib::Add(rightPostion_, waveVelocity_);
 
-	leftSprite_->SetPosition(leftPostion_);
-	rightSprite_->SetPosition(rightPostion_);
+	//leftSprite_->SetPosition(leftPostion_);
+	//rightSprite_->SetPosition(rightPostion_);
 
-	leftSprite_->Update();
-	rightSprite_->Update();
+	//leftSprite_->Update();
+	//rightSprite_->Update();
 
-	// 下のUI
-	stageSelectPostion_ = VectorLib::Add(stageSelectPostion_, waveVelocity_);
-	stageSelectSprite_->SetPosition(stageSelectPostion_);
-	stageSelectSprite_->Update();
+	//// 下のUI
+	//stageSelectPostion_ = VectorLib::Add(stageSelectPostion_, waveVelocity_);
+	//stageSelectSprite_->SetPosition(stageSelectPostion_);
+	//stageSelectSprite_->Update();
 
 }
 
