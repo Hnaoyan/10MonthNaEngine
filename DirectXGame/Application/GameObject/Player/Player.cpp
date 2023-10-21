@@ -242,24 +242,18 @@ void Player::VibrationAnimationInitialize()
 	vibrationAnimationFillPostion_ = { worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z + 2.0f };
 	// スタート角度
 	vibrationAnimationStartRotate_ = worldTransform_.rotation_;
+	// ジャンプサイズ
+	vibrationAnimationJumpScale_ = { 0.6f, 0.6f, 1.4f };
+	// めり込みサイズ
+	vibrationAnimationFillScale_ = { 1.4f, 1.4f, 0.6f };
 	// 角度によって変更
 	if (worldTransform_.rotation_.y == 0.0f || worldTransform_.rotation_.y == 3.14f) {
-
 		// エンド角度
 		vibrationAnimationEndRotate_ = { worldTransform_.rotation_.x + 6.28f, worldTransform_.rotation_.y, worldTransform_.rotation_.z };
-		// ジャンプサイズ
-		vibrationAnimationJumpScale_ = { 0.6f, 0.6f, 1.4f };
-		// めり込みサイズ
-		vibrationAnimationFillScale_ = { 1.4f, 1.4f, 0.6f };
 	}
 	else {
-
 		// エンド角度
-		vibrationAnimationEndRotate_ = { worldTransform_.rotation_.x, worldTransform_.rotation_.y + 6.28f, worldTransform_.rotation_.z };
-		// ジャンプサイズ
-		vibrationAnimationJumpScale_ = { 1.4f, 0.6f, 0.6f };
-		// めり込みサイズ
-		vibrationAnimationFillScale_ = { 0.6f, 1.4f, 1.4f };
+		vibrationAnimationEndRotate_ = { worldTransform_.rotation_.x - 6.28f, worldTransform_.rotation_.y, worldTransform_.rotation_.z };
 	}
 
 }
