@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	skyDomeWorldTransform_.Initialize();
-	skyDomeWorldTransform_.translation_ = { 70.0f,10.0f, -40.0f};
+	skyDomeWorldTransform_.translation_ = { 70.0f,35.0f, -60.0f};
 	skyDomeWorldTransform_.scale_ = { 50.0f,50.0f,50.0f };
 
 	baseCamera_ = make_unique<BaseCamera>();
@@ -221,7 +221,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
+	skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
