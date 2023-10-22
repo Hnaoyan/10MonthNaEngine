@@ -11,7 +11,7 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 
 	// レフト
 	leftTextureHandle_ = leftTextureHandle;
-	leftPostion_ = { 158.0f, 360.0f };
+	leftPostion_ = { 178.0f, 360.0f };
 	leftSize_ = { 128.0f, 192.0f };
 	leftSprite_.reset(Sprite::Create(leftTextureHandle_, leftPostion_, color, anchorPoint, false, false));
 	leftSprite_->SetSize(leftSize_);
@@ -21,7 +21,7 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 
 	// ライト
 	rightTextureHandle_ = rightTextureHandle;
-	rightPostion_ = { 1122.0f, 360.0f };
+	rightPostion_ = { 1102.0f, 360.0f };
 	rightSize_ = { 128.0f, 192.0f };
 	rightSprite_.reset(Sprite::Create(rightTextureHandle_, rightPostion_, color, anchorPoint, false, false));
 	rightSprite_->SetSize(rightSize_);

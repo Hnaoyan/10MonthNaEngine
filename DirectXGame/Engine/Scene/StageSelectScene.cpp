@@ -52,7 +52,7 @@ void StageSelectScene::Update()
 	}
 	else {
 		// 入力受付
-		if (input_->TriggerKey(DIK_D) || input_->TriggerKey(DIK_RIGHT)) {
+		if (input_->PressKey(DIK_D) || input_->PressKey(DIK_RIGHT)) {
 			isMoveRight_ = true;
 			easeTimer_ = 0;
 			stageNum++;
@@ -61,7 +61,7 @@ void StageSelectScene::Update()
 			}
 			stageSelectUI_->SetStageNum(stageNum);
 		}
-		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFT)) {
+		else if (input_->PressKey(DIK_A) || input_->PressKey(DIK_LEFT)) {
 			isMoveLeft_ = true;
 			easeTimer_ = 0;
 			stageNum--;
@@ -72,6 +72,10 @@ void StageSelectScene::Update()
 		}
 		else if (input_->TriggerKey(DIK_SPACE)) {
 			sceneNum = GAMESCENE;
+		}
+		// ESCでゲームセレクトへ
+		if (input_->TriggerKey(DIK_ESCAPE)) {
+			sceneNum = TITLE;
 		}
 	}
 	if (!isMoveLeft_ && !isMoveRight_) {
