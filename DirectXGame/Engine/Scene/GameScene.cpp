@@ -379,8 +379,8 @@ void GameScene::Reset()
 	// マップシステムクラスからの更新情報取得
 	player_->Update(mapSystem_->GetPlayerPosition());
 	blockManager_->Update();
-	enemiesManager_->Update();
 	enemiesManager_->SetDirect(0);
+	enemiesManager_->Update();
 	enemiesManager_->ActionAnimationInitialize();
 	start_->Update();
 	goal_->Update();
