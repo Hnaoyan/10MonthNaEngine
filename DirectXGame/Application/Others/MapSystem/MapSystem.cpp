@@ -283,6 +283,15 @@ bool MapSystem::PlayerMove(int32_t x, int32_t y)
 	
 	// 道
 	case Road:
+
+		// ゴールか
+		if (!goalOpened_ &&
+			static_cast<int32_t>(initialStageData_.goalPosition_.x) == x &&
+			static_cast<int32_t>(initialStageData_.goalPosition_.y) == y) {
+			// 移動できない
+			return false;
+		}
+
 		//現在位置のブロックを落とす
 		BlockFall(playerPosX, playerPosY);
 		// 移動
