@@ -116,6 +116,23 @@ void GameScene::Initialize() {
 	stageNumberUI_->Initialize(stageNumberTextureHandle_);
 	stageNumberUI_->Setting(stageNum);
 
+	// 操作方法
+	uint32_t moveTextureHandle;
+	moveTextureHandle = TextureManager::Load("stageUi/keyW.png");
+	moveTextureHandles_.push_back(moveTextureHandle);
+	moveTextureHandle = TextureManager::Load("stageUi/keyA.png");
+	moveTextureHandles_.push_back(moveTextureHandle);
+	moveTextureHandle = TextureManager::Load("stageUi/keyS.png");
+	moveTextureHandles_.push_back(moveTextureHandle);
+	moveTextureHandle = TextureManager::Load("stageUi/keyD.png");
+	moveTextureHandles_.push_back(moveTextureHandle);
+	vibrationTextureHandle_ = TextureManager::Load("stageUi/sindoUi.png");
+	resetTextureHandle_ = TextureManager::Load("stageUi/retryUi.png");
+	stageSelectTextureHandle_ = TextureManager::Load("stageUi/stageSelectBackUi.png");
+
+	methodOfOperationUI_ = make_unique<MethodOfOperationUI>();
+	methodOfOperationUI_->Initialize(moveTextureHandles_, vibrationTextureHandle_, resetTextureHandle_, stageSelectTextureHandle_);
+
 	// マネージャーの設定
 	//player_->SetEffectManager(effectManager_.get());
 
@@ -196,6 +213,8 @@ void GameScene::Update()
 		sceneNum = STAGESELECT;
 	}
 
+	//UI更新
+	methodOfOperationUI_->Update();
 
 }
 
@@ -249,6 +268,7 @@ void GameScene::Draw() {
 	/// </summary>
 	captureEnemyUI_->Draw();
 	stageNumberUI_->Draw();
+	methodOfOperationUI_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

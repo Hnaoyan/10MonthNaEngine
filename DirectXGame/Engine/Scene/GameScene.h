@@ -32,6 +32,7 @@
 // UI
 #include "UI/CaptureEnemyUI/CaptureEnemyUI.h"
 #include "UI/StageNumberUI/StageNumberUI.h"
+#include <UI/MethodOfOperationUI/MethodOfOperationUI.h>
 
 
 /// <summary>
@@ -191,6 +192,9 @@ private:	// メンバポインタ
 	std::unique_ptr<CaptureEnemyUI> captureEnemyUI_;
 	// ステージ番号
 	std::unique_ptr<StageNumberUI> stageNumberUI_;
+	// 操作方法
+	std::unique_ptr<MethodOfOperationUI> methodOfOperationUI_;
+
 	// テクスチャ
 	// EnemyKazu
 	uint32_t enmyKazuTextureHandle_;
@@ -200,6 +204,11 @@ private:	// メンバポインタ
 	uint32_t slashTextureHandle_;
 	// テクスチャハンドル
 	uint32_t stageNumberTextureHandle_;
+	// 操作方法テクスチャハンドル
+	std::vector<uint32_t> moveTextureHandles_;
+	uint32_t vibrationTextureHandle_;
+	uint32_t resetTextureHandle_;
+	uint32_t stageSelectTextureHandle_;
 
 	WorldTransform skyDomeWorldTransform_;
 
