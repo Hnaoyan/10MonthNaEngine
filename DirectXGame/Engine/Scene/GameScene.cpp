@@ -166,7 +166,7 @@ void GameScene::Update()
 			OpeningAnimation();
 		}
 		else if (animationManager_->GetIsGameClearAnimation()) {
-
+			GameClearAnimation();
 		}
 		else if (animationManager_->GetIsGameOverAnimation()) {
 
@@ -191,15 +191,18 @@ void GameScene::Update()
 
 	// ゲームオーバーか
 	ImGui::Begin("State");
-	if (mapSystem_->GetIsGameClear()) {
-		ImGui::Text("GAMECLEAR");
+	if (mapSystem_->GetIsGameClear() && 
+		!animationManager_->GetIsActionAnimation() &&
+		!animationManager_->GetIsGameClearAnimation()) {
 
-		// 最終ステージじゃない
-		if (stageNum != stageMax - 1) {
-			stageNum++;
-			stageNumberUI_->Setting(stageNum);
-			Setting(GAMESCENE);
-		}
+		ImGui::Text("GAMECLEAR");
+		// クリアアニメーション
+		animationManager_->GameClearInitialize();
+		// プレイヤー
+		player_->ClearAnimationInitialize();
+		animationManager_->SetGameClearAnimation(std::bind(&Player::ClearAnimationUpdate, player_.get()));
+		animationManager_->SetGameClearAnimationTime(player_->GetAnimationTMax());
+
 	}
 	if (mapSystem_->GetIsGameOver()) {
 		ImGui::Text("GAMEOVER");
@@ -391,6 +394,20 @@ void GameScene::ActionAnimation()
 
 void GameScene::GameClearAnimation()
 {
+
+	// 行動アニメーションする
+	animationManager_->GameClearUpdate();
+
+	// 行動アニメーションカウントがマックスならコマンド待ち
+	if (!animationManager_->GetIsGameClearAnimation()) {
+		// 最終ステージじゃない
+		if (stageNum != stageMax - 1) {
+			stageNum++;
+			stageNumberUI_->Setting(stageNum);
+			Setting(GAMESCENE);
+		}
+	}
+
 }
 
 void GameScene::GameOverAnimation()

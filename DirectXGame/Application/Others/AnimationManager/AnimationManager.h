@@ -135,6 +135,12 @@ public: // アクセッサ
 	// 行動アニメーションタイム設定
 	void SetActionAnimationTime(uint32_t animationTime) { actionAnimation_.animationTime_ = animationTime; }
 
+	// ゲームクリアアニメーションタイム設定
+	void SetGameClearAnimationTime(uint32_t animationTime) { gameClearAnimation_.animationTime_ = animationTime; }
+
+	// ゲームオーバーアニメーションタイム設定
+	void SetGameOverAnimationTime(uint32_t animationTime) { gameOverAnimation_.animationTime_ = animationTime; }
+
 	// オープニングアニメーションタイム設定
 	void SetOpeningAnimationTime(uint32_t animationTime) { openingAnimation_.animationTime_ = animationTime; }
 

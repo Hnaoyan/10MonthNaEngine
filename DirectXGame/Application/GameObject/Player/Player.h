@@ -57,25 +57,35 @@ public: // メンバ関数
 
 public: // アニメーション
 
+	// 待機
 	void WaitingAnimationInitialize();
 
 	void WaitingAnimationUpdate();
 
+	// 行動
 	void ActionAnimationInitialize(uint32_t num);
 
 	void ActionAnimationUpdate();
 
+	// 移動
 	void MoveAnimationInitialize(ActionNumber actionNumber);
 
 	void MoveAnimationUpdate();
 
+	// 移動ミス
 	void MoveErrorAnimationInitialize(ActionNumber actionNumber);
 
 	void MoveErrorAnimationUpdate();
 
+	// 振動
 	void VibrationAnimationInitialize();
 
 	void VibrationAnimationUpdate();
+
+	// クリア
+	void ClearAnimationInitialize();
+
+	void ClearAnimationUpdate();
 
 private: //メンバ関数
 
@@ -153,5 +163,16 @@ private: // VibrationAnimation
 	Vector3 vibrationAnimationJumpScale_;
 	// めり込みサイズ
 	Vector3 vibrationAnimationFillScale_;
+
+private: // ClearAnimation
+
+	// スタート位置
+	Vector3 clearAnimationStartPostion_;
+	// エンド位置
+	Vector3 clearAnimationEndPostion_;
+	// スタート角度
+	Vector3 clearArnimationStartRotate_;
+	// エンド角度
+	Vector3 clearAnimationEndRotate_;
 
 };

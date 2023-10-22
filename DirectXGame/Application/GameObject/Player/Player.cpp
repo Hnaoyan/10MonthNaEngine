@@ -416,6 +416,49 @@ void Player::VibrationAnimationUpdate()
 
 }
 
+void Player::ClearAnimationInitialize()
+{
+
+	// t
+	animationT_ = 0;
+	// tマックス
+	animationTMax_ = 60;
+
+	// スタート位置
+	clearAnimationStartPostion_ = worldTransform_.translation_;
+	// エンド位置
+	clearAnimationEndPostion_ = { worldTransform_.translation_.x , worldTransform_.translation_.y ,  worldTransform_.translation_.y - 150.0f};
+	// スタート角度
+	clearArnimationStartRotate_ = worldTransform_.rotation_;
+	// 角度によって変更
+	if (worldTransform_.rotation_.y == 0.0f || worldTransform_.rotation_.y == 3.14f) {
+		// エンド角度
+		clearAnimationEndRotate_ = { worldTransform_.rotation_.x, worldTransform_.rotation_.y, worldTransform_.rotation_.z + 6.28f * 10.0f };
+	}
+	else {
+		// エンド角度
+		clearAnimationEndRotate_ = { worldTransform_.rotation_.x, worldTransform_.rotation_.y, worldTransform_.rotation_.z - 6.28f * 10.0f };
+	}
+
+}
+
+void Player::ClearAnimationUpdate()
+{
+
+	animationT_ += 1.0f / animationTMax_;
+
+	// 飛ぶ
+	if (animationT_ >= 1.0f / 4.0f) {
+		float t = (animationT_ - 1.0f / 4.0f) * 4.0f / 3.0f;
+		worldTransform_.translation_ = MathCalc::EaseInQuadF(t, clearAnimationStartPostion_, clearAnimationEndPostion_);
+	}
+
+	worldTransform_.rotation_ = MathCalc::EaseInQuadF(animationT_, clearArnimationStartRotate_, clearAnimationEndRotate_);
+
+	worldTransform_.UpdateMatrix();
+
+}
+
 void Player::ApplyGlobalVariables()
 {
 
