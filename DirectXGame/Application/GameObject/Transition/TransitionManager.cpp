@@ -37,6 +37,10 @@ void TransitionManager::Update()
 		TransitionSetting();
 	}
 
+	if (isSettingTransition_ && !isNowTransition_) {
+		TransitionSetting();
+	}
+
 	TransitionUpdate();
 
 	transitionCamera_->Update();
@@ -110,6 +114,7 @@ void TransitionManager::TransitionUpdate()
 		if (transitionTimer_ >= 1.0f) {
 			transitionTimer_ = 0;
 			isNowTransition_ = false;
+			isSettingTransition_ = false;
 			objects_.clear();
 		}
 		else {

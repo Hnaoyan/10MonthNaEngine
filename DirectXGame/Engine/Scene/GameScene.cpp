@@ -380,6 +380,8 @@ void GameScene::Reset()
 	player_->Update(mapSystem_->GetPlayerPosition());
 	blockManager_->Update();
 	enemiesManager_->Update();
+	enemiesManager_->SetDirect(0);
+	enemiesManager_->ActionAnimationInitialize();
 	start_->Update();
 	goal_->Update();
 
