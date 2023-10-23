@@ -19,6 +19,7 @@ void StageSelectScene::Initialize()
 	rightTextureHandle_ = TextureManager::Load("Image/stageSelectArrowRight.png");
 	stageSelectTextureHandle_ = TextureManager::Load("Image/stageSelect.png");
 	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
+	selectUITextureHandle_ = TextureManager::Load("stageUi/SelectUi.png");
 
 	// イージング
 	easeSpeed_ = 0.05f;
@@ -37,7 +38,7 @@ void StageSelectScene::Initialize()
 	stagePhot_->Initialize(stagePhotTextureHandles_, stageMax);
 	// UI
 	stageSelectUI_ = std::make_unique<StageSelectUI>();
-	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_);
+	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_, selectUITextureHandle_);
 
 }
 

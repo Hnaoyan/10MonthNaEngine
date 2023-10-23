@@ -2,7 +2,8 @@
 #include "VectorLib.h"
 #include <numbers>
 
-void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle, uint32_t stageNumberTextureHandle)
+void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
+	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle)
 {
 
 	// スプライト
@@ -48,6 +49,16 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 	stageNumberSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
 	stageNumberSprite_->Update();
 
+	// ステージナンバー
+	stageUiTextureHandle_ = stageUiTextureHandle;
+	stageUiPostion_ = { 1100.0f, 650.0f };
+	stageUiSize_ = { 240.0f, 96.0f };
+	stageUiSprite_.reset(Sprite::Create(stageUiTextureHandle_, stageUiPostion_, color, anchorPoint, false, false));
+	stageUiSprite_->SetSize(stageUiSize_);
+	stageUiSprite_->SetSpriteRect(Vector2{ 0.0f, 0.0f }, Vector2{ 160.0f, 64.0f });
+	stageUiSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
+	stageUiSprite_->Update();
+
 	stageNum_ = 0;
 
 }
@@ -88,6 +99,7 @@ void StageSelectUI::Draw(bool isMove)
 		leftSprite_->Draw();
 		rightSprite_->Draw();
 		stageNumberSprite_->Draw();
+		stageUiSprite_->Draw();
 	}
 	stageSelectSprite_->Draw();
 
