@@ -5,6 +5,7 @@ void ParticleWave::Initialize(Model* model, uint32_t texture)
 {
 
 	Particle::Initialize(model, texture);
+	fadeTimer_ = 40;
 	wave_t_ = 0;
 	isWave_ = false;
 }

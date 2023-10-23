@@ -34,6 +34,8 @@ void ParticleManager::Initialize(ViewProjection* view)
 	// ゴールが空いている時の管理変数
 	goalOpenParameters_ = { 0,30,false };
 
+	//planeModel_->SetAlphaValue(0.5f);
+
 #pragma region json管理
 	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	//const char* groupName = "ParticleManager";
@@ -98,7 +100,7 @@ void ParticleManager::WaveSetting(const Vector3& position)
 	waveParameters_ = { 0,60,50,true };
 	waveRespawnPosition_ = position;
 	waveRespawnPosition_.z += 5.0f;
-	AddWave(waveRespawnPosition_, { 5.0f,5.0f,1.0f });
+	AddWave(waveRespawnPosition_, { 10.0f,10.0f,1.0f });
 }
 
 void ParticleManager::WaveUpdate()
@@ -112,7 +114,7 @@ void ParticleManager::WaveUpdate()
 		}
 		// 出現処理
 		if (waveParameters_.frameCount % waveParameters_.addInterval_ == 0) {
-			AddWave(waveRespawnPosition_, { 5.0f,5.0f,1.0f });
+			AddWave(waveRespawnPosition_, { 10.0f,10.0f,1.0f });
 		}
 	}
 }
@@ -208,7 +210,8 @@ void ParticleManager::AddWave(const Vector3& pos, const Vector3& scale)
 	newParticle->Initialize(planeModel_.get(), waveEffectTexture_);
 	newParticle->SetPosition(pos);
 	newParticle->SetScale(scale);
-	newParticle->SetAddScaleValue(Vector2(0.6f, 0.6f));
+	float addScaleValue = 0.3f;
+	newParticle->SetAddScaleValue(Vector2(addScaleValue, addScaleValue));
 	particles_.push_back(newParticle);
 }
 
