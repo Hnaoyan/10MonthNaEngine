@@ -39,8 +39,8 @@ void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTe
 
 	// goGoal
 	goGoalTextureHandle_ = goGoalTextureHandle;
-	goGoalSize_ = { 200.0f, 80.0f };
-	goGoalPosition_ = { 1056.0f,  524.0f };
+	goGoalSize_ = { 400.0f, 160.0f };
+	goGoalPosition_ = { 1056.0f,  574.0f };
 	goGoalSprite_.reset(Sprite::Create(goGoalTextureHandle_, goGoalPosition_, color, anchorpoint, false, false));
 	goGoalSprite_->SetSize(goGoalSize_);
 	goGoalSprite_->Update();
@@ -59,14 +59,13 @@ void CaptureEnemyUI::Draw()
 
 	if (enemyCount_ != enemyMax_) {
 		enemyCountSprite_->Draw();
+		denominatorSprite_->Draw();
+		numeratorSprite_->Draw();
+		slashSprite_->Draw();
 	}
 	else {
 		goGoalSprite_->Draw();
 	}
-	
-	denominatorSprite_->Draw();
-	numeratorSprite_->Draw();
-	slashSprite_->Draw();
 
 }
 
