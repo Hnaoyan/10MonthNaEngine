@@ -40,23 +40,23 @@ void SceneManager::Update()
 
 #endif // DEBUG
 
-	//prevSceneNum_ = this->sceneNum_;
-	//sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	prevSceneNum_ = this->sceneNum_;
+	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	// 遷移の設定呼び出し
 	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
-		//sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-		transitionManager_->SetIsTransition(true);
+		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		//transitionManager_->SetIsTransition(true);
 	}
 	// 連打された時用
-	if (!transitionManager_->IsGetSceneChanger()) {
-		prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
-	}
-	// シーン切り替えタイミング
-	if (transitionManager_->IsGetSceneChanger()) {
-		sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
-		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-	}
+	//if (!transitionManager_->IsGetSceneChanger()) {
+	//	prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	//}
+	//// シーン切り替えタイミング
+	//if (transitionManager_->IsGetSceneChanger()) {
+	//	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	//	sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+	//}
 
 	// 遷移の更新
 	transitionManager_->Update();
