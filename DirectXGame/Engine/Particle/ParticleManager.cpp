@@ -17,7 +17,7 @@ ParticleManager::ParticleManager()
 	deadEffectModel_.reset(Model::CreateFromObj("player", true));
 	texture_ = TextureManager::Load("plane/test.png");
 	goalEffectTexture_ = texture_;
-	waveEffectTexture_ = TextureManager::Load("plane/test2.png");
+	waveEffectTexture_ = TextureManager::Load("plane/Vibration.png");
 }
 
 ParticleManager* ParticleManager::GetInstance()
@@ -123,42 +123,6 @@ void ParticleManager::ExplosionSetting()
 
 void ParticleManager::ExplosionUpdate(const Vector3& position)
 {
-	//float pos_z = 40.0f;
-	//// 右
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,0,-1 });
-	//// 右上
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,1,-1 });
-	//// 右下
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 1,-1,-1 });
-	//// 左
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,0,-1 });
-	//// 左上
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,1,-1 });
-	//// 左下
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { -1,-1,-1 });
-	//// 上
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,1,-1 });
-	//// 下
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,0 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,-1,-1 });
-	//// 奥手前
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,0,1 });
-	//AddExplosion({ 70.0f,60.0f,-pos_z }, { 0,0,-1 });
 	// 右
 	AddExplosion(position, { 1,0,0 });
 	AddExplosion(position, { 1,0,1 });
@@ -196,7 +160,14 @@ void ParticleManager::ExplosionUpdate(const Vector3& position)
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
 {
 	goalPosition_ = pos;
-	goalOpenParameters_ = { 0,30,true };
+	goalOpenParameters_ = { 0,30,0,true };
+	AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), { 5.0f,5.0f,5.0f });
+}
+
+void ParticleManager::GoalEffectReset() 
+{
+	goalOpenParameters_.isNow = false;
+	particles_.clear();
 }
 
 void ParticleManager::GoalEffectUpdate()
@@ -204,7 +175,7 @@ void ParticleManager::GoalEffectUpdate()
 	if (goalOpenParameters_.isNow) {
 		goalOpenParameters_.frameCount += 1;
 		if (goalOpenParameters_.frameCount >= goalOpenParameters_.endCount) {
-			AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), {2.0f,2.0f,2.0f});
+			AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), {5.0f,5.0f,5.0f});
 			goalOpenParameters_.frameCount = 0;
 		}
 	}

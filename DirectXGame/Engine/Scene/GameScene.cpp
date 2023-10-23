@@ -34,7 +34,7 @@ void GameScene::Initialize() {
 
 	skyDomeWorldTransform_.Initialize();
 	skyDomeWorldTransform_.translation_ = { 70.0f,35.0f, -60.0f};
-	skyDomeWorldTransform_.scale_ = { 50.0f,50.0f,50.0f };
+	skyDomeWorldTransform_.scale_ = { 60.0f,60.0f,60.0f };
 
 	baseCamera_ = make_unique<BaseCamera>();
 	baseCamera_->Initialize();
@@ -141,9 +141,6 @@ void GameScene::Initialize() {
 
 void GameScene::Update()
 {
-	//if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-	//	sceneNum = TITLE;
-	//}
 	/// カメラ関係の更新処理
 	CameraUpdate();
 

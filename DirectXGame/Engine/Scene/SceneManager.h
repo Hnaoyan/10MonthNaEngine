@@ -13,6 +13,8 @@ private:
 	std::unique_ptr<BaseScene> sceneArray_[5];
 	std::unique_ptr<TransitionManager> transitionManager_;
 
+	std::unique_ptr<Model> cloudModel_;
+
 	int sceneNum_;
 	int prevSceneNum_;
 

@@ -43,7 +43,7 @@ void BaseCamera::Update()
 //	ImGui::End();
 //#endif // _DEBUG
 
-	//ApplyGlobalVariables();
+	ApplyGlobalVariables();
 
 	// データの更新と転送
 	viewProjection_.SetFov(fov_);

@@ -3,8 +3,9 @@
 
 SceneManager::SceneManager() 
 { 
+	cloudModel_.reset(Model::CreateFromObj("cloud", true));
 	transitionManager_ = std::make_unique<TransitionManager>();
-	transitionManager_->Initialize();
+	transitionManager_->Initialize(cloudModel_.get());
 
 	sceneArray_[TITLE] = std::make_unique<TitleScene>();
 	sceneArray_[TITLE]->Initialize();
@@ -19,7 +20,6 @@ SceneManager::SceneManager()
 
 	sceneNum_ = TITLE;
 	prevSceneNum_ = sceneNum_;
-	//sceneArray_[sceneNum_]->Initialize();
 }
 
 SceneManager::~SceneManager() {}
@@ -40,39 +40,38 @@ void SceneManager::Update()
 
 #endif // DEBUG
 
-	prevSceneNum_ = this->sceneNum_;
-	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	//prevSceneNum_ = this->sceneNum_;
+	//sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
+	// 遷移の設定呼び出し
 	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
-		//LoadScene(sceneNum_);
-		//sceneArray_[sceneNum_]->Initialize();
-		//sceneArray_[prevSceneNum_].release();
-		//sceneArray_[sceneNum_]->Initialize();
-		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-		//transitionManager_->SetIsTransition(true);
+		//sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		transitionManager_->SetIsTransition(true);
 	}
-	//prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	// 連打された時用
+	if (!transitionManager_->IsGetSceneChanger()) {
+		prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	}
+	// シーン切り替えタイミング
+	if (transitionManager_->IsGetSceneChanger()) {
+		sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+	}
 
-	//if (transitionManager_->IsGetSceneChanger()) {
-	//	//sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
-	//	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
-	//	sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-	//}
-
-	// �J�ڍX�V
+	// 遷移の更新
 	transitionManager_->Update();
 
-	// �V�[���X�V
+	// シーンごとの更新
 	sceneArray_[sceneNum_]->Update();
 
 }
 
 void SceneManager::Draw() 
 {
-	// �V�[���`��
+	// シーン描画
 	sceneArray_[sceneNum_]->Draw(); 
 
-	// �J�ڕ`��
+	// 遷移描画
 	transitionManager_->Draw();
 
 }
