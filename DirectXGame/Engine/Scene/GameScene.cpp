@@ -136,6 +136,7 @@ void GameScene::Initialize() {
 
 	// マネージャーの設定
 	//player_->SetEffectManager(effectManager_.get());
+	this->skyDomeWorldTransform_.translation_ = viewProjection_.translate_;
 
 }
 
