@@ -203,6 +203,9 @@ private:	// メンバポインタ
 	uint32_t numTextureHandle_;
 	// slash
 	uint32_t slashTextureHandle_;
+	// goGoal
+	uint32_t goGoalTextureHandle_;
+
 	// テクスチャハンドル
 	uint32_t stageNumberTextureHandle_;
 	// 操作方法テクスチャハンドル

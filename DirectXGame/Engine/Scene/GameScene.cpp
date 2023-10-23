@@ -108,8 +108,10 @@ void GameScene::Initialize() {
 	numTextureHandle_ = TextureManager::Load("gameSceneUI/enemyNumber.png");
 	// slash
 	slashTextureHandle_ = TextureManager::Load("gameSceneUI/enemyNaname.png");
+	// goGoal
+	goGoalTextureHandle_ = TextureManager::Load("gameSceneUI/goGoal.png");
 	captureEnemyUI_ = make_unique<CaptureEnemyUI>();
-	captureEnemyUI_->Initialize(enmyKazuTextureHandle_, numTextureHandle_, slashTextureHandle_);
+	captureEnemyUI_->Initialize(enmyKazuTextureHandle_, numTextureHandle_, slashTextureHandle_, goGoalTextureHandle_);
 	// マップシステム
 	mapSystem_->SetCaptureEnemyUI(captureEnemyUI_.get());
 	// ステージ番号

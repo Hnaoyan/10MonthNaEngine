@@ -1,6 +1,6 @@
 #include "CaptureEnemyUI.h"
 
-void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTextureHandle, uint32_t slashTextureHandle)
+void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTextureHandle, uint32_t slashTextureHandle, uint32_t goGoalTextureHandle)
 {
 
 	// 色
@@ -37,6 +37,14 @@ void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTe
 	slashSprite_->SetSize(slashSize_);
 	slashSprite_->Update();
 
+	// goGoal
+	goGoalTextureHandle_ = goGoalTextureHandle;
+	goGoalSize_ = { 200.0f, 80.0f };
+	goGoalPosition_ = { 1056.0f,  524.0f };
+	goGoalSprite_.reset(Sprite::Create(goGoalTextureHandle_, goGoalPosition_, color, anchorpoint, false, false));
+	goGoalSprite_->SetSize(goGoalSize_);
+	goGoalSprite_->Update();
+
 	// エネミー数
 	enemyCount_ = 0;
 
@@ -49,7 +57,13 @@ void CaptureEnemyUI::Update()
 void CaptureEnemyUI::Draw()
 {
 
-	enemyCountSprite_->Draw();
+	if (enemyCount_ != enemyMax_) {
+		enemyCountSprite_->Draw();
+	}
+	else {
+		goGoalSprite_->Draw();
+	}
+	
 	denominatorSprite_->Draw();
 	numeratorSprite_->Draw();
 	slashSprite_->Draw();
