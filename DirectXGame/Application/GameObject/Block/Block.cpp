@@ -37,8 +37,9 @@ void Block::Update()
 
 void Block::Draw(const ViewProjection& viewProjection)
 {
-
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	if (mapNum_ == MapSystem::MapNumber::Road || isFallNow_) {
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	}
 
 }
 
