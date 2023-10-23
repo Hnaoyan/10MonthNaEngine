@@ -291,6 +291,13 @@ void GameScene::Setting(Scene preScene)
 
 	Reset();
 
+	// オープニングアニメーション
+	animationManager_->OpeningInitialize();
+	animationManager_->SetOpeningAnimation(std::bind(&BaseCamera::OpeningAnimationUpdate, baseCamera_.get()));
+	baseCamera_->OpeningAnimationInitialize();
+	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
+	command_->SetAcceptingInput(false);
+
 }
 
 void GameScene::CameraUpdate()
@@ -443,12 +450,6 @@ void GameScene::Reset()
 	animationManager_->Reset();
 	// 待機アニメーションを設定していく
 	SetWaitingAnimation();
-	// オープニングアニメーション
-	animationManager_->OpeningInitialize();
-	animationManager_->SetOpeningAnimation(std::bind(&BaseCamera::OpeningAnimationUpdate, baseCamera_.get()));
-	baseCamera_->OpeningAnimationInitialize();
-	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
-	command_->SetAcceptingInput(false);
 
 	// マップシステムクラスからの更新情報取得
 	player_->Update(mapSystem_->GetPlayerPosition());
