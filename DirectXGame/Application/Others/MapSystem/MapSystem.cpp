@@ -9,6 +9,7 @@
 #include "Application/GameObject/Goal/Goal.h"
 
 #include "Application/UI/CaptureEnemyUI/CaptureEnemyUI.h"
+#include <GlobalVariables.h>
 
 //名前空間
 using namespace nlohmann;

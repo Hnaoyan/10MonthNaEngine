@@ -202,7 +202,7 @@ void GameScene::Update()
 		// プレイヤー
 		player_->ClearAnimationInitialize();
 		animationManager_->SetGameClearAnimation(std::bind(&Player::ClearAnimationUpdate, player_.get()));
-		animationManager_->SetGameClearAnimationTime(player_->GetAnimationTMax());
+		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
 
 	}
 	if (mapSystem_->GetIsGameOver()) {
@@ -367,7 +367,7 @@ void GameScene::WaitingCommand()
 			enemiesManager_->Update();
 			goal_->Update();
 			// アニメーションマネージャーアクションスタート
-			animationManager_->ActionInitialize(player_->GetAnimationTMax());
+			animationManager_->ActionInitialize(player_->GetAnimationFrame());
 			//プレイヤー
 			animationManager_->SetActionAnimation(std::bind(&Player::ActionAnimationUpdate, player_.get()));
 			// ブロックマネージャー

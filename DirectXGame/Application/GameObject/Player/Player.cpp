@@ -20,17 +20,37 @@ void Player::Initialize(Model* model,const Vector2& position)
 	model_ = model;
 
 	// tマックス
-	animationTMax_ = 20;
+	animationFrame_ = 20;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
-	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	// グループ名設定
-	//const char* groupName = "Player";
+	const char* groupName = "Player";
 	// 指定した名前でグループ追加
-	//globalVariables->CreateGroup(groupName);
+	globalVariables->CreateGroup(groupName);
 
 	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	//移動中間スケール
+	globalVariables->AddItem(groupName, "moveAnimationMiddleScaleAdd", moveAnimationMiddleScaleAdd_);
+	// ジャンプサイズ
+	globalVariables->AddItem(groupName, "vibrationAnimationJumpScale", vibrationAnimationJumpScale_);
+	// めり込みサイズ
+	globalVariables->AddItem(groupName, "vibrationAnimationFillScale", vibrationAnimationFillScale_);
+	// 振動エンド位置
+	globalVariables->AddItem(groupName, "vibrationAnimationHighPostionAdd", vibrationAnimationHighPostionAdd_);
+	// 振動めり込み位置
+	globalVariables->AddItem(groupName, "vibrationAnimationFillPostionAdd", vibrationAnimationFillPostionAdd_);
+
+	// 移動T
+	globalVariables->AddItem(groupName, "moveAnimationT", static_cast<int>(moveAnimationT_));
+	// 移動ミスT
+	globalVariables->AddItem(groupName, "moveErrorAnimationT_", static_cast<int>(moveErrorAnimationT_));
+	// 振動T
+	globalVariables->AddItem(groupName, "vibrationAnimationT", static_cast<int>(vibrationAnimationT_));
+	// クリアT
+	globalVariables->AddItem(groupName, "clearAnimationT", static_cast<int>(clearAnimationT_));
 
 	ApplyGlobalVariables();
 
@@ -145,12 +165,12 @@ void Player::MoveAnimationInitialize(ActionNumber actionNumber)
 	// t
 	animationT_ = 0;
 	// tマックス
-	animationTMax_ = 10;
+	animationFrame_ = moveAnimationT_;
 
 	// スタートスケール
 	moveAnimationStartScale_ = worldTransform_.scale_;
 	// 中間スケール
-	moveAnimationMiddleScale_ = VectorLib::Add(worldTransform_.scale_, Vector3{ 0.2f, 0.2f, 0.2f});
+	moveAnimationMiddleScale_ = VectorLib::Add(worldTransform_.scale_, moveAnimationMiddleScaleAdd_);
 
 	// MoveAnimation
 	// スタート角度
@@ -202,7 +222,7 @@ void Player::MoveAnimationInitialize(ActionNumber actionNumber)
 void Player::MoveAnimationUpdate()
 {
 
-	animationT_ += 1.0f / animationTMax_;
+	animationT_ += 1.0f / animationFrame_;
 	if (animationT_ >= 1.0f) {
 		animationT_ = 1.0f;
 		moveAnimationWorldTransform_.rotation_ = MathCalc::EaseInCubicF(animationT_, moveAnimationStartRotate_, moveAnimationEndRotate_);
@@ -248,12 +268,12 @@ void Player::MoveErrorAnimationInitialize(ActionNumber actionNumber)
 	// t
 	animationT_ = 0;
 	// tマックス
-	animationTMax_ = 20;
+	animationFrame_ = moveErrorAnimationT_;
 
 	// スタートスケール
 	moveAnimationStartScale_ = worldTransform_.scale_;
 	// 中間スケール
-	moveAnimationMiddleScale_ = VectorLib::Add(worldTransform_.scale_, Vector3{ 0.2f, 0.2f, 0.2f });
+	moveAnimationMiddleScale_ = VectorLib::Add(worldTransform_.scale_, moveAnimationMiddleScaleAdd_);
 
 	// MoveAnimation
 	// スタート角度
@@ -304,7 +324,7 @@ void Player::MoveErrorAnimationInitialize(ActionNumber actionNumber)
 void Player::MoveErrorAnimationUpdate()
 {
 
-	animationT_ += 1.0f / animationTMax_;
+	animationT_ += 1.0f / animationFrame_;
 	// 3.0f / 4.0f
 	if (animationT_ < 3.0f / 4.0f) {
 		float t = animationT_ * 4.0f / 3.0f;
@@ -341,20 +361,16 @@ void Player::VibrationAnimationInitialize()
 	// t
 	animationT_ = 0;
 	// tマックス
-	animationTMax_ = 60;
+	animationFrame_ = vibrationAnimationT_;
 
 	// スタート位置
 	vibrationAnimationGroundPostion_ = worldTransform_.translation_;
 	// エンド位置
-	vibrationAnimationHighPostion_ = { worldTransform_.translation_ .x, worldTransform_.translation_.y, worldTransform_.translation_.z - 15.0f };
+	vibrationAnimationHighPostion_ = worldTransform_.translation_ + vibrationAnimationHighPostionAdd_;
 	// めり込み位置
-	vibrationAnimationFillPostion_ = { worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z + 2.0f };
+	vibrationAnimationFillPostion_ = worldTransform_.translation_ + vibrationAnimationFillPostionAdd_;
 	// スタート角度
 	vibrationAnimationStartRotate_ = worldTransform_.rotation_;
-	// ジャンプサイズ
-	vibrationAnimationJumpScale_ = { 0.6f, 0.6f, 1.4f };
-	// めり込みサイズ
-	vibrationAnimationFillScale_ = { 1.4f, 1.4f, 0.6f };
 	// 角度によって変更
 	if (worldTransform_.rotation_.y == 0.0f || worldTransform_.rotation_.y == 3.14f) {
 		// エンド角度
@@ -370,7 +386,7 @@ void Player::VibrationAnimationInitialize()
 void Player::VibrationAnimationUpdate()
 {
 
-	animationT_ += 1.0f / animationTMax_;
+	animationT_ += 1.0f / animationFrame_;
 
 	// ジャンプ準備 1/10
 	if (animationT_ < 1.0f / 10.0f) {
@@ -422,12 +438,12 @@ void Player::ClearAnimationInitialize()
 	// t
 	animationT_ = 0;
 	// tマックス
-	animationTMax_ = 60;
+	animationFrame_ = clearAnimationT_;
 
 	// スタート位置
 	clearAnimationStartPostion_ = worldTransform_.translation_;
 	// エンド位置
-	clearAnimationEndPostion_ = { worldTransform_.translation_.x , worldTransform_.translation_.y ,  worldTransform_.translation_.y - 150.0f};
+	clearAnimationEndPostion_ = { worldTransform_.translation_.x , worldTransform_.translation_.y ,  worldTransform_.translation_.z - 150.0f};
 	// スタート角度
 	clearArnimationStartRotate_ = worldTransform_.rotation_;
 	// 角度によって変更
@@ -445,7 +461,7 @@ void Player::ClearAnimationInitialize()
 void Player::ClearAnimationUpdate()
 {
 
-	animationT_ += 1.0f / animationTMax_;
+	animationT_ += 1.0f / animationFrame_;
 
 	// 飛ぶ
 	if (animationT_ >= 1.0f / 4.0f) {
@@ -463,8 +479,28 @@ void Player::ApplyGlobalVariables()
 {
 
 	// 調整項目クラスのインスタンス取得
-	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	// グループ名の設定
-	//const char* groupName = "Player";
+	const char* groupName = "Player";
+
+	//移動中間スケール
+	moveAnimationMiddleScaleAdd_ = globalVariables->GetVector3Value(groupName, "moveAnimationMiddleScaleAdd");
+	// ジャンプサイズ
+	vibrationAnimationJumpScale_ = globalVariables->GetVector3Value(groupName, "vibrationAnimationJumpScale");
+	// めり込みサイズ
+	vibrationAnimationFillScale_ = globalVariables->GetVector3Value(groupName, "vibrationAnimationFillScale");
+	// 振動エンド位置
+	vibrationAnimationHighPostionAdd_ = globalVariables->GetVector3Value(groupName, "vibrationAnimationHighPostionAdd");
+	// 振動めり込み位置
+	vibrationAnimationFillPostionAdd_ = globalVariables->GetVector3Value(groupName, "vibrationAnimationFillPostionAdd");
+
+	// 移動T
+	moveAnimationT_ = static_cast<uint32_t>(globalVariables->GetIntValue(groupName, "moveAnimationT"));
+	// 移動ミスT
+	moveErrorAnimationT_ = static_cast<uint32_t>(globalVariables->GetIntValue(groupName, "moveErrorAnimationT_"));
+	// 振動T
+	vibrationAnimationT_ = static_cast<uint32_t>(globalVariables->GetIntValue(groupName, "vibrationAnimationT"));
+	// クリアT
+	clearAnimationT_ = static_cast<uint32_t>(globalVariables->GetIntValue(groupName, "clearAnimationT"));
 
 }

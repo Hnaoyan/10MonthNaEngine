@@ -235,8 +235,6 @@ public: // ポインタアクセッサ
 	// 敵の数表示
 	void SetCaptureEnemyUI(CaptureEnemyUI* captureEnemyUI) { captureEnemyUI_ = captureEnemyUI; }
 
-public: // メンバ定数
-
 private: //メンバ変数
 
 	// ステージ番号
