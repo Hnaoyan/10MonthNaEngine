@@ -5,6 +5,7 @@
 #include "Transition/TransitionObject.h"
 #include "DirectXCommon.h"
 #include "BaseCamera.h"
+#include "CloudObject.h"
 
 #include <memory>
 
@@ -66,6 +67,7 @@ private: // 遷移用関数
 
 	void BackGroundCloud();
 
+	void AddBackGroundCloud(const Vector3& position, const Vector3& scale);
 
 private:
 	/// <summary>
@@ -94,6 +96,9 @@ private:
 	Model* cloudModel_;
 	// オブジェクトのリスト
 	std::list<TransitionObject*> objects_;
+
+	// 雲のリスト
+	std::list<CloudObject*> clouds_;
 
 };
 
