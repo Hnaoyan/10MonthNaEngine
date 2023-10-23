@@ -52,10 +52,10 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 	// ステージナンバー
 	stageUiTextureHandle_ = stageUiTextureHandle;
 	stageUiPostion_ = { 1100.0f, 650.0f };
-	stageUiSize_ = { 240.0f, 96.0f };
+	stageUiSize_ = { 320.0f, 128.0f };
 	stageUiSprite_.reset(Sprite::Create(stageUiTextureHandle_, stageUiPostion_, color, anchorPoint, false, false));
 	stageUiSprite_->SetSize(stageUiSize_);
-	stageUiSprite_->SetSpriteRect(Vector2{ 0.0f, 0.0f }, Vector2{ 160.0f, 64.0f });
+	stageUiSprite_->SetSpriteRect(Vector2{ 0.0f, 0.0f }, Vector2{ 320.0f, 128.0f });
 	stageUiSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
 	stageUiSprite_->Update();
 
