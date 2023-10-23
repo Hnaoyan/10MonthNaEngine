@@ -32,7 +32,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	skyDomeWorldTransform_.Initialize();
-	skyDomeWorldTransform_.translation_ = { 70.0f,10.0f, -40.0f};
+	skyDomeWorldTransform_.translation_ = { 70.0f,35.0f, -60.0f};
 	skyDomeWorldTransform_.scale_ = { 50.0f,50.0f,50.0f };
 
 	baseCamera_ = make_unique<BaseCamera>();
@@ -251,7 +251,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
+	skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	blockManager_->Draw(viewProjection_);
@@ -363,7 +363,7 @@ void GameScene::WaitingCommand()
 			// ブロックマネージャー
 			animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
 			// エネミーマネージャー
-			//animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
+			animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
 		}
 
 	}
@@ -454,6 +454,7 @@ void GameScene::Reset()
 	// マップシステムクラスからの更新情報取得
 	player_->Update(mapSystem_->GetPlayerPosition());
 	blockManager_->Update();
+	enemiesManager_->SetDirect(0);
 	enemiesManager_->Update();
 	goal_->Update();
 

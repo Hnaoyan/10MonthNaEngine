@@ -76,11 +76,15 @@ private:
 
 	bool isSceneChanger_ = false;
 
+	bool isSettingTransition_ = false;
+
 public:
 
 	bool IsGetSceneChanger() { return isSceneChanger_; }
 
 	bool GetNowTransition() { return isNowTransition_; }
+
+	void SetIsTransition(bool flag) { isSettingTransition_ = flag; }
 
 private:
 	// モデル

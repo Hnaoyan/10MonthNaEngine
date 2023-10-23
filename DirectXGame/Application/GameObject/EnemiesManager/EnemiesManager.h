@@ -84,6 +84,8 @@ public: // メンバ関数
 	/// <param name="rotate"></param>
 	void SetDirect(float rotate) { direct_ = rotate; }
 
+	void SetAnimationPosition(const Vector2& position);
+
 	void ActionAnimationInitialize();
 
 	void ActionAnimationUpdate();

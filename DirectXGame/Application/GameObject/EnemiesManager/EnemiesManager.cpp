@@ -201,6 +201,13 @@ Cage* EnemiesManager::GetCage(Vector2 posision)
 	return nullptr;
 }
 
+void EnemiesManager::SetAnimationPosition(const Vector2& position)
+{
+	for (Enemy* enemy : enemies_) {
+		enemy->SetEndPosition(position);
+	}
+}
+
 void EnemiesManager::ActionAnimationInitialize()
 {
 	for (Enemy* enemy : enemies_) {

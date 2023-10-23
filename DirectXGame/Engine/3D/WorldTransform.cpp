@@ -52,6 +52,7 @@ void WorldTransform::BillBoardSetting(ViewProjection* view, bool billBoardFlag)
 }
 
 
+
 void WorldTransform::UpdateMatrix() {
 	// ビルボードありの場合
 	if (isBillBoard_) {

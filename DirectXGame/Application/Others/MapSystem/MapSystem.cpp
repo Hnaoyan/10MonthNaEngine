@@ -87,6 +87,8 @@ void MapSystem::Update(Command::CommandNumber commandNumber)
 		MakeSound();
 		// 移動成功アニメーション
 		player_->ActionAnimationInitialize(static_cast<uint32_t>(Player::ActionNumber::kVibration));
+		// 敵の動きの初期化
+		enemiesManager_->ActionAnimationInitialize();
 		// エフェクトの呼び出しを追加
 		particleManager_->WaveSetting(Vector3(player_->GetWorldTransformPosition()));
 	}
@@ -381,7 +383,6 @@ void MapSystem::EnemyMovePlan()
 					enemiesManager_->SetDirect(1.57f);
 				}
 			}
-
 		}
 	}
 

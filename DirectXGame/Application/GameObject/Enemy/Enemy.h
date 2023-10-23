@@ -62,6 +62,8 @@ public: // アクセッサ
 
 	void SetRotate(float rotate) { rotate_ = rotate; }
 
+	void SetEndPosition(const Vector2& position) { animationEndPosition_ = position; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -75,8 +77,10 @@ private: // メンバ変数
 
 	float rotate_;
 
-	// アニメーションの最初の座標
+	// アニメーションの開始座標
 	Vector2 animationStartPosition_;
+	// 最終座標
+	Vector2 animationEndPosition_;
 	// アニメーションの補間レート
 	float animationT_;
 };

@@ -46,10 +46,8 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 	}
 
 	worldTransform_.translation_.z = positionZ;
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, positionZ };
 	worldTransform_.rotation_.z = (-1.57f) + rotate_;
 	worldTransform_.UpdateMatrix();
-
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection)
@@ -65,6 +63,8 @@ void Enemy::Setting(const Vector2& position)
 	// ワールドトランスフォーム
 	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -2.0f };
 	position_ = { worldTransform_.translation_.x,worldTransform_.translation_.y };
+	animationEndPosition_ = position_;
+	ActionAnimationInitialize();
 	rotate_ = -1.57f;
 	worldTransform_.rotation_ = { -1.5f,0.0f,rotate_ };
 	worldTransform_.scale_ = { 8.0f,8.0f,8.0f };
@@ -75,6 +75,7 @@ void Enemy::Setting(const Vector2& position)
 void Enemy::ActionAnimationInitialize()
 {
 	animationT_ = 0;
+	animationStartPosition_ = position_;
 }
 
 void Enemy::ActionAnimationUpdate()
@@ -83,10 +84,11 @@ void Enemy::ActionAnimationUpdate()
 		animationT_ = 1.0f;
 	}
 	else {
-		animationT_ += (1.0f + 20.0f);
-		Vector3 easePosition = MathCalc::EaseInQuadF(animationT_,
+		animationT_ += (1.0f / 20.0f);
+		Vector3 easePosition = MathCalc::EaseInCubicF(animationT_,
 			Vector3(animationStartPosition_.x, animationStartPosition_.y, 0),
 			Vector3(position_.x, position_.y, 0));
+		easePosition = { easePosition.x * MapSystem::kSquareSize_.x ,easePosition.y * MapSystem::kSquareSize_.y };
 		worldTransform_.translation_.x = easePosition.x;
 		worldTransform_.translation_.y = easePosition.y;
 	}

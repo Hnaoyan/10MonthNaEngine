@@ -18,7 +18,7 @@ SceneManager::SceneManager()
 	sceneArray_[STAGESELECT]->Initialize();
 
 	sceneNum_ = TITLE;
-	//changeNum_ = TITLE;
+	prevSceneNum_ = sceneNum_;
 	//sceneArray_[sceneNum_]->Initialize();
 }
 
@@ -40,19 +40,23 @@ void SceneManager::Update()
 
 #endif // DEBUG
 
-	prevSceneNum_ = this->sceneNum_;
-	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	//prevSceneNum_ = this->sceneNum_;
+	//sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
-	if (prevSceneNum_ != sceneNum_) {
+	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
 		//LoadScene(sceneNum_);
 		//sceneArray_[sceneNum_]->Initialize();
 		//sceneArray_[prevSceneNum_].release();
 		//sceneArray_[sceneNum_]->Initialize();
-		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		//sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		transitionManager_->SetIsTransition(true);
 	}
+	prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	if (transitionManager_->IsGetSceneChanger()) {
-		sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
+		//sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
+		sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
 	}
 
 	// �J�ڍX�V
