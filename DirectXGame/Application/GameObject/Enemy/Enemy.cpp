@@ -49,7 +49,7 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 		positionZ = -15.0f;
 	}
 	else {
-		positionZ = -10.0f;
+		positionZ = -7.5f;
 	}
 
 	worldTransform_.translation_.z = positionZ;
