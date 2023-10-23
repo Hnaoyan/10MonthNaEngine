@@ -66,7 +66,7 @@ void Enemy::Setting(const Vector2& position)
 	animationEndPosition_ = position_;
 	ActionAnimationInitialize();
 	rotate_ = -1.57f;
-	worldTransform_.rotation_ = { -1.5f,0.0f,rotate_ };
+	worldTransform_.rotation_ = { -1.57f,0.0f,rotate_ };
 	worldTransform_.scale_ = { 8.0f,8.0f,8.0f };
 	worldTransform_.UpdateMatrix();
 
@@ -84,8 +84,8 @@ void Enemy::ActionAnimationUpdate()
 		animationT_ = 1.0f;
 	}
 	else {
-		animationT_ += (1.0f / 20.0f);
-		Vector3 easePosition = MathCalc::EaseInCubicF(animationT_,
+		animationT_ += (1.0f / 10.0f);
+		Vector3 easePosition = MathCalc::EaseOutCubicF(animationT_,
 			Vector3(animationStartPosition_.x, animationStartPosition_.y, 0),
 			Vector3(position_.x, position_.y, 0));
 		easePosition = { easePosition.x * MapSystem::kSquareSize_.x ,easePosition.y * MapSystem::kSquareSize_.y };
