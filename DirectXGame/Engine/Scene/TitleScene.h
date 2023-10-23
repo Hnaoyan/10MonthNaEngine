@@ -35,13 +35,16 @@ private:
 	// タイトルスプライト
 	std::unique_ptr<Sprite> titleSprite_;
 	// タイトルテクスチャ
-	uint32_t titleTexture_ = 0u;
+	uint32_t titleTexture_ = 0;
 
 	Vector2 spritePosition_ = {};
 
 	Vector2 waveVelocity_ = {};
 
 	float waveAnimation_t_ = 0;
+
+private:
+	uint32_t titleBGM_ = 0u;
 
 };
 

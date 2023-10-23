@@ -8,7 +8,7 @@ void ParticleGoal::Initialize(Model* model, uint32_t texture)
 
 void ParticleGoal::Update()
 {
-	float decrement = 0.5f;
+	float decrement = 0.25f;
 	worldTransform_.scale_ = VectorLib::Subtract(worldTransform_.scale_, Vector3(decrement, decrement, decrement));
 	Particle::Update();
 }

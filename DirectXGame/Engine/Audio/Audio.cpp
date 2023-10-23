@@ -72,7 +72,7 @@ uint32_t Audio::LoadWave(const std::string& fileName)
 	}
 
 	// Formatチャンクの読み込み
-	FormaChunk format = {};
+	FormatChunk format = {};
 	// チャンクヘッダーの確認
 	file.read((char*)&format, sizeof(ChunkHeader));
 	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {

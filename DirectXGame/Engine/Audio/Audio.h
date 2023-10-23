@@ -28,7 +28,7 @@ public:
 	};
 
 	// FMTチャンク
-	struct FormaChunk
+	struct FormatChunk
 	{
 		ChunkHeader chunk;	// "fmt"
 		WAVEFORMATEX fmt;	// 波形フォーマット

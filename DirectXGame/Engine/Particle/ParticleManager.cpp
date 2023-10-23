@@ -16,7 +16,7 @@ ParticleManager::ParticleManager()
 	cubeModel_.reset(Model::CreateFromObj("block", true));
 	deadEffectModel_.reset(Model::CreateFromObj("player", true));
 	texture_ = TextureManager::Load("plane/test.png");
-	goalEffectTexture_ = texture_;
+	goalEffectTexture_ = TextureManager::Load("plane/goalEffect.png");
 	waveEffectTexture_ = TextureManager::Load("plane/Vibration.png");
 }
 
@@ -162,7 +162,7 @@ void ParticleManager::ExplosionUpdate(const Vector3& position)
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
 {
 	goalPosition_ = pos;
-	goalOpenParameters_ = { 0,30,0,true };
+	goalOpenParameters_ = { 0,50,0,true };
 	AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), { 5.0f,5.0f,5.0f });
 }
 
