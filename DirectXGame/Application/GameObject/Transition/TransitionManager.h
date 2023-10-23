@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(Model* model);
 
 	/// <summary>
 	/// 更新処理
@@ -62,7 +62,10 @@ private: // 遷移用関数
 	/// オブジェクト追加
 	/// </summary>
 	/// <param name="position"></param>
-	void AddObject(const Vector3& position, const Vector3& scale);
+	void AddCloud(const Vector3& position, const Vector3& scale);
+
+	void BackGroundCloud();
+
 
 private:
 	/// <summary>
@@ -88,7 +91,7 @@ public:
 
 private:
 	// モデル
-	std::unique_ptr<Model> cloudModel_;
+	Model* cloudModel_;
 	// オブジェクトのリスト
 	std::list<TransitionObject*> objects_;
 

@@ -103,6 +103,11 @@ public: // 外部で呼び出す準備関数
 	void GoalEffectSetting(const Vector3& pos);
 
 	/// <summary>
+	/// 初期化
+	/// </summary>
+	void GoalEffectReset();
+
+	/// <summary>
 	/// 捕まえた際のエフェクト
 	/// </summary>
 	void CatchEnemyGenerate(const Vector3& pos);

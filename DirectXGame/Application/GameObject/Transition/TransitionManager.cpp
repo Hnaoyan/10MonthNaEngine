@@ -4,9 +4,7 @@
 #include "Input.h"
 
 TransitionManager::TransitionManager()
-{
-	cloudModel_.reset(Model::CreateFromObj("Cloud", true));
-}
+{}
 
 TransitionManager* TransitionManager::GetInstance()
 {
@@ -14,11 +12,12 @@ TransitionManager* TransitionManager::GetInstance()
 	return &instance;
 }
 
-void TransitionManager::Initialize()
+void TransitionManager::Initialize(Model* model)
 {
 	dxCommon_ = DirectXCommon::GetInstance();
 	viewProjection_.Initialize();
 
+	cloudModel_ = model;
 	cloudModel_->SetAlphaValue(1.0f);
 
 	transitionCamera_ = std::make_unique<BaseCamera>();
@@ -29,22 +28,17 @@ void TransitionManager::Initialize()
 
 void TransitionManager::Update()
 {
-	ImGui::Begin("camera");
-
-	ImGui::End();
-
-	if (Input::GetInstance()->TriggerKey(DIK_U)) {
-		TransitionSetting();
-	}
-
 	if (isSettingTransition_ && !isNowTransition_) {
 		TransitionSetting();
 	}
 
+	// 更新
 	TransitionUpdate();
 
+	// カメラ更新
 	transitionCamera_->Update();
 
+	// 遷移用のカメラ
 	viewProjection_.matView = transitionCamera_->GetView().matView;
 	viewProjection_.matProjection = transitionCamera_->GetView().matProjection;
 	viewProjection_.UpdateMatrix();
@@ -142,40 +136,45 @@ void TransitionManager::CloudTransition()
 	Vector3 scale = {};
 	//---1Wave---//
 	scale = { 3.0f,3.0f,3.0f };
-	AddObject(Vector3(50.0f, -7.0f, 0), scale);
-	AddObject(Vector3(55.0f, -3.0f, 0), scale);
-	AddObject(Vector3(55.0f, -10.0f, 0), scale);
+	AddCloud(Vector3(50.0f, -7.0f, 0), scale);
+	AddCloud(Vector3(55.0f, -3.0f, 0), scale);
+	AddCloud(Vector3(55.0f, -10.0f, 0), scale);
 
 	//---2Wave---//
 	scale = { 4.5f,4.5f,4.5f };
-	AddObject(Vector3(65.0f, -18.5f, 1.0f), scale);
-	AddObject(Vector3(75.0f, 4.0f, 0), scale);
-	AddObject(Vector3(90.0f, -8.0f, 0), scale);
+	AddCloud(Vector3(65.0f, -18.5f, 1.0f), scale);
+	AddCloud(Vector3(75.0f, 4.0f, 0), scale);
+	AddCloud(Vector3(90.0f, -8.0f, 0), scale);
 
 	//---3Wave---//
 	scale = { 6,6,6 };
-	AddObject(Vector3(100.0f, 3.0f, 0), scale);
-	AddObject(Vector3(105.0f, -20.0f, 0), scale);
-	AddObject(Vector3(120.0f, -8.0f, 0), scale);
+	AddCloud(Vector3(100.0f, 3.0f, 0), scale);
+	AddCloud(Vector3(105.0f, -20.0f, 0), scale);
+	AddCloud(Vector3(120.0f, -8.0f, 0), scale);
 
 	//---4Wave---//
 	scale = { 8,8,8 };
-	AddObject(Vector3(150.0f, 4.0f, 0), scale);
-	AddObject(Vector3(165.0f, -3.0f, 1.0f), scale);
-	AddObject(Vector3(165.0f, -18.5f, -1.0f), scale);
+	AddCloud(Vector3(150.0f, 4.0f, 0), scale);
+	AddCloud(Vector3(165.0f, -3.0f, 1.0f), scale);
+	AddCloud(Vector3(165.0f, -18.5f, -1.0f), scale);
 
 	//---5Wave---//
 	scale = { 4,4,4 };
-	AddObject(Vector3(175.0f, 4.0f, 2.0f), scale);
-	AddObject(Vector3(175.0f, -10.5f, -7.0f), scale);
-	AddObject(Vector3(185.0f, 0.5f, 5.0f), scale);
+	AddCloud(Vector3(175.0f, 4.0f, 2.0f), scale);
+	AddCloud(Vector3(175.0f, -10.5f, -7.0f), scale);
+	AddCloud(Vector3(185.0f, 0.5f, 5.0f), scale);
 }
 
-void TransitionManager::AddObject(const Vector3& position, const Vector3& scale)
+void TransitionManager::AddCloud(const Vector3& position, const Vector3& scale)
 {
 	TransitionObject* newObject = new TransitionObject();
-	newObject->Initialize(cloudModel_.get());
+	newObject->Initialize(cloudModel_);
 	newObject->InstanceSetting(position, scale);
 	//newObject->SetVelocity(Vector3(-1.0f, 0, 0));
 	objects_.push_back(newObject);
+}
+
+void TransitionManager::BackGroundCloud()
+{
+	
 }

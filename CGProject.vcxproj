@@ -156,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Block\Block.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Cage\Cage.cpp" />
@@ -206,8 +207,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="DirectXGame\Engine\Base\Framework.cpp" />
-    <ClCompile Include="DirectXGame\Application\GameObject\BaseBullet.cpp" />
-    <ClCompile Include="DirectXGame\Application\GameObject\BaseCharacter.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Ground\Ground.cpp" />
     <ClCompile Include="DirectXGame\Application\GameObject\Particle\Particle.cpp" />
     <ClCompile Include="DirectXGame\Engine\Particle\ParticleManager.cpp" />
@@ -234,6 +233,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DirectXGame\Application\UI\StageNumberUI\StageNumberUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Engine\Audio\AudioManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\BlockManager\BlockManager.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Block\Block.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Cage\Cage.h" />
@@ -287,8 +287,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\imgui\imstb_textedit.h" />
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
     <ClInclude Include="DirectXGame\Engine\Base\Framework.h" />
-    <ClInclude Include="DirectXGame\Application\GameObject\BaseBullet.h" />
-    <ClInclude Include="DirectXGame\Application\GameObject\BaseCharacter.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Ground\Ground.h" />
     <ClInclude Include="DirectXGame\Application\GameObject\Particle\Particle.h" />
     <ClInclude Include="DirectXGame\Engine\Particle\ParticleManager.h" />

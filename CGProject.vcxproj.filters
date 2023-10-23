@@ -213,12 +213,6 @@
     <ClCompile Include="DirectXGame\Engine\Other\GlobalVariables.cpp">
       <Filter>ソース ファイル\other</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\GameObject\BaseCharacter.cpp">
-      <Filter>ソース ファイル\charactor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\GameObject\BaseBullet.cpp">
-      <Filter>ソース ファイル\bullet</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\GameObject\Ground\Ground.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
@@ -348,6 +342,9 @@
     <ClCompile Include="DirectXGame\Application\UI\MethodOfOperationUI\MethodOfOperationUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engine\Audio\AudioManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\imgui\imconfig.h">
@@ -439,12 +436,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Math\MatLib.h">
       <Filter>ヘッダー ファイル\math</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameObject\BaseCharacter.h">
-      <Filter>ヘッダー ファイル\charactor</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameObject\BaseBullet.h">
-      <Filter>ヘッダー ファイル\bullet</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Other\FollowCamera.h">
       <Filter>ヘッダー ファイル\other</Filter>
@@ -585,6 +576,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\UI\MethodOfOperationUI\MethodOfOperationUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engine\Audio\AudioManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
