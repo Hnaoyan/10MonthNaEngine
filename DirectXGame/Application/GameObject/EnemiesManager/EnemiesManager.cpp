@@ -23,13 +23,15 @@ EnemiesManager::~EnemiesManager()
 
 }
 
-void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount)
+void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount)
 {
 
 	// マップシステム
 	mapSystem_ = mapSystem;
 
 	enemyModel_ = enemyModel;
+	
+	sleepModel_ = sleepModel;
 
 	enemyMovePlanModel_ = enemyMovePlanModel;
 
@@ -44,7 +46,7 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* 
 void EnemiesManager::Update()
 {
 	// エネミー危険範囲
-	enemyDangerPositions_.clear();
+	enemyDangerWorldTransform_.clear();
 
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
@@ -89,7 +91,7 @@ void EnemiesManager::Draw(const ViewProjection& viewProjection)
 		cage->Draw(viewProjection);
 	}
 
-	for (WorldTransform enemyDangerPosition : enemyDangerPositions_) {
+	for (WorldTransform enemyDangerPosition : enemyDangerWorldTransform_) {
 		enemyDangerModel_->Draw(enemyDangerPosition, viewProjection);
 	}
 }
@@ -147,7 +149,7 @@ void EnemiesManager::AddEnemy(size_t num)
 {
 
 	Enemy* enemy = new Enemy();
-	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num));
+	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_);
 	enemies_.push_back(enemy);
 
 	EnemyMovePlan* enemyMovePlan = new EnemyMovePlan();
@@ -222,6 +224,24 @@ void EnemiesManager::ActionAnimationUpdate()
 	}
 }
 
+void EnemiesManager::WaitingAnimationInitialize()
+{
+
+	for (Enemy* enemy : enemies_) {
+		enemy->WaitingAnimationInitialize();
+	}
+
+}
+
+void EnemiesManager::WaitingAnimationUpdate()
+{
+
+	for (Enemy* enemy : enemies_) {
+		enemy->WaitingAnimationUpdate();
+	}
+
+}
+
 void EnemiesManager::EnemyDangerUpdate(int x, int y)
 {
 
@@ -234,7 +254,7 @@ void EnemiesManager::EnemyDangerUpdate(int x, int y)
 				worldTransform.Initialize();
 				worldTransform.translation_ = { static_cast<float>(enemyMapLeft) * MapSystem::kSquareSize_.x, static_cast<float>(y) * MapSystem::kSquareSize_.y, enemyPositionZ };
 				worldTransform.UpdateMatrix();
-				enemyDangerPositions_.push_back(worldTransform);
+				enemyDangerWorldTransform_.push_back(worldTransform);
 			}
 		}
 		// 右
@@ -245,7 +265,7 @@ void EnemiesManager::EnemyDangerUpdate(int x, int y)
 				worldTransform.Initialize();
 				worldTransform.translation_ = { static_cast<float>(enemyMapRight) * MapSystem::kSquareSize_.x, static_cast<float>(y) * MapSystem::kSquareSize_.y, enemyPositionZ };
 				worldTransform.UpdateMatrix();
-				enemyDangerPositions_.push_back(worldTransform);
+				enemyDangerWorldTransform_.push_back(worldTransform);
 			}
 		}
 		// 上
@@ -256,7 +276,7 @@ void EnemiesManager::EnemyDangerUpdate(int x, int y)
 				worldTransform.Initialize();
 				worldTransform.translation_ = { static_cast<float>(x) * MapSystem::kSquareSize_.x, static_cast<float>(enemyMapTop) * MapSystem::kSquareSize_.y, enemyPositionZ };
 				worldTransform.UpdateMatrix();
-				enemyDangerPositions_.push_back(worldTransform);
+				enemyDangerWorldTransform_.push_back(worldTransform);
 			}
 		}
 		// 下
@@ -267,7 +287,7 @@ void EnemiesManager::EnemyDangerUpdate(int x, int y)
 				worldTransform.Initialize();
 				worldTransform.translation_ = { static_cast<float>(x) * MapSystem::kSquareSize_.x, static_cast<float>(enemyMapBottom) * MapSystem::kSquareSize_.y, enemyPositionZ };
 				worldTransform.UpdateMatrix();
-				enemyDangerPositions_.push_back(worldTransform);
+				enemyDangerWorldTransform_.push_back(worldTransform);
 			}
 		}
 

@@ -14,6 +14,7 @@ GameScene::GameScene()
 	playerModel_.reset(Model::CreateFromObj("player", true));
 	blockModel_.reset(Model::CreateFromObj("block", true));
 	enemyModel_.reset(Model::CreateFromObj("enemy", true));
+	sleepModel_.reset(Model::CreateFromObj("Sleep", true));
 	enemyMovePlanModel_.reset(Model::CreateFromObj("Arrow", true));
 	cageModel_.reset(Model::CreateFromObj("Cage", true));
 	goalModel_.reset(Model::CreateFromObj("Goal", true));
@@ -79,7 +80,7 @@ void GameScene::Initialize() {
 
 	// エネミー
 	enemiesManager_ = make_unique<EnemiesManager>();
-	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
+	enemiesManager_->Iintialize(mapSystem_.get(), enemyModel_.get(), sleepModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
@@ -465,6 +466,10 @@ void GameScene::SetWaitingAnimation()
 	// プレイヤー
 	//player_->WaitingAnimationInitialize();
 	//animationManager_->SetWaitingAnimation(std::bind(&Player::WaitingAnimationUpdate, player_.get()));
+
+	// エネミー
+	enemiesManager_->WaitingAnimationInitialize();
+	animationManager_->SetWaitingAnimation(std::bind(&EnemiesManager::WaitingAnimationUpdate, enemiesManager_.get()));
 
 }
 

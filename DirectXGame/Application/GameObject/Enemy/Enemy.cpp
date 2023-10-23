@@ -2,14 +2,19 @@
 #include "MathCalc.h"
 #include "Others/MapSystem/MapSystem.h"
 
-void Enemy::Initialize(Model* model, const Vector2& position)
+void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel)
 {
 
 	// ワールドトランスフォーム
 	worldTransform_.Initialize();
 
+	sleepWorldTransform_.Initialize();
+	//sleepWorldTransform_.BillBoardSetting();
+
 	// モデル
 	model_ = model;
+
+	sleepModel_ = sleepModel;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -37,8 +42,10 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 #endif // _DEBUG
 
 	position_ = position;
+	awake_ = enemyAwake;
+
 	float positionZ = 0.0f;
-	if (enemyAwake) {
+	if (awake_) {
 		positionZ = -15.0f;
 	}
 	else {
@@ -48,12 +55,20 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 	worldTransform_.translation_.z = positionZ;
 	worldTransform_.rotation_.z = (-1.57f) + rotate_;
 	worldTransform_.UpdateMatrix();
+
+	sleepWorldTransform_.translation_ = worldTransform_.translation_ + Vector3{ 5.0f, 0.0f, -10.0f };
+	sleepWorldTransform_.rotation_.x = -1.57f * 2.0f / 3.0f;
+	sleepWorldTransform_.UpdateMatrix();
+
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection)
 {
 
 	model_->Draw(worldTransform_, viewProjection);
+	if (!awake_) {
+		sleepModel_->Draw(sleepWorldTransform_, viewProjection);
+	}
 
 }
 
@@ -69,6 +84,8 @@ void Enemy::Setting(const Vector2& position)
 	worldTransform_.rotation_ = { -1.5f,0.0f,rotate_ };
 	worldTransform_.scale_ = { 8.0f,8.0f,8.0f };
 	worldTransform_.UpdateMatrix();
+
+	awake_ = false;
 
 }
 
@@ -94,6 +111,50 @@ void Enemy::ActionAnimationUpdate()
 	}
 	
 	worldTransform_.UpdateMatrix();
+
+}
+
+void Enemy::WaitingAnimationInitialize()
+{
+
+	// スリープアニメーション
+	// 位置
+	Vector3 sleepStartPositionAdd = { 5.0f, 0.0f, -10.0f};
+	sleepStartPosition_ = worldTransform_.translation_ + sleepStartPositionAdd;
+	// 位置
+	Vector3 sleepEndPositionAdd = { 7.5f, 0.0f, -12.5f };
+	sleepMiddlePosition_ = worldTransform_.translation_ + sleepEndPositionAdd;
+	// アニメーションt
+	sleepT_ = 0.0f;
+	// アニメーションフレーム
+	sleepFrame_ = 40;
+
+}
+
+void Enemy::WaitingAnimationUpdate()
+{
+
+	// スリープ
+	if (animationT_ == 0.0f || animationT_ >= 1.0f || !awake_) {
+		// アニメーションする
+		sleepT_ += 1.0f / static_cast<float>(sleepFrame_);
+
+		if (sleepT_ > 1.0f) {
+			sleepT_ -= 1.0f;
+		}
+
+		if (sleepT_ < 1.0f / 2.0f) {
+			float t = sleepT_ * 2.0f;
+			sleepWorldTransform_.translation_ = MathCalc::EaseInCubicF(t, sleepStartPosition_, sleepMiddlePosition_);
+		}
+		else {
+			float t = (sleepT_ - 1.0f / 2.0f) * 2.0f;
+			sleepWorldTransform_.translation_ = MathCalc::EaseOutCubicF(t, sleepMiddlePosition_, sleepStartPosition_);
+		}
+
+		sleepWorldTransform_.UpdateMatrix();
+	}
+
 }
 
 void Enemy::ApplyGlobalVariables()

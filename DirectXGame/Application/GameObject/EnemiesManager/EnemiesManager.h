@@ -27,7 +27,7 @@ public: // メンバ関数
 	/// <param name="mapSystem">マップシステム</param>
 	/// <param name="enemyModel">エネミーモデル</param>
 	/// <param name="cageModel">ケージモデル</param>
-	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount);
+	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount);
 
 	/// <summary>
 	/// 更新
@@ -90,6 +90,11 @@ public: // メンバ関数
 
 	void ActionAnimationUpdate();
 
+	// 待機アニメーション
+	void WaitingAnimationInitialize();
+
+	void WaitingAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -103,6 +108,8 @@ private: // メンバ変数
 	std::vector<Enemy*> enemies_;
 	// モデル
 	Model* enemyModel_ = nullptr;
+	// スリープモデル
+	Model* sleepModel_ = nullptr;
 
 	// エネミーの移動計画
 	std::vector<EnemyMovePlan*> enemyMovePlans_;
@@ -115,9 +122,13 @@ private: // メンバ変数
 	Model* cageModel_ = nullptr;
 
 	// エネミー危険範囲
-	std::list<WorldTransform> enemyDangerPositions_;
+	std::list<WorldTransform> enemyDangerWorldTransform_;
 	// モデル
 	Model* enemyDangerModel_;
+
+	// エネミースリープ
+	// モデル
+	Model* enemySleepModel_;
 
 	// マップシステム
 	MapSystem* mapSystem_;

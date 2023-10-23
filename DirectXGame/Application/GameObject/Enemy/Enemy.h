@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position);
+	void Initialize(Model* model, const Vector2& position, Model* sleepModel);
 
 	/// <summary>
 	/// 更新
@@ -38,6 +38,11 @@ public: // メンバ関数
 	void ActionAnimationInitialize();
 
 	void ActionAnimationUpdate();
+
+	// 待機アニメーション
+	void WaitingAnimationInitialize();
+
+	void WaitingAnimationUpdate();
 
 private: //メンバ関数
 
@@ -75,6 +80,9 @@ private: // メンバ変数
 	// 現在のマス
 	Vector2 position_;
 
+	// 起きているか
+	bool awake_;
+
 	float rotate_;
 
 	// アニメーションの開始座標
@@ -83,5 +91,25 @@ private: // メンバ変数
 	Vector2 animationEndPosition_;
 	// アニメーションの補間レート
 	float animationT_;
+
+	// スリープ
+	//ワールドトランスフォーム
+	WorldTransform sleepWorldTransform_;
+	// モデル
+	Model* sleepModel_ = nullptr;
+
+	// スリープアニメーション
+	// 位置
+	Vector3 sleepStartPosition_;
+	// 位置
+	Vector3 sleepMiddlePosition_;
+	// アニメーションt
+	float sleepT_;
+	// アニメーションフレーム
+	uint32_t sleepFrame_;
+	
+	// 行動アニメーションをしたか
+	bool isActionAnimation_;
+
 };
 
