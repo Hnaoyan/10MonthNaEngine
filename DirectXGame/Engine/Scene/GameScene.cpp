@@ -255,7 +255,9 @@ void GameScene::Draw() {
 	skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
-	blockManager_->Draw(viewProjection_);
+	blockManager_->Draw(viewProjection_, 
+		static_cast<int>(mapSystem_->GetPositionMax().x),
+		static_cast<int>(mapSystem_->GetPositionMax().y));
 	enemiesManager_->Draw(viewProjection_);
 	goal_->Draw(viewProjection_);
 

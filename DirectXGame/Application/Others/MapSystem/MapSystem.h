@@ -216,6 +216,9 @@ public: // アクセッサ
 
 	// エネミーが起きている時
 	std::vector<bool> GetEnemyAwake() { return enemyAwake_; }
+	
+	// マップ最大
+	Vector2 GetPositionMax() { return positionMax_; }
 
 public: // ポインタアクセッサ
 
@@ -282,6 +285,8 @@ private: //メンバ変数
 	// リスタートフラグ
 	bool isRestart_;
 
+	// マップ最大
+	Vector2 positionMax_;
 
 private: // ポインタ
 

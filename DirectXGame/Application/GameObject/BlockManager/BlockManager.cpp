@@ -74,20 +74,27 @@ void BlockManager::Update()
 
 }
 
-void BlockManager::Draw(const ViewProjection& viewProjection)
+void BlockManager::Draw(const ViewProjection& viewProjection, int mapX, int mapY)
 {
+
+	int mapXHalf = mapX / 2;
+	if (mapX % 2 == 1) {
+		mapXHalf += 1;
+	}
 
 	//15*15
 	uint32_t num = 0;
-	for (int i = 14; i >= 0; i--) {
-		for (int j = 0; j < 7; j++) {
-			num = i * 15 + j;
+	for (int y = mapY; y >= 0; y--) {
+		for (int x = 0; x < mapXHalf; x++) {
+			num = y * 15 + x;
 			blocks_[num]->Draw(viewProjection);
-			num = i * 15 + 14 - j;
+			num = y * 15 + mapX - x;
 			blocks_[num]->Draw(viewProjection);
 		}
-		num = i * 15 + 7;
-		blocks_[num]->Draw(viewProjection);
+		if (mapX % 2 == 0) {
+			num = y * 15 + mapXHalf;
+			blocks_[num]->Draw(viewProjection);
+		}
 	}
 
 }

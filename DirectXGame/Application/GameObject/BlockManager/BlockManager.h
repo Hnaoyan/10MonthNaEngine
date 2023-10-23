@@ -28,7 +28,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(const ViewProjection& viewProjection);
+	void Draw(const ViewProjection& viewProjection, int mapX, int mapY);
 
 	/// <summary>
 	/// 設定
