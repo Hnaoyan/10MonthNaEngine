@@ -168,7 +168,7 @@ void EnemiesManager::AddCage(size_t num)
 {
 
 	Cage* cage = new Cage();
-	cage->Initialize(cageModel_, mapSystem_->GetInitialCagePosition().at(num));
+	cage->Initialize(cageModel_, shadowModel_, mapSystem_->GetInitialCagePosition().at(num));
 	cages_.push_back(cage);
 
 }

@@ -17,7 +17,8 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position);
+	void Initialize(Model* model, Model* shadowModel,
+		const Vector2& position);
 
 	/// <summary>
 	/// 更新
@@ -93,6 +94,13 @@ private: // メンバ変数
 	uint32_t animationFrame_;
 
 	Vector3 scaleAdd_ = { 4.0f,4.0f,4.0f };
+
+	// 影
+	WorldTransform shadowWorldTransform_;
+	// モデル
+	Model* shadowModel_ = nullptr;
+
+	float shadowAddZ_;
 
 };
 

@@ -95,6 +95,7 @@ void Enemy::Setting(const Vector2& position)
 	shadowWorldTransform_.translation_ = { 0.0f, 0.0f, shadowAddZ_ };
 	shadowWorldTransform_.rotation_ = { 0.0f, 0.0f, 0.0f };
 	shadowWorldTransform_.UpdateMatrix();
+	shadowModel_->SetAlphaValue(0.85f);
 
 	awake_ = false;
 
