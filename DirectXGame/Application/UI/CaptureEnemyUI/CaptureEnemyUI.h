@@ -22,6 +22,10 @@ public: // メンバ関数
 
 	void EnemyCountUpdate(uint32_t enemyCount);
 
+	void ActionAnimationInitialize();
+
+	void ActionAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -63,5 +67,36 @@ private: // メンバ変数
 	uint32_t enemyCount_;
 	// エネミー総数
 	uint32_t enemyMax_;
+
+	// アニメーション
+	// 初期スケール
+	Vector2 initEnemyCountSize_;
+	// スケール中間
+	Vector2 middleEnemyCountSize_;
+	
+	// 初期スケール
+	Vector2 initNumSize_;
+	// スケール中間
+	Vector2 middleNumCountSize_;
+	
+	// 初期スケール
+	Vector2 initSlashSize_;
+	// スケール中間
+	Vector2 middleSlashSize_;
+	
+	// 初期スケール
+	Vector2 initGoGoalSize_;
+	// スケール中間
+	Vector2 middleGoGoalSize_;
+	
+	// t
+	float animationT_;
+	// フレーム
+	uint32_t animationFrame_;
+
+	// 倍率
+	Vector2 sizeMultiply_ = { 1.5f,1.5f };
+	// するか
+	bool isAnimation_;
 
 };

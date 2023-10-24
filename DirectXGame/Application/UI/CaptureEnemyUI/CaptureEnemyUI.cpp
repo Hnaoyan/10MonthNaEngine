@@ -1,5 +1,6 @@
 #include "CaptureEnemyUI.h"
 #include <GlobalVariables.h>
+#include <Math/MathCalc.h>
 
 void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTextureHandle, uint32_t slashTextureHandle, uint32_t goGoalTextureHandle)
 {
@@ -72,6 +73,8 @@ void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTe
 	globalVariables->AddItem(groupName, "goGoalSize", goGoalSize_);
 	globalVariables->AddItem(groupName, "goGoalPosition", goGoalPosition_);
 
+	globalVariables->AddItem(groupName, "sizeMultiply", sizeMultiply_);
+
 	ApplyGlobalVariables();
 
 #pragma endregion
@@ -85,23 +88,23 @@ void CaptureEnemyUI::Update()
 	ApplyGlobalVariables();
 
 	enemyCountSprite_->SetPosition(enemyCountPosition_);
-	enemyCountSprite_->SetSize(enemyCountSize_);
+	//enemyCountSprite_->SetSize(enemyCountSize_);
 	enemyCountSprite_->Update();
 
 	denominatorSprite_->SetPosition(denominatorPosition_);
-	denominatorSprite_->SetSize(numSize_);
+	//denominatorSprite_->SetSize(numSize_);
 	denominatorSprite_->Update();
 
 	numeratorSprite_->SetPosition(numeratorPosition_);
-	numeratorSprite_->SetSize(numSize_);
+	//numeratorSprite_->SetSize(numSize_);
 	numeratorSprite_->Update();
 
 	slashSprite_->SetPosition(slashPosition_);
-	slashSprite_->SetSize(slashSize_);
+	//slashSprite_->SetSize(slashSize_);
 	slashSprite_->Update();
 
 	goGoalSprite_->SetPosition(goGoalPosition_);
-	goGoalSprite_->SetSize(goGoalSize_);
+	//goGoalSprite_->SetSize(goGoalSize_);
 	goGoalSprite_->Update();
 
 #endif // _DEBUG
@@ -136,6 +139,8 @@ void CaptureEnemyUI::Setting(uint32_t enemyMax)
 	denominatorSprite_->SetSpriteRect(base, size);
 	denominatorSprite_->Update();
 	
+	isAnimation_ = false;
+	
 	EnemyCountUpdate(0);
 
 }
@@ -150,6 +155,84 @@ void CaptureEnemyUI::EnemyCountUpdate(uint32_t enemyCount)
 
 	numeratorSprite_->SetSpriteRect(base, size);
 	numeratorSprite_->Update();
+
+}
+
+void CaptureEnemyUI::ActionAnimationInitialize()
+{
+
+	// アニメーション
+	// 初期スケール
+	initEnemyCountSize_ = enemyCountSize_;
+	// スケール中間
+	middleEnemyCountSize_ = { enemyCountSize_.x * sizeMultiply_.x , enemyCountSize_.y * sizeMultiply_.y };
+
+	// 初期スケール
+	initNumSize_ = numSize_;
+	// スケール中間
+	middleNumCountSize_ = { numSize_.x * sizeMultiply_.x , numSize_.y * sizeMultiply_.y };
+
+	// 初期スケール
+	initSlashSize_ = slashSize_;
+	// スケール中間
+	middleSlashSize_ = { slashSize_.x * sizeMultiply_.x , slashSize_.y * sizeMultiply_.y };
+
+	// 初期スケール
+	initGoGoalSize_ = goGoalSize_;
+	// スケール中間
+	middleGoGoalSize_ = { goGoalSize_.x * sizeMultiply_.x , goGoalSize_.y * sizeMultiply_.y };
+
+	// t
+	animationT_ = 0.0f;
+	// フレーム
+	animationFrame_ = 10;
+
+	isAnimation_ = true;
+
+}
+
+void CaptureEnemyUI::ActionAnimationUpdate()
+{
+
+	if (isAnimation_) {
+		animationT_ += 1.0f / static_cast<float>(animationFrame_);
+		if (animationT_ >= 1.0f) {
+			animationT_ = 1.0f;
+			isAnimation_ = false;
+		}
+		// 1.0f / 2.0f
+		if (animationT_ < 1.0f / 2.0f) {
+			float t = animationT_ * 2.0f;
+
+			// サイズ変更
+			enemyCountSize_ = MathCalc::EaseInCubicF(t, initEnemyCountSize_, middleEnemyCountSize_);
+			numSize_ = MathCalc::EaseInCubicF(t, initNumSize_, middleNumCountSize_);
+			slashSize_ = MathCalc::EaseInCubicF(t, initSlashSize_, middleSlashSize_);
+			goGoalSize_ = MathCalc::EaseInCubicF(t, initGoGoalSize_, middleGoGoalSize_);
+		}
+		//  1.0f / 2.0f
+		else {
+			float t = (animationT_ - 1.0f / 2.0f) * 2.0f;
+
+			// サイズ変更
+			enemyCountSize_ = MathCalc::EaseInCubicF(t, middleEnemyCountSize_, initEnemyCountSize_);
+			numSize_ = MathCalc::EaseInCubicF(t, middleNumCountSize_, initNumSize_);
+			slashSize_ = MathCalc::EaseInCubicF(t, middleSlashSize_, initSlashSize_);
+			goGoalSize_ = MathCalc::EaseInCubicF(t, middleGoGoalSize_, initGoGoalSize_);
+		}
+
+		// スプライト更新
+		enemyCountSprite_->SetSize(enemyCountSize_);
+		enemyCountSprite_->Update();
+		denominatorSprite_->SetSize(numSize_);
+		denominatorSprite_->Update();
+		numeratorSprite_->SetSize(numSize_);
+		numeratorSprite_->Update();
+		slashSprite_->SetSize(slashSize_);
+		slashSprite_->Update();
+		goGoalSprite_->SetSize(goGoalSize_);
+		goGoalSprite_->Update();
+	}
 
 }
 
@@ -173,5 +256,7 @@ void CaptureEnemyUI::ApplyGlobalVariables()
 
 	goGoalSize_ = globalVariables->GetVector2Value(groupName, "goGoalSize");
 	goGoalPosition_ = globalVariables->GetVector2Value(groupName, "goGoalPosition");
+
+	sizeMultiply_ = globalVariables->GetVector2Value(groupName, "sizeMultiply");
 
 }
