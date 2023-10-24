@@ -10,6 +10,7 @@ void MyGame::Initialize()
 
 	// シーンの初期化
 	sceneManager = new SceneManager();
+	sceneManager->Initialize();
 }
 
 void MyGame::Finalize()
