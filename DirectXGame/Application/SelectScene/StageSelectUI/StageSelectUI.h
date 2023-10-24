@@ -40,6 +40,13 @@ public: // メンバ関数
 	/// <param name="stageNum"></param>
 	void SetStageNum(uint32_t stageNum);
 
+private: //メンバ関数
+
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 private: // メンバ変数
 
 	// レフト
