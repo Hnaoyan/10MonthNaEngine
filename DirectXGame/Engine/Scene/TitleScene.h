@@ -28,6 +28,13 @@ public:
 	/// </summary>
 	void Draw() override;
 
+private: //メンバ関数
+
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 private:
 	DirectXCommon* dxCommon_ = nullptr;
 	Audio* audio_ = nullptr;

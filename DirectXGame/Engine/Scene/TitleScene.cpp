@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "VectorLib.h"
 #include <numbers>
+#include <GlobalVariables.h>
 
 TitleScene::TitleScene()
 {
@@ -28,10 +29,39 @@ void TitleScene::Initialize()
 	gameStartSprite_->SetSpriteRect({ 0.0f, 0.0f }, gameStartSize_);
 	gameStartSprite_->Update();
 
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "Title";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+	// ゲームスタートポジション
+	globalVariables->AddItem(groupName, "gameStartPosition", gameStartPosition_);
+	// ゲームスタートサイズ
+	globalVariables->AddItem(groupName, "gameStartSize", gameStartSize_);
+
+	ApplyGlobalVariables();
+
+#pragma endregion
+
 }
 
 void TitleScene::Update()
 {
+
+#ifdef _DEBUG
+
+	ApplyGlobalVariables();
+	gameStartSprite_->SetSize(gameStartSize_);
+	gameStartSprite_->SetPosition(gameStartPosition_);
+	gameStartSprite_->Update();
+
+#endif // _DEBUG
+
+
 	waveAnimation_t_ += 0.01f;
 	float amplitude_ = 0.5f;
 	float fre = 5.0f;
@@ -45,11 +75,11 @@ void TitleScene::Update()
 	}
 
 	if (Input::GetInstance()->PressKey(DIK_SPACE)) {
-		gameStartSprite_->SetSpriteRect({ gameStartSize_.x, 0.0f }, gameStartSize_);
+		gameStartSprite_->SetSpriteRect({ 480.0f, 0.0f }, { 480.0f, 192.0f });
 		gameStartSprite_->Update();
 	}
 	else {
-		gameStartSprite_->SetSpriteRect({ 0.0f, 0.0f }, gameStartSize_);
+		gameStartSprite_->SetSpriteRect({ 0.0f, 0.0f }, { 480.0f, 192.0f });
 		gameStartSprite_->Update();
 	}
 
@@ -66,4 +96,19 @@ void TitleScene::Draw()
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+}
+
+void TitleScene::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "Title";
+
+	// ゲームスタートポジション
+	gameStartPosition_ = globalVariables->GetVector2Value(groupName, "gameStartPosition");
+	// ゲームスタートサイズ
+	gameStartSize_ = globalVariables->GetVector2Value(groupName, "gameStartSize");
+
 }
