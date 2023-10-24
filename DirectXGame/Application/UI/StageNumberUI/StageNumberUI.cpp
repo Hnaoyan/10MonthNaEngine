@@ -40,7 +40,7 @@ void StageNumberUI::Update()
 	ApplyGlobalVariables();
 	stageNumberSprite_->SetPosition(position_);
 	stageNumberSprite_->SetSize({ size_.x - 50.0f,size_.y });
-	stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, size_);
+	//stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, size_);
 	stageNumberSprite_->Update();
 
 #endif // _DEBUG

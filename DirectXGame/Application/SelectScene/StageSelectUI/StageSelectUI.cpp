@@ -101,12 +101,12 @@ void StageSelectUI::Update()
 
 	leftSprite_->SetPosition(leftPostion_);
 	leftSprite_->SetSize(leftSize_);
-	leftSprite_->SetSpriteRect(Vector2{ 0,0 }, leftSize_);
+	leftSprite_->SetSpriteRect(Vector2{ leftSize_.x,0 }, leftSize_);
 	leftSprite_->Update();
 
 	rightSprite_->SetPosition(rightPostion_);
 	rightSprite_->SetSize(rightSize_);
-	rightSprite_->SetSpriteRect(Vector2{ 0,0 }, rightSize_);
+	rightSprite_->SetSpriteRect(Vector2{ rightSize_.x,0 }, rightSize_);
 	rightSprite_->Update();
 
 	stageSelectSprite_->SetPosition(stageSelectPostion_);
@@ -116,7 +116,7 @@ void StageSelectUI::Update()
 
 	stageNumberSprite_->SetPosition(stageNumberPostion_);
 	stageNumberSprite_->SetSize(stageNumberSize_);
-	stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, stageNumberSize_);
+	//stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, stageNumberSize_);
 	stageNumberSprite_->Update();
 
 
