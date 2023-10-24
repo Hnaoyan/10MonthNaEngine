@@ -522,12 +522,12 @@ namespace
         WIC_FLAGS flags,
         bool iswic2,
         _In_ IWICBitmapDecoder *decoder,
-        _In_ IWICBitmapFrameDecode *frame,
+        _In_ IWICBitmapFrameDecode *fre_,
         _Out_ TexMetadata& metadata,
         _Out_opt_ WICPixelFormatGUID* pConvert,
         _In_opt_ std::function<void(IWICMetadataQueryReader*)> getMQR)
     {
-        if (!decoder || !frame)
+        if (!decoder || !fre_)
             return E_POINTER;
 
         memset(&metadata, 0, sizeof(TexMetadata));
@@ -536,7 +536,7 @@ namespace
         metadata.dimension = TEX_DIMENSION_TEXTURE2D;
 
         UINT w, h;
-        HRESULT hr = frame->GetSize(&w, &h);
+        HRESULT hr = fre_->GetSize(&w, &h);
         if (FAILED(hr))
             return hr;
 
@@ -556,7 +556,7 @@ namespace
             metadata.arraySize = 1;
 
         WICPixelFormatGUID pixelFormat;
-        hr = frame->GetPixelFormat(&pixelFormat);
+        hr = fre_->GetPixelFormat(&pixelFormat);
         if (FAILED(hr))
             return hr;
 
@@ -575,7 +575,7 @@ namespace
                 return hr;
 
             ComPtr<IWICMetadataQueryReader> metareader;
-            hr = frame->GetMetadataQueryReader(metareader.GetAddressOf());
+            hr = fre_->GetMetadataQueryReader(metareader.GetAddressOf());
             if (SUCCEEDED(hr))
             {
                 // Check for sRGB colorspace metadata
@@ -649,7 +649,7 @@ namespace
         if (getMQR)
         {
             ComPtr<IWICMetadataQueryReader> metareader;
-            if (SUCCEEDED(frame->GetMetadataQueryReader(metareader.GetAddressOf())))
+            if (SUCCEEDED(fre_->GetMetadataQueryReader(metareader.GetAddressOf())))
             {
                 getMQR(metareader.Get());
             }
@@ -666,10 +666,10 @@ namespace
         WIC_FLAGS flags,
         const TexMetadata& metadata,
         const WICPixelFormatGUID& convertGUID,
-        _In_ IWICBitmapFrameDecode *frame,
+        _In_ IWICBitmapFrameDecode *fre_,
         _Inout_ ScratchImage& image)
     {
-        if (!frame)
+        if (!fre_)
             return E_POINTER;
 
         HRESULT hr = image.Initialize2D(metadata.format, metadata.width, metadata.height, 1, 1);
@@ -690,7 +690,7 @@ namespace
 
         if (memcmp(&convertGUID, &GUID_NULL, sizeof(GUID)) == 0)
         {
-            hr = frame->CopyPixels(nullptr, static_cast<UINT>(img->rowPitch), static_cast<UINT>(img->slicePitch), img->pixels);
+            hr = fre_->CopyPixels(nullptr, static_cast<UINT>(img->rowPitch), static_cast<UINT>(img->slicePitch), img->pixels);
             if (FAILED(hr))
                 return hr;
         }
@@ -702,7 +702,7 @@ namespace
                 return hr;
 
             WICPixelFormatGUID pixelFormat;
-            hr = frame->GetPixelFormat(&pixelFormat);
+            hr = fre_->GetPixelFormat(&pixelFormat);
             if (FAILED(hr))
                 return hr;
 
@@ -713,7 +713,7 @@ namespace
                 return E_UNEXPECTED;
             }
 
-            hr = FC->Initialize(frame, convertGUID, GetWICDither(flags), nullptr,
+            hr = FC->Initialize(fre_, convertGUID, GetWICDither(flags), nullptr,
                 0, WICBitmapPaletteTypeMedianCut);
             if (FAILED(hr))
                 return hr;
@@ -761,18 +761,18 @@ namespace
             if (img->rowPitch > UINT32_MAX || img->slicePitch > UINT32_MAX)
                 return HRESULT_E_ARITHMETIC_OVERFLOW;
 
-            ComPtr<IWICBitmapFrameDecode> frame;
-            hr = decoder->GetFrame(static_cast<UINT>(index), frame.GetAddressOf());
+            ComPtr<IWICBitmapFrameDecode> fre_;
+            hr = decoder->GetFrame(static_cast<UINT>(index), fre_.GetAddressOf());
             if (FAILED(hr))
                 return hr;
 
             WICPixelFormatGUID pfGuid;
-            hr = frame->GetPixelFormat(&pfGuid);
+            hr = fre_->GetPixelFormat(&pfGuid);
             if (FAILED(hr))
                 return hr;
 
             UINT w, h;
-            hr = frame->GetSize(&w, &h);
+            hr = fre_->GetSize(&w, &h);
             if (FAILED(hr))
                 return hr;
 
@@ -781,7 +781,7 @@ namespace
                 // This frame does not need resized
                 if (memcmp(&pfGuid, &sourceGUID, sizeof(WICPixelFormatGUID)) == 0)
                 {
-                    hr = frame->CopyPixels(nullptr, static_cast<UINT>(img->rowPitch), static_cast<UINT>(img->slicePitch), img->pixels);
+                    hr = fre_->CopyPixels(nullptr, static_cast<UINT>(img->rowPitch), static_cast<UINT>(img->slicePitch), img->pixels);
                     if (FAILED(hr))
                         return hr;
                 }
@@ -799,7 +799,7 @@ namespace
                         return E_UNEXPECTED;
                     }
 
-                    hr = FC->Initialize(frame.Get(), sourceGUID, GetWICDither(flags), nullptr,
+                    hr = FC->Initialize(fre_.Get(), sourceGUID, GetWICDither(flags), nullptr,
                         0, WICBitmapPaletteTypeMedianCut);
                     if (FAILED(hr))
                         return hr;
@@ -817,7 +817,7 @@ namespace
                 if (FAILED(hr))
                     return hr;
 
-                hr = scaler->Initialize(frame.Get(),
+                hr = scaler->Initialize(fre_.Get(),
                     static_cast<UINT>(metadata.width), static_cast<UINT>(metadata.height),
                     GetWICInterp(flags));
                 if (FAILED(hr))
@@ -871,15 +871,15 @@ namespace
     //-------------------------------------------------------------------------------------
     HRESULT EncodeMetadata(
         WIC_FLAGS flags,
-        _In_ IWICBitmapFrameEncode* frame,
+        _In_ IWICBitmapFrameEncode* fre_,
         const GUID& containerFormat,
         DXGI_FORMAT format)
     {
-        if (!frame)
+        if (!fre_)
             return E_POINTER;
 
         ComPtr<IWICMetadataQueryWriter> metawriter;
-        HRESULT hr = frame->GetMetadataQueryWriter(metawriter.GetAddressOf());
+        HRESULT hr = fre_->GetMetadataQueryWriter(metawriter.GetAddressOf());
         if (SUCCEEDED(hr))
         {
             PROPVARIANT value;
@@ -973,11 +973,11 @@ namespace
         const Image& image,
         WIC_FLAGS flags,
         _In_ REFGUID containerFormat,
-        _In_ IWICBitmapFrameEncode* frame,
+        _In_ IWICBitmapFrameEncode* fre_,
         _In_opt_ IPropertyBag2* props,
         _In_opt_ const GUID* targetFormat)
     {
-        if (!frame)
+        if (!fre_)
             return E_INVALIDARG;
 
         if (!image.pixels)
@@ -987,7 +987,7 @@ namespace
         if (!DXGIToWIC(image.format, pfGuid))
             return HRESULT_E_NOT_SUPPORTED;
 
-        HRESULT hr = frame->Initialize(props);
+        HRESULT hr = fre_->Initialize(props);
         if (FAILED(hr))
             return hr;
 
@@ -997,16 +997,16 @@ namespace
         if (image.rowPitch > UINT32_MAX || image.slicePitch > UINT32_MAX)
             return HRESULT_E_ARITHMETIC_OVERFLOW;
 
-        hr = frame->SetSize(static_cast<UINT>(image.width), static_cast<UINT>(image.height));
+        hr = fre_->SetSize(static_cast<UINT>(image.width), static_cast<UINT>(image.height));
         if (FAILED(hr))
             return hr;
 
-        hr = frame->SetResolution(72, 72);
+        hr = fre_->SetResolution(72, 72);
         if (FAILED(hr))
             return hr;
 
         WICPixelFormatGUID targetGuid = (targetFormat) ? (*targetFormat) : pfGuid;
-        hr = frame->SetPixelFormat(&targetGuid);
+        hr = fre_->SetPixelFormat(&targetGuid);
         if (FAILED(hr))
             return hr;
 
@@ -1016,7 +1016,7 @@ namespace
             return E_FAIL;
         }
 
-        hr = EncodeMetadata(flags, frame, containerFormat, image.format);
+        hr = EncodeMetadata(flags, fre_, containerFormat, image.format);
         if (FAILED(hr))
             return hr;
 
@@ -1053,20 +1053,20 @@ namespace
                 return hr;
 
             WICRect rect = { 0, 0, static_cast<INT>(image.width), static_cast<INT>(image.height) };
-            hr = frame->WriteSource(FC.Get(), &rect);
+            hr = fre_->WriteSource(FC.Get(), &rect);
             if (FAILED(hr))
                 return hr;
         }
         else
         {
             // No conversion required
-            hr = frame->WritePixels(static_cast<UINT>(image.height), static_cast<UINT>(image.rowPitch), static_cast<UINT>(image.slicePitch),
+            hr = fre_->WritePixels(static_cast<UINT>(image.height), static_cast<UINT>(image.rowPitch), static_cast<UINT>(image.slicePitch),
                 reinterpret_cast<uint8_t*>(image.pixels));
             if (FAILED(hr))
                 return hr;
         }
 
-        hr = frame->Commit();
+        hr = fre_->Commit();
         if (FAILED(hr))
             return hr;
 
@@ -1099,9 +1099,9 @@ namespace
         if (FAILED(hr))
             return hr;
 
-        ComPtr<IWICBitmapFrameEncode> frame;
+        ComPtr<IWICBitmapFrameEncode> fre_;
         ComPtr<IPropertyBag2> props;
-        hr = encoder->CreateNewFrame(frame.GetAddressOf(), props.GetAddressOf());
+        hr = encoder->CreateNewFrame(fre_.GetAddressOf(), props.GetAddressOf());
         if (FAILED(hr))
             return hr;
 
@@ -1122,7 +1122,7 @@ namespace
             setCustomProps(props.Get());
         }
 
-        hr = EncodeImage(image, flags, containerFormat, frame.Get(), props.Get(), targetFormat);
+        hr = EncodeImage(image, flags, containerFormat, fre_.Get(), props.Get(), targetFormat);
         if (FAILED(hr))
             return hr;
 
@@ -1182,9 +1182,9 @@ namespace
 
         for (size_t index = 0; index < nimages; ++index)
         {
-            ComPtr<IWICBitmapFrameEncode> frame;
+            ComPtr<IWICBitmapFrameEncode> fre_;
             ComPtr<IPropertyBag2> props;
-            hr = encoder->CreateNewFrame(frame.GetAddressOf(), props.GetAddressOf());
+            hr = encoder->CreateNewFrame(fre_.GetAddressOf(), props.GetAddressOf());
             if (FAILED(hr))
                 return hr;
 
@@ -1193,7 +1193,7 @@ namespace
                 setCustomProps(props.Get());
             }
 
-            hr = EncodeImage(images[index], flags, containerFormat, frame.Get(), props.Get(), targetFormat);
+            hr = EncodeImage(images[index], flags, containerFormat, fre_.Get(), props.Get(), targetFormat);
             if (FAILED(hr))
                 return hr;
         }
@@ -1250,13 +1250,13 @@ HRESULT DirectX::GetMetadataFromWICMemory(
     if (FAILED(hr))
         return hr;
 
-    ComPtr<IWICBitmapFrameDecode> frame;
-    hr = decoder->GetFrame(0, frame.GetAddressOf());
+    ComPtr<IWICBitmapFrameDecode> fre_;
+    hr = decoder->GetFrame(0, fre_.GetAddressOf());
     if (FAILED(hr))
         return hr;
 
     // Get metadata
-    hr = DecodeMetadata(flags, iswic2, decoder.Get(), frame.Get(), metadata, nullptr, getMQR);
+    hr = DecodeMetadata(flags, iswic2, decoder.Get(), fre_.Get(), metadata, nullptr, getMQR);
     if (FAILED(hr))
         return hr;
 
@@ -1288,13 +1288,13 @@ HRESULT DirectX::GetMetadataFromWICFile(
     if (FAILED(hr))
         return hr;
 
-    ComPtr<IWICBitmapFrameDecode> frame;
-    hr = decoder->GetFrame(0, frame.GetAddressOf());
+    ComPtr<IWICBitmapFrameDecode> fre_;
+    hr = decoder->GetFrame(0, fre_.GetAddressOf());
     if (FAILED(hr))
         return hr;
 
     // Get metadata
-    hr = DecodeMetadata(flags, iswic2, decoder.Get(), frame.Get(), metadata, nullptr, getMQR);
+    hr = DecodeMetadata(flags, iswic2, decoder.Get(), fre_.Get(), metadata, nullptr, getMQR);
     if (FAILED(hr))
         return hr;
 
@@ -1343,15 +1343,15 @@ HRESULT DirectX::LoadFromWICMemory(
     if (FAILED(hr))
         return hr;
 
-    ComPtr<IWICBitmapFrameDecode> frame;
-    hr = decoder->GetFrame(0, frame.GetAddressOf());
+    ComPtr<IWICBitmapFrameDecode> fre_;
+    hr = decoder->GetFrame(0, fre_.GetAddressOf());
     if (FAILED(hr))
         return hr;
 
     // Get metadata
     TexMetadata mdata = {};
     WICPixelFormatGUID convertGUID = {};
-    hr = DecodeMetadata(flags, iswic2, decoder.Get(), frame.Get(), mdata, &convertGUID, getMQR);
+    hr = DecodeMetadata(flags, iswic2, decoder.Get(), fre_.Get(), mdata, &convertGUID, getMQR);
     if (FAILED(hr))
         return hr;
 
@@ -1361,7 +1361,7 @@ HRESULT DirectX::LoadFromWICMemory(
     }
     else
     {
-        hr = DecodeSingleFrame(flags, mdata, convertGUID, frame.Get(), image);
+        hr = DecodeSingleFrame(flags, mdata, convertGUID, fre_.Get(), image);
     }
 
     if (FAILED(hr))
@@ -1404,15 +1404,15 @@ HRESULT DirectX::LoadFromWICFile(
     if (FAILED(hr))
         return hr;
 
-    ComPtr<IWICBitmapFrameDecode> frame;
-    hr = decoder->GetFrame(0, frame.GetAddressOf());
+    ComPtr<IWICBitmapFrameDecode> fre_;
+    hr = decoder->GetFrame(0, fre_.GetAddressOf());
     if (FAILED(hr))
         return hr;
 
     // Get metadata
     TexMetadata mdata = {};
     WICPixelFormatGUID convertGUID = {};
-    hr = DecodeMetadata(flags, iswic2, decoder.Get(), frame.Get(), mdata, &convertGUID, getMQR);
+    hr = DecodeMetadata(flags, iswic2, decoder.Get(), fre_.Get(), mdata, &convertGUID, getMQR);
     if (FAILED(hr))
         return hr;
 
@@ -1422,7 +1422,7 @@ HRESULT DirectX::LoadFromWICFile(
     }
     else
     {
-        hr = DecodeSingleFrame(flags, mdata, convertGUID, frame.Get(), image);
+        hr = DecodeSingleFrame(flags, mdata, convertGUID, fre_.Get(), image);
     }
 
     if (FAILED(hr))

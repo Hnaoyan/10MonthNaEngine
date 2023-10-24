@@ -20,9 +20,9 @@ void TitleScene::Initialize()
 void TitleScene::Update()
 {
 	waveAnimation_t_ += 0.01f;
-	float amplitude = 0.5f;
+	float amplitude_ = 0.5f;
 	float fre = 5.0f;
-	waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
+	waveVelocity_.y = amplitude_ * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
 
 	spritePosition_ = VectorLib::Add(spritePosition_, waveVelocity_);
 	titleSprite_->SetPosition(spritePosition_);

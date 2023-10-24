@@ -1,6 +1,7 @@
 #include "StagePhot.h"
 #include "../Engine/Math/MathCalc.h"
 #include <numbers>
+#include <GlobalVariables.h>
 
 void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax)
 {
@@ -34,16 +35,53 @@ void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax
 	// ステージナンバー
 	stageMax_ = stageMax;
 
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "StagePhot";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	//移動中間スケール
+	globalVariables->AddItem(groupName, "offScreenLeftPos", positions_[0]);
+	globalVariables->AddItem(groupName, "screenLeftPos", positions_[1]);
+	globalVariables->AddItem(groupName, "screenCenterPos", positions_[2]);
+	globalVariables->AddItem(groupName, "screenRightPos", positions_[3]);
+	globalVariables->AddItem(groupName, "offScreenRightPos", positions_[4]);
+
+	// サイズ
+	globalVariables->AddItem(groupName, "offScreenLeftSize", sizes_[0]);
+	globalVariables->AddItem(groupName, "screenLeftSize", sizes_[1]);
+	globalVariables->AddItem(groupName, "screenCenterSize", sizes_[2]);
+	globalVariables->AddItem(groupName, "screenRightSize", sizes_[3]);
+	globalVariables->AddItem(groupName, "offScreenRightSize", sizes_[4]);
+
+	// 振幅
+	globalVariables->AddItem(groupName, "amplitude", amplitude_);
+	// フレーム
+	globalVariables->AddItem(groupName, "fre", fre_);
+
+	ApplyGlobalVariables();
+
+#pragma endregion
+
 	Setting(0);
 
 }
 
 void StagePhot::Update()
 {
+
+#ifdef _DEBUG
+	ApplyGlobalVariables();
+#endif // _DEBUG
+
+
 	waveAnimation_t_ += 0.01f;
-	float amplitude = 0.3f;
-	float fre = 5.0f;
-	waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
+	waveVelocity_.y = amplitude_ * std::cosf(1.0f * float(std::numbers::pi) * fre_ * waveAnimation_t_);
 
 	positions_[2] = VectorLib::Add(positions_[2], waveVelocity_);
 	sprite_[2]->SetPosition(positions_[2]);
@@ -154,5 +192,33 @@ void StagePhot::TextureHandleChange()
 		sprite_[i]->SetSize(sizes_[i]);
 		sprite_[i]->Update();
 	}
+
+}
+
+void StagePhot::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "StagePhot";
+
+	positions_[0] = globalVariables->GetVector2Value(groupName, "offScreenLeftPos");
+	positions_[1] = globalVariables->GetVector2Value(groupName, "screenLeftPos");
+	positions_[2] = globalVariables->GetVector2Value(groupName, "screenCenterPos");
+	positions_[3] = globalVariables->GetVector2Value(groupName, "screenRightPos");
+	positions_[4] = globalVariables->GetVector2Value(groupName, "offScreenRightPos");
+
+	// サイズ
+	sizes_[0] = globalVariables->GetVector2Value(groupName, "offScreenLeftSize");
+	sizes_[1] = globalVariables->GetVector2Value(groupName, "screenLeftSize");
+	sizes_[2] = globalVariables->GetVector2Value(groupName, "screenCenterSize");
+	sizes_[3] = globalVariables->GetVector2Value(groupName, "screenRightSize");
+	sizes_[4] = globalVariables->GetVector2Value(groupName, "offScreenRightSize");
+
+	// 振幅
+	amplitude_ = globalVariables->GetFloatValue(groupName, "amplitude");
+	// フレーム
+	fre_ = globalVariables->GetFloatValue(groupName, "fre");
 
 }
