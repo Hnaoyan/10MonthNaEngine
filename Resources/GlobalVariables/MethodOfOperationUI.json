@@ -1,0 +1,36 @@
+{
+    "MethodOfOperationUI": {
+        "movePosition": [
+            160.0,
+            648.0
+        ],
+        "moveSize": [
+            128.0,
+            64.0
+        ],
+        "resetPosition": [
+            536.0,
+            648.0
+        ],
+        "resetSize": [
+            144.0,
+            64.0
+        ],
+        "stageSelectPosition": [
+            760.0,
+            648.0
+        ],
+        "stageSelectSize": [
+            224.0,
+            64.0
+        ],
+        "vibrationPosition": [
+            344.0,
+            648.0
+        ],
+        "vibrationSize": [
+            160.0,
+            64.0
+        ]
+    }
+}

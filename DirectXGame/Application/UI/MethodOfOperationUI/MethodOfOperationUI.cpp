@@ -1,4 +1,5 @@
 #include "MethodOfOperationUI.h"
+#include <GlobalVariables.h>
 
 MethodOfOperationUI::~MethodOfOperationUI()
 {
@@ -77,10 +78,66 @@ void MethodOfOperationUI::Initialize(std::vector<uint32_t> moveTextureHandles, u
 	// 入力
 	input_ = Input::GetInstance();
 
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "MethodOfOperationUI";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	globalVariables->AddItem(groupName, "movePosition", movePosition_);
+	globalVariables->AddItem(groupName, "moveSize", moveSize_);
+
+	globalVariables->AddItem(groupName, "vibrationPosition", vibrationPosition_);
+	globalVariables->AddItem(groupName, "vibrationSize", vibrationSize_);
+
+	globalVariables->AddItem(groupName, "resetPosition", resetPosition_);
+	globalVariables->AddItem(groupName, "resetSize", resetSize_);
+
+	globalVariables->AddItem(groupName, "stageSelectPosition", stageSelectPosition_);
+	globalVariables->AddItem(groupName, "stageSelectSize", stageSelectSize_);
+
+	ApplyGlobalVariables();
+
+#pragma endregion
+
 }
 
 void MethodOfOperationUI::Update()
 {
+
+#ifdef _DEBUG
+	
+	ApplyGlobalVariables();
+
+	for (size_t i = 0; i < 4; i++) {
+		moveSprites_[i]->SetPosition(movePosition_);
+		moveSprites_[i]->SetSize(moveSize_);
+		moveSprites_[i]->SetSpriteRect(Vector2{ 0,0 }, moveSize_);
+		moveSprites_[i]->Update();
+	}
+
+	vibrationSprite_->SetPosition(vibrationPosition_);
+	vibrationSprite_->SetSize(vibrationSize_);
+	vibrationSprite_->SetSpriteRect(Vector2{ 0,0 }, vibrationSize_);
+	vibrationSprite_->Update();
+
+	resetSprite_->SetPosition(resetPosition_);
+	resetSprite_->SetSize(resetSize_);
+	resetSprite_->SetSpriteRect(Vector2{ 0,0 }, resetSize_);
+	resetSprite_->Update();
+
+	stageSelectSprite_->SetPosition(stageSelectPosition_);
+	stageSelectSprite_->SetSize(stageSelectSize_);
+	stageSelectSprite_->SetSpriteRect(Vector2{ 0,0 }, stageSelectSize_);
+	stageSelectSprite_->Update();
+
+#endif // _DEBUG
+
+
 
 	Vector2 zero = { 0.0f,0.0f };
 
@@ -157,5 +214,27 @@ void MethodOfOperationUI::Draw()
 	vibrationSprite_->Draw();
 	resetSprite_->Draw();
 	stageSelectSprite_->Draw();
+
+}
+
+void MethodOfOperationUI::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "MethodOfOperationUI";
+
+	movePosition_ = globalVariables->GetVector2Value(groupName, "movePosition");
+	moveSize_ = globalVariables->GetVector2Value(groupName, "moveSize");
+
+	vibrationPosition_ = globalVariables->GetVector2Value(groupName, "vibrationPosition");
+	vibrationSize_ = globalVariables->GetVector2Value(groupName, "vibrationSize");
+
+	resetPosition_ = globalVariables->GetVector2Value(groupName, "resetPosition");
+	resetSize_ = globalVariables->GetVector2Value(groupName, "resetSize");
+
+	stageSelectPosition_ = globalVariables->GetVector2Value(groupName, "stageSelectPosition");
+	stageSelectSize_ = globalVariables->GetVector2Value(groupName, "stageSelectSize");
 
 }

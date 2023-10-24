@@ -37,6 +37,8 @@ void GlobalVariables::Update()
 			// 項目の参照を取得
 			Item& item = itItem->second;
 
+			float fabsValue = 2000.0f;
+
 			// int32_t型の値を保持していれば
 			if (std::holds_alternative<int32_t>(item)) {
 				int32_t* ptr = std::get_if<int32_t>(&item);
@@ -44,15 +46,15 @@ void GlobalVariables::Update()
 			}
 			else if (std::holds_alternative<float>(item)) {
 				float* ptr = std::get_if<float>(&item);
-				ImGui::DragFloat(itemName.c_str(), ptr, 0.1f, -1000.0f, 1000.0f);
+				ImGui::DragFloat(itemName.c_str(), ptr, 0.1f, -fabsValue, fabsValue);
 			}
 			else if (std::holds_alternative<Vector2>(item)) {
 				Vector2* ptr = std::get_if<Vector2>(&item);
-				ImGui::DragFloat2(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.1f, -1000.0f, 1000.0f);
+				ImGui::DragFloat2(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.1f, -fabsValue, fabsValue);
 			}
 			else if (std::holds_alternative<Vector3>(item)) {
 				Vector3* ptr = std::get_if<Vector3>(&item);
-				ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.1f, -1000.0f, 1000.0f);
+				ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.1f, -fabsValue, fabsValue);
 			}
 
 		}

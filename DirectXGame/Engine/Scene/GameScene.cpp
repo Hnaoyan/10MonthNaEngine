@@ -418,6 +418,9 @@ void GameScene::GameClearAnimation()
 			stageNumberUI_->Setting(stageNum);
 			Setting(GAMESCENE);
 		}
+		else {
+			sceneNum = STAGESELECT;
+		}
 	}
 
 }
