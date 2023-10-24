@@ -1,8 +1,10 @@
 #include "StageSelectUI.h"
 #include "VectorLib.h"
 #include <numbers>
+#include <GlobalVariables.h>
 
-void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle, uint32_t stageNumberTextureHandle)
+void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
+	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle)
 {
 
 	// スプライト
@@ -48,36 +50,82 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 	stageNumberSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
 	stageNumberSprite_->Update();
 
+	// ステージナンバー
+	stageUiTextureHandle_ = stageUiTextureHandle;
+	stageUiPostion_ = { 1100.0f, 650.0f };
+	stageUiSize_ = { 320.0f, 128.0f };
+	stageUiSprite_.reset(Sprite::Create(stageUiTextureHandle_, stageUiPostion_, color, anchorPoint, false, false));
+	stageUiSprite_->SetSize(stageUiSize_);
+	stageUiSprite_->SetSpriteRect(Vector2{ 0.0f, 0.0f }, Vector2{ 320.0f, 128.0f });
+	stageUiSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
+	stageUiSprite_->Update();
+
 	stageNum_ = 0;
+
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "StageSelectUI";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	globalVariables->AddItem(groupName, "leftPostion", leftPostion_);
+	globalVariables->AddItem(groupName, "leftSize", leftSize_);
+
+	globalVariables->AddItem(groupName, "rightPostion", rightPostion_);
+	globalVariables->AddItem(groupName, "rightSize", rightSize_);
+
+	globalVariables->AddItem(groupName, "stageSelectPostion", stageSelectPostion_);
+	globalVariables->AddItem(groupName, "stageSelectSize", stageSelectSize_);
+
+	globalVariables->AddItem(groupName, "stageNumberPostion", stageNumberPostion_);
+	globalVariables->AddItem(groupName, "stageNumberSize", stageNumberSize_);
+
+	globalVariables->AddItem(groupName, "stageUiPostion", stageUiPostion_);
+	globalVariables->AddItem(groupName, "stageUiSize", stageUiSize_);
+
+	ApplyGlobalVariables();
+
+#pragma endregion
 
 }
 
 void StageSelectUI::Update()
 {
-	//waveAnimation_t_ += 0.01f;
-	//float amplitude = 0.3f;
-	//float fre = 5.0f;
-	//waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * fre * waveAnimation_t_);
 
-	//// 上のUI
-	//stageNumberPostion_ = VectorLib::Add(stageNumberPostion_, waveVelocity_);
-	//stageNumberSprite_->SetPosition(stageNumberPostion_);
-	//stageNumberSprite_->Update();
-	//
-	//// 左右の矢印
-	//leftPostion_ = VectorLib::Add(leftPostion_, waveVelocity_);
-	//rightPostion_ = VectorLib::Add(rightPostion_, waveVelocity_);
+#ifdef _DEBUG
+	ApplyGlobalVariables();
 
-	//leftSprite_->SetPosition(leftPostion_);
-	//rightSprite_->SetPosition(rightPostion_);
+	leftSprite_->SetPosition(leftPostion_);
+	leftSprite_->SetSize(leftSize_);
+	leftSprite_->SetSpriteRect(Vector2{ 0,0 }, leftSize_);
+	leftSprite_->Update();
 
-	//leftSprite_->Update();
-	//rightSprite_->Update();
+	rightSprite_->SetPosition(rightPostion_);
+	rightSprite_->SetSize(rightSize_);
+	rightSprite_->SetSpriteRect(Vector2{ 0,0 }, rightSize_);
+	rightSprite_->Update();
 
-	//// 下のUI
-	//stageSelectPostion_ = VectorLib::Add(stageSelectPostion_, waveVelocity_);
-	//stageSelectSprite_->SetPosition(stageSelectPostion_);
-	//stageSelectSprite_->Update();
+	stageSelectSprite_->SetPosition(stageSelectPostion_);
+	stageSelectSprite_->SetSize(stageSelectSize_);
+	stageSelectSprite_->SetSpriteRect(Vector2{ 0,0 }, stageSelectSize_);
+	stageSelectSprite_->Update();
+
+	stageNumberSprite_->SetPosition(stageNumberPostion_);
+	stageNumberSprite_->SetSize(stageNumberSize_);
+	stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, stageNumberSize_);
+	stageNumberSprite_->Update();
+
+
+	stageUiSprite_->SetPosition(stageUiPostion_);
+	stageUiSprite_->SetSize(stageUiSize_);
+	stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
+	stageUiSprite_->Update();
+
+#endif // _DEBUG
 
 }
 
@@ -88,6 +136,7 @@ void StageSelectUI::Draw(bool isMove)
 		leftSprite_->Draw();
 		rightSprite_->Draw();
 		stageNumberSprite_->Draw();
+		stageUiSprite_->Draw();
 	}
 	stageSelectSprite_->Draw();
 
@@ -102,8 +151,32 @@ void StageSelectUI::SetStageNum(uint32_t stageNum)
 {
 	
 	stageNum_ = stageNum;
-	stageNumberSprite_->SetSpriteRect(Vector2{ 300.0f * stageNum, 0.0f }, Vector2{ 300.0f, 128.0f });
+	stageNumberSprite_->SetSpriteRect(Vector2{ stageNumberSize_.x * stageNum, 0.0f }, stageNumberSize_);
 	stageNumberSprite_->Update();
 
+}
+
+void StageSelectUI::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "StageSelectUI";
+
+	leftPostion_ = globalVariables->GetVector2Value(groupName, "leftPostion");
+	leftSize_ = globalVariables->GetVector2Value(groupName, "leftSize");
+
+	rightPostion_ = globalVariables->GetVector2Value(groupName, "rightPostion");
+	rightSize_ = globalVariables->GetVector2Value(groupName, "rightSize");
+
+	stageSelectPostion_ = globalVariables->GetVector2Value(groupName, "stageSelectPostion");
+	stageSelectSize_ = globalVariables->GetVector2Value(groupName, "stageSelectSize");
+
+	stageNumberPostion_ = globalVariables->GetVector2Value(groupName, "stageNumberPostion");
+	stageNumberSize_ = globalVariables->GetVector2Value(groupName, "stageNumberSize");
+
+	stageUiPostion_ = globalVariables->GetVector2Value(groupName, "stageUiPostion");
+	stageUiSize_ = globalVariables->GetVector2Value(groupName, "stageUiSize");
 
 }

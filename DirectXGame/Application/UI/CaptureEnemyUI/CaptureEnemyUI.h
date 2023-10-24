@@ -12,7 +12,7 @@ class CaptureEnemyUI
 public: // メンバ関数
 
 
-	void Initialize(uint32_t enemyCountTextureHandle, uint32_t numTextureHandle, uint32_t slashTextureHandle);
+	void Initialize(uint32_t enemyCountTextureHandle, uint32_t numTextureHandle, uint32_t slashTextureHandle, uint32_t goGoalTextureHandle);
 
 	void Update();
 
@@ -22,8 +22,12 @@ public: // メンバ関数
 
 	void EnemyCountUpdate(uint32_t enemyCount);
 
-public: // アクセッサ
+private: //メンバ関数
 
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
 
 private: // メンバ変数
 
@@ -48,6 +52,12 @@ private: // メンバ変数
 	Vector2 slashSize_;
 	Vector2 slashPosition_;
 	std::unique_ptr<Sprite> slashSprite_;
+
+	// goGoal
+	uint32_t goGoalTextureHandle_;
+	Vector2 goGoalSize_;
+	Vector2 goGoalPosition_;
+	std::unique_ptr<Sprite> goGoalSprite_;
 
 	// エネミー数
 	uint32_t enemyCount_;

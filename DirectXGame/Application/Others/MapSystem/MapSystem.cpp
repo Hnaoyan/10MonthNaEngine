@@ -9,6 +9,7 @@
 #include "Application/GameObject/Goal/Goal.h"
 
 #include "Application/UI/CaptureEnemyUI/CaptureEnemyUI.h"
+#include <GlobalVariables.h>
 
 //名前空間
 using namespace nlohmann;
@@ -125,9 +126,19 @@ void MapSystem::Setting(int stageNum)
 	initialStageData_.goalPosition_ = GetPositionValue(groupName, "goalPosition_");
 
 	// マップ
+	positionMax_ = {0.0f,0.0f};
+
 	for (size_t y = 0; y < static_cast<size_t>(kMapSize_.y); y++) {
 		for (size_t x = 0; x < static_cast<size_t>(kMapSize_.x); x++) {
 			map_[y][x] = initialStageData_.map_[y][x];
+			if (map_[y][x] == MapNumber::Road) {
+				if (y > positionMax_.y) {
+					positionMax_.y = static_cast<float>(y);
+				}
+				if (x > positionMax_.x) {
+					positionMax_.x = static_cast<float>(x);
+				}
+			}
 		}
 	}
 	// プレイヤーの位置

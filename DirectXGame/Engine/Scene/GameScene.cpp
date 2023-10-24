@@ -108,8 +108,10 @@ void GameScene::Initialize() {
 	numTextureHandle_ = TextureManager::Load("gameSceneUI/enemyNumber.png");
 	// slash
 	slashTextureHandle_ = TextureManager::Load("gameSceneUI/enemyNaname.png");
+	// goGoal
+	goGoalTextureHandle_ = TextureManager::Load("gameSceneUI/goGoal.png");
 	captureEnemyUI_ = make_unique<CaptureEnemyUI>();
-	captureEnemyUI_->Initialize(enmyKazuTextureHandle_, numTextureHandle_, slashTextureHandle_);
+	captureEnemyUI_->Initialize(enmyKazuTextureHandle_, numTextureHandle_, slashTextureHandle_, goGoalTextureHandle_);
 	// マップシステム
 	mapSystem_->SetCaptureEnemyUI(captureEnemyUI_.get());
 	// ステージ番号
@@ -200,7 +202,7 @@ void GameScene::Update()
 		// プレイヤー
 		player_->ClearAnimationInitialize();
 		animationManager_->SetGameClearAnimation(std::bind(&Player::ClearAnimationUpdate, player_.get()));
-		animationManager_->SetGameClearAnimationTime(player_->GetAnimationTMax());
+		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
 
 	}
 	if (mapSystem_->GetIsGameOver()) {
@@ -217,6 +219,8 @@ void GameScene::Update()
 
 	//UI更新
 	methodOfOperationUI_->Update();
+	stageNumberUI_->Update();
+	captureEnemyUI_->Update();
 
 }
 
@@ -253,7 +257,9 @@ void GameScene::Draw() {
 	skyDomeModel_->Draw(skyDomeWorldTransform_, viewProjection_);
 	particleManager_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
-	blockManager_->Draw(viewProjection_);
+	blockManager_->Draw(viewProjection_, 
+		static_cast<int>(mapSystem_->GetPositionMax().x),
+		static_cast<int>(mapSystem_->GetPositionMax().y));
 	enemiesManager_->Draw(viewProjection_);
 	goal_->Draw(viewProjection_);
 
@@ -290,6 +296,13 @@ void GameScene::Setting(Scene preScene)
 	stageNumberUI_->Setting(stageNum);
 
 	Reset();
+
+	// オープニングアニメーション
+	animationManager_->OpeningInitialize();
+	animationManager_->SetOpeningAnimation(std::bind(&BaseCamera::OpeningAnimationUpdate, baseCamera_.get()));
+	baseCamera_->OpeningAnimationInitialize();
+	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
+	command_->SetAcceptingInput(false);
 
 }
 
@@ -356,7 +369,7 @@ void GameScene::WaitingCommand()
 			enemiesManager_->Update();
 			goal_->Update();
 			// アニメーションマネージャーアクションスタート
-			animationManager_->ActionInitialize(player_->GetAnimationTMax());
+			animationManager_->ActionInitialize(player_->GetAnimationFrame());
 			//プレイヤー
 			animationManager_->SetActionAnimation(std::bind(&Player::ActionAnimationUpdate, player_.get()));
 			// ブロックマネージャー
@@ -443,12 +456,6 @@ void GameScene::Reset()
 	animationManager_->Reset();
 	// 待機アニメーションを設定していく
 	SetWaitingAnimation();
-	// オープニングアニメーション
-	animationManager_->OpeningInitialize();
-	animationManager_->SetOpeningAnimation(std::bind(&BaseCamera::OpeningAnimationUpdate, baseCamera_.get()));
-	baseCamera_->OpeningAnimationInitialize();
-	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
-	command_->SetAcceptingInput(false);
 
 	// マップシステムクラスからの更新情報取得
 	player_->Update(mapSystem_->GetPlayerPosition());

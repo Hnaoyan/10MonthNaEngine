@@ -11,9 +11,15 @@ void BaseCamera::Initialize()
 	initPosition_ = { 73.0f, -35.9f, -158.0f };
 	initRotate_ = { -0.550f, 0.0f, 0.0f};
 	viewProjection_.translate_ = initPosition_;
-	viewProjection_.rotation_ = { -0.926f,0.0f,0.0f };
+	viewProjection_.rotation_ = initRotate_;
 	fov_ = 45.0f;
 
+	// オープニングスタート位置
+	openingStartPostion_ = { initPosition_.x, initPosition_.y - 100.0f, 0.0f };
+	// オープニングスタート角度
+	openingStartRotate_ = { -1.57f, 0.0f, 0.0f };
+	// フレーム数
+	openingFrame_ = 90;
 	OpeningAnimationInitialize();
 
 	// 調整項目クラスのインスタンス取得
@@ -23,9 +29,14 @@ void BaseCamera::Initialize()
 	// 指定した名前でグループ追加
 	globalVariables->CreateGroup(groupName);
 	globalVariables->AddItem(groupName, "position", initPosition_);
-	globalVariables->AddItem(groupName, "rotate", viewProjection_.rotation_);
+	globalVariables->AddItem(groupName, "rotate", initRotate_);
 	globalVariables->AddItem(groupName, "scale", viewProjection_.scale_);
 	globalVariables->AddItem(groupName, "Fov", fov_);
+
+	globalVariables->AddItem(groupName, "openingStartPosition", openingStartPostion_);
+	globalVariables->AddItem(groupName, "openingStartRotate", openingStartRotate_);
+	globalVariables->AddItem(groupName, "openingFrame", static_cast<int>(openingFrame_));
+
 	ApplyGlobalVariables();
 
 }
@@ -59,25 +70,19 @@ void BaseCamera::ApplyGlobalVariables()
 
 	// 取得
 	initPosition_ = globalVariables->GetVector3Value(groupName, "position");
-	viewProjection_.rotation_ = globalVariables->GetVector3Value(groupName, "rotate");
+	initRotate_ = globalVariables->GetVector3Value(groupName, "rotate");
 	viewProjection_.scale_ = globalVariables->GetVector3Value(groupName, "scale");
 	fov_ = globalVariables->GetFloatValue(groupName, "Fov");
+
+	openingStartPostion_ = globalVariables->GetVector3Value(groupName, "openingStartPosition");
+	openingStartRotate_ = globalVariables->GetVector3Value(groupName, "openingStartRotate");
+	openingFrame_ = static_cast<uint32_t>(globalVariables->GetIntValue(groupName, "openingFrame"));
+
 }
 
 void BaseCamera::OpeningAnimationInitialize()
 {
 
-	// オープニングスタート位置
-	openingStartPostion_ = { initPosition_.x, initPosition_.y - 100.0f, 0.0f};
-	// オープニングエンド位置
-	openingEndPostion_ = initPosition_;
-	// オープニングスタート角度
-	openingStartRotate_ = { -1.57f, 0.0f, 0.0f };
-	// オープニングエンド角度
-	openingEndRotate_ = initRotate_;
-
-	// フレーム数
-	openingFrame_ = 90;
 	// t
 	openingT_ = 0.0f;
 
@@ -92,8 +97,8 @@ void BaseCamera::OpeningAnimationUpdate()
 		openingT_ = 1.0f;
 	}
 
-	viewProjection_.translate_ = MathCalc::EaseInCubicF(openingT_, openingStartPostion_, openingEndPostion_);
-	viewProjection_.rotation_ = MathCalc::EaseInCubicF(openingT_, openingStartRotate_, openingEndRotate_);
+	viewProjection_.translate_ = MathCalc::EaseInCubicF(openingT_, openingStartPostion_, initPosition_);
+	viewProjection_.rotation_ = MathCalc::EaseInCubicF(openingT_, openingStartRotate_, initRotate_);
 
 	// ビュープロジェクション更新
 	viewProjection_.UpdateMatrix();

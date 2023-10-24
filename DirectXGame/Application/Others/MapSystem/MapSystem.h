@@ -216,6 +216,9 @@ public: // アクセッサ
 
 	// エネミーが起きている時
 	std::vector<bool> GetEnemyAwake() { return enemyAwake_; }
+	
+	// マップ最大
+	Vector2 GetPositionMax() { return positionMax_; }
 
 public: // ポインタアクセッサ
 
@@ -231,8 +234,6 @@ public: // ポインタアクセッサ
 	void SetGoal(Goal* goal) { goal_ = goal; }
 	// 敵の数表示
 	void SetCaptureEnemyUI(CaptureEnemyUI* captureEnemyUI) { captureEnemyUI_ = captureEnemyUI; }
-
-public: // メンバ定数
 
 private: //メンバ変数
 
@@ -282,6 +283,8 @@ private: //メンバ変数
 	// リスタートフラグ
 	bool isRestart_;
 
+	// マップ最大
+	Vector2 positionMax_;
 
 private: // ポインタ
 

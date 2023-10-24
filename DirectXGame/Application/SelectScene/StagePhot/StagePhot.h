@@ -50,6 +50,13 @@ public: // メンバ関数
 	/// </summary>
 	void TextureHandleChange();
 
+private: //メンバ関数
+
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 private:
 
 	// テクスチャハンドル
@@ -71,6 +78,11 @@ private:
 	// 動きの変数
 	float waveAnimation_t_;
 	Vector2 waveVelocity_ = {};
+
+	// 振幅
+	float amplitude_ = 0.3f;
+	// フレーム
+	float fre_ = 5.0f;
 
 };
 

@@ -103,10 +103,10 @@ public: // アクセッサ
 	void SetPosition(const Vector2& position) { position_ = position; }
 
 	/// <summary>
-	/// tマックス(uint32_t)
+	/// tマックス
 	/// </summary>
 	/// <returns></returns>
-	uint32_t GetAnimationTMax() { return static_cast<uint32_t>(animationTMax_); }
+	uint32_t GetAnimationFrame() { return animationFrame_; }
 
 	/// <summary>
 	/// ゲットポジション
@@ -133,7 +133,7 @@ private: // メンバ変数
 	// t
 	float animationT_;
 	// tマックス
-	float animationTMax_;
+	uint32_t animationFrame_;
 
 private: // MoveAnimation
 	// スタート角度
@@ -148,6 +148,9 @@ private: // MoveAnimation
 	// 中間スケール
 	Vector3 moveAnimationMiddleScale_;
 
+	//移動中間スケール
+	Vector3 moveAnimationMiddleScaleAdd_ = { 0.2f, 0.2f, 0.2f };
+
 private: // VibrationAnimation
 	// スタート位置
 	Vector3 vibrationAnimationGroundPostion_;
@@ -160,9 +163,14 @@ private: // VibrationAnimation
 	// エンド角度
 	Vector3 vibrationAnimationEndRotate_;
 	// ジャンプサイズ
-	Vector3 vibrationAnimationJumpScale_;
+	Vector3 vibrationAnimationJumpScale_ = { 0.6f, 0.6f, 1.4f };
 	// めり込みサイズ
-	Vector3 vibrationAnimationFillScale_;
+	Vector3 vibrationAnimationFillScale_ = { 1.4f, 1.4f, 0.6f };
+
+	// 振動エンド位置
+	Vector3 vibrationAnimationHighPostionAdd_ = { 0.0f,0.0f, -15.0f };
+	// 振動めり込み位置
+	Vector3 vibrationAnimationFillPostionAdd_ = { 0.0f,0.0f, 2.0f };
 
 private: // ClearAnimation
 
@@ -174,5 +182,17 @@ private: // ClearAnimation
 	Vector3 clearArnimationStartRotate_;
 	// エンド角度
 	Vector3 clearAnimationEndRotate_;
+
+private: 
+
+	// 移動T
+	uint32_t moveAnimationT_ = 10;
+	// 移動ミスT
+	uint32_t moveErrorAnimationT_ = 20;
+	// 振動T
+	uint32_t vibrationAnimationT_ = 60;
+	// クリアT
+	uint32_t clearAnimationT_ = 60;
+
 
 };

@@ -14,9 +14,6 @@ void Goal::Initialize(Model* model, const Vector2& position, uint32_t textureHan
 	// テクスチャハンドル
 	textureHandles_[0] = textureHandleRed;
 	textureHandles_[1] = textureHandleBlue;
-	
-	// ゴールが開いたか
-	goalOpened_ = false;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -66,6 +63,8 @@ void Goal::Setting(const Vector2& position)
 	worldTransform_.rotation_ = { 4.71f,0.0f,0.0f };
 	worldTransform_.scale_ = { 5.0f,5.0f,5.0f };
 	worldTransform_.UpdateMatrix();
+
+	goalOpened_ = false;
 
 }
 
