@@ -220,6 +220,7 @@ void GameScene::Update()
 	//UI更新
 	methodOfOperationUI_->Update();
 	stageNumberUI_->Update();
+	captureEnemyUI_->Update();
 
 }
 

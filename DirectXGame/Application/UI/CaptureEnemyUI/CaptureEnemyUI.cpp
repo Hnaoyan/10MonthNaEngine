@@ -1,4 +1,5 @@
 #include "CaptureEnemyUI.h"
+#include <GlobalVariables.h>
 
 void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTextureHandle, uint32_t slashTextureHandle, uint32_t goGoalTextureHandle)
 {
@@ -48,10 +49,64 @@ void CaptureEnemyUI::Initialize(uint32_t enemyCountTextureHandle, uint32_t numTe
 	// エネミー数
 	enemyCount_ = 0;
 
+#pragma region 調整項目クラス
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名設定
+	const char* groupName = "CaptureEnemyUI";
+	// 指定した名前でグループ追加
+	globalVariables->CreateGroup(groupName);
+
+	// メンバ変数の調整したい項目をグローバル変数に追加
+
+	globalVariables->AddItem(groupName, "enemyCountSize", enemyCountSize_);
+	globalVariables->AddItem(groupName, "enemyCountPosition", enemyCountPosition_);
+
+	globalVariables->AddItem(groupName, "numSize", numSize_);
+	globalVariables->AddItem(groupName, "denominatorPosition", denominatorPosition_);
+	globalVariables->AddItem(groupName, "numeratorPosition", numeratorPosition_);
+
+	globalVariables->AddItem(groupName, "slashSize", slashSize_);
+	globalVariables->AddItem(groupName, "slashPosition", slashPosition_);
+
+	globalVariables->AddItem(groupName, "goGoalSize", goGoalSize_);
+	globalVariables->AddItem(groupName, "goGoalPosition", goGoalPosition_);
+
+	ApplyGlobalVariables();
+
+#pragma endregion
+
 }
 
 void CaptureEnemyUI::Update()
 {
+
+#ifdef _DEBUG
+	ApplyGlobalVariables();
+
+	enemyCountSprite_->SetPosition(enemyCountPosition_);
+	enemyCountSprite_->SetSize(enemyCountSize_);
+	enemyCountSprite_->Update();
+
+	denominatorSprite_->SetPosition(denominatorPosition_);
+	denominatorSprite_->SetSize(numSize_);
+	denominatorSprite_->Update();
+
+	numeratorSprite_->SetPosition(numeratorPosition_);
+	numeratorSprite_->SetSize(numSize_);
+	numeratorSprite_->Update();
+
+	slashSprite_->SetPosition(slashPosition_);
+	slashSprite_->SetSize(slashSize_);
+	slashSprite_->Update();
+
+	goGoalSprite_->SetPosition(goGoalPosition_);
+	goGoalSprite_->SetSize(goGoalSize_);
+	goGoalSprite_->Update();
+
+#endif // _DEBUG
+
+
 }
 
 void CaptureEnemyUI::Draw()
@@ -95,5 +150,28 @@ void CaptureEnemyUI::EnemyCountUpdate(uint32_t enemyCount)
 
 	numeratorSprite_->SetSpriteRect(base, size);
 	numeratorSprite_->Update();
+
+}
+
+void CaptureEnemyUI::ApplyGlobalVariables()
+{
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	// グループ名の設定
+	const char* groupName = "CaptureEnemyUI";
+
+	enemyCountSize_ = globalVariables->GetVector2Value(groupName, "enemyCountSize");
+	enemyCountPosition_ = globalVariables->GetVector2Value(groupName, "enemyCountPosition");
+
+	numSize_ = globalVariables->GetVector2Value(groupName, "numSize");
+	denominatorPosition_ = globalVariables->GetVector2Value(groupName, "denominatorPosition");
+	numeratorPosition_ = globalVariables->GetVector2Value(groupName, "numeratorPosition");
+
+	slashSize_ = globalVariables->GetVector2Value(groupName, "slashSize");
+	slashPosition_ = globalVariables->GetVector2Value(groupName, "slashPosition");
+
+	goGoalSize_ = globalVariables->GetVector2Value(groupName, "goGoalSize");
+	goGoalPosition_ = globalVariables->GetVector2Value(groupName, "goGoalPosition");
 
 }

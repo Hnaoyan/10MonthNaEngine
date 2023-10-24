@@ -22,8 +22,12 @@ public: // メンバ関数
 
 	void EnemyCountUpdate(uint32_t enemyCount);
 
-public: // アクセッサ
+private: //メンバ関数
 
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
 
 private: // メンバ変数
 
