@@ -1,0 +1,40 @@
+{
+    "CaptureEnemyUI": {
+        "denominatorPosition": [
+            1152.0,
+            624.0
+        ],
+        "enemyCountPosition": [
+            1056.0,
+            524.0
+        ],
+        "enemyCountSize": [
+            224.0,
+            80.0
+        ],
+        "goGoalPosition": [
+            1056.0,
+            574.0
+        ],
+        "goGoalSize": [
+            400.0,
+            160.0
+        ],
+        "numSize": [
+            96.0,
+            96.0
+        ],
+        "numeratorPosition": [
+            960.0,
+            624.0
+        ],
+        "slashPosition": [
+            1056.0,
+            624.0
+        ],
+        "slashSize": [
+            96.0,
+            96.0
+        ]
+    }
+}

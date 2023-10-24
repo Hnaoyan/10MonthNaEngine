@@ -1,0 +1,44 @@
+{
+    "StageSelectUI": {
+        "leftPostion": [
+            178.0,
+            360.0
+        ],
+        "leftSize": [
+            128.0,
+            192.0
+        ],
+        "rightPostion": [
+            1102.0,
+            360.0
+        ],
+        "rightSize": [
+            128.0,
+            192.0
+        ],
+        "stageNumberPostion": [
+            640.0,
+            64.0
+        ],
+        "stageNumberSize": [
+            300.0,
+            128.0
+        ],
+        "stageSelectPostion": [
+            640.0,
+            650.0
+        ],
+        "stageSelectSize": [
+            480.0,
+            128.0
+        ],
+        "stageUiPostion": [
+            1100.0,
+            650.0
+        ],
+        "stageUiSize": [
+            320.0,
+            128.0
+        ]
+    }
+}
