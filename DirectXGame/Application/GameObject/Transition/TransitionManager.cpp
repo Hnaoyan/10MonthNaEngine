@@ -4,6 +4,8 @@
 #include "Sprite.h"
 #include "Input.h"
 
+#include <algorithm>
+
 TransitionManager::TransitionManager()
 {}
 
@@ -16,14 +18,9 @@ TransitionManager* TransitionManager::GetInstance()
 void TransitionManager::Initialize(Model* model)
 {
 	dxCommon_ = DirectXCommon::GetInstance();
+	audio_ = Audio::GetInstance();
 	viewProjection_.Initialize();
 
-	whiteTexture_ = TextureManager::Load("white1x1.png");
-	Vector4 color = { 1,1,1,1 };
-	Vector2 position = { 0,0 };
-	Vector2 anchor = { 0,0 };
-	whiteSprite_.reset(Sprite::Create(whiteTexture_, position, color, anchor, false, false));
-	whiteSprite_->SetSize({ 1280.0f,720.0f });
 	cloudModel_ = model;
 	cloudModel_->SetAlphaValue(1.0f);
 
@@ -31,6 +28,9 @@ void TransitionManager::Initialize(Model* model)
 	transitionCamera_->Initialize();
 
 	transitionCamera_->SetPosition({ 0, 5.0f, 0.0f });
+
+	changeSEHandle_ = audio_->LoadWave("SE/sceanChange.wav");
+	SEVolume_ = 0.3f;
 
 }
 
@@ -94,7 +94,6 @@ void TransitionManager::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	whiteSprite_->Draw();
 
 
 	// スプライト描画後処理
@@ -110,12 +109,8 @@ void TransitionManager::TransitionSetting()
 	isNowTransition_ = true;
 	isSceneChanger_ = false;
 	CloudTransition();
-
-}
-
-void TransitionManager::WhiteOutSetting()
-{
-
+	// SE
+	audio_->PlayWave(changeSEHandle_, false, SEVolume_);
 }
 
 void TransitionManager::TransitionUpdate()
@@ -144,11 +139,6 @@ void TransitionManager::TransitionUpdate()
 	ImGui::Begin("time");
 	ImGui::DragFloat("timer", &transitionTimer_, 0, -1.0f, 1.0f);
 	ImGui::End();
-
-}
-
-void TransitionManager::WhiteOutUpdate()
-{
 
 }
 

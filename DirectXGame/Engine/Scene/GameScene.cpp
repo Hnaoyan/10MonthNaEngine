@@ -36,7 +36,7 @@ void GameScene::Initialize() {
 	SEVolume_ = 0.4f;
 
 #pragma region オーディオリソース
-	//this->clearSEHandle_ = audio_->LoadWave("SE/clear.wav");
+	this->clearSEHandle_ = audio_->LoadWave("SE/clear1.wav");
 	this->deathSEHandle_ = audio_->LoadWave("SE/death.wav");
 #pragma endregion
 
@@ -151,9 +151,14 @@ void GameScene::Initialize() {
 	methodOfOperationUI_->Initialize(moveTextureHandles_, vibrationTextureHandle_, resetTextureHandle_, stageSelectTextureHandle_);
 
 	// マネージャーの設定
-	//player_->SetEffectManager(effectManager_.get());
 	this->skyDomeWorldTransform_.translation_ = viewProjection_.translate_;
 
+	uint32_t whiteTexture = TextureManager::Load("white1x1.png");
+	Vector2 whitePosition = { 0,0 };
+	Vector4 color = { 1,1,1,1 };
+	whiteSprite_.reset(Sprite::Create(whiteTexture, whitePosition, color, { 0,0 }, false, false));
+	whiteSprite_->SetSize({ 1280.0f,720.0f });
+	whiteSprite_->Update();
 }
 
 void GameScene::Update()
@@ -166,7 +171,12 @@ void GameScene::Update()
 	particleManager_->Update();
 
 	if (Input::GetInstance()->TriggerKey(DIK_V)) {
-		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+		//particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+		WhiteOutSetting();
+	}
+
+	if (isWhiteOut_) {
+		WhiteOutUpdate();
 	}
 
 	if(effectManager_->IsStop()){
@@ -217,22 +227,22 @@ void GameScene::Update()
 		player_->ClearAnimationInitialize();
 		animationManager_->SetGameClearAnimation(std::bind(&Player::ClearAnimationUpdate, player_.get()));
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
+		// SE
+		audio_->PlayWave(clearSEHandle_, false, SEVolume_);
 
 	}
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
 		animationManager_->SetGameOverAnimationTime(10);
-		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
-		//ImGui::Text("GAMEOVER");
-		//mapSystem_->Restart();
-		//Reset();
+		// SE
+		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
 	}
 	ImGui::End();
 
 	// ESCでゲームセレクトへ
-	if (input_->TriggerKey(DIK_ESCAPE)) {
+	if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
 		sceneNum = STAGESELECT;
 	}
 
@@ -296,6 +306,10 @@ void GameScene::Draw() {
 	captureEnemyUI_->Draw();
 	stageNumberUI_->Draw();
 	methodOfOperationUI_->Draw();
+
+	if (isWhiteOut_) {
+		whiteSprite_->Draw();
+	}
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -497,4 +511,34 @@ void GameScene::SetWaitingAnimation()
 void GameScene::ModelSetting()
 {
 
+}
+
+void GameScene::WhiteOutUpdate()
+{
+	float animationHalf = 0.4f;
+	if (whiteOutT_ >= 1.0f) {
+		isWhiteOut_ = false;
+		whiteOutT_ = 1.0f;
+	}
+	else {
+		float addValue_T = 0.01f;
+		whiteOutT_ += addValue_T;
+		float addAlphaValue = 0.03f;
+		if (whiteOutT_ <= animationHalf) {
+			alphaValue_ += addAlphaValue;
+		}
+		else {
+			alphaValue_ -= addAlphaValue;
+		}
+	}
+	whiteSprite_->SetColor({ 1,1,1,alphaValue_ });
+
+}
+
+void GameScene::WhiteOutSetting()
+{
+	isWhiteOut_ = true;
+	whiteOutT_ = 0;
+	float initAlphaValue = 0.1f;
+	alphaValue_ = initAlphaValue;
 }

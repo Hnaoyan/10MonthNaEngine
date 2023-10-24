@@ -99,7 +99,7 @@ void ParticleManager::WaveSetting(const Vector3& position)
 {
 	waveParameters_ = { 0,60,50,true };
 	waveRespawnPosition_ = position;
-	waveRespawnPosition_.z += 5.0f;
+	waveRespawnPosition_.z -= 2.0f;
 	AddWave(waveRespawnPosition_, { 10.0f,10.0f,1.0f });
 }
 

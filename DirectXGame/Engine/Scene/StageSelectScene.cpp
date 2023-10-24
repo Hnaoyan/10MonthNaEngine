@@ -21,6 +21,11 @@ void StageSelectScene::Initialize()
 	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
 	selectUITextureHandle_ = TextureManager::Load("stageUi/SelectUi.png");
 
+	// 音関係
+	slideSEHandle_ = audio_->LoadWave("SE/slide.wav");
+	selectSEHandle_ = audio_->LoadWave("SE/select.wav");
+	SEVolume_ = 0.3f;
+
 	// イージング
 	easeSpeed_ = 0.05f;
 
@@ -53,7 +58,8 @@ void StageSelectScene::Update()
 	}
 	else {
 		// 入力受付
-		if (input_->PressKey(DIK_D) || input_->PressKey(DIK_RIGHT)) {
+		if (input_->PressKey(DIK_D) || input_->PressKey(DIK_RIGHT) && !transitionManager_->GetNowTransition()) {
+			audio_->PlayWave(slideSEHandle_, false, SEVolume_);
 			isMoveRight_ = true;
 			easeTimer_ = 0;
 			stageNum++;
@@ -62,7 +68,7 @@ void StageSelectScene::Update()
 			}
 			stageSelectUI_->SetStageNum(stageNum);
 		}
-		else if (input_->PressKey(DIK_A) || input_->PressKey(DIK_LEFT)) {
+		else if (input_->PressKey(DIK_A) || input_->PressKey(DIK_LEFT) && !transitionManager_->GetNowTransition()) {
 			isMoveLeft_ = true;
 			easeTimer_ = 0;
 			stageNum--;
@@ -71,11 +77,12 @@ void StageSelectScene::Update()
 			}
 			stageSelectUI_->SetStageNum(stageNum);
 		}
-		else if (input_->TriggerKey(DIK_SPACE)) {
+		else if (input_->TriggerKey(DIK_SPACE) && !transitionManager_->GetNowTransition()) {
+			audio_->PlayWave(selectSEHandle_, false, SEVolume_);
 			sceneNum = GAMESCENE;
 		}
 		// ESCでゲームセレクトへ
-		if (input_->TriggerKey(DIK_ESCAPE)) {
+		if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
 			sceneNum = TITLE;
 		}
 	}

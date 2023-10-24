@@ -60,5 +60,8 @@ private:
 	Vector2 gameStartSize_ = {};
 
 
+	uint32_t selectSEHandle_;
+
+	float SEVolume_;
 };
 

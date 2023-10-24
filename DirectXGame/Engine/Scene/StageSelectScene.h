@@ -58,6 +58,13 @@ private: // メンバ変数 (ステージ写真)
 	uint32_t stageNumberTextureHandle_;
 	uint32_t selectUITextureHandle_;
 
+	// 音源ハンドル
+
+	uint32_t slideSEHandle_;
+	uint32_t selectSEHandle_;
+
+	float SEVolume_;
+
 	// 動いているか
 	bool isMoveRight_;
 	bool isMoveLeft_;
