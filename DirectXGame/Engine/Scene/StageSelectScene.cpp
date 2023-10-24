@@ -59,6 +59,7 @@ void StageSelectScene::Update()
 	else {
 		// 入力受付
 		if (input_->PressKey(DIK_D) || input_->PressKey(DIK_RIGHT) && !transitionManager_->GetNowTransition()) {
+			// SE
 			audio_->PlayWave(slideSEHandle_, false, SEVolume_);
 			isMoveRight_ = true;
 			easeTimer_ = 0;
@@ -69,6 +70,8 @@ void StageSelectScene::Update()
 			stageSelectUI_->SetStageNum(stageNum);
 		}
 		else if (input_->PressKey(DIK_A) || input_->PressKey(DIK_LEFT) && !transitionManager_->GetNowTransition()) {
+			// SE
+			audio_->PlayWave(slideSEHandle_, false, SEVolume_);
 			isMoveLeft_ = true;
 			easeTimer_ = 0;
 			stageNum--;
@@ -78,11 +81,14 @@ void StageSelectScene::Update()
 			stageSelectUI_->SetStageNum(stageNum);
 		}
 		else if (input_->TriggerKey(DIK_SPACE) && !transitionManager_->GetNowTransition()) {
+			// SE
 			audio_->PlayWave(selectSEHandle_, false, SEVolume_);
 			sceneNum = GAMESCENE;
 		}
 		// ESCでゲームセレクトへ
 		if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
+			// SE
+			audio_->PlayWave(selectSEHandle_, false, SEVolume_);
 			sceneNum = TITLE;
 		}
 	}
