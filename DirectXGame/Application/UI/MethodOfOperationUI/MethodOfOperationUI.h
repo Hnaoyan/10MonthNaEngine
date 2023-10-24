@@ -22,6 +22,13 @@ public: // メンバ関数
 
 	void Draw();
 
+private: //メンバ関数
+
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
+
 private: // メンバ変数
 
 	// 移動 WWAASSDD
