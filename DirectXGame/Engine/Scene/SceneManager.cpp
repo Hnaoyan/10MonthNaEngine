@@ -42,15 +42,6 @@ void SceneManager::Update()
 
 #ifdef _DEBUG
 
-	//if (Input::GetInstance()->TriggerKey(DIK_1)) {
-	//	if (sceneNum_ == GAMESCENE) {
-	//		sceneArray_[sceneNum_]->SetSceneNum(EDITOR);
-	//	}
-	//	else if (sceneNum_ == EDITOR) {
-	//		sceneArray_[sceneNum_]->SetSceneNum(GAMESCENE);
-	//	}
-	//}
-
 	ImGui::Begin("sceneNum");
 	ImGui::Text("NowNum : %d prevNum : %d", sceneNum_, prevSceneNum_);
 	ImGui::End();
@@ -58,12 +49,12 @@ void SceneManager::Update()
 
 #endif // DEBUG
 
-	//if (!audio_->IsPlaying(voiceHandle_) && sceneNum_!= GAMESCENE) {
-	//	voiceHandle_ = audio_->PlayWave(titleBGMHandle_, true, 0.3f);
-	//}
-	//if (!audio_->IsPlaying(voiceHandle_) && sceneNum_ == GAMESCENE) {
-	//	voiceHandle_ = audio_->PlayWave(playBGMHandle_, true, 0.3f);
-	//}
+	if (!audio_->IsPlaying(voiceHandle_) && sceneNum_!= GAMESCENE) {
+		voiceHandle_ = audio_->PlayWave(titleBGMHandle_, true, 0.3f);
+	}
+	if (!audio_->IsPlaying(voiceHandle_) && sceneNum_ == GAMESCENE) {
+		voiceHandle_ = audio_->PlayWave(playBGMHandle_, true, 0.3f);
+	}
 
 	prevSceneNum_ = this->sceneNum_;
 	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
@@ -71,12 +62,12 @@ void SceneManager::Update()
 	// 遷移の設定呼び出し
 	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-		//if (sceneNum_ == GAMESCENE) {
-		//	audio_->StopWave(voiceHandle_);
-		//}
-		//if (prevSceneNum_ == GAMESCENE) {
-		//	audio_->StopWave(voiceHandle_);
-		//}
+		if (sceneNum_ == GAMESCENE) {
+			audio_->StopWave(voiceHandle_);
+		}
+		if (prevSceneNum_ == GAMESCENE) {
+			audio_->StopWave(voiceHandle_);
+		}
 		//transitionManager_->SetIsTransition(true);
 	}
 	//// 連打された時用

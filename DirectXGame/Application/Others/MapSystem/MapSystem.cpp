@@ -22,6 +22,19 @@ const Vector2 MapSystem::kSquareSize_ = { 10.0f, 10.0f };
 // ステージ数
 uint32_t MapSystem::kMaximumNumberOfStages_ = 0;
 
+MapSystem::MapSystem()
+{
+	// インスタンス
+	audio_ = Audio::GetInstance();
+	// 入れ込み
+	this->dontMoveSEHandle_ = audio_->LoadWave("SE/DontMove.wav");
+	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
+	this->enemyGetSEHandle_ = audio_->LoadWave("SE/enemyGet.wav");
+	this->enemyWakeUpSEHandle_ = audio_->LoadWave("SE/enemyWakeUp.wav");
+	this->jumpSEHandle_ = audio_->LoadWave("SE/jump.wav");
+	this->walkSEHandle_ = audio_->LoadWave("SE/walk.wav");
+}
+
 MapSystem::~MapSystem()
 {
 	// マップ
@@ -248,6 +261,8 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	// 移動できるかチェック
 	// 成功
 	if (haveMoved) {
+		//
+		audio_->PlayWave(walkSEHandle_, false, SEVolume_);
 		// エネミーの移動
 		EnemyMove();
 		// アニメーション初期化
@@ -257,6 +272,8 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	}
 	// 失敗
 	else {
+		//
+		audio_->PlayWave(dontMoveSEHandle_, false, SEVolume_);
 		// 移動失敗アニメーション
 		player_->ActionAnimationInitialize(commandNumber + 4);
 
@@ -268,7 +285,7 @@ void MapSystem::BlockFall(int32_t x, int32_t y)
 {
 	// 道から穴に
 	map_[y][x] = Hole;
-
+	audio_->PlayWave(dropSEHandle_, false, SEVolume_);
 }
 
 bool MapSystem::PlayerMove(int32_t x, int32_t y)
@@ -342,6 +359,8 @@ void MapSystem::EnemyMove()
 				!usedCage_.at(k)) {
 				capturedEnemy_.at(i) = true;
 				usedCage_.at(k) = true;
+				// 入った時の音
+				audio_->PlayWave(enemyGetSEHandle_, false, SEVolume_);
 
 				// アニメーション
 				Vector2 cageWorldPosition = { cagePosition.x, cagePosition.y };
@@ -483,11 +502,14 @@ void MapSystem::MakeSound()
 			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
 			
 			if (x + y < 3) {
+				audio_->PlayWave(enemyWakeUpSEHandle_, false, SEVolume_);
 				enemyAwake_.at(i) = true;
 			}
 
 		}
 	}
+
+	audio_->PlayWave(jumpSEHandle_, false, SEVolume_);
 
 	EnemyMovePlan();
 

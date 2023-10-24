@@ -210,21 +210,9 @@ private:	// メンバポインタ
 	
 	// SE関係
 	// 動けないときの音
-	uint32_t dontMoveSEHandle_;
-
-	uint32_t jumpSEHandle_;
-
-	uint32_t dropSEHandle_;
-
-	uint32_t walkSEHandle_;
-
 	uint32_t deathSEHandle_;
 
 	uint32_t clearSEHandle_;
-
-	uint32_t enemyGetSEHandle_;
-
-	uint32_t enemyWakeUpSEHandle_;
 
 	// テクスチャハンドル
 	uint32_t stageNumberTextureHandle_;
@@ -241,6 +229,8 @@ private:	// メンバポインタ
 
 	bool isShake_ = false;
 	int shakeTime_ = 0;
+	// SEの大きさ
+	float SEVolume_ = 0;
 	Vector3 cameraVect_ = {};
 
 };
