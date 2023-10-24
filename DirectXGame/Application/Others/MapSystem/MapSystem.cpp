@@ -359,6 +359,11 @@ void MapSystem::EnemyMove()
 				!usedCage_.at(k)) {
 				capturedEnemy_.at(i) = true;
 				usedCage_.at(k) = true;
+
+				// アニメーション
+				Vector2 cageWorldPosition = { cagePosition.x, cagePosition.y };
+				enemiesManager_->GetCage(cageWorldPosition)->ActionAnimationInitialize();
+				captureEnemyUI_->ActionAnimationInitialize();
 				// 入った時の音
 				audio_->PlayWave(enemyGetSEHandle_, false, SEVolume_);
 

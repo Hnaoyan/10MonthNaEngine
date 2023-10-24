@@ -49,7 +49,6 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 	position_ = position;
 	awake_ = enemyAwake;
 
-	worldTransform_.rotation_.z = rotate_;
 	worldTransform_.UpdateMatrix();
 
 	sleepWorldTransform_.translation_ = worldTransform_.translation_ + Vector3{ 5.0f, 0.0f, -10.0f };
@@ -184,7 +183,11 @@ void Enemy::WaitingAnimationUpdate()
 
 		}
 	}
-
+	
+	if (surprisedT_ >= 1.0f && awake_) {
+		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
+		worldTransform_.UpdateMatrix();
+	}
 }
 
 void Enemy::ApplyGlobalVariables()

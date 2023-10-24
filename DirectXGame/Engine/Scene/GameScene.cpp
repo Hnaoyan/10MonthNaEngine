@@ -383,6 +383,8 @@ void GameScene::WaitingCommand()
 			animationManager_->SetActionAnimation(std::bind(&BlockManager::ActionAnimationUpdate, blockManager_.get()));
 			// エネミーマネージャー
 			animationManager_->SetActionAnimation(std::bind(&EnemiesManager::ActionAnimationUpdate, enemiesManager_.get()));
+			// UI
+			animationManager_->SetActionAnimation(std::bind(&CaptureEnemyUI::ActionAnimationUpdate, captureEnemyUI_.get()));
 		}
 
 	}
