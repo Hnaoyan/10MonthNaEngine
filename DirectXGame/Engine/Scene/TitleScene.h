@@ -43,5 +43,15 @@ private:
 
 	float waveAnimation_t_ = 0;
 
+	// ゲームスタートスプライト
+	std::unique_ptr<Sprite> gameStartSprite_;
+	// ゲームスタートテクスチャ
+	uint32_t gameStartTexture_ = 0u;
+	// ゲームスタートポジション
+	Vector2 gameStartPosition_ = {};
+	// ゲームスタートサイズ
+	Vector2 gameStartSize_ = {};
+
+
 };
 
