@@ -23,7 +23,9 @@ EnemiesManager::~EnemiesManager()
 
 }
 
-void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount)
+void EnemiesManager::Iintialize(MapSystem* mapSystem,
+	Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, Model* surprisedModel,
+	size_t enemyCount, size_t cageCount)
 {
 
 	// マップシステム
@@ -38,6 +40,8 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* 
 	cageModel_ = cageModel;
 
 	enemyDangerModel_ = enemyDangerModel;
+
+	surprisedModel_ = surprisedModel;
 
 	Setting(enemyCount, cageCount);
 
@@ -149,7 +153,7 @@ void EnemiesManager::AddEnemy(size_t num)
 {
 
 	Enemy* enemy = new Enemy();
-	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_);
+	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_, surprisedModel_);
 	enemies_.push_back(enemy);
 
 	EnemyMovePlan* enemyMovePlan = new EnemyMovePlan();

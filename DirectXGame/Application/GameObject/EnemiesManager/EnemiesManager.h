@@ -27,7 +27,9 @@ public: // メンバ関数
 	/// <param name="mapSystem">マップシステム</param>
 	/// <param name="enemyModel">エネミーモデル</param>
 	/// <param name="cageModel">ケージモデル</param>
-	void Iintialize(MapSystem* mapSystem, Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, size_t enemyCount, size_t cageCount);
+	void Iintialize(MapSystem* mapSystem,
+		Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, Model* surprisedModel,
+		size_t enemyCount, size_t cageCount);
 
 	/// <summary>
 	/// 更新
@@ -110,6 +112,8 @@ private: // メンバ変数
 	Model* enemyModel_ = nullptr;
 	// スリープモデル
 	Model* sleepModel_ = nullptr;
+	// ビックリモデル
+	Model* surprisedModel_ = nullptr;
 
 	// エネミーの移動計画
 	std::vector<EnemyMovePlan*> enemyMovePlans_;

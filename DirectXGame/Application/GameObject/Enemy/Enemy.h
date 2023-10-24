@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position, Model* sleepModel);
+	void Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel);
 
 	/// <summary>
 	/// 更新
@@ -110,8 +110,19 @@ private: // メンバ変数
 	// アニメーションフレーム
 	uint32_t sleepFrame_;
 	
-	// 行動アニメーションをしたか
-	bool isActionAnimation_;
+	// ビックリ
+	// ワールドトランスフォーム
+	WorldTransform surprisedWorldTransform_;
+	// モデル
+	Model* surprisedModel_ = nullptr;
+	// アニメーションt
+	float surprisedT_;
+	// アニメーションフレーム
+	uint32_t surprisedFrame_;
+
+	Vector3 surprisedStartPosition_;
+	Vector3 surprisedEndPosition_;
+
 
 };
 
