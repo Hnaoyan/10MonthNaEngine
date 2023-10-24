@@ -447,6 +447,12 @@ void GameScene::Reset()
 	blockManager_->Setting();
 	enemiesManager_->Setting(mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	goal_->Setting(mapSystem_->GetInitialGoalPosition());
+	Vector3 cameraNewPosition = baseCamera_->GetInitPosition();
+	Vector2 mapMaxSize = { mapSystem_->GetPositionMax().x * MapSystem::kSquareSize_.x ,MapSystem::kMapSize_.y * MapSystem::kSquareSize_.y};
+
+	float offset_Z = -155.0f;
+	float offset_Y = 100.0f;
+	baseCamera_->SetBasePosition({ mapMaxSize.x / 2,mapMaxSize.y / 2 - offset_Y,offset_Z });
 
 	mapSystem_->SetIsRestart(false);
 	

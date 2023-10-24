@@ -76,10 +76,16 @@ public: // 設定・取得
 	void ResetPosition();
 
 	/// <summary>
+	/// カメラの座標設定
+	/// </summary>
+	/// <param name="position"></param>
+	void SetBasePosition(const Vector3& position) { basePosition_ = position; }
+
+	/// <summary>
 	/// 初期座標取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetInitPosition() { return initPosition_; }
+	Vector3 GetInitPosition() { return basePosition_; }
 
 	/// <summary>
 	/// オープニングアニメーションフレーム数
@@ -92,7 +98,7 @@ private:
 
 	ViewProjection viewProjection_;
 
-	Vector3 initPosition_;
+	Vector3 basePosition_;
 	Vector3 initRotate_;
 
 	float fov_ = 45.0f;

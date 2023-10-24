@@ -8,14 +8,14 @@ void BaseCamera::Initialize()
 	viewProjection_.Initialize();
 
 	// 位置・角度の設定
-	initPosition_ = { 73.0f, -35.9f, -158.0f };
+	basePosition_ = { 73.0f, -35.9f, -158.0f };
 	initRotate_ = { -0.550f, 0.0f, 0.0f};
-	viewProjection_.translate_ = initPosition_;
+	viewProjection_.translate_ = basePosition_;
 	viewProjection_.rotation_ = initRotate_;
 	fov_ = 45.0f;
 
 	// オープニングスタート位置
-	openingStartPostion_ = { initPosition_.x, initPosition_.y - 100.0f, 0.0f };
+	openingStartPostion_ = { basePosition_.x, basePosition_.y - 100.0f, 0.0f };
 	// オープニングスタート角度
 	openingStartRotate_ = { -1.57f, 0.0f, 0.0f };
 	// フレーム数
@@ -28,7 +28,7 @@ void BaseCamera::Initialize()
 	const char* groupName = "Camera";
 	// 指定した名前でグループ追加
 	globalVariables->CreateGroup(groupName);
-	globalVariables->AddItem(groupName, "position", initPosition_);
+	//globalVariables->AddItem(groupName, "position", basePosition_);
 	globalVariables->AddItem(groupName, "rotate", initRotate_);
 	globalVariables->AddItem(groupName, "scale", viewProjection_.scale_);
 	globalVariables->AddItem(groupName, "Fov", fov_);
@@ -43,16 +43,11 @@ void BaseCamera::Initialize()
 
 void BaseCamera::Update()
 {
-//#ifdef _DEBUG
-//	ImGui::Begin("base");
-//	// 位置
-//	ImGui::SliderFloat3("translate", &initPosition_.x, -50.0f, 50.0f);
-//	// 回転
-//	ImGui::DragFloat3("rotate", &viewProjection_.rotation_.x, 0.01f, -2.0f, 2.0f);
-//	// 視野角
-//	ImGui::SliderFloat("fov", &fov_, 5.0f, 100.0f);
-//	ImGui::End();
-//#endif // _DEBUG
+#ifdef _DEBUG
+	ImGui::Begin("base");
+	ImGui::DragFloat3("translate", &basePosition_.x, 0.1f, -500.0f, 500.0f);
+	ImGui::End();
+#endif // _DEBUG
 
 	ApplyGlobalVariables();
 
@@ -69,7 +64,7 @@ void BaseCamera::ApplyGlobalVariables()
 	const char* groupName = "Camera";
 
 	// 取得
-	initPosition_ = globalVariables->GetVector3Value(groupName, "position");
+	//basePosition_ = globalVariables->GetVector3Value(groupName, "position");
 	initRotate_ = globalVariables->GetVector3Value(groupName, "rotate");
 	viewProjection_.scale_ = globalVariables->GetVector3Value(groupName, "scale");
 	fov_ = globalVariables->GetFloatValue(groupName, "Fov");
@@ -97,7 +92,7 @@ void BaseCamera::OpeningAnimationUpdate()
 		openingT_ = 1.0f;
 	}
 
-	viewProjection_.translate_ = MathCalc::EaseInCubicF(openingT_, openingStartPostion_, initPosition_);
+	viewProjection_.translate_ = MathCalc::EaseInCubicF(openingT_, openingStartPostion_, basePosition_);
 	viewProjection_.rotation_ = MathCalc::EaseInCubicF(openingT_, openingStartRotate_, initRotate_);
 
 	// ビュープロジェクション更新
@@ -107,5 +102,5 @@ void BaseCamera::OpeningAnimationUpdate()
 
 void BaseCamera::ResetPosition()
 {
-	viewProjection_.translate_ = initPosition_;
+	viewProjection_.translate_ = basePosition_;
 }
