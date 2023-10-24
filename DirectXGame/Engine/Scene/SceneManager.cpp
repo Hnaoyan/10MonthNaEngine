@@ -3,6 +3,7 @@
 
 SceneManager::SceneManager() 
 { 
+	audio_ = Audio::GetInstance();
 	cloudModel_.reset(Model::CreateFromObj("cloud", true));
 	transitionManager_ = std::make_unique<TransitionManager>();
 	transitionManager_->Initialize(cloudModel_.get());
@@ -22,9 +23,18 @@ SceneManager::SceneManager()
 
 	sceneNum_ = TITLE;
 	prevSceneNum_ = sceneNum_;
+
+	titleBGM_ = audio_->LoadWave("BGM/Title.wav");
+	playBGM_ = audio_->LoadWave("BGM/Play.wav");
+
 }
 
 SceneManager::~SceneManager() {}
+
+void SceneManager::Initialize()
+{
+
+}
 
 void SceneManager::Update() 
 { 

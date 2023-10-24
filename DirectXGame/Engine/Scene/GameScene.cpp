@@ -170,7 +170,7 @@ void GameScene::Update()
 			GameClearAnimation();
 		}
 		else if (animationManager_->GetIsGameOverAnimation()) {
-
+			GameOverAnimation();
 		}
 		// ゲーム中
 		else {
@@ -205,10 +205,14 @@ void GameScene::Update()
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
 
 	}
-	if (mapSystem_->GetIsGameOver()) {
-		ImGui::Text("GAMEOVER");
-		mapSystem_->Restart();
-		Reset();
+	if (mapSystem_->GetIsGameOver() &&
+		!animationManager_->GetIsGameOverAnimation()) {
+		animationManager_->GameOverInitialize();
+		animationManager_->SetGameOverAnimationTime(10);
+		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+		//ImGui::Text("GAMEOVER");
+		//mapSystem_->Restart();
+		//Reset();
 	}
 	ImGui::End();
 
@@ -308,31 +312,6 @@ void GameScene::Setting(Scene preScene)
 
 void GameScene::CameraUpdate()
 {
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_L)) {
-		//if (isDebug_) {
-		//	isDebug_ = false;
-		//}
-		//else {
-		//	isDebug_ = true;
-		//}
-		//cameraVect_ = baseCamera_->GetView().translate_;
-		effectManager_->SetIsShake(true);
-	}
-	if (input_->TriggerKey(DIK_J)) {
-		effectManager_->SetIsStop(true);
-	}
-#endif // DEBUG
-
-	if (effectManager_->IsShake()) {
-		effectManager_->ShakeUpdate();
-		baseCamera_->SetPosition(EffectManager::ShakeUpdate(baseCamera_->GetInitPosition(), kFloatType));
-	}
-	else {
-		if (!animationManager_->GetIsOpeningAnimation()) {
-			baseCamera_->ResetPosition();
-		}
-	}
 
 	baseCamera_->Update();
 
@@ -427,6 +406,14 @@ void GameScene::GameClearAnimation()
 
 void GameScene::GameOverAnimation()
 {
+
+	animationManager_->GameOverUpdate();
+
+	if (!animationManager_->GetIsGameOverAnimation()) {
+		ImGui::Text("GAMEOVER");
+		mapSystem_->Restart();
+		Reset();
+	}
 }
 
 void GameScene::OpeningAnimation()
@@ -451,11 +438,13 @@ void GameScene::Reset()
 	enemiesManager_->Setting(mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	goal_->Setting(mapSystem_->GetInitialGoalPosition());
 	Vector3 cameraNewPosition = baseCamera_->GetInitPosition();
-	Vector2 mapMaxSize = { mapSystem_->GetPositionMax().x * MapSystem::kSquareSize_.x ,MapSystem::kMapSize_.y * MapSystem::kSquareSize_.y};
+	Vector2 mapMaxSize = { mapSystem_->GetPositionMax().x * MapSystem::kSquareSize_.x ,mapSystem_->GetPositionMax().y * MapSystem::kSquareSize_.y};
 
 	float offset_Z = -155.0f;
 	float offset_Y = 100.0f;
 	baseCamera_->SetBasePosition({ mapMaxSize.x / 2,mapMaxSize.y / 2 - offset_Y,offset_Z });
+
+	particleManager_->GoalEffectReset();
 
 	mapSystem_->SetIsRestart(false);
 	
@@ -471,6 +460,7 @@ void GameScene::Reset()
 	blockManager_->Update();
 	enemiesManager_->SetDirect(0);
 	enemiesManager_->Update();
+	enemiesManager_->ActionAnimationInitialize();
 	goal_->Update();
 
 }

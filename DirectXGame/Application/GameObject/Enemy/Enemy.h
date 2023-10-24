@@ -69,6 +69,8 @@ public: // アクセッサ
 
 	void SetEndPosition(const Vector2& position) { animationEndPosition_ = position; }
 
+	void SetScale(const Vector3& scale) { worldTransform_.scale_ = scale; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム

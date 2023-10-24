@@ -14,8 +14,8 @@ void ParticleWave::Update()
 {
 	if (isWave_) {
 		wave_t_ += 0.01f;
-		float amp = 0.2f;
-		float fre = 5.0f;
+		float amp = 1.0f;
+		float fre = 10.0f;
 		velocity_.y = amp * std::cosf(1.0f * float(std::numbers::pi) * fre * wave_t_);
 	}
 	worldTransform_.scale_.x += addScaleValue.x;

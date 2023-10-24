@@ -8,7 +8,7 @@ void CloudObject::Initialize(Model* model)
 	model_ = model;
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
-	//velocity_ = { -1.0f,0,0 };
+	worldTransform_.rotation_ = { 0.0f,1.57f,0 };
 }
 
 void CloudObject::Update()

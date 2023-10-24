@@ -8,6 +8,7 @@
 #include "EditorScene.h"
 #include "Transition/TransitionManager.h"
 #include "BackGroundManager.h"
+#include "Audio.h"
 
 class SceneManager {
 private:
@@ -22,9 +23,14 @@ private:
 
 	int changeNum_;
 
+	uint32_t titleBGM_ = 0u;
+	uint32_t playBGM_ = 0u;
+
 public:
 	SceneManager();
 	~SceneManager();
+
+	void Initialize();
 
 	/// <summary>
 	/// 更新
@@ -41,4 +47,8 @@ public:
 	/// </summary>
 	/// <param name="number"></param>
 	void LoadScene(int number);
+
+private:
+	Audio* audio_;
+
 };

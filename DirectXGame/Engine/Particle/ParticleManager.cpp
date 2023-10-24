@@ -34,7 +34,7 @@ void ParticleManager::Initialize(ViewProjection* view)
 	// ゴールが空いている時の管理変数
 	goalOpenParameters_ = { 0,30,false };
 
-	//planeModel_->SetAlphaValue(0.5f);
+	planeModel_->SetAlphaValue(0.8f);
 
 #pragma region json管理
 	//GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -162,8 +162,8 @@ void ParticleManager::ExplosionUpdate(const Vector3& position)
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
 {
 	goalPosition_ = pos;
-	goalOpenParameters_ = { 0,50,0,true };
-	AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), { 5.0f,5.0f,5.0f });
+	goalOpenParameters_ = { 0,60,0,true };
+	//AddGoalParticle(goalPosition_, Vector3(0, 0, -0.8f), { 5.0f,5.0f,5.0f });
 }
 
 void ParticleManager::GoalEffectReset() 
@@ -210,7 +210,7 @@ void ParticleManager::AddWave(const Vector3& pos, const Vector3& scale)
 	newParticle->Initialize(planeModel_.get(), waveEffectTexture_);
 	newParticle->SetPosition(pos);
 	newParticle->SetScale(scale);
-	float addScaleValue = 0.3f;
+	float addScaleValue = 0.35f;
 	newParticle->SetAddScaleValue(Vector2(addScaleValue, addScaleValue));
 	particles_.push_back(newParticle);
 }

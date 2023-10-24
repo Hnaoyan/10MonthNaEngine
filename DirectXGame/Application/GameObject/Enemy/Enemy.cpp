@@ -46,7 +46,7 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 
 	float positionZ = 0.0f;
 	if (awake_) {
-		positionZ = -15.0f;
+		positionZ = -20.0f;
 	}
 	else {
 		positionZ = -7.5f;
