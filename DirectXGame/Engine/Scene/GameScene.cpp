@@ -32,16 +32,11 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	SEVolume_ = 0.4f;
 
 #pragma region オーディオリソース
 	//this->clearSEHandle_ = audio_->LoadWave("SE/clear.wav");
 	this->deathSEHandle_ = audio_->LoadWave("SE/death.wav");
-	this->dontMoveSEHandle_ = audio_->LoadWave("SE/DontMove.wav");
-	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
-	this->enemyGetSEHandle_ = audio_->LoadWave("SE/enemyGet.wav");
-	this->enemyWakeUpSEHandle_ = audio_->LoadWave("SE/enemyWakeUp.wav");
-	this->jumpSEHandle_ = audio_->LoadWave("SE/jump.wav");
-	this->walkSEHandle_ = audio_->LoadWave("SE/walk.wav");
 #pragma endregion
 
 
@@ -74,6 +69,7 @@ void GameScene::Initialize() {
 	mapSystem_ = make_unique<MapSystem>();
 	mapSystem_->SetParticleManager(particleManager_.get());
 	mapSystem_->Initialize(stageNum);
+	mapSystem_->SetSEVolume(SEVolume_);
 
 	player_ = make_unique<Player>();
 	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
@@ -226,6 +222,7 @@ void GameScene::Update()
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
 		animationManager_->SetGameOverAnimationTime(10);
+		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
 		//ImGui::Text("GAMEOVER");
 		//mapSystem_->Restart();

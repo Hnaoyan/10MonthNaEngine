@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <variant>
+#include "Audio.h"
 
 #include "../Application/Others/Command/Command.h"
 #include "ParticleManager.h"
@@ -58,6 +59,8 @@ public: // 静的メンバ定数
 	static uint32_t kMaximumNumberOfStages_;
 
 public: // メンバ関数
+
+	MapSystem();
 
 	/// <summary>
 	/// デストラクタ
@@ -234,6 +237,8 @@ public: // ポインタアクセッサ
 	void SetGoal(Goal* goal) { goal_ = goal; }
 	// 敵の数表示
 	void SetCaptureEnemyUI(CaptureEnemyUI* captureEnemyUI) { captureEnemyUI_ = captureEnemyUI; }
+	// SEの音の大きさ
+	void SetSEVolume(float volume) { SEVolume_ = volume; }
 
 private: //メンバ変数
 
@@ -288,6 +293,10 @@ private: //メンバ変数
 
 private: // ポインタ
 
+	float SEVolume_;
+
+	Audio* audio_ = nullptr;
+
 	// エネミーズマネージャー
 	EnemiesManager* enemiesManager_;
 
@@ -305,6 +314,18 @@ private: // ポインタ
 
 	// 敵の数表示
 	CaptureEnemyUI* captureEnemyUI_;
+
+	uint32_t dontMoveSEHandle_;
+
+	uint32_t jumpSEHandle_;
+
+	uint32_t dropSEHandle_;
+
+	uint32_t walkSEHandle_;
+
+	uint32_t enemyGetSEHandle_;
+
+	uint32_t enemyWakeUpSEHandle_;
 
 private: //メンバ変数(データ)
 

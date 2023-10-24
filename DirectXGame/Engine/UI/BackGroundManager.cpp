@@ -24,7 +24,7 @@ void BackGroundManager::Initialize(Model* model)
 	skydomeWorldTransform_.Initialize();
 	skydomeWorldTransform_.translation_ = backGroundCanvasCamera_->GetView().translate_;
 	skydomeWorldTransform_.scale_ = { 60.0f,60.0f,60.0f };
-	skydomeModel_->SetAlphaValue(0.5f);
+	//skydomeModel_->SetAlphaValue(0.5f);
 
 	// スポーン場所の設定
 	startPosition_ = { 35.0f,10.0f,0 };
