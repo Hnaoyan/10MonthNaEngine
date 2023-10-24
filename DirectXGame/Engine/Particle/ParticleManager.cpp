@@ -162,8 +162,10 @@ void ParticleManager::ExplosionUpdate(const Vector3& position)
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
 {
 	goalPosition_ = pos;
-	goalOpenParameters_ = { 0,60,0,true };
-	//AddGoalParticle(goalPosition_, Vector3(0, 0, -0.8f), { 5.0f,5.0f,5.0f });
+	int interval = 40;
+	if (!goalOpenParameters_.isNow) {
+		goalOpenParameters_ = { 0,interval,0,true };
+	}
 }
 
 void ParticleManager::GoalEffectReset() 
