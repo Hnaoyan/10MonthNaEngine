@@ -67,5 +67,9 @@ private: // メンバ変数
 	// 現在のマス
 	Vector2 position_;
 
+	
+	float positionZ_ = -20.0f;
+
+
 };
 
