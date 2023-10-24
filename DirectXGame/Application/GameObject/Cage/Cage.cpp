@@ -71,7 +71,7 @@ void Cage::Setting(const Vector2& position)
 	worldTransform_.UpdateMatrix();
 
 
-	shadowAddZ_ = -positionZ_ - 5.0f;
+	shadowAddZ_ = -positionZ_ - 5.1f;
 	shadowWorldTransform_.parent_ = &worldTransform_;
 	shadowWorldTransform_.translation_.z = shadowAddZ_;
 	shadowWorldTransform_.UpdateMatrix();

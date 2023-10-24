@@ -57,4 +57,9 @@ protected:
 	/// </summary>
 	static const int stageMax;
 
+	/// <summary>
+	/// ステージをクリアしたか
+	/// </summary>
+	static bool stageClear[];
+
 };
