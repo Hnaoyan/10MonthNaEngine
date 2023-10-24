@@ -12,7 +12,7 @@ void BackGroundManager::Initialize(Model* model)
 
 	// 雲モデルの読み込み
 	cloudModel_ = model;
-	cloudModel_->SetAlphaValue(0.8f);
+	//cloudModel_->SetAlphaValue(0.8f);
 
 	// 背景用カメラの生成・設定
 	backGroundCanvasCamera_ = std::make_unique<BaseCamera>();

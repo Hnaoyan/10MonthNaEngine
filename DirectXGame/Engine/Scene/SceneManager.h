@@ -9,6 +9,7 @@
 #include "Transition/TransitionManager.h"
 #include "BackGroundManager.h"
 #include "Audio.h"
+#include "AudioManager.h"
 
 class SceneManager {
 private:
@@ -23,8 +24,12 @@ private:
 
 	int changeNum_;
 
-	uint32_t titleBGM_ = 0u;
-	uint32_t playBGM_ = 0u;
+	uint32_t titleBGMHandle_ = 0u;
+	uint32_t playBGMHandle_ = 0u;
+
+	uint32_t voiceHandle_ = 0u;
+
+	float BGMVolume_ = 0;
 
 public:
 	SceneManager();

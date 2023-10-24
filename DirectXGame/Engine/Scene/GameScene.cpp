@@ -22,6 +22,7 @@ GameScene::GameScene()
 	enemyDagerModel_.reset(Model::CreateFromObj("danger", true));
 
 	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
+
 }
 
 void GameScene::Initialize() {
@@ -29,6 +30,19 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+
+#pragma region オーディオリソース
+	this->clearSEHandle_ = audio_->LoadWave("SE/clear.wav");
+	this->deathSEHandle_ = audio_->LoadWave("SE/death.wav");
+	this->dontMoveSEHandle_ = audio_->LoadWave("SE/DontMove.wav");
+	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
+	this->enemyGetSEHandle_ = audio_->LoadWave("SE/enemyGet.wav");
+	this->enemyWakeUpSEHandle_ = audio_->LoadWave("SE/enemyWakeUp.wav");
+	this->jumpSEHandle_ = audio_->LoadWave("SE/jump.wav");
+	this->walkSEHandle_ = audio_->LoadWave("SE/walk.wav");
+#pragma endregion
+
 
 	viewProjection_.Initialize();
 

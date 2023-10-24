@@ -1,5 +1,6 @@
 ﻿#include "SceneManager.h"
 #include "StageSelectScene.h"
+#include "ImGuiManager.h"
 
 SceneManager::SceneManager() 
 { 
@@ -24,8 +25,8 @@ SceneManager::SceneManager()
 	sceneNum_ = TITLE;
 	prevSceneNum_ = sceneNum_;
 
-	titleBGM_ = audio_->LoadWave("BGM/Title.wav");
-	playBGM_ = audio_->LoadWave("BGM/Play.wav");
+	titleBGMHandle_ = audio_->LoadWave("BGM/Title.wav");
+	playBGMHandle_ = audio_->LoadWave("BGM/Play.wav");
 
 }
 
@@ -50,7 +51,19 @@ void SceneManager::Update()
 	//	}
 	//}
 
+	ImGui::Begin("sceneNum");
+	ImGui::Text("NowNum : %d prevNum : %d", sceneNum_, prevSceneNum_);
+	ImGui::End();
+	
+
 #endif // DEBUG
+
+	//if (!audio_->IsPlaying(voiceHandle_) && sceneNum_!= GAMESCENE) {
+	//	voiceHandle_ = audio_->PlayWave(titleBGMHandle_, true, 0.3f);
+	//}
+	//if (!audio_->IsPlaying(voiceHandle_) && sceneNum_ == GAMESCENE) {
+	//	voiceHandle_ = audio_->PlayWave(playBGMHandle_, true, 0.3f);
+	//}
 
 	prevSceneNum_ = this->sceneNum_;
 	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
@@ -58,9 +71,15 @@ void SceneManager::Update()
 	// 遷移の設定呼び出し
 	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		//if (sceneNum_ == GAMESCENE) {
+		//	audio_->StopWave(voiceHandle_);
+		//}
+		//if (prevSceneNum_ == GAMESCENE) {
+		//	audio_->StopWave(voiceHandle_);
+		//}
 		//transitionManager_->SetIsTransition(true);
 	}
-	// 連打された時用
+	//// 連打された時用
 	//if (!transitionManager_->IsGetSceneChanger()) {
 	//	prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 	//}
