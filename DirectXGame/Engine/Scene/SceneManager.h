@@ -7,11 +7,13 @@
 #include "GameScene.h"
 #include "EditorScene.h"
 #include "Transition/TransitionManager.h"
+#include "BackGroundManager.h"
 
 class SceneManager {
 private:
 	std::unique_ptr<BaseScene> sceneArray_[5];
 	std::unique_ptr<TransitionManager> transitionManager_;
+	std::unique_ptr<BackGroundManager> backGroundManager_;
 
 	std::unique_ptr<Model> cloudModel_;
 

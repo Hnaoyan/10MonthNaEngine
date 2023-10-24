@@ -168,7 +168,7 @@ void ParticleManager::GoalEffectSetting(const Vector3& pos)
 
 void ParticleManager::GoalEffectReset() 
 {
-	goalOpenParameters_.isNow = false;
+	goalOpenParameters_ = {};
 	particles_.clear();
 }
 

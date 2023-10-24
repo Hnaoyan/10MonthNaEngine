@@ -12,11 +12,11 @@ void TitleScene::Initialize()
 {
 	dxCommon_ = DirectXCommon::GetInstance();
 	audio_ = Audio::GetInstance();
-	titleBGM_ = audio_->LoadWave("jump.wav");
+	//titleBGM_ = audio_->LoadWave("jump.wav");
 	spritePosition_ = { float(WinApp::kClientWidth / 2),float(WinApp::kClientHeight / 2) };
 	titleSprite_.reset(Sprite::Create(titleTexture_, spritePosition_,
 		{ 1.0f,1.0f,1.0f,1.0f }, { 0.5f,0.5f }, false, false));
-	audio_->PlayWave(titleBGM_, true, 0.3f);
+	//audio_->PlayWave(titleBGM_, true, 0.3f);
 }
 
 void TitleScene::Update()

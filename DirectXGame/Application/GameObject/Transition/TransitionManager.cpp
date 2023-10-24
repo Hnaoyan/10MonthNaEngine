@@ -24,6 +24,7 @@ void TransitionManager::Initialize(Model* model)
 	transitionCamera_->Initialize();
 
 	transitionCamera_->SetPosition({ 0, 5.0f, 0.0f });
+
 }
 
 void TransitionManager::Update()
@@ -46,7 +47,8 @@ void TransitionManager::Update()
 }
 
 void TransitionManager::Draw()
-{	// コマンドリストの取得
+{
+	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
 #pragma region 背景スプライト描画
@@ -172,9 +174,4 @@ void TransitionManager::AddCloud(const Vector3& position, const Vector3& scale)
 	newObject->InstanceSetting(position, scale);
 	//newObject->SetVelocity(Vector3(-1.0f, 0, 0));
 	objects_.push_back(newObject);
-}
-
-void TransitionManager::BackGroundCloud()
-{
-	
 }

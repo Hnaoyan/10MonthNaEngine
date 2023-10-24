@@ -65,10 +65,6 @@ private: // 遷移用関数
 	/// <param name="position"></param>
 	void AddCloud(const Vector3& position, const Vector3& scale);
 
-	void BackGroundCloud();
-
-	void AddBackGroundCloud(const Vector3& position, const Vector3& scale);
-
 private:
 	/// <summary>
 	/// 遷移中か
@@ -96,9 +92,5 @@ private:
 	Model* cloudModel_;
 	// オブジェクトのリスト
 	std::list<TransitionObject*> objects_;
-
-	// 雲のリスト
-	std::list<CloudObject*> clouds_;
-
 };
 

@@ -6,6 +6,8 @@ SceneManager::SceneManager()
 	cloudModel_.reset(Model::CreateFromObj("cloud", true));
 	transitionManager_ = std::make_unique<TransitionManager>();
 	transitionManager_->Initialize(cloudModel_.get());
+	backGroundManager_ = std::make_unique<BackGroundManager>();
+	backGroundManager_->Initialize(cloudModel_.get());
 
 	sceneArray_[TITLE] = std::make_unique<TitleScene>();
 	sceneArray_[TITLE]->Initialize();
@@ -61,6 +63,10 @@ void SceneManager::Update()
 	// 遷移の更新
 	transitionManager_->Update();
 
+	// 背景の更新
+	if (sceneNum_ != GAMESCENE) {
+		backGroundManager_->Update();
+	}
 	// シーンごとの更新
 	sceneArray_[sceneNum_]->Update();
 
@@ -68,6 +74,10 @@ void SceneManager::Update()
 
 void SceneManager::Draw() 
 {
+	// 背景モデルの描画
+	if (sceneNum_ != GAMESCENE) {
+		backGroundManager_->Draw();
+	}
 	// シーン描画
 	sceneArray_[sceneNum_]->Draw(); 
 
