@@ -2,19 +2,24 @@
 #include "MathCalc.h"
 #include "Others/MapSystem/MapSystem.h"
 
-void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel)
+void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel)
 {
 
 	// ワールドトランスフォーム
 	worldTransform_.Initialize();
 
 	sleepWorldTransform_.Initialize();
-	//sleepWorldTransform_.BillBoardSetting();
+	surprisedWorldTransform_.Initialize();
+	surprisedWorldTransform_.translation_ = Vector3{ 0.0f, 10.0f, 0.0f };
+	surprisedWorldTransform_.parent_ = &worldTransform_;
+	surprisedWorldTransform_.UpdateMatrix();
 
 	// モデル
 	model_ = model;
 
 	sleepModel_ = sleepModel;
+
+	surprisedModel_ = surprisedModel;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -44,16 +49,7 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 	position_ = position;
 	awake_ = enemyAwake;
 
-	float positionZ = 0.0f;
-	if (awake_) {
-		positionZ = -15.0f;
-	}
-	else {
-		positionZ = -7.5f;
-	}
-
-	worldTransform_.translation_.z = positionZ;
-	worldTransform_.rotation_.z = (-1.57f) + rotate_;
+	worldTransform_.rotation_.z = rotate_;
 	worldTransform_.UpdateMatrix();
 
 	sleepWorldTransform_.translation_ = worldTransform_.translation_ + Vector3{ 5.0f, 0.0f, -10.0f };
@@ -69,6 +65,9 @@ void Enemy::Draw(const ViewProjection& viewProjection)
 	if (!awake_) {
 		sleepModel_->Draw(sleepWorldTransform_, viewProjection);
 	}
+	else if(surprisedT_ < 1.0f && surprisedT_ > 1.0f / 2.0f){
+		surprisedModel_->Draw(surprisedWorldTransform_,viewProjection);
+	}
 
 }
 
@@ -76,13 +75,13 @@ void Enemy::Setting(const Vector2& position)
 {
 
 	// ワールドトランスフォーム
-	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -2.0f };
+	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, -7.5f };
 	position_ = { worldTransform_.translation_.x,worldTransform_.translation_.y };
 	animationEndPosition_ = position_;
 	ActionAnimationInitialize();
-	rotate_ = -1.57f;
+	rotate_ = 0.0f;
 	worldTransform_.rotation_ = { -1.57f,0.0f,rotate_ };
-	worldTransform_.scale_ = { 8.0f,8.0f,8.0f };
+	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();
 
 	awake_ = false;
@@ -110,6 +109,10 @@ void Enemy::ActionAnimationUpdate()
 		worldTransform_.translation_.y = easePosition.y;
 	}
 	
+	surprisedStartPosition_.x = worldTransform_.translation_.x;
+	surprisedEndPosition_.x = worldTransform_.translation_.x;
+	surprisedStartPosition_.y = worldTransform_.translation_.y;
+	surprisedEndPosition_.y = worldTransform_.translation_.y;
 	worldTransform_.UpdateMatrix();
 
 }
@@ -119,7 +122,7 @@ void Enemy::WaitingAnimationInitialize()
 
 	// スリープアニメーション
 	// 位置
-	Vector3 sleepStartPositionAdd = { 5.0f, 0.0f, -10.0f};
+	Vector3 sleepStartPositionAdd = { 5.0f, 0.0f, -10.0f };
 	sleepStartPosition_ = worldTransform_.translation_ + sleepStartPositionAdd;
 	// 位置
 	Vector3 sleepEndPositionAdd = { 7.5f, 0.0f, -12.5f };
@@ -129,13 +132,21 @@ void Enemy::WaitingAnimationInitialize()
 	// アニメーションフレーム
 	sleepFrame_ = 40;
 
+	// アニメーションt.x, 
+	surprisedT_ = 0.0f;
+	// アニメーションフレーム
+	surprisedFrame_ = 90;
+
+	surprisedStartPosition_ = worldTransform_.translation_;
+	surprisedEndPosition_ = worldTransform_.translation_;
+	surprisedEndPosition_.z = surprisedEndPosition_.z - 7.5f;
+
 }
 
 void Enemy::WaitingAnimationUpdate()
 {
-
 	// スリープ
-	if (animationT_ == 0.0f || animationT_ >= 1.0f || !awake_) {
+	if (!awake_) {
 		// アニメーションする
 		sleepT_ += 1.0f / static_cast<float>(sleepFrame_);
 
@@ -151,8 +162,27 @@ void Enemy::WaitingAnimationUpdate()
 			float t = (sleepT_ - 1.0f / 2.0f) * 2.0f;
 			sleepWorldTransform_.translation_ = MathCalc::EaseOutCubicF(t, sleepMiddlePosition_, sleepStartPosition_);
 		}
-
 		sleepWorldTransform_.UpdateMatrix();
+	}
+
+	if (animationT_ == 0.0f || animationT_ >= 1.0f) {
+		if (surprisedT_ < 1.0f && awake_) {
+			// アニメーションする
+			surprisedT_ += 1.0f / static_cast<float>(surprisedFrame_);
+
+			if (surprisedT_ > 1.0f) {
+				surprisedT_ = 1.0f;
+			}
+
+			if (surprisedT_ > 1.0f / 2.0f && surprisedT_ < 3.0f / 4.0f) {
+				float t = (surprisedT_ - 1.0f / 2.0f) * 4.0f;
+				worldTransform_.translation_ = MathCalc::EaseInCubicF(t, surprisedStartPosition_, surprisedEndPosition_);
+				surprisedWorldTransform_.scale_ = MathCalc::EaseInCubicF(t, Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
+				worldTransform_.UpdateMatrix();
+				surprisedWorldTransform_.UpdateMatrix();
+			}
+
+		}
 	}
 
 }
