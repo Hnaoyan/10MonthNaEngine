@@ -226,6 +226,9 @@ void EnemiesManager::ActionAnimationUpdate()
 	for (Enemy* enemy : enemies_) {
 		enemy->ActionAnimationUpdate();
 	}
+	for (Cage* cage : cages_) {
+		cage->ActionAnimationUpdate();
+	}
 }
 
 void EnemiesManager::WaitingAnimationInitialize()

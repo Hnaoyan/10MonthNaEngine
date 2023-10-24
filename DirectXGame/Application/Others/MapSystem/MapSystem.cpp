@@ -343,6 +343,9 @@ void MapSystem::EnemyMove()
 				capturedEnemy_.at(i) = true;
 				usedCage_.at(k) = true;
 
+				// アニメーション
+				Vector2 cageWorldPosition = { cagePosition.x, cagePosition.y };
+				enemiesManager_->GetCage(cageWorldPosition)->ActionAnimationInitialize();
 
 				int num = 0;
 				// 捕まえた敵の数取得、UIにおくる

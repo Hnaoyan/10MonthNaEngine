@@ -35,6 +35,16 @@ public: // メンバ関数
 	/// </summary>
 	void Setting(const Vector2& position);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void ActionAnimationInitialize();
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void ActionAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -70,6 +80,19 @@ private: // メンバ変数
 	
 	float positionZ_ = -20.0f;
 
+	// アニメーション
+	// するか
+	bool isAnimation_;
+	// 初期スケール
+	Vector3 initScale_;
+	// スケール中間
+	Vector3 middleScale_;
+	// t
+	float animationT_;
+	// フレーム
+	uint32_t animationFrame_;
+
+	Vector3 scaleAdd_ = { 4.0f,4.0f,4.0f };
 
 };
 
