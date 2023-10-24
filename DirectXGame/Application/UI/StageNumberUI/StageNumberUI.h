@@ -9,13 +9,18 @@ public:
 
 	void Initialize(uint32_t texture);
 
-	void Setting(int stageNum);
-
 	void Update();
+
+	void Setting(int stageNum);
 
 	void Draw();
 
-	//void 
+private: //メンバ関数
+
+	/// <summary>
+	/// 調整項目適用関数
+	/// </summary>
+	void ApplyGlobalVariables();
 
 private:
 	std::unique_ptr<Sprite> stageNumberSprite_;
