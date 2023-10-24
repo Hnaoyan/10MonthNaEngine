@@ -75,6 +75,12 @@ uint32_t Audio::LoadWave(const std::string& fileName)
 	FormatChunk format = {};
 	// チャンクヘッダーの確認
 	file.read((char*)&format, sizeof(ChunkHeader));
+	while (_strnicmp(format.chunk.id, "junk", 4) == 0 ) {
+		// 読み取り位置をJUNKチャンクの終わりまで進める
+		file.seekg(format.chunk.size, std::ios_base::cur);
+		// 再読み込み
+		file.read((char*)&format, sizeof(format));
+	}
 	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
 		assert(0);
 	}
@@ -88,13 +94,14 @@ uint32_t Audio::LoadWave(const std::string& fileName)
 	file.read((char*)&data, sizeof(data));
 
 	// JUNKチャンクを検出した場合
-	while (_strnicmp(data.id, "junk", 4) == 0 || _strnicmp(data.id, "bext", 4) == 0) {
+	while (_strnicmp(data.id, "junk", 4) == 0 || _strnicmp(data.id, "PAD ", 4) == 0 ||
+		_strnicmp(data.id, "Fake", 4) == 0 || _strnicmp(data.id, "FLLR", 4) == 0) {
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		// 再読み込み
 		file.read((char*)&data, sizeof(data));
 	}
-	if (_strnicmp(data.id, "data", 4) != 0) {
+	if (_strnicmp(data.id, "data", 4) != 0){
 		assert(0);
 	}
 
