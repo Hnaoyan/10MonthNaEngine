@@ -1,4 +1,5 @@
 #pragma once
+#include "Transition/TransitionManager.h"
 
 enum Scene {
 	TITLE,GAMESCENE,CLEAR,EDITOR,STAGESELECT
@@ -41,6 +42,12 @@ public: // 取得・設定
 	/// <returns></returns>
 	void SetSceneNum(int num) { sceneNum = num; }
 
+	/// <summary>
+	/// 遷移マネージャーの設定
+	/// </summary>
+	/// <param name="manager"></param>
+	void SetTransitionManager(TransitionManager* manager) { transitionManager_ = manager; }
+
 protected:
 	/// <summary>
 	/// シーン番号
@@ -56,5 +63,7 @@ protected:
 	/// ステージ最大数
 	/// </summary>
 	static const int stageMax;
+
+	TransitionManager* transitionManager_;
 
 };

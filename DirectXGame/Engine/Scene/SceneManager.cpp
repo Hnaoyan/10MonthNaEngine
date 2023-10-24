@@ -22,6 +22,12 @@ SceneManager::SceneManager()
 	sceneArray_[STAGESELECT] = std::make_unique<StageSelectScene>();
 	sceneArray_[STAGESELECT]->Initialize();
 
+	// 遷移マネージャーの設定
+	sceneArray_[TITLE]->SetTransitionManager(transitionManager_.get());
+	sceneArray_[GAMESCENE]->SetTransitionManager(transitionManager_.get());
+	sceneArray_[CLEAR]->SetTransitionManager(transitionManager_.get());
+	sceneArray_[STAGESELECT]->SetTransitionManager(transitionManager_.get());
+
 	sceneNum_ = TITLE;
 	prevSceneNum_ = sceneNum_;
 
@@ -56,29 +62,29 @@ void SceneManager::Update()
 		voiceHandle_ = audio_->PlayWave(playBGMHandle_, true, 0.3f);
 	}
 
-	prevSceneNum_ = this->sceneNum_;
-	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	//prevSceneNum_ = this->sceneNum_;
+	//sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	// 遷移の設定呼び出し
 	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
-		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		//sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
 		if (sceneNum_ == GAMESCENE) {
 			audio_->StopWave(voiceHandle_);
 		}
 		if (prevSceneNum_ == GAMESCENE) {
 			audio_->StopWave(voiceHandle_);
 		}
-		//transitionManager_->SetIsTransition(true);
+		transitionManager_->SetIsTransition(true);
 	}
-	//// 連打された時用
-	//if (!transitionManager_->IsGetSceneChanger()) {
-	//	prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
-	//}
-	//// シーン切り替えタイミング
-	//if (transitionManager_->IsGetSceneChanger()) {
-	//	sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
-	//	sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-	//}
+	// 連打された時用
+	if (!transitionManager_->IsGetSceneChanger()) {
+		prevSceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+	}
+	// シーン切り替えタイミング
+	if (transitionManager_->IsGetSceneChanger()) {
+		sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
+		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+	}
 
 	// 遷移の更新
 	transitionManager_->Update();

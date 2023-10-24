@@ -7,6 +7,7 @@
 #include "BaseCamera.h"
 #include "CloudObject.h"
 #include "Sprite.h"
+#include "Audio.h"
 
 #include <memory>
 
@@ -14,10 +15,15 @@ class TransitionManager
 {
 private:
 	DirectXCommon* dxCommon_ = nullptr;
+	Audio* audio_ = nullptr;
 	// ビュー
 	ViewProjection viewProjection_;
 
 	std::unique_ptr<BaseCamera> transitionCamera_;
+
+	uint32_t changeSEHandle_ = 0u;
+
+	float SEVolume_;
 
 public:
 	TransitionManager();
@@ -49,21 +55,11 @@ public:
 	/// </summary>
 	void TransitionSetting();
 
-	/// <summary>
-	/// ホワイトアウトの準備
-	/// </summary>
-	void WhiteOutSetting();
-
 private: // 遷移用関数
 	/// <summary>
 	/// 遷移の時間などの処理
 	/// </summary>
 	void TransitionUpdate();
-
-	/// <summary>
-	/// ホワイトアウトの遷移用
-	/// </summary>
-	void WhiteOutUpdate();
 
 	/// <summary>
 	/// 雲の遷移召喚
@@ -89,17 +85,6 @@ private:
 	bool isSceneChanger_ = false;
 
 	bool isSettingTransition_ = false;
-
-private:
-	bool isWhiteOut_ = false;
-
-	float whiteOutT_ = 0;
-
-	float alphaValue_ = 1.0f;
-
-	uint32_t whiteTexture_ = 0u;
-
-	std::unique_ptr<Sprite> whiteSprite_;
 
 public:
 

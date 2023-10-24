@@ -232,5 +232,19 @@ private:	// メンバポインタ
 	float SEVolume_ = 0;
 	Vector3 cameraVect_ = {};
 
+private: // ホワイトアウト用
+
+	std::unique_ptr<Sprite> whiteSprite_;
+
+	bool isWhiteOut_ = false;
+
+	float whiteOutT_ = 0;
+
+	float alphaValue_;
+
+	void WhiteOutUpdate();
+
+	void WhiteOutSetting();
+
 };
 

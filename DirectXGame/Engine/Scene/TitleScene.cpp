@@ -47,6 +47,10 @@ void TitleScene::Initialize()
 
 #pragma endregion
 
+	// 音関係
+	SEVolume_ = 0.3f;
+	selectSEHandle_ = audio_->LoadWave("SE/select.wav");
+
 }
 
 void TitleScene::Update()
@@ -72,8 +76,9 @@ void TitleScene::Update()
 	spritePosition_ = VectorLib::Add(spritePosition_, waveVelocity_);
 	titleSprite_->SetPosition(spritePosition_);
 	titleSprite_->Update();
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE) && !transitionManager_->GetNowTransition()) {
 		sceneNum = STAGESELECT;
+		audio_->PlayWave(selectSEHandle_, false, SEVolume_);
 	}
 
 	if (Input::GetInstance()->PressKey(DIK_SPACE)) {
