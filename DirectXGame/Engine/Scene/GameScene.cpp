@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 
 
 #pragma region オーディオリソース
-	this->clearSEHandle_ = audio_->LoadWave("SE/clear.wav");
+	//this->clearSEHandle_ = audio_->LoadWave("SE/clear.wav");
 	this->deathSEHandle_ = audio_->LoadWave("SE/death.wav");
 	this->dontMoveSEHandle_ = audio_->LoadWave("SE/DontMove.wav");
 	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
