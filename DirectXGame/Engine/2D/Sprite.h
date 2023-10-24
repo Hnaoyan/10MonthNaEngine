@@ -175,7 +175,10 @@ public:
 	/// 色の設定
 	/// </summary>
 	/// <param name="color"></param>
-	void SetColor(const Vector4& color) { color_ = color; }
+	void SetColor(const Vector4& color) { 
+		color_ = color;
+		Update();
+	}
 
 	const Vector4 GetColor() { return color_; }
 
