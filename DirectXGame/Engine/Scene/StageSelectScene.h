@@ -63,6 +63,7 @@ private: // メンバ変数 (ステージ写真)
 
 	uint32_t slideSEHandle_;
 	uint32_t selectSEHandle_;
+	uint32_t dropSEHandle_;
 
 	float SEVolume_;
 

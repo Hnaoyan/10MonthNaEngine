@@ -25,6 +25,8 @@ void StageSelectScene::Initialize()
 	// 音関係
 	slideSEHandle_ = audio_->LoadWave("SE/slide.wav");
 	selectSEHandle_ = audio_->LoadWave("SE/select.wav");
+	dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
+
 	SEVolume_ = 0.3f;
 
 	// イージング
@@ -90,7 +92,7 @@ void StageSelectScene::Update()
 		// ESCでゲームセレクトへ
 		if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
 			// SE
-			audio_->PlayWave(selectSEHandle_, false, SEVolume_);
+			audio_->PlayWave(dropSEHandle_, false, SEVolume_);
 			sceneNum = TITLE;
 		}
 	}

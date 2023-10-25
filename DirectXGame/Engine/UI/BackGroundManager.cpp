@@ -131,12 +131,16 @@ void BackGroundManager::DeleteList()
 
 void BackGroundManager::CreateCloud()
 {
-	int maxAddCount = 1;
+	int maxAddCount = 4;
 	if (static_cast<int>(clouds_.size()) < maxAddCount) {
-		float randomY = float(rand() % 21 - 10);
-		AddBackGroundCloud(startPosition_, startScale_,{-0.2f,0,0});
+		float randomY = float(rand() % 31 - 15);
+		//AddBackGroundCloud(startPosition_, startScale_,{-0.2f,0,0});
 		Vector3 secondPosition = { startPosition_.x + 25.0f,randomY,startPosition_.z };
 		AddBackGroundCloud(secondPosition, startScale_,{ -0.25f,0,0 });
+		randomY = float(rand() % 21 - 10);
+		secondPosition = { startPosition_.x + float(rand()% 30 + 1),randomY,startPosition_.z};
+		AddBackGroundCloud(secondPosition, startScale_, { -0.3f,0,0 });
+
 	}
 
 }
