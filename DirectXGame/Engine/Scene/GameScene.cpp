@@ -247,7 +247,7 @@ void GameScene::Update()
 	}
 
 	//UI更新
-	methodOfOperationUI_->Update();
+	methodOfOperationUI_->Update(stageNum == 0);
 	stageNumberUI_->Update();
 	captureEnemyUI_->Update();
 
@@ -336,6 +336,8 @@ void GameScene::Setting(Scene preScene)
 	baseCamera_->OpeningAnimationInitialize();
 	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
 	command_->SetAcceptingInput(false);
+
+	methodOfOperationUI_->Setting();
 
 }
 

@@ -18,9 +18,11 @@ public: // メンバ関数
 	void Initialize(std::vector<uint32_t> moveTextureHandles, uint32_t vibrationTextureHandle,
 		uint32_t resetTextureHandle, uint32_t stageSelectTextureHandle);
 
-	void Update();
+	void Update(bool initStage);
 
 	void Draw();
+
+	void Setting();
 
 private: //メンバ関数
 
@@ -77,9 +79,15 @@ private: // メンバ変数
 	// サイズ
 	Vector2 stageSelectSize_;
 
-
 	//入力
 	Input* input_ = nullptr;
+
+	// チカチカ
+	uint32_t vibrationFlickeringFrame_ = 10;
+	uint32_t vibrationFlickeringCount_ = 0;
+
+	bool vibrationTextureHandleBlack_ = false;
+	bool isVibration_ = false;
 
 };
 

@@ -78,6 +78,8 @@ void MethodOfOperationUI::Initialize(std::vector<uint32_t> moveTextureHandles, u
 	// 入力
 	input_ = Input::GetInstance();
 
+	Setting();
+
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -100,13 +102,16 @@ void MethodOfOperationUI::Initialize(std::vector<uint32_t> moveTextureHandles, u
 	globalVariables->AddItem(groupName, "stageSelectPosition", stageSelectPosition_);
 	globalVariables->AddItem(groupName, "stageSelectSize", stageSelectSize_);
 
+	globalVariables->AddItem(groupName, "vibrationFlickeringFrame", static_cast<int>(vibrationFlickeringFrame_));
+
+
 	ApplyGlobalVariables();
 
 #pragma endregion
 
 }
 
-void MethodOfOperationUI::Update()
+void MethodOfOperationUI::Update(bool initStage)
 {
 
 #ifdef _DEBUG
@@ -180,10 +185,31 @@ void MethodOfOperationUI::Update()
 	Vector2 vibrationTexBase = { 160.0f, 0.0f };
 	if (input_->PressKey(DIK_SPACE)) {
 		vibrationSprite_->SetSpriteRect(vibrationTexBase, vibrationSize_);
+		isVibration_ = true;
 	}
 	else {
 		vibrationSprite_->SetSpriteRect(zero, vibrationSize_);
 	}
+	if (initStage && !isVibration_) {
+		vibrationFlickeringCount_++;
+		if (vibrationFlickeringCount_ == vibrationFlickeringFrame_) {
+			vibrationFlickeringCount_ = 0;
+			if (vibrationTextureHandleBlack_) {
+				vibrationTextureHandleBlack_ = false;
+			}
+			else {
+				vibrationTextureHandleBlack_ = true;
+			}
+		}
+
+		if (vibrationTextureHandleBlack_) {
+			vibrationSprite_->SetSpriteRect(zero, vibrationSize_);
+		}
+		else {
+			vibrationSprite_->SetSpriteRect(vibrationTexBase, vibrationSize_);
+		}
+	}
+	vibrationSprite_->Update();
 
 	// リセット
 	Vector2 resetTexBase = { 144.0f, 0.0f };
@@ -193,6 +219,7 @@ void MethodOfOperationUI::Update()
 	else {
 		resetSprite_->SetSpriteRect(zero, resetSize_);
 	}
+	resetSprite_->Update();
 
 	// ステージセレクト
 	Vector2 stageSelectTexBase = { 224.0f, 0.0f };
@@ -202,6 +229,7 @@ void MethodOfOperationUI::Update()
 	else {
 		stageSelectSprite_->SetSpriteRect(zero, stageSelectSize_);
 	}
+	stageSelectSprite_->Update();
 
 }
 
@@ -214,6 +242,14 @@ void MethodOfOperationUI::Draw()
 	vibrationSprite_->Draw();
 	resetSprite_->Draw();
 	stageSelectSprite_->Draw();
+
+}
+
+void MethodOfOperationUI::Setting()
+{
+
+	vibrationTextureHandleBlack_ = false;
+	isVibration_ = false;
 
 }
 
@@ -236,5 +272,7 @@ void MethodOfOperationUI::ApplyGlobalVariables()
 
 	stageSelectPosition_ = globalVariables->GetVector2Value(groupName, "stageSelectPosition");
 	stageSelectSize_ = globalVariables->GetVector2Value(groupName, "stageSelectSize");
+
+	vibrationFlickeringFrame_ = globalVariables->GetIntValue(groupName, "vibrationFlickeringFrame");
 
 }
