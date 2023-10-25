@@ -113,6 +113,13 @@ public: // アクセッサ
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetWorldTransformPosition() { return Vector3(worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1], worldTransform_.matWorld_.m[3][2]); }
+
+	/// <summary>
+	/// 表示するか
+	/// </summary>
+	/// <param name="isDraw"></param>
+	void SetIsDraw(bool isDraw) { isDraw_ = isDraw; }
+
 private: // メンバ変数
 
 	//ワールドトランスフォーム
@@ -123,6 +130,9 @@ private: // メンバ変数
 
 	// 現在のマス
 	Vector2 position_;
+
+	// 表示するか
+	bool isDraw_;
 
 	// 行動アニメーションをした
 	bool isActionAnimation_;

@@ -74,7 +74,9 @@ void Player::Update(const Vector2& position)
 void Player::Draw(const ViewProjection& viewProjection)
 {
 
-	model_->Draw(worldTransform_, viewProjection);
+	if (isDraw_) {
+		model_->Draw(worldTransform_, viewProjection);
+	}
 
 }
 
@@ -89,6 +91,8 @@ void Player::Setting(const Vector2& position)
 	worldTransform_.UpdateMatrix();
 
 	actionNumber_ = ActionNumber::kNone;
+
+	isDraw_ = true;
 
 }
 

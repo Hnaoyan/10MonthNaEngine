@@ -240,6 +240,7 @@ void GameScene::Update()
 		enemiesManager_->GameOverAnimationInitialize();
 		animationManager_->SetGameOverAnimation(std::bind(&EnemiesManager::GameOverAnimationUpdate,enemiesManager_.get()));
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+		player_->SetIsDraw(false);
 		// ゲームオーバーのSE
 		audio_->PlayWave(deathSEHandle_, false, SEVolume_);	
 		WhiteOutSetting();
