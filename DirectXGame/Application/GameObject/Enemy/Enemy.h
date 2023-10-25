@@ -162,6 +162,16 @@ private: // メンバ変数
 	// サウンド再生したか
 	bool wakeupSound_ = false;
 
+	// プカプカ浮く
+	// 基準位置
+	float pukapukaPositionZ_;
+	// 追加位置
+	float pukapukaPositionAddZ_;
+	// t
+	float pukapukaT_;
+	// 速度
+	float pukapukaSpeed_;
+
 
 };
 
