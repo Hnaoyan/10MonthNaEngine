@@ -506,6 +506,9 @@ void GameScene::Reset()
 	enemiesManager_->ActionAnimationInitialize();
 	goal_->Update();
 
+	// UI
+	methodOfOperationUI_->Setting();
+
 }
 
 void GameScene::SetWaitingAnimation()
