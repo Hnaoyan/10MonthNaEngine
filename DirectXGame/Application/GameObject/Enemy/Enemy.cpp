@@ -234,6 +234,7 @@ void Enemy::WaitingAnimationUpdate()
 		worldTransform_.translation_ = Vector3(position_.x * MapSystem::kSquareSize_.x,
 			position_.y * MapSystem::kSquareSize_.y,
 			 worldTransform_.translation_.z);
+		worldTransform_.rotation_.z = rotate_;
 	}
 
 	surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
