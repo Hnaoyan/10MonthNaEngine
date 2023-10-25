@@ -203,6 +203,7 @@ void Enemy::WaitingAnimationUpdate()
 		}
 	}
 
+	// ビックリ
 	if (animationT_ == 0.0f || animationT_ >= 1.0f) {
 		if (surprisedT_ < 1.0f && awake_) {
 			// アニメーションする
@@ -224,8 +225,15 @@ void Enemy::WaitingAnimationUpdate()
 		}
 	}
 	
+	// 回転
 	if (surprisedT_ > 1.0f / 2.0f && awake_ && !captured_) {
 		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
+	}
+
+	if (captured_ && animationT_ >= 1.0f) {
+		worldTransform_.translation_ = Vector3(position_.x * MapSystem::kSquareSize_.x,
+			position_.y * MapSystem::kSquareSize_.y,
+			 worldTransform_.translation_.z);
 	}
 
 	surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
