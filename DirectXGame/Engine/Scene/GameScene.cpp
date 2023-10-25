@@ -272,8 +272,6 @@ void GameScene::Draw() {
 	/// </summary>
 
 
-	//uiManager_->Draw();
-
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア

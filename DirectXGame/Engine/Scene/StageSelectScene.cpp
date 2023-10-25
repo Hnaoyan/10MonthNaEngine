@@ -58,7 +58,7 @@ void StageSelectScene::Update()
 	}
 	else {
 		// 入力受付
-		if (input_->PressKey(DIK_D) || input_->PressKey(DIK_RIGHT) && !transitionManager_->GetNowTransition()) {
+		if ((input_->PressKey(DIK_D) || input_->PressKey(DIK_RIGHT)) && !transitionManager_->GetNowTransition()) {
 			// SE
 			audio_->PlayWave(slideSEHandle_, false, SEVolume_);
 			isMoveRight_ = true;
@@ -69,7 +69,7 @@ void StageSelectScene::Update()
 			}
 			stageSelectUI_->SetStageNum(stageNum);
 		}
-		else if (input_->PressKey(DIK_A) || input_->PressKey(DIK_LEFT) && !transitionManager_->GetNowTransition()) {
+		else if ((input_->PressKey(DIK_A) || input_->PressKey(DIK_LEFT)) && !transitionManager_->GetNowTransition()) {
 			// SE
 			audio_->PlayWave(slideSEHandle_, false, SEVolume_);
 			isMoveLeft_ = true;

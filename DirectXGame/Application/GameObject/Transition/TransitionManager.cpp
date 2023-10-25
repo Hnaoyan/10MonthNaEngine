@@ -123,7 +123,7 @@ void TransitionManager::TransitionUpdate()
 			objects_.clear();
 		}
 		else {
-			float addTimer = 0.008f;
+			float addTimer = 1.0f / 135.0f;
 			transitionTimer_ += addTimer;
 		}
 		if (transitionTimer_ >= 0.75f && transitionTimer_ <= 0.76f) {
@@ -136,10 +136,6 @@ void TransitionManager::TransitionUpdate()
 	for (TransitionObject* object : objects_) {
 		object->Update(transitionTimer_);
 	}
-
-	ImGui::Begin("time");
-	ImGui::DragFloat("timer", &transitionTimer_, 0, -1.0f, 1.0f);
-	ImGui::End();
 
 }
 

@@ -323,9 +323,12 @@ private: // ポインタ
 
 	uint32_t walkSEHandle_;
 
+	// 捕まえた時のSE
 	uint32_t enemyGetSEHandle_;
+	float enemyGetSEVolume_;
 
 	uint32_t enemyWakeUpSEHandle_;
+	float enemyWakeUpSEVolume_;
 
 private: //メンバ変数(データ)
 

@@ -28,10 +28,17 @@ MapSystem::MapSystem()
 	audio_ = Audio::GetInstance();
 	// 入れ込み
 	this->dontMoveSEHandle_ = audio_->LoadWave("SE/DontMove.wav");
+
 	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
+
 	this->enemyGetSEHandle_ = audio_->LoadWave("SE/enemyGet.wav");
+	enemyGetSEVolume_ = 0.5f;
+
 	this->enemyWakeUpSEHandle_ = audio_->LoadWave("SE/enemyWakeUp.wav");
+	enemyWakeUpSEVolume_ = 0.3f;
+
 	this->jumpSEHandle_ = audio_->LoadWave("SE/jump.wav");
+
 	this->walkSEHandle_ = audio_->LoadWave("SE/walk.wav");
 }
 
@@ -361,7 +368,7 @@ void MapSystem::EnemyMove()
 				usedCage_.at(k) = true;
 
 				// 捕まえた時の音
-				audio_->PlayWave(enemyGetSEHandle_, false, SEVolume_);
+				audio_->PlayWave(enemyGetSEHandle_, false, enemyGetSEVolume_);
 
 				// アニメーション
 				Vector2 cageWorldPosition = { cagePosition.x, cagePosition.y };
@@ -504,7 +511,7 @@ void MapSystem::MakeSound()
 			
 			if (x + y < 3) {
 				// 起きた時のSE
-				audio_->PlayWave(enemyWakeUpSEHandle_, false, SEVolume_);
+				audio_->PlayWave(enemyWakeUpSEHandle_, false, enemyWakeUpSEVolume_);
 				enemyAwake_.at(i) = true;
 			}
 
