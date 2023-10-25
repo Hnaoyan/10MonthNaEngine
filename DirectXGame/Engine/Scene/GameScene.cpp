@@ -173,10 +173,10 @@ void GameScene::Update()
 	effectManager_->Update();
 	particleManager_->Update();
 
-	if (Input::GetInstance()->TriggerKey(DIK_V)) {
-		//particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
-		WhiteOutSetting();
-	}
+	//if (Input::GetInstance()->TriggerKey(DIK_V)) {
+	//	//particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+	//	particleManager_->ExplosionSetting(player_->GetWorldTransformPosition());
+	//}
 
 	if (isWhiteOut_) {
 		WhiteOutUpdate();
@@ -557,11 +557,6 @@ void GameScene::WhiteOutUpdate()
 		}
 		whiteOutT_ += addValue_T;
 	}
-
-	ImGui::Begin("white");
-	ImGui::Text("t : %f", whiteOutT_);
-	ImGui::Text("value : %f", alphaValue_);
-	ImGui::End();
 
 	whiteSprite_->SetColor({ 1,1,1,alphaValue_ });
 

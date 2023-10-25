@@ -80,10 +80,12 @@ private: // パターンの更新
 	/// <param name="scale"></param>
 	void GoalEffectUpdate();
 
+public:
+
 	/// <summary>
 	/// 爆発エフェクトの初期化
 	/// </summary>
-	void ExplosionSetting();
+	void ExplosionSetting(const Vector3& position);
 
 public:
 	/// <summary>
@@ -167,6 +169,8 @@ private:
 	std::unique_ptr<Model> deadEffectModel_;
 
 	ViewProjection* view_ = nullptr;
+
+	int patternCount = 0;
 
 };
 

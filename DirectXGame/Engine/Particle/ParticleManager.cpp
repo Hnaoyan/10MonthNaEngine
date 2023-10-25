@@ -119,44 +119,87 @@ void ParticleManager::WaveUpdate()
 	}
 }
 
-void ParticleManager::ExplosionSetting()
+void ParticleManager::ExplosionSetting(const Vector3& position)
 {
+	Vector3 randomVector = { (float(rand() % 21 - 10), float(rand() % 21 - 10), float(rand() % 21 - 10)) };
+	randomVector = MathCalc::Normalize(randomVector);
+	for (int i = 0; i < 12; i++) {
+		AddExplosion(position, randomVector);
+	}
 }
-
 void ParticleManager::ExplosionUpdate(const Vector3& position)
 {
-	// 右
-	AddExplosion(position, { 1,0,0 });
-	AddExplosion(position, { 1,0,1 });
-	AddExplosion(position, { 1,0,-1 });
-	// 右上
-	AddExplosion(position, { 1,1,0 });
-	AddExplosion(position, { 1,1,1 });
-	AddExplosion(position, { 1,1,-1 });
-	// 右下
-	AddExplosion(position, { 1,-1,0 });
-	AddExplosion(position, { 1,-1,1 });
-	AddExplosion(position, { 1,-1,-1 });
-	// 左
-	AddExplosion(position, { -1,0,0 });
-	AddExplosion(position, { -1,0,1 });
-	AddExplosion(position, { -1,0,-1 });
-	// 左上
-	AddExplosion(position, { -1,1,0 });
-	AddExplosion(position, { -1,1,1 });
-	AddExplosion(position, { -1,1,-1 });
-	// 左下
-	AddExplosion(position, { -1,-1,0 });
-	AddExplosion(position, { -1,-1,1 });
-	AddExplosion(position, { -1,-1,-1 });
-	// 上
-	AddExplosion(position, { 0,1,0 });
-	AddExplosion(position, { 0,1,1 });
-	AddExplosion(position, { 0,1,-1 });
-	// 下
-	AddExplosion(position, { 0,-1,0 });
-	AddExplosion(position, { 0,-1,1 });
-	AddExplosion(position, { 0,-1,-1 });
+	patternCount++;
+	if (patternCount % 2 == 1) {
+		// 右
+		AddExplosion(position, { 1,0,0 });
+		AddExplosion(position, { 1,0,0.5f });
+		AddExplosion(position, { 1,0,-1 });
+		// 右上
+		AddExplosion(position, { 1,1,0 });
+		AddExplosion(position, { 1,1,0.5f });
+		AddExplosion(position, { 1,1,-1 });
+		// 右下
+		AddExplosion(position, { 1,-1,0 });
+		AddExplosion(position, { 1,-1,0.5f });
+		AddExplosion(position, { 1,-1,-1 });
+		// 左
+		AddExplosion(position, { -1,0,0 });
+		AddExplosion(position, { -1,0,0.5f });
+		AddExplosion(position, { -1,0,-1 });
+		// 左上
+		AddExplosion(position, { -1,1,0 });
+		AddExplosion(position, { -1,1,0.5f });
+		AddExplosion(position, { -1,1,-1 });
+		// 左下
+		AddExplosion(position, { -1,-1,0 });
+		AddExplosion(position, { -1,-1,0.5f });
+		AddExplosion(position, { -1,-1,-1 });
+		// 上
+		AddExplosion(position, { 0,1,0 });
+		AddExplosion(position, { 0,1,0.5f });
+		AddExplosion(position, { 0,1,-1 });
+		// 下
+		AddExplosion(position, { 0,-1,0 });
+		AddExplosion(position, { 0,-1,0.5f });
+		AddExplosion(position, { 0,-1,-1 });
+	}
+	else {
+		// 右上
+		AddExplosion(position, { 1.0f,0.5f,-1.0f });
+		AddExplosion(position, { 1.0f,0.5f,-0.5f });
+		AddExplosion(position, { 1.0f,0.5f,0.0f });
+		// 右下
+		AddExplosion(position, { 1.0f,-0.5f,-1.0f });
+		AddExplosion(position, { 1.0f,-0.5f,-0.5f });
+		AddExplosion(position, { 1.0f,-0.5f,0.0f });
+		// 左上
+		AddExplosion(position, { -1.0f,0.5f,-1.0f });
+		AddExplosion(position, { -1.0f,0.5f,-0.5f });
+		AddExplosion(position, { -1.0f,0.5f,-0.0f });
+		// 左下
+		AddExplosion(position, { -1.0f,-0.5f,-1.0f });
+		AddExplosion(position, { -1.0f,-0.5f,-0.5f });
+		AddExplosion(position, { -1.0f,-0.5f,-0.0f });
+
+
+		// 右上
+		AddExplosion(position, { 0.5f,1.0f,-1.0f });
+		AddExplosion(position, { 0.5f,1.0f,-0.5f });
+		AddExplosion(position, { 0.5f,1.0f,0.0f });
+		// 右下
+		AddExplosion(position, { 0.5f,-1.0f,-1.0f });
+		AddExplosion(position, { 0.5f,-1.0f,-0.5f });
+		AddExplosion(position, { 0.5f,-1.0f,0.0f });
+		// 左上
+		AddExplosion(position, { -0.5f,1.0f,-1.0f });
+		AddExplosion(position, { -0.5f,1.0f,-0.5f });
+		AddExplosion(position, { -0.5f,1.0f,-0.0f });
+		// 左下
+		AddExplosion(position, { -0.5f,-1.0f,-1.0f });
+		AddExplosion(position, { -0.5f,-1.0f,-0.5f });
+		AddExplosion(position, { -0.5f,-1.0f,-0.0f });
+	}
 }
 
 void ParticleManager::GoalEffectSetting(const Vector3& pos)
@@ -222,7 +265,9 @@ void ParticleManager::AddExplosion(const Vector3& pos, const Vector3& velo)
 	ParticleExplosion* newParticle = new ParticleExplosion();
 	newParticle->Initialize(deadEffectModel_.get(), texture_);
 	newParticle->SetPosition(pos);
-	newParticle->SetVelocity(velo);
+	Vector3 initVelocity = velo;
+	initVelocity.z -= 2.0f;
+	newParticle->SetVelocity(initVelocity);
 	newParticle->SetRotate(Vector3(1.65f, 0.0f, 0.0f));
 	Vector3 scale = { 1.0f,1.0f,1.0f };
 	scale = VectorLib::Scaler(scale, 0.75f);
