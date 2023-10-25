@@ -209,7 +209,7 @@ void Enemy::WaitingAnimationUpdate()
 		}
 	}
 	
-	if (surprisedT_ >= 1.0f && awake_) {
+	if (surprisedT_ > 1.0f / 2.0f && awake_) {
 		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
 	}
 
