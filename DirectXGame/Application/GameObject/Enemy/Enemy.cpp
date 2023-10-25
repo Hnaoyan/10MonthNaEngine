@@ -250,7 +250,7 @@ void Enemy::WaitingAnimationUpdate()
 	if (captured_ && animationT_ >= 1.0f) {
 		worldTransform_.translation_ = Vector3(position_.x * MapSystem::kSquareSize_.x,
 			position_.y * MapSystem::kSquareSize_.y,
-			 worldTransform_.translation_.z);
+			pukapukaPositionZ_);
 		worldTransform_.rotation_.z = rotate_;
 	}
 
