@@ -234,7 +234,7 @@ void GameScene::Update()
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
-		animationManager_->SetGameOverAnimationTime(45);
+		animationManager_->SetGameOverAnimationTime(60);
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
 		// ゲームオーバーのSE
 		audio_->PlayWave(deathSEHandle_, false, SEVolume_);	
@@ -522,7 +522,7 @@ void GameScene::ModelSetting()
 
 void GameScene::WhiteOutUpdate()
 {
-	float frameValue = 80.0f;
+	float frameValue = 120.0f;
 	float animationHalf = (frameValue / 2.0f) / frameValue;
 	if (whiteOutT_ >= 1.0f) {
 		isWhiteOut_ = false;
@@ -532,7 +532,7 @@ void GameScene::WhiteOutUpdate()
 		// tの値の増加値
 		float addValue_T = 1.0f / frameValue;
 		// alpha値の増加値
-		float addAlphaValue = 0.035f;
+		float addAlphaValue = 0.02f;
 		// 一定値以上になった場合マイナス
 		if (whiteOutT_ >= animationHalf) {
 			alphaValue_ -= (addAlphaValue * 1.75f);
