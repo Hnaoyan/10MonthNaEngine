@@ -59,7 +59,9 @@ void EnemiesManager::Update()
 
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
-		enemy->SetRotate(direct_);
+		if (!mapSystem_->GetCapturedEnemy().at(i)) {
+			enemy->SetRotate(direct_);
+		}
 		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i), mapSystem_->GetCapturedEnemy().at(i));
 		// エネミー危険範囲
 		if (!mapSystem_->GetEnemyAwake().at(i)) {
