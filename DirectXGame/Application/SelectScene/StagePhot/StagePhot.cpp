@@ -69,6 +69,8 @@ void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax
 
 #pragma endregion
 
+	centerPositions_ = positions_[2];
+
 	Setting(0);
 
 }
@@ -87,8 +89,8 @@ void StagePhot::Update()
 	}
 	waveVelocity_.y = amplitude_ * std::cosf(1.0f * float(std::numbers::pi) * fre_ * waveAnimation_t_);
 
-	Vector2 position = VectorLib::Add(positions_[2], waveVelocity_);
-	sprite_[2]->SetPosition(position);
+	positions_[2] = VectorLib::Add(centerPositions_, waveVelocity_);
+	sprite_[2]->SetPosition(positions_[2]);
 	sprite_[2]->Update();
 }
 
