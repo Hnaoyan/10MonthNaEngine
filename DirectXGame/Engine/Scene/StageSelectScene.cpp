@@ -44,7 +44,8 @@ void StageSelectScene::Initialize()
 	stagePhot_->Initialize(stagePhotTextureHandles_, stageMax);
 	// UI
 	stageSelectUI_ = std::make_unique<StageSelectUI>();
-	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_, selectUITextureHandle_, clearTextureHandle_);
+	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_, selectUITextureHandle_, clearTextureHandle_,
+		stagePhot_->GetCenterPhot());
 
 }
 

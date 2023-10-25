@@ -4,7 +4,7 @@
 #include <GlobalVariables.h>
 
 void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
-	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle, uint32_t clearTextureHandle)
+	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle, uint32_t clearTextureHandle, Vector2* clearParent)
 {
 
 	// スプライト
@@ -70,8 +70,10 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 	clearSize_ = { 256.0f,128.0f };
 	// 回転
 	clearRotate_ = 0.0f;
+	// 親
+	clearParent_ = clearParent;
 	// スプライト
-	clearSprite_.reset(Sprite::Create(clearTextureHandle_, clearPostion_, color, anchorPoint, false, false));
+	clearSprite_.reset(Sprite::Create(clearTextureHandle_, Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y }, color, anchorPoint, false, false));
 	clearSprite_->SetRotation(clearRotate_);
 	clearSprite_->SetSize(clearSize_);
 	clearSprite_->SetSpriteRect(Vector2{ 0.0f, 0.0f }, Vector2{ 256.0f,128.0f });
@@ -146,12 +148,13 @@ void StageSelectUI::Update()
 	stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
 	stageUiSprite_->Update();
 
-	clearSprite_->SetPosition(clearPostion_);
 	clearSprite_->SetRotation(clearRotate_);
 	clearSprite_->SetSize(clearSize_);
 	clearSprite_->Update();
 
 #endif // _DEBUG
+
+	clearSprite_->SetPosition(Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y });
 
 }
 
