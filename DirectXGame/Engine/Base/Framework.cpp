@@ -28,7 +28,7 @@ void Framework::Initialize()
 {
 	// WindowsApp
 	winApp = WinApp::GetInstance();
-	winApp->CreateGameWindow();
+	winApp->CreateGameWindow(L"2110_キャッチャード");
 	winApp->InitializeRandomizer();
 
 	// DirectX
