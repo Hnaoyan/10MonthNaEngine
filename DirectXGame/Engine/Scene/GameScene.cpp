@@ -448,7 +448,6 @@ void GameScene::GameOverAnimation()
 	animationManager_->GameOverUpdate();
 
 	if (!animationManager_->GetIsGameOverAnimation()) {
-		ImGui::Text("GAMEOVER");
 		mapSystem_->Restart();
 		Reset();
 	}

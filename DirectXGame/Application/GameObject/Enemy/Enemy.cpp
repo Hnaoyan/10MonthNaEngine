@@ -226,7 +226,24 @@ void Enemy::GameOverAnimationInitialize(const Vector2& playerPosition)
 
 	// ゲームオーバーアニメーション
 	gameOverPositionStart_ = worldTransform_.translation_;
-	gameOverPositionMiddle_ = { playerPosition.x ,playerPosition.y, worldTransform_.translation_.z, };
+	gameOverPositionMiddle_ = { playerPosition.x , playerPosition.y, worldTransform_.translation_.z, };
+	
+	Vector2 distance = { playerPosition.x - worldTransform_.translation_.x, playerPosition.y - worldTransform_.translation_.y };
+
+	if (distance.x > 0.0f) {
+		worldTransform_.rotation_.z = 1.57f;
+	}
+	else if (distance.x < 0.0f) {
+		worldTransform_.rotation_.z = -1.57f;
+	}
+	else if (distance.y > 0.0f) {
+		worldTransform_.rotation_.z = 3.14f;
+	}
+	else if (distance.y < 0.0f) {
+		worldTransform_.rotation_.z = 0.0f;
+	}
+
+	worldTransform_.UpdateMatrix();
 
 	gameOverT_ = 0.0f;
 
