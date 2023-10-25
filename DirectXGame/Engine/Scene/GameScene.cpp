@@ -234,7 +234,9 @@ void GameScene::Update()
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
-		animationManager_->SetGameOverAnimationTime(10);
+		animationManager_->SetGameOverAnimationTime(40);
+		enemiesManager_->GameOverAnimationInitialize();
+		animationManager_->SetGameOverAnimation(std::bind(&EnemiesManager::GameOverAnimationUpdate,enemiesManager_.get()));
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
 		// SE
 		audio_->PlayWave(deathSEHandle_, false, SEVolume_);

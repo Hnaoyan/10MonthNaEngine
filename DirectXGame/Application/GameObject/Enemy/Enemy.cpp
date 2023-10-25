@@ -101,6 +101,8 @@ void Enemy::Setting(const Vector2& position)
 
 	awake_ = false;
 
+	isGameOverAnimation_ = false;
+
 }
 
 void Enemy::ActionAnimationInitialize()
@@ -215,6 +217,47 @@ void Enemy::WaitingAnimationUpdate()
 	}
 
 	shadowWorldTransform_.UpdateMatrix();
+
+}
+
+void Enemy::GameOverAnimationInitialize(const Vector2& playerPosition)
+{
+
+
+	// ゲームオーバーアニメーション
+	gameOverPositionStart_ = worldTransform_.translation_;
+	gameOverPositionMiddle_ = { playerPosition.x ,playerPosition.y, worldTransform_.translation_.z, };
+
+	gameOverT_ = 0.0f;
+
+	gameOverFrame_ = 40;
+
+	isGameOverAnimation_ = true;
+
+}
+
+void Enemy::GameOverAnimationUpdate()
+{
+
+	if (isGameOverAnimation_) {
+		gameOverT_ += 1.0f / static_cast<float>(gameOverFrame_);
+		if (gameOverT_ > 1.0f) {
+			gameOverT_ = 1.0f;
+			isGameOverAnimation_ = false;
+		}
+
+		if (gameOverT_ < 1.0f / 5.0f) {
+			float t = gameOverT_ * 5.0f;
+			worldTransform_.translation_ = MathCalc::EaseInCubicF(t, gameOverPositionStart_, gameOverPositionMiddle_);
+		}
+		else {
+			float t = (gameOverT_ - 1.0f / 5.0f) * 5.0f / 4.0f;
+			worldTransform_.translation_ = MathCalc::EaseOutCubicF(t, gameOverPositionMiddle_, gameOverPositionStart_);
+		}
+
+		worldTransform_.UpdateMatrix();
+		shadowWorldTransform_.UpdateMatrix();
+	}
 
 }
 

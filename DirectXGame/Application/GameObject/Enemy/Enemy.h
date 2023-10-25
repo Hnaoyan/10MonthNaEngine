@@ -44,6 +44,11 @@ public: // メンバ関数
 
 	void WaitingAnimationUpdate();
 
+	// ゲームオーバーアニメーション
+	void GameOverAnimationInitialize(const Vector2& playerPosition);
+
+	void GameOverAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -133,6 +138,13 @@ private: // メンバ変数
 	float animationStartShadowAddZ_ = 2.4f;
 	// 最終座標
 	float animationShadowAddZ_;
+
+	// ゲームオーバーアニメーション
+	Vector3 gameOverPositionStart_;
+	Vector3 gameOverPositionMiddle_;
+	float gameOverT_;
+	uint32_t gameOverFrame_;
+	bool isGameOverAnimation_ = false;
 
 };
 

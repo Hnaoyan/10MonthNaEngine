@@ -260,6 +260,31 @@ void EnemiesManager::WaitingAnimationUpdate()
 
 }
 
+void EnemiesManager::GameOverAnimationInitialize()
+{
+
+	Vector2 distance = { 0.0f, 0.0f };
+	Vector2 playerPosition = { mapSystem_->GetPlayerPosition().x, mapSystem_->GetPlayerPosition().y };
+	for (Enemy* enemy : enemies_) {
+		distance.x = enemy->GetPosition().x - playerPosition.x;
+		distance.y = enemy->GetPosition().y - playerPosition.y;
+		if (distance.x + distance.y <= 1.0f) {
+			Vector2 playerWorldPosition = { playerPosition.x * MapSystem::kSquareSize_.x, playerPosition.y * MapSystem::kSquareSize_.y };
+			enemy->GameOverAnimationInitialize(playerWorldPosition);
+		}
+	}
+
+}
+
+void EnemiesManager::GameOverAnimationUpdate()
+{
+
+	for (Enemy* enemy : enemies_) {
+		enemy->GameOverAnimationUpdate();
+	}
+
+}
+
 void EnemiesManager::EnemyDangerUpdate(int x, int y)
 {
 

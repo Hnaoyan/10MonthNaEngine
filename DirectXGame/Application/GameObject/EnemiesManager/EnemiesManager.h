@@ -97,6 +97,11 @@ public: // メンバ関数
 
 	void WaitingAnimationUpdate();
 
+	// ゲームオーバーアニメーション
+	void GameOverAnimationInitialize();
+
+	void GameOverAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
