@@ -159,5 +159,9 @@ private: // メンバ変数
 	uint32_t gameOverFrame_;
 	bool isGameOverAnimation_ = false;
 
+	// サウンド再生したか
+	bool wakeupSound_ = false;
+
+
 };
 

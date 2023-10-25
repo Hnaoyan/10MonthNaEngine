@@ -511,7 +511,7 @@ void MapSystem::MakeSound()
 			
 			if (x + y < 3) {
 				// 起きた時のSE
-				audio_->PlayWave(enemyWakeUpSEHandle_, false, enemyWakeUpSEVolume_);
+				//audio_->PlayWave(enemyWakeUpSEHandle_, false, enemyWakeUpSEVolume_);
 				enemyAwake_.at(i) = true;
 			}
 

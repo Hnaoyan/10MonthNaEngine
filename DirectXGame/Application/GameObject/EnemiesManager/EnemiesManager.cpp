@@ -270,13 +270,15 @@ void EnemiesManager::GameOverAnimationInitialize()
 
 	Vector2 distance = { 0.0f, 0.0f };
 	Vector2 playerPosition = { mapSystem_->GetPlayerPosition().x, mapSystem_->GetPlayerPosition().y };
+	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
 		distance.x = enemy->GetPosition().x - playerPosition.x;
 		distance.y = enemy->GetPosition().y - playerPosition.y;
-		if (std::fabsf(distance.x) + std::fabsf(distance.y) <= 1.0f) {
+		if (std::fabsf(distance.x) + std::fabsf(distance.y) <= 1.0f && !mapSystem_->GetCapturedEnemy().at(i)) {
 			Vector2 playerWorldPosition = { playerPosition.x * MapSystem::kSquareSize_.x, playerPosition.y * MapSystem::kSquareSize_.y };
 			enemy->GameOverAnimationInitialize(playerWorldPosition);
 		}
+		i++;
 	}
 
 }

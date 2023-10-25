@@ -180,6 +180,9 @@ void Enemy::WaitingAnimationInitialize()
 	// 影最終座標
 	animationShadowAddZ_ = animationStartShadowAddZ_ + 12.5f;
 
+	// サウンド再生したか
+	wakeupSound_ = false;
+
 }
 
 void Enemy::WaitingAnimationUpdate()
@@ -214,6 +217,12 @@ void Enemy::WaitingAnimationUpdate()
 			}
 
 			if (surprisedT_ > 1.0f / 2.0f && surprisedT_ < 3.0f / 4.0f) {
+				// サウンド再生
+				if (!wakeupSound_) {
+					wakeupSound_ = true;
+					Audio::GetInstance()->PlayWave(7, false, 0.3f);
+				}
+
 				float t = (surprisedT_ - 1.0f / 2.0f) * 4.0f;
 				worldTransform_.translation_ = MathCalc::EaseInCubicF(t, surprisedStartPosition_, surprisedEndPosition_);
 				worldTransform_.UpdateMatrix();
