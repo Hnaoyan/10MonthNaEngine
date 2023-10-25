@@ -13,9 +13,6 @@ void CloudObject::Initialize(Model* model)
 
 void CloudObject::Update()
 {
-	ImGui::Begin("wolrd");
-	ImGui::DragFloat3("pos", &worldTransform_.translation_.x, 0.1f, -100.0f, 100.0f);
-	ImGui::End();
 	// 移動処理
 	worldTransform_.translation_ = VectorLib::Add(worldTransform_.translation_, velocity_);
 	// 更新

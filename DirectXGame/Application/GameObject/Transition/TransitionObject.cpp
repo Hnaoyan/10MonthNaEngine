@@ -29,5 +29,5 @@ void TransitionObject::InstanceSetting(const Vector3& pos, const Vector3& scale)
 	SetPosition(pos);
 	SetPrevPos(pos);
 	SetScale(scale);
-	end_ = { -70.0f,pos.y,pos.z };
+	end_ = { -60.0f,pos.y,pos.z };
 }

@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "Sprite.h"
 #include "Input.h"
+#include "VectorLib.h"
 
 #include <algorithm>
 
@@ -141,59 +142,59 @@ void TransitionManager::TransitionUpdate()
 
 void TransitionManager::CloudTransition()
 {
-	float midPosition_Y = -5.0f;
+	float midPosition_Y = -6.0f;
 	float distance = 0;
 
 	Vector3 scale = {};
+	Vector3 intervalObjectScale = {};
 	//---1Wave---//
-	scale = { 5.0f,5.0f,5.0f };
-	distance = 6.0f;
-	AddCloud(Vector3(55.0f, midPosition_Y + distance, 0), scale);
+	scale = { 6.0f,6.0f,6.0f };
+	distance = 11.5f;
+	AddCloud(Vector3(55.0f, midPosition_Y + (distance), 0), scale);
+	AddCloud(Vector3(50.0f, midPosition_Y + (distance / 2), 0), scale);
 	AddCloud(Vector3(45.0f, midPosition_Y, 0), scale);
-	AddCloud(Vector3(55.0f, midPosition_Y - distance, 0), scale);
+	AddCloud(Vector3(50.0f, midPosition_Y - (distance / 2), 0), scale);
+	AddCloud(Vector3(55.0f, midPosition_Y - (distance), 0), scale);
 
 	//---2Wave---//
 	scale = { 6.5f,6.5f,6.5f };
-	distance = 8.0f;
-	AddCloud(Vector3(80.0f, midPosition_Y + distance, 1.0f), scale);
+	intervalObjectScale = VectorLib::Scaler(scale, 0.75f);
+	distance = 15.5f;
+	AddCloud(Vector3(75.0f, midPosition_Y + distance, 1.0f), scale);
+	AddCloud(Vector3(60.0f, midPosition_Y + (distance / 2), 1.0f), intervalObjectScale);
 	AddCloud(Vector3(65.0f, midPosition_Y, 0), scale);
-	AddCloud(Vector3(80.0f, midPosition_Y - distance, 0), scale);
+	AddCloud(Vector3(60.0f, midPosition_Y - (distance / 2), 0), intervalObjectScale);
+	AddCloud(Vector3(75.0f, midPosition_Y - distance, 0), scale);
 
 	//---3Wave---//
-	scale = { 7.0f,7.0f,7.0f };
-	distance = 9.0f;
+	scale = { 8.5f,8.5f,8.5f };
+	intervalObjectScale = VectorLib::Scaler(scale, 0.75f);
+	distance = 15.0f;
 	AddCloud(Vector3(95.0f, midPosition_Y + distance, 0), scale);
-	AddCloud(Vector3(80.0f, midPosition_Y, -1.5f), scale);
+	AddCloud(Vector3(80.0f, midPosition_Y + (distance / 2), 0), intervalObjectScale);
+	AddCloud(Vector3(85.0f, midPosition_Y, -1.5f), scale);
+	AddCloud(Vector3(80.0f, midPosition_Y - (distance / 2), 0), intervalObjectScale);
 	AddCloud(Vector3(95.0f, midPosition_Y - distance, 0), scale);
 
 	//---4Wave---//
-	scale = { 8.0f,8.0f,6.0f };
-	distance = 10.5f;
-	AddCloud(Vector3(115.0f, midPosition_Y + distance, 0.0f), scale);
-	//AddCloud(Vector3(145.0f, midPosition_Y + 6.5f, 0.0f), scale);
-	AddCloud(Vector3(120.0f, midPosition_Y, 0.0f), scale);
-	//AddCloud(Vector3(145.0f, midPosition_Y - 6.5f, 0.0f), scale);
-	AddCloud(Vector3(115.0f, midPosition_Y - distance, 0.0f), scale);
+	scale = { 6.0f,6.0f,6.0f };
+	intervalObjectScale = VectorLib::Scaler(scale, 0.75f);
+	distance = 15.5f;
+	AddCloud(Vector3(125.0f, midPosition_Y + distance, -0.0f), scale);
+	AddCloud(Vector3(110.0f, midPosition_Y + (distance / 2), -0.0f), intervalObjectScale);
+	AddCloud(Vector3(125.0f, midPosition_Y, 0.0f), scale);
+	AddCloud(Vector3(110.0f, midPosition_Y - (distance / 2), -0.0f), intervalObjectScale);
+	AddCloud(Vector3(125.0f, midPosition_Y - distance, -0.0f), scale);
 
 	//---5Wave---//
-	scale = { 7.5f,7.5f,6.0f };
-	distance = 8.0f;
-	AddCloud(Vector3(135.0f, midPosition_Y + distance, 2.0f), scale);
-	AddCloud(Vector3(130.0f, midPosition_Y, - 2.0f), scale);
-	AddCloud(Vector3(135.0f, midPosition_Y - distance, 2.0f), scale);
-
-	//---6Wave---//
-	distance = 6.0f;
-	AddCloud(Vector3(155.0f, midPosition_Y + distance, 2.0f), scale);
-	AddCloud(Vector3(155.0f, midPosition_Y - distance, -2.0f), scale);
-
-	//---7Wave---//
-	scale = { 8.0f,8.0f,6.5f };
-	distance = 5.0f;
-	AddCloud(Vector3(185.0f, midPosition_Y + distance, 0.0f), scale);
-	AddCloud(Vector3(195.0f, midPosition_Y, 0.0f), scale);
-	AddCloud(Vector3(185.0f, midPosition_Y - distance, 0.0f), scale);
-
+	scale = { 6.0f,6.0f,6.0f };
+	intervalObjectScale = VectorLib::Scaler(scale, 0.75f);
+	distance = 11.5f;
+	AddCloud(Vector3(155.0f, midPosition_Y + distance, 0.0f), scale);
+	AddCloud(Vector3(165.0f, midPosition_Y + (distance / 2), 0.0f), intervalObjectScale);
+	AddCloud(Vector3(175.0f, midPosition_Y, 0.0f), scale);
+	AddCloud(Vector3(165.0f, midPosition_Y - (distance / 2), 0.0f), intervalObjectScale);
+	AddCloud(Vector3(155.0f, midPosition_Y - distance, 0.0f), scale);
 
 }
 
