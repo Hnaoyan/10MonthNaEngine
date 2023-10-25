@@ -21,6 +21,7 @@ GameScene::GameScene()
 	skyDomeModel_.reset(Model::CreateFromObj("tenkyu", true));
 	enemyDagerModel_.reset(Model::CreateFromObj("danger", true));
 	surprisedModel_.reset(Model::CreateFromObj("Bikkuri", true));
+	shadowModel_.reset(Model::CreateFromObj("shadow", true));
 
 	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
 
@@ -92,7 +93,7 @@ void GameScene::Initialize() {
 	// エネミー
 	enemiesManager_ = make_unique<EnemiesManager>();
 	enemiesManager_->Iintialize(mapSystem_.get(),
-		enemyModel_.get(), sleepModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), surprisedModel_.get(),
+		enemyModel_.get(), sleepModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), surprisedModel_.get(), shadowModel_.get(),
 		mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());

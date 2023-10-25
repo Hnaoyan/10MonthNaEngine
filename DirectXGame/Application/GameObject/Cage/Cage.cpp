@@ -3,7 +3,8 @@
 #include "../Engine/Math/MathCalc.h"
 #include <GlobalVariables.h>
 
-void Cage::Initialize(Model* model, const Vector2& position)
+void Cage::Initialize(Model* model, Model* shadowModel,
+	const Vector2& position)
 {
 
 	// ワールドトランスフォーム
@@ -11,6 +12,11 @@ void Cage::Initialize(Model* model, const Vector2& position)
 
 	// モデル
 	model_ = model;
+
+	// 影
+	shadowWorldTransform_.Initialize();
+	// モデル
+	shadowModel_ = shadowModel;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -48,6 +54,7 @@ void Cage::Draw(const ViewProjection& viewProjection)
 {
 
 	model_->Draw(worldTransform_, viewProjection);
+	shadowModel_->Draw(shadowWorldTransform_, viewProjection);
 
 }
 
@@ -58,10 +65,17 @@ void Cage::Setting(const Vector2& position)
 	position_ = position;
 
 	worldTransform_.translation_ = { position.x * MapSystem::kSquareSize_.x, position.y * MapSystem::kSquareSize_.y, positionZ_ };
-	worldTransform_.rotation_ = { -1.5f,0.0f,0.0f };
-	worldTransform_.scale_ = { 7.5f,7.5f,7.5f };
+	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
+	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	model_->SetAlphaValue(0.85f);
 	worldTransform_.UpdateMatrix();
+
+
+	shadowAddZ_ = -positionZ_ - 5.1f;
+	shadowWorldTransform_.parent_ = &worldTransform_;
+	shadowWorldTransform_.translation_.z = shadowAddZ_;
+	shadowWorldTransform_.UpdateMatrix();
+	shadowModel_->SetAlphaValue(0.85f);
 
 }
 

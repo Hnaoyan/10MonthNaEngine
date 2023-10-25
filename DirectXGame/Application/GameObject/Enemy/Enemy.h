@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel);
+	void Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel);
 
 	/// <summary>
 	/// 更新
@@ -123,6 +123,16 @@ private: // メンバ変数
 	Vector3 surprisedStartPosition_;
 	Vector3 surprisedEndPosition_;
 
+	// 影
+	WorldTransform shadowWorldTransform_;
+	// モデル
+	Model* shadowModel_ = nullptr;
+
+	float shadowAddZ_;
+	// アニメーションの開始座標
+	float animationStartShadowAddZ_ = 2.4f;
+	// 最終座標
+	float animationShadowAddZ_;
 
 };
 

@@ -66,4 +66,9 @@ protected:
 
 	TransitionManager* transitionManager_;
 
+	/// <summary>
+	/// ステージをクリアしたか
+	/// </summary>
+	static bool stageClear[];
+
 };

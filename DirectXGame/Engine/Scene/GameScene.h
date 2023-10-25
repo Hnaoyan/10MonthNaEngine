@@ -172,6 +172,7 @@ private:	// メンバポインタ
 	std::unique_ptr<Model> cageModel_;
 	std::unique_ptr<Model> enemyDagerModel_;
 	std::unique_ptr<Model> surprisedModel_;
+	std::unique_ptr<Model> shadowModel_;
 
 	// ゴール
 	std::unique_ptr<Goal> goal_;
