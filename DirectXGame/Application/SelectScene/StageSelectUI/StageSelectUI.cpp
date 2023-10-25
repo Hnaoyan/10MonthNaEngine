@@ -127,6 +127,7 @@ void StageSelectUI::Update()
 #endif // _DEBUG
 
 	clearSprite_->SetPosition(Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y });
+	clearSprite_->Update();
 
 	// 決定ボタン
 	if (Input::GetInstance()->PressKey(DIK_SPACE)) {

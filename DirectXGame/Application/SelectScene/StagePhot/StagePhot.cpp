@@ -81,10 +81,13 @@ void StagePhot::Update()
 
 
 	waveAnimation_t_ += 0.01f;
+	if (waveAnimation_t_ >= 6.28f) {
+		waveAnimation_t_ -= 6.28f;
+	}
 	waveVelocity_.y = amplitude_ * std::cosf(1.0f * float(std::numbers::pi) * fre_ * waveAnimation_t_);
 
-	positions_[2] = VectorLib::Add(positions_[2], waveVelocity_);
-	sprite_[2]->SetPosition(positions_[2]);
+	Vector2 position = VectorLib::Add(positions_[2], waveVelocity_);
+	sprite_[2]->SetPosition(position);
 	sprite_[2]->Update();
 }
 
