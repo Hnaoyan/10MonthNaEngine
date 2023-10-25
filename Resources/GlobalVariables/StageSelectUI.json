@@ -1,5 +1,14 @@
 {
     "StageSelectUI": {
+        "clearPostion": [
+            309.6000061035156,
+            -168.1999969482422
+        ],
+        "clearRotate": 0.30000001192092896,
+        "clearSize": [
+            256.0,
+            128.0
+        ],
         "leftPostion": [
             178.0,
             360.0

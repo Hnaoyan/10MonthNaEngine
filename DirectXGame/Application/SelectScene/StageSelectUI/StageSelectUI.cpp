@@ -4,7 +4,7 @@
 #include <GlobalVariables.h>
 
 void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
-	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle)
+	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle, uint32_t clearTextureHandle, Vector2* clearParent)
 {
 
 	// スプライト
@@ -60,6 +60,26 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 	stageUiSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
 	stageUiSprite_->Update();
 
+	// クリア
+
+	// テクスチャハンドル
+	clearTextureHandle_ = clearTextureHandle;
+	// 位置
+	clearPostion_ = {100.0f,100.0f};
+	// サイズ
+	clearSize_ = { 256.0f,128.0f };
+	// 回転
+	clearRotate_ = 0.0f;
+	// 親
+	clearParent_ = clearParent;
+	// スプライト
+	clearSprite_.reset(Sprite::Create(clearTextureHandle_, Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y }, color, anchorPoint, false, false));
+	clearSprite_->SetRotation(clearRotate_);
+	clearSprite_->SetSize(clearSize_);
+	clearSprite_->SetSpriteRect(Vector2{ 0.0f, 0.0f }, Vector2{ 256.0f,128.0f });
+	clearSprite_->SetBlendMode(Sprite::BlendMode::kNormal);
+	clearSprite_->Update();
+
 	stageNum_ = 0;
 
 #pragma region 調整項目クラス
@@ -86,6 +106,10 @@ void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTexture
 
 	globalVariables->AddItem(groupName, "stageUiPostion", stageUiPostion_);
 	globalVariables->AddItem(groupName, "stageUiSize", stageUiSize_);
+
+	globalVariables->AddItem(groupName, "clearPostion", clearPostion_);
+	globalVariables->AddItem(groupName, "clearSize", clearSize_);
+	globalVariables->AddItem(groupName, "clearRotate", clearRotate_);
 
 	ApplyGlobalVariables();
 
@@ -119,24 +143,32 @@ void StageSelectUI::Update()
 	//stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, stageNumberSize_);
 	stageNumberSprite_->Update();
 
-
 	stageUiSprite_->SetPosition(stageUiPostion_);
 	stageUiSprite_->SetSize(stageUiSize_);
 	stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
 	stageUiSprite_->Update();
 
+	clearSprite_->SetRotation(clearRotate_);
+	clearSprite_->SetSize(clearSize_);
+	clearSprite_->Update();
+
 #endif // _DEBUG
+
+	clearSprite_->SetPosition(Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y });
 
 }
 
-void StageSelectUI::Draw(bool isMove)
+void StageSelectUI::Draw(bool notMove, bool isClear)
 {
 
-	if (isMove) {
+	if (notMove) {
 		leftSprite_->Draw();
 		rightSprite_->Draw();
 		stageNumberSprite_->Draw();
 		stageUiSprite_->Draw();
+		if (isClear) {
+			clearSprite_->Draw();
+		}
 	}
 	stageSelectSprite_->Draw();
 
@@ -178,5 +210,9 @@ void StageSelectUI::ApplyGlobalVariables()
 
 	stageUiPostion_ = globalVariables->GetVector2Value(groupName, "stageUiPostion");
 	stageUiSize_ = globalVariables->GetVector2Value(groupName, "stageUiSize");
+
+	clearPostion_ = globalVariables->GetVector2Value(groupName, "clearPostion");
+	clearSize_ = globalVariables->GetVector2Value(groupName, "clearSize");
+	clearRotate_ = globalVariables->GetFloatValue(groupName, "clearRotate");
 
 }

@@ -57,6 +57,7 @@ private: // メンバ変数 (ステージ写真)
 	uint32_t stageSelectTextureHandle_;
 	uint32_t stageNumberTextureHandle_;
 	uint32_t selectUITextureHandle_;
+	uint32_t clearTextureHandle_;
 
 	// 音源ハンドル
 

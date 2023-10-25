@@ -223,6 +223,9 @@ public: // アクセッサ
 	// マップ最大
 	Vector2 GetPositionMax() { return positionMax_; }
 
+	// 敵を捕まえた
+	std::vector<bool> GetCapturedEnemy() { return capturedEnemy_; }
+
 public: // ポインタアクセッサ
 
 	// エネミーズマネージャー

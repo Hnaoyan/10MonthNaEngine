@@ -20,6 +20,7 @@ void StageSelectScene::Initialize()
 	stageSelectTextureHandle_ = TextureManager::Load("Image/stageSelect.png");
 	stageNumberTextureHandle_ = TextureManager::Load("Image/stageNumber.png");
 	selectUITextureHandle_ = TextureManager::Load("stageUi/SelectUi.png");
+	clearTextureHandle_ = TextureManager::Load("Image/clear.png");
 
 	// 音関係
 	slideSEHandle_ = audio_->LoadWave("SE/slide.wav");
@@ -43,7 +44,8 @@ void StageSelectScene::Initialize()
 	stagePhot_->Initialize(stagePhotTextureHandles_, stageMax);
 	// UI
 	stageSelectUI_ = std::make_unique<StageSelectUI>();
-	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_, selectUITextureHandle_);
+	stageSelectUI_->Initialize(leftTextureHandle_, rightTextureHandle_, stageSelectTextureHandle_, stageNumberTextureHandle_, selectUITextureHandle_, clearTextureHandle_,
+		stagePhot_->GetCenterPhot());
 
 }
 
@@ -140,7 +142,7 @@ void StageSelectScene::Draw()
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	
-	stageSelectUI_->Draw(!isMoveLeft_ && !isMoveRight_);
+	stageSelectUI_->Draw(!isMoveLeft_ && !isMoveRight_, stageClear[stageNum]);
 	stagePhot_->Draw();
 
 	// スプライト描画後処理
@@ -153,7 +155,7 @@ void StageSelectScene::Draw()
 void StageSelectScene::Setting(Scene preScene)
 {
 
-	if (preScene == GAMESCENE) {
+	if (preScene != TITLE) {
 		stageSelectUI_->SetStageNum(stageNum);
 		stagePhot_->Setting(stageNum);
 	}

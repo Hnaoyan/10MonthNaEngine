@@ -50,6 +50,12 @@ public: // メンバ関数
 	/// </summary>
 	void TextureHandleChange();
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	Vector2* GetCenterPhot() { return &positions_[2]; }
+
 private: //メンバ関数
 
 	/// <summary>

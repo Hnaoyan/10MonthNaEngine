@@ -252,7 +252,7 @@ void GameScene::Update()
 	}
 
 	//UI更新
-	methodOfOperationUI_->Update();
+	methodOfOperationUI_->Update(stageNum == 0);
 	stageNumberUI_->Update();
 	captureEnemyUI_->Update();
 
@@ -340,6 +340,8 @@ void GameScene::Setting(Scene preScene)
 	animationManager_->SetOpeningAnimationTime(baseCamera_->GetOpeningFrame());
 	command_->SetAcceptingInput(false);
 
+	methodOfOperationUI_->Setting();
+
 }
 
 void GameScene::CameraUpdate()
@@ -425,6 +427,9 @@ void GameScene::GameClearAnimation()
 
 	// 行動アニメーションカウントがマックスならコマンド待ち
 	if (!animationManager_->GetIsGameClearAnimation()) {
+		// クリア判定に
+		stageClear[stageNum] = true;
+
 		// 最終ステージじゃない
 		if (stageNum != stageMax - 1) {
 			stageNum++;

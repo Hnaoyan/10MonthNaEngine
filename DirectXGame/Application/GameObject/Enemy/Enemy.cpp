@@ -63,11 +63,13 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 
 }
 
-void Enemy::Draw(const ViewProjection& viewProjection)
+void Enemy::Draw(const ViewProjection& viewProjection, bool isShadowDraw)
 {
 
 	model_->Draw(worldTransform_, viewProjection);
-	shadowModel_->Draw(shadowWorldTransform_, viewProjection);
+	if (isShadowDraw) {
+		shadowModel_->Draw(shadowWorldTransform_, viewProjection);
+	}
 	if (!awake_) {
 		sleepModel_->Draw(sleepWorldTransform_, viewProjection);
 	}

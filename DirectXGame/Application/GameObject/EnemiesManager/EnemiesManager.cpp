@@ -82,10 +82,18 @@ void EnemiesManager::Update()
 void EnemiesManager::Draw(const ViewProjection& viewProjection)
 {
 
-	for (Enemy* enemy : enemies_) {
-		enemy->Draw(viewProjection);
-	}
+	bool isShadowDraw = false;
 	size_t i = 0;
+
+	for (Enemy* enemy : enemies_) {
+		if (mapSystem_->GetMap()[static_cast<int>(enemy->GetPosition().y)][static_cast<int>(enemy->GetPosition().x)] == MapSystem::MapNumber::Road &&
+			!mapSystem_->GetCapturedEnemy()[i]) {
+			isShadowDraw = true;
+		}
+		enemy->Draw(viewProjection, isShadowDraw);
+		i++;
+	}
+	i = 0;
 	for (EnemyMovePlan* enemyMovePlan : enemyMovePlans_) {
 		if ( !(enemyMovePlan->GetPosition().x == enemies_.at(i)->GetPosition().x &&
 			enemyMovePlan->GetPosition().y == enemies_.at(i)->GetPosition().y) ) {
@@ -94,7 +102,8 @@ void EnemiesManager::Draw(const ViewProjection& viewProjection)
 		i++;
 	}
 	for (Cage* cage : cages_) {
-		cage->Draw(viewProjection);
+		cage->Draw(viewProjection,
+			mapSystem_->GetMap()[static_cast<int>(cage->GetPosition().y)][static_cast<int>(cage->GetPosition().x)] == MapSystem::MapNumber::Road);
 	}
 
 	for (WorldTransform enemyDangerPosition : enemyDangerWorldTransform_) {
