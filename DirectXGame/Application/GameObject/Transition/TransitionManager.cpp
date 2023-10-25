@@ -145,32 +145,44 @@ void TransitionManager::CloudTransition()
 	//---1Wave---//
 	scale = { 5.0f,5.0f,5.0f };
 	AddCloud(Vector3(50.0f, -7.0f, 0), scale);
-	AddCloud(Vector3(55.0f, -3.0f, 0), scale);
+	AddCloud(Vector3(55.0f, 0.0f, 0), scale);
 	AddCloud(Vector3(55.0f, -10.0f, 0), scale);
 
 	//---2Wave---//
 	scale = { 6.5f,6.5f,6.5f };
-	AddCloud(Vector3(65.0f, -13.5f, 1.0f), scale);
+	AddCloud(Vector3(75.0f, -13.5f, 1.0f), scale);
 	AddCloud(Vector3(75.0f, 6.0f, 0), scale);
 	AddCloud(Vector3(90.0f, -8.0f, 0), scale);
 
 	//---3Wave---//
-	scale = { 10.0f,10.0f,10.0f };
+	scale = { 8.0f,8.0f,8.0f };
 	AddCloud(Vector3(80.0f, 3.0f, 0), scale);
 	AddCloud(Vector3(95.0f, -17.0f, 0), scale);
 	AddCloud(Vector3(100.0f, -8.0f, 0), scale);
 
 	//---4Wave---//
-	scale = { 14.0f,14.0f,14.0f };
+	scale = { 10.0f,10.0f,9.0f };
 	AddCloud(Vector3(130.0f, 4.0f, 0), scale);
-	AddCloud(Vector3(145.0f, -3.0f, 1.0f), scale);
-	AddCloud(Vector3(145.0f, -14.5f, -1.0f), scale);
+	AddCloud(Vector3(145.0f, -3.0f, -2.0f), scale);
+	//AddCloud(Vector3(145.0f, -14.5f, -1.0f), scale);
 
 	//---5Wave---//
-	scale = { 9.0f,9.0f,9.0f };
+	scale = { 7.5f,7.5f,7.5f };
 	AddCloud(Vector3(155.0f, 4.0f, 2.0f), scale);
 	AddCloud(Vector3(155.0f, -10.5f, -7.0f), scale);
-	AddCloud(Vector3(165.0f, 0.5f, 5.0f), scale);
+	AddCloud(Vector3(165.0f, 0.5f, -2.0f), scale);
+
+	//---6Wave---//
+	AddCloud(Vector3(175.0f, 4.0f, 2.0f), scale);
+	AddCloud(Vector3(175.0f, -7.5f, -2.0f), scale);
+
+	//---7Wave---//
+	scale = { 5,5,5 };
+	AddCloud(Vector3(195.0f, 6.0f, 2.0f), scale);
+	AddCloud(Vector3(195.0f, -7.5f, -2.0f), scale);
+	AddCloud(Vector3(185.0f, 0.0f, 2.0f), scale);
+
+
 }
 
 void TransitionManager::AddCloud(const Vector3& position, const Vector3& scale)
