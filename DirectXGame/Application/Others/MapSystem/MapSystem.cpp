@@ -32,7 +32,7 @@ MapSystem::MapSystem()
 	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
 
 	this->enemyGetSEHandle_ = audio_->LoadWave("SE/enemyGet.wav");
-	enemyGetSEVolume_ = 0.5f;
+	enemyGetSEVolume_ = 0.65f;
 
 	this->enemyWakeUpSEHandle_ = audio_->LoadWave("SE/enemyWakeUp.wav");
 	enemyWakeUpSEVolume_ = 0.3f;
