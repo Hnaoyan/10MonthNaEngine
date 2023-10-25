@@ -183,6 +183,13 @@ void Enemy::WaitingAnimationInitialize()
 	// サウンド再生したか
 	wakeupSound_ = false;
 
+	// 基準位置
+	pukapukaPositionZ_ = surprisedEndPosition_.z;
+	// 追加位置
+	pukapukaPositionAddZ_ = 2.0f;
+	pukapukaSpeed_ = 0.03f;
+	pukapukaT_ = -1.0f;
+
 }
 
 void Enemy::WaitingAnimationUpdate()
@@ -239,11 +246,27 @@ void Enemy::WaitingAnimationUpdate()
 		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
 	}
 
+	// つかまってる
 	if (captured_ && animationT_ >= 1.0f) {
 		worldTransform_.translation_ = Vector3(position_.x * MapSystem::kSquareSize_.x,
 			position_.y * MapSystem::kSquareSize_.y,
 			 worldTransform_.translation_.z);
 		worldTransform_.rotation_.z = rotate_;
+	}
+
+	// プカプカ
+	float pukapukaAdd = 0.0f;
+	if (surprisedT_ >= 1.0f && awake_ && !captured_) {
+
+		pukapukaT_ += pukapukaSpeed_;
+		if (pukapukaT_ >= 1.0f) {
+			pukapukaT_ -= 2.0f;
+		}
+
+		pukapukaAdd = pukapukaPositionAddZ_ * std::cosf(1.0f * float(std::numbers::pi) * pukapukaT_);
+		worldTransform_.translation_.z = pukapukaPositionZ_ + pukapukaAdd;
+		shadowWorldTransform_.translation_.z = animationShadowAddZ_ - pukapukaAdd;
+
 	}
 
 	surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
