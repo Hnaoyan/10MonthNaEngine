@@ -28,7 +28,7 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	/// <param name="viewProjection">ビュープロジェクション</param>
-	void Draw(const ViewProjection& viewProjection);
+	void Draw(const ViewProjection& viewProjection, bool isShadowDraw);
 
 	/// <summary>
 	/// 設定

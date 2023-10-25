@@ -50,11 +50,13 @@ void Cage::Update()
 
 }
 
-void Cage::Draw(const ViewProjection& viewProjection)
+void Cage::Draw(const ViewProjection& viewProjection, bool isShadowDraw)
 {
 
 	model_->Draw(worldTransform_, viewProjection);
-	shadowModel_->Draw(shadowWorldTransform_, viewProjection);
+	if (isShadowDraw) {
+		shadowModel_->Draw(shadowWorldTransform_, viewProjection);
+	}
 
 }
 
@@ -71,7 +73,7 @@ void Cage::Setting(const Vector2& position)
 	worldTransform_.UpdateMatrix();
 
 
-	shadowAddZ_ = -positionZ_ - 5.1f;
+	shadowAddZ_ = -positionZ_ - 5.11f;
 	shadowWorldTransform_.parent_ = &worldTransform_;
 	shadowWorldTransform_.translation_.z = shadowAddZ_;
 	shadowWorldTransform_.UpdateMatrix();
