@@ -91,10 +91,12 @@ void GameScene::Initialize() {
 	mapSystem_->SetBlockManager(blockManager_.get());
 
 	// エネミー
+	awakeEnemyTextureHandle_ = TextureManager::Load("enemy/enemy.png");
+	sleepEnemyTextureHandle_ = TextureManager::Load("enemy/enemySleep.png");
 	enemiesManager_ = make_unique<EnemiesManager>();
 	enemiesManager_->Iintialize(mapSystem_.get(),
 		enemyModel_.get(), sleepModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), surprisedModel_.get(), shadowModel_.get(),
-		mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
+		mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount(), awakeEnemyTextureHandle_, sleepEnemyTextureHandle_);
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 

@@ -25,7 +25,7 @@ EnemiesManager::~EnemiesManager()
 
 void EnemiesManager::Iintialize(MapSystem* mapSystem,
 	Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, Model* surprisedModel, Model* shadowModel,
-	size_t enemyCount, size_t cageCount)
+	size_t enemyCount, size_t cageCount, uint32_t awakeEnemyTextureHandle, uint32_t sleepEnemyTextureHandle)
 {
 
 	// マップシステム
@@ -44,6 +44,9 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem,
 	surprisedModel_ = surprisedModel;
 
 	shadowModel_ = shadowModel;
+
+	awakeEnemyTextureHandle_ = awakeEnemyTextureHandle;
+	sleepEnemyTextureHandle_ = sleepEnemyTextureHandle;
 
 	Setting(enemyCount, cageCount);
 
@@ -164,7 +167,7 @@ void EnemiesManager::AddEnemy(size_t num)
 {
 
 	Enemy* enemy = new Enemy();
-	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_, surprisedModel_, shadowModel_);
+	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_, surprisedModel_, shadowModel_, awakeEnemyTextureHandle_, sleepEnemyTextureHandle_);
 	enemies_.push_back(enemy);
 
 	EnemyMovePlan* enemyMovePlan = new EnemyMovePlan();

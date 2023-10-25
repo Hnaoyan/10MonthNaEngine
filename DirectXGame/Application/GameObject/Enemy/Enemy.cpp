@@ -2,7 +2,8 @@
 #include "MathCalc.h"
 #include "Others/MapSystem/MapSystem.h"
 
-void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel)
+void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel,
+	uint32_t awakeEnemyTextureHandle, uint32_t sleepEnemyTextureHandle)
 {
 
 	// ワールドトランスフォーム
@@ -27,6 +28,10 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 	surprisedModel_ = surprisedModel;
 
 	shadowModel_ = shadowModel;
+
+	// テクスチャハンドル
+	awakeEnemyTextureHandle_ = awakeEnemyTextureHandle;
+	sleepEnemyTextureHandle_ = sleepEnemyTextureHandle;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -67,7 +72,15 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 void Enemy::Draw(const ViewProjection& viewProjection, bool isShadowDraw)
 {
 
-	model_->Draw(worldTransform_, viewProjection);
+	// 本体
+	if ((!awake_ || surprisedT_ < 1.0f / 2.0f) && !isGameOverAnimation_) {
+		model_->Draw(worldTransform_, viewProjection, sleepEnemyTextureHandle_);
+	}
+	else {
+		model_->Draw(worldTransform_, viewProjection, awakeEnemyTextureHandle_);
+	}
+	
+	
 	if (isShadowDraw) {
 		shadowModel_->Draw(shadowWorldTransform_, viewProjection);
 	}
