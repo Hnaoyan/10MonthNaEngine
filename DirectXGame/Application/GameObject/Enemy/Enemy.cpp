@@ -11,7 +11,8 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 	sleepWorldTransform_.Initialize();
 	surprisedWorldTransform_.Initialize();
 	surprisedWorldTransform_.translation_ = Vector3{ 0.0f, 10.0f, 0.0f };
-	surprisedWorldTransform_.parent_ = &worldTransform_;
+	//surprisedWorldTransform_.parent_ = &worldTransform_;
+	surprisedWorldTransform_.rotation_.x = -1.57f * 2.0f / 3.0f;
 	surprisedWorldTransform_.UpdateMatrix();
 
 	shadowWorldTransform_.Initialize();
@@ -70,10 +71,10 @@ void Enemy::Draw(const ViewProjection& viewProjection, bool isShadowDraw)
 	if (isShadowDraw) {
 		shadowModel_->Draw(shadowWorldTransform_, viewProjection);
 	}
-	if (!awake_) {
+	if ((!awake_ || surprisedT_ < 1.0f / 2.0f) && !isGameOverAnimation_ ) {
 		sleepModel_->Draw(sleepWorldTransform_, viewProjection);
 	}
-	else if(surprisedT_ < 1.0f && surprisedT_ > 1.0f / 2.0f){
+	else if(surprisedT_ < 1.0f && surprisedT_ > 1.0f / 2.0f || isGameOverAnimation_){
 		surprisedModel_->Draw(surprisedWorldTransform_,viewProjection);
 	}
 
@@ -169,7 +170,7 @@ void Enemy::WaitingAnimationInitialize()
 void Enemy::WaitingAnimationUpdate()
 {
 	// スリープ
-	if (!awake_) {
+	if (!awake_ || surprisedT_ < 1.0f / 2.0f) {
 		// アニメーションする
 		sleepT_ += 1.0f / static_cast<float>(sleepFrame_);
 
@@ -185,7 +186,6 @@ void Enemy::WaitingAnimationUpdate()
 			float t = (sleepT_ - 1.0f / 2.0f) * 2.0f;
 			sleepWorldTransform_.translation_ = MathCalc::EaseOutCubicF(t, sleepMiddlePosition_, sleepStartPosition_);
 		}
-		sleepWorldTransform_.UpdateMatrix();
 	}
 
 	if (animationT_ == 0.0f || animationT_ >= 1.0f) {
@@ -202,10 +202,8 @@ void Enemy::WaitingAnimationUpdate()
 				worldTransform_.translation_ = MathCalc::EaseInCubicF(t, surprisedStartPosition_, surprisedEndPosition_);
 				worldTransform_.UpdateMatrix();
 				surprisedWorldTransform_.scale_ = MathCalc::EaseInCubicF(t, Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
-				surprisedWorldTransform_.UpdateMatrix();
 				// 影
 				shadowWorldTransform_.translation_.z = MathCalc::EaseInCubicF(t, animationStartShadowAddZ_, animationShadowAddZ_);
-				shadowWorldTransform_.UpdateMatrix();
 			}
 
 		}
@@ -213,9 +211,15 @@ void Enemy::WaitingAnimationUpdate()
 	
 	if (surprisedT_ >= 1.0f && awake_) {
 		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
-		worldTransform_.UpdateMatrix();
 	}
 
+	surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
+	surprisedWorldTransform_.translation_.y = worldTransform_.translation_.y;
+	surprisedWorldTransform_.translation_.z = worldTransform_.translation_.z + surprisedZ_;
+
+	worldTransform_.UpdateMatrix();
+	sleepWorldTransform_.UpdateMatrix();
+	surprisedWorldTransform_.UpdateMatrix();
 	shadowWorldTransform_.UpdateMatrix();
 
 }
@@ -272,8 +276,13 @@ void Enemy::GameOverAnimationUpdate()
 			worldTransform_.translation_ = MathCalc::EaseOutCubicF(t, gameOverPositionMiddle_, gameOverPositionStart_);
 		}
 
+		surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
+		surprisedWorldTransform_.translation_.y = worldTransform_.translation_.y;
+		surprisedWorldTransform_.translation_.z = worldTransform_.translation_.z + surprisedZ_;
+
 		worldTransform_.UpdateMatrix();
 		shadowWorldTransform_.UpdateMatrix();
+		surprisedWorldTransform_.UpdateMatrix();
 	}
 
 }

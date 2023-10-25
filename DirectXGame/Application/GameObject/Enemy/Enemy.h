@@ -128,6 +128,8 @@ private: // メンバ変数
 	Vector3 surprisedStartPosition_;
 	Vector3 surprisedEndPosition_;
 
+	float surprisedZ_ = -10.0f;
+
 	// 影
 	WorldTransform shadowWorldTransform_;
 	// モデル
