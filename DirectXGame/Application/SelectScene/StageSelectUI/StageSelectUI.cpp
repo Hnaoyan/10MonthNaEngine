@@ -2,6 +2,7 @@
 #include "VectorLib.h"
 #include <numbers>
 #include <GlobalVariables.h>
+#include <Input.h>
 
 void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
 	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle, uint32_t clearTextureHandle, Vector2* clearParent)
@@ -145,7 +146,7 @@ void StageSelectUI::Update()
 
 	stageUiSprite_->SetPosition(stageUiPostion_);
 	stageUiSprite_->SetSize(stageUiSize_);
-	stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
+	//stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
 	stageUiSprite_->Update();
 
 	clearSprite_->SetRotation(clearRotate_);
@@ -155,6 +156,16 @@ void StageSelectUI::Update()
 #endif // _DEBUG
 
 	clearSprite_->SetPosition(Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y });
+
+	// 決定ボタン
+	if (Input::GetInstance()->PressKey(DIK_SPACE)) {
+		stageUiSprite_->SetSpriteRect(Vector2{ stageUiSize_.x ,0.0f }, stageUiSize_);
+	}
+	else {
+		stageUiSprite_->SetSpriteRect(Vector2{ 0.0f ,0.0f }, stageUiSize_);
+	}
+
+	stageUiSprite_->Update();
 
 }
 
