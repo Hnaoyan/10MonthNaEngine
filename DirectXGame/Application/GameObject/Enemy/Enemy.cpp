@@ -52,7 +52,7 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 
 }
 
-void Enemy::Update(const Vector2& position, bool enemyAwake)
+void Enemy::Update(const Vector2& position, bool enemyAwake, bool captured)
 {
 
 #ifdef _DEBUG
@@ -61,6 +61,7 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 
 	position_ = position;
 	awake_ = enemyAwake;
+	captured_ = captured;
 
 	worldTransform_.UpdateMatrix();
 
@@ -223,7 +224,7 @@ void Enemy::WaitingAnimationUpdate()
 		}
 	}
 	
-	if (surprisedT_ > 1.0f / 2.0f && awake_) {
+	if (surprisedT_ > 1.0f / 2.0f && awake_ && !captured_) {
 		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
 	}
 

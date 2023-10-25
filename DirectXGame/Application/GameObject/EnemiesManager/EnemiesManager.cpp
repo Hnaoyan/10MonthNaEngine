@@ -60,7 +60,7 @@ void EnemiesManager::Update()
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
 		enemy->SetRotate(direct_);
-		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i));
+		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i), mapSystem_->GetCapturedEnemy().at(i));
 		// エネミー危険範囲
 		if (!mapSystem_->GetEnemyAwake().at(i)) {
 			// エネミー位置
@@ -271,7 +271,7 @@ void EnemiesManager::GameOverAnimationInitialize()
 	for (Enemy* enemy : enemies_) {
 		distance.x = enemy->GetPosition().x - playerPosition.x;
 		distance.y = enemy->GetPosition().y - playerPosition.y;
-		if (distance.x + distance.y <= 1.0f) {
+		if (std::fabsf(distance.x) + std::fabsf(distance.y) <= 1.0f) {
 			Vector2 playerWorldPosition = { playerPosition.x * MapSystem::kSquareSize_.x, playerPosition.y * MapSystem::kSquareSize_.y };
 			enemy->GameOverAnimationInitialize(playerWorldPosition);
 		}

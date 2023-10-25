@@ -23,7 +23,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const Vector2& position, bool enemyAwake);
+	void Update(const Vector2& position, bool enemyAwake, bool captured);
 
 	/// <summary>
 	/// 描画
@@ -90,6 +90,9 @@ private: // メンバ変数
 
 	// 起きているか
 	bool awake_;
+
+	// つかまってるか
+	bool captured_;
 
 	// 回転
 	float rotate_;
