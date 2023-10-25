@@ -28,6 +28,7 @@ private:
 	uint32_t playBGMHandle_ = 0u;
 
 	uint32_t voiceHandle_ = 0u;
+	uint32_t playHandle_ = 0u;
 
 	float BGMVolume_ = 0;
 

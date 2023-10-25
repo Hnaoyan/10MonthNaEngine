@@ -7,6 +7,7 @@ void TransitionObject::Initialize(Model* model)
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.scale_ = { 15.0f,15.0f,15.0f };
+	worldTransform_.rotation_ = { 0.0f,1.57f,0 };
 	velocity_ = {};
 	isTrans_ = true;
 }

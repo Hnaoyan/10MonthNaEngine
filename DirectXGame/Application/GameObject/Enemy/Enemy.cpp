@@ -115,7 +115,7 @@ void Enemy::ActionAnimationUpdate()
 		animationT_ = 1.0f;
 	}
 	else {
-		animationT_ += (1.0f / 10.0f);
+		animationT_ += (1.0f / 9.0f);
 		Vector3 easePosition = MathCalc::EaseOutCubicF(animationT_,
 			Vector3(animationStartPosition_.x, animationStartPosition_.y, 0),
 			Vector3(position_.x, position_.y, 0));

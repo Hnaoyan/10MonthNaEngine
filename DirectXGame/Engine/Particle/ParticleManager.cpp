@@ -99,7 +99,7 @@ void ParticleManager::WaveSetting(const Vector3& position)
 {
 	waveParameters_ = { 0,60,50,true };
 	waveRespawnPosition_ = position;
-	waveRespawnPosition_.z -= 2.0f;
+	waveRespawnPosition_.z -= 0.5f;
 	AddWave(waveRespawnPosition_, { 10.0f,10.0f,1.0f });
 }
 
@@ -224,7 +224,9 @@ void ParticleManager::AddExplosion(const Vector3& pos, const Vector3& velo)
 	newParticle->SetPosition(pos);
 	newParticle->SetVelocity(velo);
 	newParticle->SetRotate(Vector3(1.65f, 0.0f, 0.0f));
-	newParticle->SetScale(Vector3(1.0f, 1.0f, 1.0f));
+	Vector3 scale = { 1.0f,1.0f,1.0f };
+	scale = VectorLib::Scaler(scale, 0.75f);
+	newParticle->SetScale(scale);
 	particles_.push_back(newParticle);
 }
 

@@ -44,7 +44,7 @@ private:
 	/// </summary>
 	/// <param name="position"></param>
 	/// <param name="scale"></param>
-	void AddBackGroundCloud(const Vector3& position, const Vector3& scale);
+	void AddBackGroundCloud(const Vector3& position, const Vector3& scale, const Vector3& velocity);
 
 	/// <summary>
 	/// 削除処理

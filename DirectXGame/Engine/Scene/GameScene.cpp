@@ -216,13 +216,11 @@ void GameScene::Update()
 	}
 
 	// ゲームオーバーか
-	ImGui::Begin("State");
 	// ゲームクリアアニメーションの設定
 	if (mapSystem_->GetIsGameClear() && 
 		!animationManager_->GetIsActionAnimation() &&
 		!animationManager_->GetIsGameClearAnimation()) {
 
-		ImGui::Text("GAMECLEAR");
 		// クリアアニメーション
 		animationManager_->GameClearInitialize();
 		// プレイヤー
@@ -237,12 +235,11 @@ void GameScene::Update()
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
-		animationManager_->SetGameOverAnimationTime(10);
+		animationManager_->SetGameOverAnimationTime(40);
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
 		// ゲームオーバーのSE
 		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
 	}
-	ImGui::End();
 
 	// ESCでゲームセレクトへ
 	if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
@@ -448,8 +445,9 @@ void GameScene::GameOverAnimation()
 
 	animationManager_->GameOverUpdate();
 
+	// ゲームオーバー
 	if (!animationManager_->GetIsGameOverAnimation()) {
-		ImGui::Text("GAMEOVER");
+		//WhiteOutSetting();
 		mapSystem_->Restart();
 		Reset();
 	}
@@ -523,22 +521,38 @@ void GameScene::ModelSetting()
 
 void GameScene::WhiteOutUpdate()
 {
-	float animationHalf = 0.4f;
+	float animationHalf = 40.0f / 90.0f;
 	if (whiteOutT_ >= 1.0f) {
 		isWhiteOut_ = false;
 		whiteOutT_ = 1.0f;
+		//mapSystem_->Restart();
+		//Reset();
 	}
 	else {
-		float addValue_T = 0.01f;
+		float addValue_T = 1.0f / 90.0f;
 		whiteOutT_ += addValue_T;
-		float addAlphaValue = 0.03f;
-		if (whiteOutT_ <= animationHalf) {
-			alphaValue_ += addAlphaValue;
-		}
-		else {
+		float addAlphaValue = 0.025f;
+		// 一定値以上になった場合マイナス
+		if (whiteOutT_ >= animationHalf) {
 			alphaValue_ -= addAlphaValue;
 		}
+		else {
+			alphaValue_ += addAlphaValue;
+		}
+		if (alphaValue_ >= 1.0f) {
+			alphaValue_ = 1.0f;
+		}
+		if (alphaValue_ < 0) {
+			alphaValue_ = 0;
+		}
+
 	}
+
+	ImGui::Begin("white");
+	ImGui::Text("t : %f", whiteOutT_);
+	ImGui::Text("value : %f", alphaValue_);
+	ImGui::End();
+
 	whiteSprite_->SetColor({ 1,1,1,alphaValue_ });
 
 }
@@ -547,6 +561,6 @@ void GameScene::WhiteOutSetting()
 {
 	isWhiteOut_ = true;
 	whiteOutT_ = 0;
-	float initAlphaValue = 0.1f;
+	float initAlphaValue = 0.0f;
 	alphaValue_ = initAlphaValue;
 }
