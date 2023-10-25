@@ -8,7 +8,7 @@
 #include "Application/Others/MapSystem/MapSystem.h"
 #include "../Engine/Math/MathCalc.h"
 
-void Player::Initialize(Model* model,const Vector2& position)
+void Player::Initialize(Model* model, Model* shadowModel, const Vector2& position)
 {
 
 	// ワールドトランスフォーム
@@ -16,8 +16,16 @@ void Player::Initialize(Model* model,const Vector2& position)
 
 	moveAnimationWorldTransform_.Initialize();
 
+	shadowWorldTransform_.Initialize();
+	shadowWorldTransform_.translation_.x = worldTransform_.translation_.x;
+	shadowWorldTransform_.translation_.y = worldTransform_.translation_.y;
+	shadowWorldTransform_.translation_.z = -5.1f;
+	shadowWorldTransform_.UpdateMatrix();
+
 	// モデル
 	model_ = model;
+
+	shadowModel_ = shadowModel;
 
 	// tマックス
 	animationFrame_ = 20;
@@ -75,6 +83,7 @@ void Player::Draw(const ViewProjection& viewProjection)
 {
 
 	if (isDraw_) {
+		shadowModel_->Draw(shadowWorldTransform_, viewProjection);
 		model_->Draw(worldTransform_, viewProjection);
 	}
 
@@ -93,6 +102,10 @@ void Player::Setting(const Vector2& position)
 	actionNumber_ = ActionNumber::kNone;
 
 	isDraw_ = true;
+
+	shadowWorldTransform_.translation_.x = worldTransform_.matWorld_.m[3][0];
+	shadowWorldTransform_.translation_.y = worldTransform_.matWorld_.m[3][1];
+	shadowWorldTransform_.UpdateMatrix();
 
 }
 
@@ -160,6 +173,9 @@ void Player::ActionAnimationUpdate()
 		break;
 	}
 
+	shadowWorldTransform_.translation_.x = worldTransform_.matWorld_.m[3][0];
+	shadowWorldTransform_.translation_.y = worldTransform_.matWorld_.m[3][1];
+	shadowWorldTransform_.UpdateMatrix();
 
 }
 

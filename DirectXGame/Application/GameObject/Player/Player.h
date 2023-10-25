@@ -37,7 +37,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position);
+	void Initialize(Model* model, Model* shadowModel, const Vector2& position);
 
 	/// <summary>
 	/// 更新
@@ -133,6 +133,11 @@ private: // メンバ変数
 
 	// 表示するか
 	bool isDraw_;
+
+	// 影
+	WorldTransform shadowWorldTransform_;
+	// モデル
+	Model* shadowModel_ = nullptr;
 
 	// 行動アニメーションをした
 	bool isActionAnimation_;
