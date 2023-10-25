@@ -222,7 +222,7 @@ void ParticleManager::GoalEffectUpdate()
 	if (goalOpenParameters_.isNow) {
 		goalOpenParameters_.frameCount += 1;
 		if (goalOpenParameters_.frameCount >= goalOpenParameters_.endCount) {
-			AddGoalParticle(goalPosition_, Vector3(0, 0, -1.0f), {5.0f,5.0f,5.0f});
+			AddGoalParticle(goalPosition_, Vector3(0, 0, -0.75f), {5.0f,5.0f,5.0f});
 			goalOpenParameters_.frameCount = 0;
 		}
 	}
