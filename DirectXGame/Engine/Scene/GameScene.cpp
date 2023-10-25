@@ -74,7 +74,7 @@ void GameScene::Initialize() {
 	mapSystem_->SetSEVolume(SEVolume_);
 
 	player_ = make_unique<Player>();
-	player_->Initialize(playerModel_.get(), mapSystem_->GetInitialPlayerPosition());
+	player_->Initialize(playerModel_.get(), shadowModel_.get(), mapSystem_->GetInitialPlayerPosition());
 	player_->SetPosition(mapSystem_->GetPlayerPosition());
 	// マップシステム
 	mapSystem_->SetPlayer(player_.get());
