@@ -136,6 +136,8 @@ private: // メンバ変数
 
 	float surprisedZ_ = -10.0f;
 
+	float surprisedSize_ = 0.7f;
+
 	// 影
 	WorldTransform shadowWorldTransform_;
 	// モデル

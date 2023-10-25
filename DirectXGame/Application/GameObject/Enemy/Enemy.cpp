@@ -14,6 +14,7 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 	surprisedWorldTransform_.translation_ = Vector3{ 0.0f, 10.0f, 0.0f };
 	//surprisedWorldTransform_.parent_ = &worldTransform_;
 	surprisedWorldTransform_.rotation_.x = -1.57f * 2.0f / 3.0f;
+	surprisedWorldTransform_.scale_ = { surprisedSize_, surprisedSize_, surprisedSize_ };
 	surprisedWorldTransform_.UpdateMatrix();
 
 	shadowWorldTransform_.Initialize();
@@ -214,7 +215,7 @@ void Enemy::WaitingAnimationUpdate()
 				float t = (surprisedT_ - 1.0f / 2.0f) * 4.0f;
 				worldTransform_.translation_ = MathCalc::EaseInCubicF(t, surprisedStartPosition_, surprisedEndPosition_);
 				worldTransform_.UpdateMatrix();
-				surprisedWorldTransform_.scale_ = MathCalc::EaseInCubicF(t, Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
+				surprisedWorldTransform_.scale_ = MathCalc::EaseInCubicF(t, Vector3(0.0f, 0.0f, 0.0f), Vector3(surprisedSize_, surprisedSize_, surprisedSize_));
 				// 影
 				shadowWorldTransform_.translation_.z = MathCalc::EaseInCubicF(t, animationStartShadowAddZ_, animationShadowAddZ_);
 			}
