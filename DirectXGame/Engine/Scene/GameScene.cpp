@@ -422,6 +422,9 @@ void GameScene::GameClearAnimation()
 
 	// 行動アニメーションカウントがマックスならコマンド待ち
 	if (!animationManager_->GetIsGameClearAnimation()) {
+		// クリア判定に
+		stageClear[stageNum] = true;
+
 		// 最終ステージじゃない
 		if (stageNum != stageMax - 1) {
 			stageNum++;

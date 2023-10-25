@@ -105,6 +105,16 @@ void TitleScene::Draw()
 	Sprite::PostDraw();
 }
 
+void TitleScene::Setting(Scene preScene)
+{
+
+	preScene;
+	for (size_t i = 0; i < stageMax; i++) {
+		stageClear[i] = false;
+	}
+
+}
+
 void TitleScene::ApplyGlobalVariables()
 {
 

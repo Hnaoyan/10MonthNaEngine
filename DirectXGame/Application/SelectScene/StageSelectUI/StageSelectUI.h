@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="textureHandles"></param>
 	void Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
-		uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle);
+		uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle, uint32_t clearTextureHandle);
 
 	/// <summary>
 	/// 更新処理
@@ -27,7 +27,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw(bool isMove);
+	void Draw(bool notMove, bool isClear);
 
 	/// <summary>
 	/// 設定
@@ -104,6 +104,19 @@ private: // メンバ変数
 	Vector2 stageUiSize_;
 	// スプライト
 	std::unique_ptr<Sprite> stageUiSprite_;
+
+	// クリア
+
+	// テクスチャハンドル
+	uint32_t clearTextureHandle_;
+	// 位置
+	Vector2 clearPostion_;
+	// 回転
+	float clearRotate_;
+	// サイズ
+	Vector2 clearSize_;
+	// スプライト
+	std::unique_ptr<Sprite> clearSprite_;
 
 	// ステージナンバー
 	uint32_t stageNum_;

@@ -28,6 +28,11 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// 設定
+	/// </summary>
+	void Setting(Scene preScene);
+
 private: //メンバ関数
 
 	/// <summary>
