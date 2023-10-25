@@ -38,6 +38,7 @@ void GameScene::Initialize() {
 #pragma region オーディオリソース
 	this->clearSEHandle_ = audio_->LoadWave("SE/clear1.wav");
 	this->deathSEHandle_ = audio_->LoadWave("SE/death.wav");
+	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
 #pragma endregion
 
 
@@ -217,36 +218,38 @@ void GameScene::Update()
 	}
 
 	// ゲームオーバーか
-	ImGui::Begin("State");
+	// ゲームクリアアニメーションの設定
 	if (mapSystem_->GetIsGameClear() && 
 		!animationManager_->GetIsActionAnimation() &&
 		!animationManager_->GetIsGameClearAnimation()) {
 
-		ImGui::Text("GAMECLEAR");
 		// クリアアニメーション
 		animationManager_->GameClearInitialize();
 		// プレイヤー
 		player_->ClearAnimationInitialize();
 		animationManager_->SetGameClearAnimation(std::bind(&Player::ClearAnimationUpdate, player_.get()));
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
-		// SE
+		// ゲームクリアのSE
 		audio_->PlayWave(clearSEHandle_, false, SEVolume_);
-
 	}
+	// ゲームオーバーアニメーションの設定
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
-		animationManager_->SetGameOverAnimationTime(40);
+		animationManager_->SetGameOverAnimationTime(80);
 		enemiesManager_->GameOverAnimationInitialize();
 		animationManager_->SetGameOverAnimation(std::bind(&EnemiesManager::GameOverAnimationUpdate,enemiesManager_.get()));
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
-		// SE
-		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
+		// ゲームオーバーのSE
+		audio_->PlayWave(deathSEHandle_, false, SEVolume_);	
+		WhiteOutSetting();
+
 	}
-	ImGui::End();
 
 	// ESCでゲームセレクトへ
 	if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
+		// シーン変更の音
+		audio_->PlayWave(dropSEHandle_, false, SEVolume_);
 		sceneNum = STAGESELECT;
 	}
 
@@ -270,8 +273,6 @@ void GameScene::Draw() {
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 
-
-	//uiManager_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -449,7 +450,9 @@ void GameScene::GameOverAnimation()
 
 	animationManager_->GameOverUpdate();
 
+	// ゲームオーバー
 	if (!animationManager_->GetIsGameOverAnimation()) {
+		whiteSprite_->GetColor();
 		mapSystem_->Restart();
 		Reset();
 	}
@@ -523,22 +526,36 @@ void GameScene::ModelSetting()
 
 void GameScene::WhiteOutUpdate()
 {
-	float animationHalf = 0.4f;
-	if (whiteOutT_ >= 1.0f) {
+	float frameValue = 80.0f + 60.0f;
+	float animationHalf = (frameValue / 2.0f) / frameValue;
+	if (whiteOutT_ >= 1.0f || alphaValue_ < 0) {
 		isWhiteOut_ = false;
 		whiteOutT_ = 1.0f;
+		alphaValue_ = 0;
 	}
 	else {
-		float addValue_T = 0.01f;
-		whiteOutT_ += addValue_T;
-		float addAlphaValue = 0.03f;
-		if (whiteOutT_ <= animationHalf) {
-			alphaValue_ += addAlphaValue;
+		// tの値の増加値
+		float addValue_T = 1.0f / frameValue;
+		// alpha値の増加値
+		float addAlphaValue = 0.0185f;
+		// 一定値以上になった場合マイナス
+		if (whiteOutT_ >= animationHalf) {
+			alphaValue_ -= (addAlphaValue * 1.75f);
 		}
 		else {
-			alphaValue_ -= addAlphaValue;
+			alphaValue_ += (addAlphaValue * 1.25f);
 		}
+		if (alphaValue_ >= 1.0f) {
+			alphaValue_ = 1.0f;
+		}
+		whiteOutT_ += addValue_T;
 	}
+
+	ImGui::Begin("white");
+	ImGui::Text("t : %f", whiteOutT_);
+	ImGui::Text("value : %f", alphaValue_);
+	ImGui::End();
+
 	whiteSprite_->SetColor({ 1,1,1,alphaValue_ });
 
 }
@@ -549,4 +566,6 @@ void GameScene::WhiteOutSetting()
 	whiteOutT_ = 0;
 	float initAlphaValue = 0.1f;
 	alphaValue_ = initAlphaValue;
+	whiteSprite_->SetColor({ 1,1,1,alphaValue_ });
+
 }

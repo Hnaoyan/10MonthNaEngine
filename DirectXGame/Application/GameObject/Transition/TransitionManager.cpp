@@ -123,7 +123,8 @@ void TransitionManager::TransitionUpdate()
 			objects_.clear();
 		}
 		else {
-			transitionTimer_ += 0.005f;
+			float addTimer = 1.0f / 135.0f;
+			transitionTimer_ += addTimer;
 		}
 		if (transitionTimer_ >= 0.75f && transitionTimer_ <= 0.76f) {
 			isSceneChanger_ = true;
@@ -136,44 +137,64 @@ void TransitionManager::TransitionUpdate()
 		object->Update(transitionTimer_);
 	}
 
-	ImGui::Begin("time");
-	ImGui::DragFloat("timer", &transitionTimer_, 0, -1.0f, 1.0f);
-	ImGui::End();
-
 }
 
 void TransitionManager::CloudTransition()
 {
+	float midPosition_Y = -5.0f;
+	float distance = 0;
+
 	Vector3 scale = {};
 	//---1Wave---//
-	scale = { 3.0f,3.0f,3.0f };
-	AddCloud(Vector3(50.0f, -7.0f, 0), scale);
-	AddCloud(Vector3(55.0f, -3.0f, 0), scale);
-	AddCloud(Vector3(55.0f, -10.0f, 0), scale);
+	scale = { 5.0f,5.0f,5.0f };
+	distance = 6.0f;
+	AddCloud(Vector3(55.0f, midPosition_Y + distance, 0), scale);
+	AddCloud(Vector3(45.0f, midPosition_Y, 0), scale);
+	AddCloud(Vector3(55.0f, midPosition_Y - distance, 0), scale);
 
 	//---2Wave---//
-	scale = { 4.5f,4.5f,4.5f };
-	AddCloud(Vector3(65.0f, -18.5f, 1.0f), scale);
-	AddCloud(Vector3(75.0f, 4.0f, 0), scale);
-	AddCloud(Vector3(90.0f, -8.0f, 0), scale);
+	scale = { 6.5f,6.5f,6.5f };
+	distance = 8.0f;
+	AddCloud(Vector3(80.0f, midPosition_Y + distance, 1.0f), scale);
+	AddCloud(Vector3(65.0f, midPosition_Y, 0), scale);
+	AddCloud(Vector3(80.0f, midPosition_Y - distance, 0), scale);
 
 	//---3Wave---//
-	scale = { 6,6,6 };
-	AddCloud(Vector3(100.0f, 3.0f, 0), scale);
-	AddCloud(Vector3(105.0f, -20.0f, 0), scale);
-	AddCloud(Vector3(120.0f, -8.0f, 0), scale);
+	scale = { 7.0f,7.0f,7.0f };
+	distance = 9.0f;
+	AddCloud(Vector3(95.0f, midPosition_Y + distance, 0), scale);
+	AddCloud(Vector3(80.0f, midPosition_Y, -1.5f), scale);
+	AddCloud(Vector3(95.0f, midPosition_Y - distance, 0), scale);
 
 	//---4Wave---//
-	scale = { 8,8,8 };
-	AddCloud(Vector3(150.0f, 4.0f, 0), scale);
-	AddCloud(Vector3(165.0f, -3.0f, 1.0f), scale);
-	AddCloud(Vector3(165.0f, -18.5f, -1.0f), scale);
+	scale = { 8.0f,8.0f,6.0f };
+	distance = 10.5f;
+	AddCloud(Vector3(115.0f, midPosition_Y + distance, 0.0f), scale);
+	//AddCloud(Vector3(145.0f, midPosition_Y + 6.5f, 0.0f), scale);
+	AddCloud(Vector3(120.0f, midPosition_Y, 0.0f), scale);
+	//AddCloud(Vector3(145.0f, midPosition_Y - 6.5f, 0.0f), scale);
+	AddCloud(Vector3(115.0f, midPosition_Y - distance, 0.0f), scale);
 
 	//---5Wave---//
-	scale = { 4,4,4 };
-	AddCloud(Vector3(175.0f, 4.0f, 2.0f), scale);
-	AddCloud(Vector3(175.0f, -10.5f, -7.0f), scale);
-	AddCloud(Vector3(185.0f, 0.5f, 5.0f), scale);
+	scale = { 7.5f,7.5f,6.0f };
+	distance = 8.0f;
+	AddCloud(Vector3(135.0f, midPosition_Y + distance, 2.0f), scale);
+	AddCloud(Vector3(130.0f, midPosition_Y, - 2.0f), scale);
+	AddCloud(Vector3(135.0f, midPosition_Y - distance, 2.0f), scale);
+
+	//---6Wave---//
+	distance = 6.0f;
+	AddCloud(Vector3(155.0f, midPosition_Y + distance, 2.0f), scale);
+	AddCloud(Vector3(155.0f, midPosition_Y - distance, -2.0f), scale);
+
+	//---7Wave---//
+	scale = { 8.0f,8.0f,6.5f };
+	distance = 5.0f;
+	AddCloud(Vector3(185.0f, midPosition_Y + distance, 0.0f), scale);
+	AddCloud(Vector3(195.0f, midPosition_Y, 0.0f), scale);
+	AddCloud(Vector3(185.0f, midPosition_Y - distance, 0.0f), scale);
+
+
 }
 
 void TransitionManager::AddCloud(const Vector3& position, const Vector3& scale)
@@ -181,6 +202,5 @@ void TransitionManager::AddCloud(const Vector3& position, const Vector3& scale)
 	TransitionObject* newObject = new TransitionObject();
 	newObject->Initialize(cloudModel_);
 	newObject->InstanceSetting(position, scale);
-	//newObject->SetVelocity(Vector3(-1.0f, 0, 0));
 	objects_.push_back(newObject);
 }

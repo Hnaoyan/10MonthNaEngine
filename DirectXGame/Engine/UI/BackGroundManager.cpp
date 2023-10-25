@@ -27,13 +27,12 @@ void BackGroundManager::Initialize(Model* model)
 	//skydomeModel_->SetAlphaValue(0.5f);
 
 	// スポーン場所の設定
-	startPosition_ = { 35.0f,10.0f,0 };
+	startPosition_ = { 50.0f,10.0f,0 };
 	startScale_ = { 5.0f,5.0f,5.0f };
 
-	AddBackGroundCloud(startPosition_, startScale_);
-	AddBackGroundCloud({ startPosition_.x,startPosition_.y - 5.0f,0 }, startScale_);
-	AddBackGroundCloud({ startPosition_.x,startPosition_.y - 10.0f,0 }, startScale_);
-	AddBackGroundCloud({ startPosition_.x,startPosition_.y - 15.0f,0 }, startScale_);
+	AddBackGroundCloud(startPosition_, startScale_, { -0.2f,0,0 });
+	Vector3 secondPosition = { startPosition_.x + 25.0f,startPosition_.y - 8.0f,startPosition_.z };
+	AddBackGroundCloud(secondPosition, startScale_, { -0.25f,0,0 });
 
 }
 
@@ -101,13 +100,13 @@ void BackGroundManager::Draw()
 #pragma endregion
 }
 
-void BackGroundManager::AddBackGroundCloud(const Vector3& position, const Vector3& scale)
+void BackGroundManager::AddBackGroundCloud(const Vector3& position, const Vector3& scale,const Vector3& velocity)
 {
 	CloudObject* newObject = new CloudObject();
 	newObject->Initialize(cloudModel_);
 	newObject->SetPosition(position);
 	newObject->SetScale(scale);
-	newObject->SetVelocity({ -0.5f,0,0 });
+	newObject->SetVelocity(velocity);
 	clouds_.push_back(newObject);
 }
 
@@ -132,9 +131,12 @@ void BackGroundManager::DeleteList()
 
 void BackGroundManager::CreateCloud()
 {
-	int maxAddCount = 0;
-	if (static_cast<int>(clouds_.size()) <= maxAddCount) {
-		AddBackGroundCloud(startPosition_, startScale_);
+	int maxAddCount = 1;
+	if (static_cast<int>(clouds_.size()) < maxAddCount) {
+		float randomY = float(rand() % 21 - 10);
+		AddBackGroundCloud(startPosition_, startScale_,{-0.2f,0,0});
+		Vector3 secondPosition = { startPosition_.x + 25.0f,randomY,startPosition_.z };
+		AddBackGroundCloud(secondPosition, startScale_,{ -0.25f,0,0 });
 	}
 
 }

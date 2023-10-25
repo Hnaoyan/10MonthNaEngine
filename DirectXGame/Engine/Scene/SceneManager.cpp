@@ -56,24 +56,18 @@ void SceneManager::Update()
 #endif // DEBUG
 
 	if (!audio_->IsPlaying(voiceHandle_) && sceneNum_!= GAMESCENE) {
-		voiceHandle_ = audio_->PlayWave(titleBGMHandle_, true, 0.3f);
+		audio_->StopWave(playHandle_);
+		audio_->StopWave(voiceHandle_);
+		voiceHandle_ = audio_->PlayWave(titleBGMHandle_, true, 0.4f);
 	}
-	if (!audio_->IsPlaying(voiceHandle_) && sceneNum_ == GAMESCENE) {
-		voiceHandle_ = audio_->PlayWave(playBGMHandle_, true, 0.3f);
+	if (!audio_->IsPlaying(playHandle_) && sceneNum_ == GAMESCENE) {
+		audio_->StopWave(voiceHandle_);
+		audio_->StopWave(playHandle_);
+		playHandle_ = audio_->PlayWave(playBGMHandle_, true, 0.4f);
 	}
-
-	//prevSceneNum_ = this->sceneNum_;
-	//sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 
 	// 遷移の設定呼び出し
 	if (prevSceneNum_ != sceneArray_[sceneNum_]->GetSceneNum()) {
-		//sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
-		if (sceneNum_ == GAMESCENE) {
-			audio_->StopWave(voiceHandle_);
-		}
-		if (prevSceneNum_ == GAMESCENE) {
-			audio_->StopWave(voiceHandle_);
-		}
 		transitionManager_->SetIsTransition(true);
 	}
 	// 連打された時用
@@ -84,6 +78,8 @@ void SceneManager::Update()
 	if (transitionManager_->IsGetSceneChanger()) {
 		sceneNum_ = sceneArray_[sceneNum_]->GetSceneNum();
 		sceneArray_[sceneNum_]->Setting(static_cast<Scene>(prevSceneNum_));
+		audio_->StopWave(playHandle_);
+		audio_->StopWave(voiceHandle_);
 	}
 
 	// 遷移の更新

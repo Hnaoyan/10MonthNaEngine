@@ -28,10 +28,17 @@ MapSystem::MapSystem()
 	audio_ = Audio::GetInstance();
 	// 入れ込み
 	this->dontMoveSEHandle_ = audio_->LoadWave("SE/DontMove.wav");
+
 	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
+
 	this->enemyGetSEHandle_ = audio_->LoadWave("SE/enemyGet.wav");
+	enemyGetSEVolume_ = 0.65f;
+
 	this->enemyWakeUpSEHandle_ = audio_->LoadWave("SE/enemyWakeUp.wav");
+	enemyWakeUpSEVolume_ = 0.3f;
+
 	this->jumpSEHandle_ = audio_->LoadWave("SE/jump.wav");
+
 	this->walkSEHandle_ = audio_->LoadWave("SE/walk.wav");
 }
 
@@ -261,7 +268,7 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	// 移動できるかチェック
 	// 成功
 	if (haveMoved) {
-		//
+		// 移動時のSE
 		audio_->PlayWave(walkSEHandle_, false, SEVolume_);
 		// エネミーの移動
 		EnemyMove();
@@ -272,7 +279,7 @@ void MapSystem::Move(Command::CommandNumber commandNumber)
 	}
 	// 失敗
 	else {
-		//
+		// 移動失敗時のSE
 		audio_->PlayWave(dontMoveSEHandle_, false, SEVolume_);
 		// 移動失敗アニメーション
 		player_->ActionAnimationInitialize(commandNumber + 4);
@@ -359,14 +366,15 @@ void MapSystem::EnemyMove()
 				!usedCage_.at(k)) {
 				capturedEnemy_.at(i) = true;
 				usedCage_.at(k) = true;
-				// 入った時の音
-				audio_->PlayWave(enemyGetSEHandle_, false, SEVolume_);
+
+				// 捕まえた時の音
+				audio_->PlayWave(enemyGetSEHandle_, false, enemyGetSEVolume_);
 
 				// アニメーション
 				Vector2 cageWorldPosition = { cagePosition.x, cagePosition.y };
 				enemiesManager_->GetCage(cageWorldPosition)->ActionAnimationInitialize();
 				captureEnemyUI_->ActionAnimationInitialize();
-
+				
 				int num = 0;
 				// 捕まえた敵の数取得、UIにおくる
 				for (bool capturedEnemy : capturedEnemy_) {
@@ -502,13 +510,15 @@ void MapSystem::MakeSound()
 			int y = static_cast<int>(std::fabsf(playerPosition_.y - enemyPosition_.at(i).y));
 			
 			if (x + y < 3) {
-				audio_->PlayWave(enemyWakeUpSEHandle_, false, SEVolume_);
+				// 起きた時のSE
+				audio_->PlayWave(enemyWakeUpSEHandle_, false, enemyWakeUpSEVolume_);
 				enemyAwake_.at(i) = true;
 			}
 
 		}
 	}
 
+	// 振動のSE
 	audio_->PlayWave(jumpSEHandle_, false, SEVolume_);
 
 	EnemyMovePlan();
@@ -614,6 +624,9 @@ void MapSystem::Restart()
 	isGameOver_ = false;
 
 	isRestart_ = true;
+	
+	// リトライ時のSE
+	audio_->PlayWave(dropSEHandle_, false, SEVolume_);
 
 }
 
