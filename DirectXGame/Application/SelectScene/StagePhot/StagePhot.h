@@ -90,5 +90,8 @@ private:
 	// フレーム
 	float fre_ = 5.0f;
 
+	// センターベースポジション
+	Vector2 centerPositions_;
+
 };
 

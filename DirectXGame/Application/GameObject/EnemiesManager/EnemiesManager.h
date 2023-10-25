@@ -29,7 +29,7 @@ public: // メンバ関数
 	/// <param name="cageModel">ケージモデル</param>
 	void Iintialize(MapSystem* mapSystem,
 		Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, Model* surprisedModel, Model* shadowModel,
-		size_t enemyCount, size_t cageCount);
+		size_t enemyCount, size_t cageCount, uint32_t awakeEnemyTextureHandle, uint32_t sleepEnemyTextureHandle);
 
 	/// <summary>
 	/// 更新
@@ -97,6 +97,11 @@ public: // メンバ関数
 
 	void WaitingAnimationUpdate();
 
+	// ゲームオーバーアニメーション
+	void GameOverAnimationInitialize();
+
+	void GameOverAnimationUpdate();
+
 private: //メンバ関数
 
 	/// <summary>
@@ -116,6 +121,10 @@ private: // メンバ変数
 	Model* surprisedModel_ = nullptr;
 	// 影
 	Model* shadowModel_ = nullptr;
+
+	// テクスチャハンドル
+	uint32_t awakeEnemyTextureHandle_ = 0u;
+	uint32_t sleepEnemyTextureHandle_ = 0u;
 
 	// エネミーの移動計画
 	std::vector<EnemyMovePlan*> enemyMovePlans_;

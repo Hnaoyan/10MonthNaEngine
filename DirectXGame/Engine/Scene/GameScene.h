@@ -173,6 +173,8 @@ private:	// メンバポインタ
 	std::unique_ptr<Model> enemyDagerModel_;
 	std::unique_ptr<Model> surprisedModel_;
 	std::unique_ptr<Model> shadowModel_;
+	uint32_t awakeEnemyTextureHandle_ = 0u;
+	uint32_t sleepEnemyTextureHandle_ = 0u;
 
 	// ゴール
 	std::unique_ptr<Goal> goal_;
@@ -248,6 +250,11 @@ private: // ホワイトアウト用
 	void WhiteOutUpdate();
 
 	void WhiteOutSetting();
+
+private: 
+
+	// 最終ステージクリアしたか
+	bool clearTheFinalStage_;
 
 };
 

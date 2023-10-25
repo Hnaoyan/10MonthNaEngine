@@ -92,10 +92,12 @@ void GameScene::Initialize() {
 	mapSystem_->SetBlockManager(blockManager_.get());
 
 	// エネミー
+	awakeEnemyTextureHandle_ = TextureManager::Load("enemy/enemy.png");
+	sleepEnemyTextureHandle_ = TextureManager::Load("enemy/enemySleep.png");
 	enemiesManager_ = make_unique<EnemiesManager>();
 	enemiesManager_->Iintialize(mapSystem_.get(),
 		enemyModel_.get(), sleepModel_.get(), enemyMovePlanModel_.get(), cageModel_.get(), enemyDagerModel_.get(), surprisedModel_.get(), shadowModel_.get(),
-		mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount());
+		mapSystem_->GetEnemyCount(), mapSystem_->GetCageCount(), awakeEnemyTextureHandle_, sleepEnemyTextureHandle_);
 	// マップシステム
 	mapSystem_->SetEnemiesManager(enemiesManager_.get());
 
@@ -219,7 +221,7 @@ void GameScene::Update()
 	// ゲームクリアアニメーションの設定
 	if (mapSystem_->GetIsGameClear() && 
 		!animationManager_->GetIsActionAnimation() &&
-		!animationManager_->GetIsGameClearAnimation()) {
+		!animationManager_->GetIsGameClearAnimation() && !clearTheFinalStage_) {
 
 		// クリアアニメーション
 		animationManager_->GameClearInitialize();
@@ -229,13 +231,17 @@ void GameScene::Update()
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
 		// ゲームクリアのSE
 		audio_->PlayWave(clearSEHandle_, false, SEVolume_);
+		clearTheFinalStage_ = true;
 	}
 	// ゲームオーバーアニメーションの設定
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
 		animationManager_->SetGameOverAnimationTime(80);
+		enemiesManager_->GameOverAnimationInitialize();
+		animationManager_->SetGameOverAnimation(std::bind(&EnemiesManager::GameOverAnimationUpdate,enemiesManager_.get()));
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
+		player_->SetIsDraw(false);
 		// ゲームオーバーのSE
 		audio_->PlayWave(deathSEHandle_, false, SEVolume_);	
 		WhiteOutSetting();
@@ -340,6 +346,8 @@ void GameScene::Setting(Scene preScene)
 
 	methodOfOperationUI_->Setting();
 
+	clearTheFinalStage_ = false;
+
 }
 
 void GameScene::CameraUpdate()
@@ -366,7 +374,7 @@ void GameScene::WaitingCommand()
 	// コマンド待ち
 	command_->Update();
 	// コマンドが入力された
-	if (!command_->GetAcceptingInput()) {
+	if (!command_->GetAcceptingInput() && !clearTheFinalStage_) {
 		//マップシステムを動かす
 		mapSystem_->Update(command_->GetCommandNumber());
 		// リセット
@@ -500,6 +508,9 @@ void GameScene::Reset()
 	enemiesManager_->Update();
 	enemiesManager_->ActionAnimationInitialize();
 	goal_->Update();
+
+	// UI
+	methodOfOperationUI_->Setting();
 
 }
 

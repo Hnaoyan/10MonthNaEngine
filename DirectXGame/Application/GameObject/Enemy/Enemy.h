@@ -17,12 +17,13 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel);
+	void Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel,
+		uint32_t awakeEnemyTextureHandle, uint32_t sleepEnemyTextureHandle);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const Vector2& position, bool enemyAwake);
+	void Update(const Vector2& position, bool enemyAwake, bool captured);
 
 	/// <summary>
 	/// 描画
@@ -43,6 +44,11 @@ public: // メンバ関数
 	void WaitingAnimationInitialize();
 
 	void WaitingAnimationUpdate();
+
+	// ゲームオーバーアニメーション
+	void GameOverAnimationInitialize(const Vector2& playerPosition);
+
+	void GameOverAnimationUpdate();
 
 private: //メンバ関数
 
@@ -85,7 +91,15 @@ private: // メンバ変数
 	// 起きているか
 	bool awake_;
 
+	// つかまってるか
+	bool captured_;
+
+	// 回転
 	float rotate_;
+
+	// テクスチャハンドル
+	uint32_t awakeEnemyTextureHandle_ = 0u;
+	uint32_t sleepEnemyTextureHandle_ = 0u;
 
 	// アニメーションの開始座標
 	Vector2 animationStartPosition_;
@@ -123,6 +137,10 @@ private: // メンバ変数
 	Vector3 surprisedStartPosition_;
 	Vector3 surprisedEndPosition_;
 
+	float surprisedZ_ = -10.0f;
+
+	float surprisedSize_ = 0.7f;
+
 	// 影
 	WorldTransform shadowWorldTransform_;
 	// モデル
@@ -133,6 +151,13 @@ private: // メンバ変数
 	float animationStartShadowAddZ_ = 2.4f;
 	// 最終座標
 	float animationShadowAddZ_;
+
+	// ゲームオーバーアニメーション
+	Vector3 gameOverPositionStart_;
+	Vector3 gameOverPositionMiddle_;
+	float gameOverT_;
+	uint32_t gameOverFrame_;
+	bool isGameOverAnimation_ = false;
 
 };
 

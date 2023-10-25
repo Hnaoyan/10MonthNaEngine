@@ -118,28 +118,6 @@ void MethodOfOperationUI::Update(bool initStage)
 	
 	ApplyGlobalVariables();
 
-	for (size_t i = 0; i < 4; i++) {
-		moveSprites_[i]->SetPosition(movePosition_);
-		moveSprites_[i]->SetSize(moveSize_);
-		moveSprites_[i]->SetSpriteRect(Vector2{ 0,0 }, moveSize_);
-		moveSprites_[i]->Update();
-	}
-
-	vibrationSprite_->SetPosition(vibrationPosition_);
-	vibrationSprite_->SetSize(vibrationSize_);
-	vibrationSprite_->SetSpriteRect(Vector2{ 0,0 }, vibrationSize_);
-	vibrationSprite_->Update();
-
-	resetSprite_->SetPosition(resetPosition_);
-	resetSprite_->SetSize(resetSize_);
-	resetSprite_->SetSpriteRect(Vector2{ 0,0 }, resetSize_);
-	resetSprite_->Update();
-
-	stageSelectSprite_->SetPosition(stageSelectPosition_);
-	stageSelectSprite_->SetSize(stageSelectSize_);
-	stageSelectSprite_->SetSpriteRect(Vector2{ 0,0 }, stageSelectSize_);
-	stageSelectSprite_->Update();
-
 #endif // _DEBUG
 
 
@@ -274,5 +252,27 @@ void MethodOfOperationUI::ApplyGlobalVariables()
 	stageSelectSize_ = globalVariables->GetVector2Value(groupName, "stageSelectSize");
 
 	vibrationFlickeringFrame_ = globalVariables->GetIntValue(groupName, "vibrationFlickeringFrame");
+
+	for (size_t i = 0; i < 4; i++) {
+		moveSprites_[i]->SetPosition(movePosition_);
+		moveSprites_[i]->SetSize(moveSize_);
+		moveSprites_[i]->SetSpriteRect(Vector2{ 0,0 }, moveSize_);
+		moveSprites_[i]->Update();
+	}
+
+	vibrationSprite_->SetPosition(vibrationPosition_);
+	vibrationSprite_->SetSize(vibrationSize_);
+	vibrationSprite_->SetSpriteRect(Vector2{ 0,0 }, vibrationSize_);
+	vibrationSprite_->Update();
+
+	resetSprite_->SetPosition(resetPosition_);
+	resetSprite_->SetSize(resetSize_);
+	resetSprite_->SetSpriteRect(Vector2{ 0,0 }, resetSize_);
+	resetSprite_->Update();
+
+	stageSelectSprite_->SetPosition(stageSelectPosition_);
+	stageSelectSprite_->SetSize(stageSelectSize_);
+	stageSelectSprite_->SetSpriteRect(Vector2{ 0,0 }, stageSelectSize_);
+	stageSelectSprite_->Update();
 
 }

@@ -25,7 +25,7 @@ EnemiesManager::~EnemiesManager()
 
 void EnemiesManager::Iintialize(MapSystem* mapSystem,
 	Model* enemyModel, Model* sleepModel, Model* enemyMovePlanModel, Model* cageModel, Model* enemyDangerModel, Model* surprisedModel, Model* shadowModel,
-	size_t enemyCount, size_t cageCount)
+	size_t enemyCount, size_t cageCount, uint32_t awakeEnemyTextureHandle, uint32_t sleepEnemyTextureHandle)
 {
 
 	// マップシステム
@@ -45,6 +45,9 @@ void EnemiesManager::Iintialize(MapSystem* mapSystem,
 
 	shadowModel_ = shadowModel;
 
+	awakeEnemyTextureHandle_ = awakeEnemyTextureHandle;
+	sleepEnemyTextureHandle_ = sleepEnemyTextureHandle;
+
 	Setting(enemyCount, cageCount);
 
 }
@@ -56,8 +59,10 @@ void EnemiesManager::Update()
 
 	size_t i = 0;
 	for (Enemy* enemy : enemies_) {
-		enemy->SetRotate(direct_);
-		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i));
+		if (!mapSystem_->GetCapturedEnemy().at(i)) {
+			enemy->SetRotate(direct_);
+		}
+		enemy->Update(mapSystem_->GetEnemyPosition().at(i), mapSystem_->GetEnemyAwake().at(i), mapSystem_->GetCapturedEnemy().at(i));
 		// エネミー危険範囲
 		if (!mapSystem_->GetEnemyAwake().at(i)) {
 			// エネミー位置
@@ -164,7 +169,7 @@ void EnemiesManager::AddEnemy(size_t num)
 {
 
 	Enemy* enemy = new Enemy();
-	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_, surprisedModel_, shadowModel_);
+	enemy->Initialize(enemyModel_, mapSystem_->GetInitialEnemyPosition().at(num), sleepModel_, surprisedModel_, shadowModel_, awakeEnemyTextureHandle_, sleepEnemyTextureHandle_);
 	enemies_.push_back(enemy);
 
 	EnemyMovePlan* enemyMovePlan = new EnemyMovePlan();
@@ -256,6 +261,31 @@ void EnemiesManager::WaitingAnimationUpdate()
 
 	for (Enemy* enemy : enemies_) {
 		enemy->WaitingAnimationUpdate();
+	}
+
+}
+
+void EnemiesManager::GameOverAnimationInitialize()
+{
+
+	Vector2 distance = { 0.0f, 0.0f };
+	Vector2 playerPosition = { mapSystem_->GetPlayerPosition().x, mapSystem_->GetPlayerPosition().y };
+	for (Enemy* enemy : enemies_) {
+		distance.x = enemy->GetPosition().x - playerPosition.x;
+		distance.y = enemy->GetPosition().y - playerPosition.y;
+		if (std::fabsf(distance.x) + std::fabsf(distance.y) <= 1.0f) {
+			Vector2 playerWorldPosition = { playerPosition.x * MapSystem::kSquareSize_.x, playerPosition.y * MapSystem::kSquareSize_.y };
+			enemy->GameOverAnimationInitialize(playerWorldPosition);
+		}
+	}
+
+}
+
+void EnemiesManager::GameOverAnimationUpdate()
+{
+
+	for (Enemy* enemy : enemies_) {
+		enemy->GameOverAnimationUpdate();
 	}
 
 }

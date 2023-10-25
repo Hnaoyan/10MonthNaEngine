@@ -2,7 +2,8 @@
 #include "MathCalc.h"
 #include "Others/MapSystem/MapSystem.h"
 
-void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel)
+void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel, Model* surprisedModel, Model* shadowModel,
+	uint32_t awakeEnemyTextureHandle, uint32_t sleepEnemyTextureHandle)
 {
 
 	// ワールドトランスフォーム
@@ -11,7 +12,9 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 	sleepWorldTransform_.Initialize();
 	surprisedWorldTransform_.Initialize();
 	surprisedWorldTransform_.translation_ = Vector3{ 0.0f, 10.0f, 0.0f };
-	surprisedWorldTransform_.parent_ = &worldTransform_;
+	//surprisedWorldTransform_.parent_ = &worldTransform_;
+	surprisedWorldTransform_.rotation_.x = -1.57f * 2.0f / 3.0f;
+	surprisedWorldTransform_.scale_ = { surprisedSize_, surprisedSize_, surprisedSize_ };
 	surprisedWorldTransform_.UpdateMatrix();
 
 	shadowWorldTransform_.Initialize();
@@ -26,6 +29,10 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 	surprisedModel_ = surprisedModel;
 
 	shadowModel_ = shadowModel;
+
+	// テクスチャハンドル
+	awakeEnemyTextureHandle_ = awakeEnemyTextureHandle;
+	sleepEnemyTextureHandle_ = sleepEnemyTextureHandle;
 
 #pragma region 調整項目クラス
 	// 調整項目クラスのインスタンス取得
@@ -45,7 +52,7 @@ void Enemy::Initialize(Model* model, const Vector2& position, Model* sleepModel,
 
 }
 
-void Enemy::Update(const Vector2& position, bool enemyAwake)
+void Enemy::Update(const Vector2& position, bool enemyAwake, bool captured)
 {
 
 #ifdef _DEBUG
@@ -54,6 +61,7 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 
 	position_ = position;
 	awake_ = enemyAwake;
+	captured_ = captured;
 
 	worldTransform_.UpdateMatrix();
 
@@ -66,14 +74,22 @@ void Enemy::Update(const Vector2& position, bool enemyAwake)
 void Enemy::Draw(const ViewProjection& viewProjection, bool isShadowDraw)
 {
 
-	model_->Draw(worldTransform_, viewProjection);
+	// 本体
+	if ((!awake_ || surprisedT_ < 1.0f / 2.0f) && !isGameOverAnimation_) {
+		model_->Draw(worldTransform_, viewProjection, sleepEnemyTextureHandle_);
+	}
+	else {
+		model_->Draw(worldTransform_, viewProjection, awakeEnemyTextureHandle_);
+	}
+	
+	
 	if (isShadowDraw) {
 		shadowModel_->Draw(shadowWorldTransform_, viewProjection);
 	}
-	if (!awake_) {
+	if ((!awake_ || surprisedT_ < 1.0f / 2.0f) && !isGameOverAnimation_ ) {
 		sleepModel_->Draw(sleepWorldTransform_, viewProjection);
 	}
-	else if(surprisedT_ < 1.0f && surprisedT_ > 1.0f / 2.0f){
+	else if(surprisedT_ < 1.0f && surprisedT_ > 1.0f / 2.0f || isGameOverAnimation_){
 		surprisedModel_->Draw(surprisedWorldTransform_,viewProjection);
 	}
 
@@ -100,6 +116,8 @@ void Enemy::Setting(const Vector2& position)
 	shadowModel_->SetAlphaValue(0.85f);
 
 	awake_ = false;
+
+	isGameOverAnimation_ = false;
 
 }
 
@@ -167,7 +185,7 @@ void Enemy::WaitingAnimationInitialize()
 void Enemy::WaitingAnimationUpdate()
 {
 	// スリープ
-	if (!awake_) {
+	if (!awake_ || surprisedT_ < 1.0f / 2.0f) {
 		// アニメーションする
 		sleepT_ += 1.0f / static_cast<float>(sleepFrame_);
 
@@ -183,9 +201,9 @@ void Enemy::WaitingAnimationUpdate()
 			float t = (sleepT_ - 1.0f / 2.0f) * 2.0f;
 			sleepWorldTransform_.translation_ = MathCalc::EaseOutCubicF(t, sleepMiddlePosition_, sleepStartPosition_);
 		}
-		sleepWorldTransform_.UpdateMatrix();
 	}
 
+	// ビックリ
 	if (animationT_ == 0.0f || animationT_ >= 1.0f) {
 		if (surprisedT_ < 1.0f && awake_) {
 			// アニメーションする
@@ -199,22 +217,97 @@ void Enemy::WaitingAnimationUpdate()
 				float t = (surprisedT_ - 1.0f / 2.0f) * 4.0f;
 				worldTransform_.translation_ = MathCalc::EaseInCubicF(t, surprisedStartPosition_, surprisedEndPosition_);
 				worldTransform_.UpdateMatrix();
-				surprisedWorldTransform_.scale_ = MathCalc::EaseInCubicF(t, Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
-				surprisedWorldTransform_.UpdateMatrix();
+				surprisedWorldTransform_.scale_ = MathCalc::EaseInCubicF(t, Vector3(0.0f, 0.0f, 0.0f), Vector3(surprisedSize_, surprisedSize_, surprisedSize_));
 				// 影
 				shadowWorldTransform_.translation_.z = MathCalc::EaseInCubicF(t, animationStartShadowAddZ_, animationShadowAddZ_);
-				shadowWorldTransform_.UpdateMatrix();
 			}
 
 		}
 	}
 	
-	if (surprisedT_ >= 1.0f && awake_) {
+	// 回転
+	if (surprisedT_ > 1.0f / 2.0f && awake_ && !captured_) {
 		worldTransform_.rotation_.z = MathCalc::EaseInCubicF(0.5f, worldTransform_.rotation_.z, rotate_);
-		worldTransform_.UpdateMatrix();
 	}
 
+	if (captured_ && animationT_ >= 1.0f) {
+		worldTransform_.translation_ = Vector3(position_.x * MapSystem::kSquareSize_.x,
+			position_.y * MapSystem::kSquareSize_.y,
+			 worldTransform_.translation_.z);
+		worldTransform_.rotation_.z = rotate_;
+	}
+
+	surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
+	surprisedWorldTransform_.translation_.y = worldTransform_.translation_.y;
+	surprisedWorldTransform_.translation_.z = worldTransform_.translation_.z + surprisedZ_;
+
+	worldTransform_.UpdateMatrix();
+	sleepWorldTransform_.UpdateMatrix();
+	surprisedWorldTransform_.UpdateMatrix();
 	shadowWorldTransform_.UpdateMatrix();
+
+}
+
+void Enemy::GameOverAnimationInitialize(const Vector2& playerPosition)
+{
+
+
+	// ゲームオーバーアニメーション
+	gameOverPositionStart_ = worldTransform_.translation_;
+	gameOverPositionMiddle_ = { playerPosition.x , playerPosition.y, worldTransform_.translation_.z, };
+	
+	Vector2 distance = { playerPosition.x - worldTransform_.translation_.x, playerPosition.y - worldTransform_.translation_.y };
+
+	if (distance.x > 0.0f) {
+		worldTransform_.rotation_.z = 1.57f;
+	}
+	else if (distance.x < 0.0f) {
+		worldTransform_.rotation_.z = -1.57f;
+	}
+	else if (distance.y > 0.0f) {
+		worldTransform_.rotation_.z = 3.14f;
+	}
+	else if (distance.y < 0.0f) {
+		worldTransform_.rotation_.z = 0.0f;
+	}
+
+	worldTransform_.UpdateMatrix();
+
+	gameOverT_ = 0.0f;
+
+	gameOverFrame_ = 40;
+
+	isGameOverAnimation_ = true;
+
+}
+
+void Enemy::GameOverAnimationUpdate()
+{
+
+	if (isGameOverAnimation_) {
+		gameOverT_ += 1.0f / static_cast<float>(gameOverFrame_);
+		if (gameOverT_ > 1.0f) {
+			gameOverT_ = 1.0f;
+			isGameOverAnimation_ = false;
+		}
+
+		if (gameOverT_ < 1.0f / 5.0f) {
+			float t = gameOverT_ * 5.0f;
+			worldTransform_.translation_ = MathCalc::EaseInCubicF(t, gameOverPositionStart_, gameOverPositionMiddle_);
+		}
+		else {
+			float t = (gameOverT_ - 1.0f / 5.0f) * 5.0f / 4.0f;
+			worldTransform_.translation_ = MathCalc::EaseOutCubicF(t, gameOverPositionMiddle_, gameOverPositionStart_);
+		}
+
+		surprisedWorldTransform_.translation_.x = worldTransform_.translation_.x;
+		surprisedWorldTransform_.translation_.y = worldTransform_.translation_.y;
+		surprisedWorldTransform_.translation_.z = worldTransform_.translation_.z + surprisedZ_;
+
+		worldTransform_.UpdateMatrix();
+		shadowWorldTransform_.UpdateMatrix();
+		surprisedWorldTransform_.UpdateMatrix();
+	}
 
 }
 

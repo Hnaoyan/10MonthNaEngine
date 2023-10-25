@@ -2,6 +2,7 @@
 #include "VectorLib.h"
 #include <numbers>
 #include <GlobalVariables.h>
+#include <Input.h>
 
 void StageSelectUI::Initialize(uint32_t leftTextureHandle, uint32_t rightTextureHandle, uint32_t stageSelectTextureHandle,
 	uint32_t stageNumberTextureHandle, uint32_t stageUiTextureHandle, uint32_t clearTextureHandle, Vector2* clearParent)
@@ -123,38 +124,20 @@ void StageSelectUI::Update()
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 
-	leftSprite_->SetPosition(leftPostion_);
-	leftSprite_->SetSize(leftSize_);
-	leftSprite_->SetSpriteRect(Vector2{ leftSize_.x,0 }, leftSize_);
-	leftSprite_->Update();
-
-	rightSprite_->SetPosition(rightPostion_);
-	rightSprite_->SetSize(rightSize_);
-	rightSprite_->SetSpriteRect(Vector2{ rightSize_.x,0 }, rightSize_);
-	rightSprite_->Update();
-
-	stageSelectSprite_->SetPosition(stageSelectPostion_);
-	stageSelectSprite_->SetSize(stageSelectSize_);
-	stageSelectSprite_->SetSpriteRect(Vector2{ 0,0 }, stageSelectSize_);
-	stageSelectSprite_->Update();
-
-	stageNumberSprite_->SetPosition(stageNumberPostion_);
-	stageNumberSprite_->SetSize(stageNumberSize_);
-	//stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, stageNumberSize_);
-	stageNumberSprite_->Update();
-
-	stageUiSprite_->SetPosition(stageUiPostion_);
-	stageUiSprite_->SetSize(stageUiSize_);
-	stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
-	stageUiSprite_->Update();
-
-	clearSprite_->SetRotation(clearRotate_);
-	clearSprite_->SetSize(clearSize_);
-	clearSprite_->Update();
-
 #endif // _DEBUG
 
 	clearSprite_->SetPosition(Vector2{ clearPostion_.x + clearParent_->x ,clearPostion_.y + clearParent_->y });
+	clearSprite_->Update();
+
+	// 決定ボタン
+	if (Input::GetInstance()->PressKey(DIK_SPACE)) {
+		stageUiSprite_->SetSpriteRect(Vector2{ stageUiSize_.x ,0.0f }, stageUiSize_);
+	}
+	else {
+		stageUiSprite_->SetSpriteRect(Vector2{ 0.0f ,0.0f }, stageUiSize_);
+	}
+
+	stageUiSprite_->Update();
 
 }
 
@@ -214,5 +197,34 @@ void StageSelectUI::ApplyGlobalVariables()
 	clearPostion_ = globalVariables->GetVector2Value(groupName, "clearPostion");
 	clearSize_ = globalVariables->GetVector2Value(groupName, "clearSize");
 	clearRotate_ = globalVariables->GetFloatValue(groupName, "clearRotate");
+
+	leftSprite_->SetPosition(leftPostion_);
+	leftSprite_->SetSize(leftSize_);
+	leftSprite_->SetSpriteRect(Vector2{ leftSize_.x,0 }, leftSize_);
+	leftSprite_->Update();
+
+	rightSprite_->SetPosition(rightPostion_);
+	rightSprite_->SetSize(rightSize_);
+	rightSprite_->SetSpriteRect(Vector2{ rightSize_.x,0 }, rightSize_);
+	rightSprite_->Update();
+
+	stageSelectSprite_->SetPosition(stageSelectPostion_);
+	stageSelectSprite_->SetSize(stageSelectSize_);
+	stageSelectSprite_->SetSpriteRect(Vector2{ 0,0 }, stageSelectSize_);
+	stageSelectSprite_->Update();
+
+	stageNumberSprite_->SetPosition(stageNumberPostion_);
+	stageNumberSprite_->SetSize(stageNumberSize_);
+	//stageNumberSprite_->SetSpriteRect(Vector2{ 0,0 }, stageNumberSize_);
+	stageNumberSprite_->Update();
+
+	stageUiSprite_->SetPosition(stageUiPostion_);
+	stageUiSprite_->SetSize(stageUiSize_);
+	//stageUiSprite_->SetSpriteRect(Vector2{ 0,0 }, stageUiSize_);
+	stageUiSprite_->Update();
+
+	clearSprite_->SetRotation(clearRotate_);
+	clearSprite_->SetSize(clearSize_);
+	clearSprite_->Update();
 
 }

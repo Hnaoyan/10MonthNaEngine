@@ -29,6 +29,7 @@ void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax
 	for (size_t i = 0; i < 5; i++) {
 		sprite_[i].reset(Sprite::Create(textureHandles_[0], positions_[i], color, anchorPoint, false, false));
 		sprite_[i]->SetSize(sizes_[i]);
+		sprite_[i]->SetBlendMode(Sprite::BlendMode::kNormal);
 		sprite_[i]->Update();
 	}
 
@@ -68,6 +69,8 @@ void StagePhot::Initialize(std::vector<uint32_t> textureHandles, size_t stageMax
 
 #pragma endregion
 
+	centerPositions_ = positions_[2];
+
 	Setting(0);
 
 }
@@ -81,9 +84,12 @@ void StagePhot::Update()
 
 
 	waveAnimation_t_ += 0.01f;
+	if (waveAnimation_t_ >= 1.0f) {
+		waveAnimation_t_ -= 2.0f;
+	}
 	waveVelocity_.y = amplitude_ * std::cosf(1.0f * float(std::numbers::pi) * fre_ * waveAnimation_t_);
 
-	positions_[2] = VectorLib::Add(positions_[2], waveVelocity_);
+	positions_[2] = VectorLib::Add(centerPositions_, waveVelocity_);
 	sprite_[2]->SetPosition(positions_[2]);
 	sprite_[2]->Update();
 }
