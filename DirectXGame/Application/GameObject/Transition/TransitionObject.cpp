@@ -14,7 +14,7 @@ void TransitionObject::Initialize(Model* model)
 
 void TransitionObject::Update(const float Transition_T)
 {
-	worldTransform_.scale_ = VectorLib::Add(worldTransform_.scale_, Vector3(0.1f, 0.1f, 0.1f));
+	worldTransform_.scale_ = VectorLib::Add(worldTransform_.scale_, Vector3(0.08f, 0.08f, 0.06f));
 	worldTransform_.translation_ = MathCalc::EaseInQuadF(Transition_T, prevPos_, end_);
 	worldTransform_.UpdateMatrix();
 }
