@@ -221,7 +221,7 @@ void GameScene::Update()
 	// ゲームクリアアニメーションの設定
 	if (mapSystem_->GetIsGameClear() && 
 		!animationManager_->GetIsActionAnimation() &&
-		!animationManager_->GetIsGameClearAnimation()) {
+		!animationManager_->GetIsGameClearAnimation() && !clearTheFinalStage_) {
 
 		// クリアアニメーション
 		animationManager_->GameClearInitialize();
@@ -231,6 +231,7 @@ void GameScene::Update()
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
 		// ゲームクリアのSE
 		audio_->PlayWave(clearSEHandle_, false, SEVolume_);
+		clearTheFinalStage_ = true;
 	}
 	// ゲームオーバーアニメーションの設定
 	if (mapSystem_->GetIsGameOver() &&
@@ -345,6 +346,8 @@ void GameScene::Setting(Scene preScene)
 
 	methodOfOperationUI_->Setting();
 
+	clearTheFinalStage_ = false;
+
 }
 
 void GameScene::CameraUpdate()
@@ -371,7 +374,7 @@ void GameScene::WaitingCommand()
 	// コマンド待ち
 	command_->Update();
 	// コマンドが入力された
-	if (!command_->GetAcceptingInput()) {
+	if (!command_->GetAcceptingInput() && !clearTheFinalStage_) {
 		//マップシステムを動かす
 		mapSystem_->Update(command_->GetCommandNumber());
 		// リセット

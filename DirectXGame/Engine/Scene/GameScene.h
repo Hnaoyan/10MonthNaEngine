@@ -251,5 +251,10 @@ private: // ホワイトアウト用
 
 	void WhiteOutSetting();
 
+private: 
+
+	// 最終ステージクリアしたか
+	bool clearTheFinalStage_;
+
 };
 
