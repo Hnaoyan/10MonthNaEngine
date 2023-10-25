@@ -38,6 +38,7 @@ void GameScene::Initialize() {
 #pragma region オーディオリソース
 	this->clearSEHandle_ = audio_->LoadWave("SE/clear1.wav");
 	this->deathSEHandle_ = audio_->LoadWave("SE/death.wav");
+	this->dropSEHandle_ = audio_->LoadWave("SE/drop.wav");
 #pragma endregion
 
 
@@ -216,6 +217,7 @@ void GameScene::Update()
 
 	// ゲームオーバーか
 	ImGui::Begin("State");
+	// ゲームクリアアニメーションの設定
 	if (mapSystem_->GetIsGameClear() && 
 		!animationManager_->GetIsActionAnimation() &&
 		!animationManager_->GetIsGameClearAnimation()) {
@@ -227,22 +229,25 @@ void GameScene::Update()
 		player_->ClearAnimationInitialize();
 		animationManager_->SetGameClearAnimation(std::bind(&Player::ClearAnimationUpdate, player_.get()));
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
-		// SE
+		// ゲームクリアのSE
 		audio_->PlayWave(clearSEHandle_, false, SEVolume_);
 
 	}
+	// ゲームオーバーアニメーションの設定
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
 		animationManager_->SetGameOverAnimationTime(10);
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
-		// SE
+		// ゲームオーバーのSE
 		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
 	}
 	ImGui::End();
 
 	// ESCでゲームセレクトへ
 	if (input_->TriggerKey(DIK_ESCAPE) && !transitionManager_->GetNowTransition()) {
+		// シーン変更の音
+		audio_->PlayWave(dropSEHandle_, false, SEVolume_);
 		sceneNum = STAGESELECT;
 	}
 

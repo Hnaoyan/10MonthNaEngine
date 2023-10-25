@@ -214,6 +214,8 @@ private:	// メンバポインタ
 
 	uint32_t clearSEHandle_;
 
+	uint32_t dropSEHandle_;
+
 	// テクスチャハンドル
 	uint32_t stageNumberTextureHandle_;
 	// 操作方法テクスチャハンドル

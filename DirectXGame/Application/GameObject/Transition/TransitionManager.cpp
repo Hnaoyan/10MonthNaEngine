@@ -123,7 +123,8 @@ void TransitionManager::TransitionUpdate()
 			objects_.clear();
 		}
 		else {
-			transitionTimer_ += 0.005f;
+			float addTimer = 0.008f;
+			transitionTimer_ += addTimer;
 		}
 		if (transitionTimer_ >= 0.75f && transitionTimer_ <= 0.76f) {
 			isSceneChanger_ = true;
