@@ -229,16 +229,17 @@ void GameScene::Update()
 		animationManager_->SetGameClearAnimationTime(player_->GetAnimationFrame());
 		// ゲームクリアのSE
 		audio_->PlayWave(clearSEHandle_, false, SEVolume_);
-
 	}
 	// ゲームオーバーアニメーションの設定
 	if (mapSystem_->GetIsGameOver() &&
 		!animationManager_->GetIsGameOverAnimation()) {
 		animationManager_->GameOverInitialize();
-		animationManager_->SetGameOverAnimationTime(40);
+		animationManager_->SetGameOverAnimationTime(45);
 		particleManager_->ExplosionUpdate(player_->GetWorldTransformPosition());
 		// ゲームオーバーのSE
-		audio_->PlayWave(deathSEHandle_, false, SEVolume_);
+		audio_->PlayWave(deathSEHandle_, false, SEVolume_);	
+		WhiteOutSetting();
+
 	}
 
 	// ESCでゲームセレクトへ
@@ -447,7 +448,7 @@ void GameScene::GameOverAnimation()
 
 	// ゲームオーバー
 	if (!animationManager_->GetIsGameOverAnimation()) {
-		//WhiteOutSetting();
+		whiteSprite_->GetColor();
 		mapSystem_->Restart();
 		Reset();
 	}
@@ -521,23 +522,23 @@ void GameScene::ModelSetting()
 
 void GameScene::WhiteOutUpdate()
 {
-	float animationHalf = 40.0f / 90.0f;
+	float frameValue = 80.0f;
+	float animationHalf = (frameValue / 2.0f) / frameValue;
 	if (whiteOutT_ >= 1.0f) {
 		isWhiteOut_ = false;
 		whiteOutT_ = 1.0f;
-		//mapSystem_->Restart();
-		//Reset();
 	}
 	else {
-		float addValue_T = 1.0f / 90.0f;
-		whiteOutT_ += addValue_T;
-		float addAlphaValue = 0.025f;
+		// tの値の増加値
+		float addValue_T = 1.0f / frameValue;
+		// alpha値の増加値
+		float addAlphaValue = 0.035f;
 		// 一定値以上になった場合マイナス
 		if (whiteOutT_ >= animationHalf) {
-			alphaValue_ -= addAlphaValue;
+			alphaValue_ -= (addAlphaValue * 1.75f);
 		}
 		else {
-			alphaValue_ += addAlphaValue;
+			alphaValue_ += (addAlphaValue * 1.25f);
 		}
 		if (alphaValue_ >= 1.0f) {
 			alphaValue_ = 1.0f;
@@ -545,7 +546,7 @@ void GameScene::WhiteOutUpdate()
 		if (alphaValue_ < 0) {
 			alphaValue_ = 0;
 		}
-
+		whiteOutT_ += addValue_T;
 	}
 
 	ImGui::Begin("white");
@@ -561,6 +562,8 @@ void GameScene::WhiteOutSetting()
 {
 	isWhiteOut_ = true;
 	whiteOutT_ = 0;
-	float initAlphaValue = 0.0f;
+	float initAlphaValue = 0.1f;
 	alphaValue_ = initAlphaValue;
+	whiteSprite_->SetColor({ 1,1,1,alphaValue_ });
+
 }
