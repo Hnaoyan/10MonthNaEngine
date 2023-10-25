@@ -70,7 +70,7 @@ void TitleScene::Update()
 	// 振幅
 	float amplitude = 0.5f;
 	// 振動数
-	float frequency = 5.0f;
+	float frequency = 1.0f;
 	waveVelocity_.y = amplitude * std::cosf(1.0f * float(std::numbers::pi) * frequency * waveAnimation_t_);
 
 	spritePosition_ = VectorLib::Add(spritePosition_, waveVelocity_);
