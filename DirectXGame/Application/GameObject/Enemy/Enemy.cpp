@@ -186,8 +186,8 @@ void Enemy::WaitingAnimationInitialize()
 	// 基準位置
 	pukapukaPositionZ_ = surprisedEndPosition_.z;
 	// 追加位置
-	pukapukaPositionAddZ_ = 2.0f;
-	pukapukaSpeed_ = 0.03f;
+	pukapukaPositionAddZ_ = 1.5f;
+	pukapukaSpeed_ = 0.015f;
 	pukapukaT_ = -1.0f;
 
 }
