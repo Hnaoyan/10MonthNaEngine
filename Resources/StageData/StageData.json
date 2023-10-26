@@ -1,5 +1,5 @@
 {
-    "StageData0": {
+    "StageData1": {
         "cagePosition_": [
             2.0,
             1.0
@@ -248,7 +248,7 @@
             0.0
         ]
     },
-    "StageData1": {
+    "StageData2": {
         "cagePosition_": [
             4.0,
             1.0
@@ -2003,7 +2003,7 @@
             0.0
         ]
     },
-    "StageData2": {
+    "StageData3": {
         "cagePosition_": [
             0.0,
             3.0
@@ -2252,7 +2252,7 @@
             1.0
         ]
     },
-    "StageData3": {
+    "StageData4": {
         "cagePosition_": [
             2.0,
             2.0
@@ -2501,7 +2501,7 @@
             0.0
         ]
     },
-    "StageData4": {
+    "StageData0": {
         "cagePosition_": [
             7.0,
             2.0
