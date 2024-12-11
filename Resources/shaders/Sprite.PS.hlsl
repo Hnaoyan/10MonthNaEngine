@@ -5,5 +5,10 @@ SamplerState smp : register(s0);
 
 float32_t4 main(VSOutput input) : SV_TARGET{
 	float32_t4 textureColor = tex.Sample(smp,input.uv) * color;
+	    // “§‰ßˆ—
+    if (textureColor.a <= 0.5)
+    {
+        discard;
+    }
 	return textureColor;
 }

@@ -1,0 +1,53 @@
+{
+    "StageSelectUI": {
+        "clearPostion": [
+            309.6000061035156,
+            -168.1999969482422
+        ],
+        "clearRotate": 0.30000001192092896,
+        "clearSize": [
+            256.0,
+            128.0
+        ],
+        "leftPostion": [
+            178.0,
+            360.0
+        ],
+        "leftSize": [
+            128.0,
+            192.0
+        ],
+        "rightPostion": [
+            1102.0,
+            360.0
+        ],
+        "rightSize": [
+            128.0,
+            192.0
+        ],
+        "stageNumberPostion": [
+            640.0,
+            64.0
+        ],
+        "stageNumberSize": [
+            300.0,
+            128.0
+        ],
+        "stageSelectPostion": [
+            640.0,
+            650.0
+        ],
+        "stageSelectSize": [
+            480.0,
+            128.0
+        ],
+        "stageUiPostion": [
+            1050.0,
+            659.9000244140625
+        ],
+        "stageUiSize": [
+            240.0,
+            96.0
+        ]
+    }
+}
