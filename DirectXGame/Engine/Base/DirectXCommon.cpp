@@ -1,4 +1,5 @@
 #include "DirectXCommon.h"
+#include <thread>
 #include <cassert>
 
 using namespace Microsoft::WRL;
